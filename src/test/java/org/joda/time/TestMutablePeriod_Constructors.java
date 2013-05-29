@@ -15,21 +15,24 @@
  */
 package org.joda.time;
 
+import org.joda.time.chrono.CopticChronology;
+import org.joda.time.chrono.ISOChronology;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.joda.time.chrono.CopticChronology;
-import org.joda.time.chrono.ISOChronology;
 
 /**
  * This class is a JUnit test for MutableDuration.
  *
  * @author Stephen Colebourne
  */
-public class TestMutablePeriod_Constructors extends TestCase {
+public class TestMutablePeriod_Constructors extends Assert {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
@@ -65,19 +68,8 @@ public class TestMutablePeriod_Constructors extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestMutablePeriod_Constructors.class);
-    }
-
-    public TestMutablePeriod_Constructors(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -87,7 +79,8 @@ public class TestMutablePeriod_Constructors extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -98,6 +91,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParse_noFormatter() throws Throwable {
         assertEquals(new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 890), MutablePeriod.parse("P1Y2M3W4DT5H6M7.890S"));
     }
@@ -106,6 +100,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
     /**
      * Test constructor ()
      */
+   @Test
     public void testConstructor1() throws Throwable {
         MutablePeriod test = new MutablePeriod();
         assertEquals(PeriodType.standard(), test.getPeriodType());
@@ -123,6 +118,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
     /**
      * Test constructor (PeriodType)
      */
+   @Test
     public void testConstructor_PeriodType1() throws Throwable {
         MutablePeriod test = new MutablePeriod(PeriodType.yearMonthDayTime());
         assertEquals(PeriodType.yearMonthDayTime(), test.getPeriodType());
@@ -136,6 +132,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(0, test.getMillis());
     }
 
+   @Test
     public void testConstructor_PeriodType2() throws Throwable {
         MutablePeriod test = new MutablePeriod((PeriodType) null);
         assertEquals(PeriodType.standard(), test.getPeriodType());
@@ -150,6 +147,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_long1() throws Throwable {
         long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
@@ -167,6 +165,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(8, test.getMillis());
     }
 
+   @Test
     public void testConstructor_long2() throws Throwable {
         long length =
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
@@ -184,6 +183,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(8, test.getMillis());
     }
 
+   @Test
     public void testConstructor_long3() throws Throwable {
         long length =
             (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
@@ -204,6 +204,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_long_PeriodType1() throws Throwable {
         long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
@@ -221,6 +222,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(8, test.getMillis());
     }
 
+   @Test
     public void testConstructor_long_PeriodType2() throws Throwable {
         long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
@@ -238,6 +240,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(length, test.getMillis());
     }
 
+   @Test
     public void testConstructor_long_PeriodType3() throws Throwable {
         long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
@@ -255,6 +258,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(8, test.getMillis());
     }
 
+   @Test
     public void testConstructor_long_PeriodType4() throws Throwable {
         long length =
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
@@ -273,6 +277,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_long_Chronology1() throws Throwable {
         long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
@@ -290,6 +295,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(8, test.getMillis());
     }
 
+   @Test
     public void testConstructor_long_Chronology2() throws Throwable {
         long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
@@ -307,6 +313,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(8, test.getMillis());
     }
 
+   @Test
     public void testConstructor_long_Chronology3() throws Throwable {
         long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
@@ -325,6 +332,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_long_PeriodType_Chronology1() throws Throwable {
         long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
@@ -342,6 +350,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(0, test.getMillis());
     }
 
+   @Test
     public void testConstructor_long_PeriodType_Chronology2() throws Throwable {
         long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
@@ -359,6 +368,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(8, test.getMillis());
     }
 
+   @Test
     public void testConstructor_long_PeriodType_Chronology3() throws Throwable {
         long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
@@ -376,6 +386,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(8, test.getMillis());
     }
 
+   @Test
     public void testConstructor_long_PeriodType_Chronology4() throws Throwable {
         long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
@@ -397,6 +408,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
     /**
      * Test constructor (4ints)
      */
+   @Test
     public void testConstructor_4int1() throws Throwable {
         MutablePeriod test = new MutablePeriod(5, 6, 7, 8);
         assertEquals(PeriodType.standard(), test.getPeriodType());
@@ -414,6 +426,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
     /**
      * Test constructor (8ints)
      */
+   @Test
     public void testConstructor_8int1() throws Throwable {
         MutablePeriod test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         assertEquals(PeriodType.standard(), test.getPeriodType());
@@ -431,6 +444,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
     /**
      * Test constructor (8ints)
      */
+   @Test
     public void testConstructor_8int__PeriodType1() throws Throwable {
         MutablePeriod test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8, null);
         assertEquals(PeriodType.standard(), test.getPeriodType());
@@ -444,6 +458,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(8, test.getMillis());
     }
 
+   @Test
     public void testConstructor_8int__PeriodType2() throws Throwable {
         MutablePeriod test = new MutablePeriod(0, 0, 0, 0, 5, 6, 7, 8, PeriodType.dayTime());
         assertEquals(PeriodType.dayTime(), test.getPeriodType());
@@ -457,6 +472,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(8, test.getMillis());
     }
 
+   @Test
     public void testConstructor_8int__PeriodType3() throws Throwable {
         try {
             new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.dayTime());
@@ -465,6 +481,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_long_long1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
@@ -480,6 +497,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(1, test.getMillis());
     }
 
+   @Test
     public void testConstructor_long_long2() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
@@ -496,6 +514,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_long_long_PeriodType1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
@@ -511,6 +530,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(1, test.getMillis());
     }
 
+   @Test
     public void testConstructor_long_long_PeriodType2() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2004, 7, 10, 1, 1, 1, 1);
@@ -526,6 +546,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(1, test.getMillis());
     }
 
+   @Test
     public void testConstructor_long_long_PeriodType3() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2004, 6, 9, 1, 1, 1, 1);
@@ -542,6 +563,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_long_long_Chronology1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0, CopticChronology.getInstance());
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1, CopticChronology.getInstance());
@@ -557,6 +579,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(1, test.getMillis());
     }
 
+   @Test
     public void testConstructor_long_long_Chronology2() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
@@ -573,6 +596,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_long_long_PeriodType_Chronology1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0, CopticChronology.getInstance());
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1, CopticChronology.getInstance());
@@ -588,6 +612,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(1, test.getMillis());
     }
 
+   @Test
     public void testConstructor_long_long_PeriodType_Chronology2() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
@@ -604,6 +629,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_RI_RI1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
@@ -619,6 +645,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(1, test.getMillis());
     }
 
+   @Test
     public void testConstructor_RI_RI2() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
@@ -634,6 +661,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(1, test.getMillis());
     }
 
+   @Test
     public void testConstructor_RI_RI3() throws Throwable {
         DateTime dt1 = null;  // 2002-06-09T01:00+01:00
         DateTime dt2 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
@@ -649,6 +677,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(1, test.getMillis());
     }
 
+   @Test
     public void testConstructor_RI_RI4() throws Throwable {
         DateTime dt1 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
         DateTime dt2 = null;  // 2002-06-09T01:00+01:00
@@ -664,6 +693,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(-1, test.getMillis());
     }
 
+   @Test
     public void testConstructor_RI_RI5() throws Throwable {
         DateTime dt1 = null;  // 2002-06-09T01:00+01:00
         DateTime dt2 = null;  // 2002-06-09T01:00+01:00
@@ -680,6 +710,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_RI_RI_PeriodType1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
@@ -695,6 +726,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(1, test.getMillis());
     }
 
+   @Test
     public void testConstructor_RI_RI_PeriodType2() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2004, 7, 10, 1, 1, 1, 1);
@@ -710,6 +742,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(1, test.getMillis());
     }
 
+   @Test
     public void testConstructor_RI_RI_PeriodType3() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2004, 6, 9, 1, 1, 1, 1);
@@ -725,6 +758,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(0, test.getMillis());
     }
 
+   @Test
     public void testConstructor_RI_RI_PeriodType4() throws Throwable {
         DateTime dt1 = null;  // 2002-06-09T01:00+01:00
         DateTime dt2 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
@@ -740,6 +774,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(1, test.getMillis());
     }
 
+   @Test
     public void testConstructor_RI_RI_PeriodType5() throws Throwable {
         DateTime dt1 = null;  // 2002-06-09T01:00+01:00
         DateTime dt2 = null;  // 2002-06-09T01:00+01:00
@@ -756,6 +791,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_RI_RD1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
@@ -772,6 +808,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(1, test.getMillis());
     }
 
+   @Test
     public void testConstructor_RI_RD2() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         Duration dur = null;
@@ -788,6 +825,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_RI_RD_PeriodType1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
@@ -804,6 +842,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(1, test.getMillis());
     }
 
+   @Test
     public void testConstructor_RI_RD_PeriodType2() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         Duration dur = null;
@@ -823,6 +862,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
     /**
      * Test constructor (Object)
      */
+   @Test
     public void testConstructor_Object1() throws Throwable {
         MutablePeriod test = new MutablePeriod("P1Y2M3D");
         assertEquals(PeriodType.standard(), test.getPeriodType());
@@ -836,6 +876,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(0, test.getMillis());
     }
 
+   @Test
     public void testConstructor_Object2() throws Throwable {
         MutablePeriod test = new MutablePeriod((Object) null);
         assertEquals(PeriodType.standard(), test.getPeriodType());
@@ -849,6 +890,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(0, test.getMillis());
     }
 
+   @Test
     public void testConstructor_Object3() throws Throwable {
         MutablePeriod test = new MutablePeriod(new Period(0, 0, 0, 0, 1, 2, 3, 4, PeriodType.dayTime()));
         assertEquals(PeriodType.dayTime(), test.getPeriodType());
@@ -862,6 +904,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(4, test.getMillis());
     }
 
+   @Test
     public void testConstructor_Object4() throws Throwable {
         Period base = new Period(1, 1, 0, 1, 1, 1, 1, 1, PeriodType.standard());
         MutablePeriod test = new MutablePeriod(base);
@@ -880,6 +923,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
     /**
      * Test constructor (Object,PeriodType)
      */
+   @Test
     public void testConstructor_Object_PeriodType1() throws Throwable {
         MutablePeriod test = new MutablePeriod("P1Y2M3D", PeriodType.yearMonthDayTime());
         assertEquals(PeriodType.yearMonthDayTime(), test.getPeriodType());
@@ -893,6 +937,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(0, test.getMillis());
     }
 
+   @Test
     public void testConstructor_Object_PeriodType2() throws Throwable {
         MutablePeriod test = new MutablePeriod((Object) null, PeriodType.yearMonthDayTime());
         assertEquals(PeriodType.yearMonthDayTime(), test.getPeriodType());
@@ -906,6 +951,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(0, test.getMillis());
     }
 
+   @Test
     public void testConstructor_Object_PeriodType3() throws Throwable {
         MutablePeriod test = new MutablePeriod(new Period(0, 0, 0, 0, 1, 2, 3, 4, PeriodType.dayTime()), PeriodType.yearMonthDayTime());
         assertEquals(PeriodType.yearMonthDayTime(), test.getPeriodType());
@@ -919,6 +965,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(4, test.getMillis());
     }
 
+   @Test
     public void testConstructor_Object_PeriodType4() throws Throwable {
         MutablePeriod test = new MutablePeriod(new Period(0, 0, 0, 0, 1, 2, 3, 4, PeriodType.dayTime()), (PeriodType) null);
         assertEquals(PeriodType.dayTime(), test.getPeriodType());
@@ -933,6 +980,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_Object_Chronology1() throws Throwable {
         long length =
             (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
@@ -951,6 +999,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(8, test.getMillis());
     }
 
+   @Test
     public void testConstructor_Object_Chronology2() throws Throwable {
         long length =
             (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +

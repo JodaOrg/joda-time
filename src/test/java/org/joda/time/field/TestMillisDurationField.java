@@ -15,69 +15,58 @@
  */
 package org.joda.time.field;
 
+import org.joda.time.DurationField;
+import org.joda.time.DurationFieldType;
+import org.joda.time.chrono.ISOChronology;
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.joda.time.DurationField;
-import org.joda.time.DurationFieldType;
-import org.joda.time.chrono.ISOChronology;
 
 /**
  * This class is a Junit unit test for PeriodFormatterBuilder.
  *
  * @author Stephen Colebourne
  */
-public class TestMillisDurationField extends TestCase {
-
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestMillisDurationField.class);
-    }
-
-    public TestMillisDurationField(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
-    }
-
+public class TestMillisDurationField extends Assert {
     //-----------------------------------------------------------------------
+   @Test
     public void test_getType() {
         assertEquals(DurationFieldType.millis(), MillisDurationField.INSTANCE.getType());
     }
 
+   @Test
     public void test_getName() {
         assertEquals("millis", MillisDurationField.INSTANCE.getName());
     }
     
+   @Test
     public void test_isSupported() {
         assertEquals(true, MillisDurationField.INSTANCE.isSupported());
     }
 
+   @Test
     public void test_isPrecise() {
         assertEquals(true, MillisDurationField.INSTANCE.isPrecise());
     }
 
+   @Test
     public void test_getUnitMillis() {
         assertEquals(1, MillisDurationField.INSTANCE.getUnitMillis());
     }
 
+   @Test
     public void test_toString() {
         assertEquals("DurationField[millis]", MillisDurationField.INSTANCE.toString());
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void test_getValue_long() {
         assertEquals(0, MillisDurationField.INSTANCE.getValue(0L));
         assertEquals(1234, MillisDurationField.INSTANCE.getValue(1234L));
@@ -88,6 +77,7 @@ public class TestMillisDurationField extends TestCase {
         } catch (ArithmeticException ex) {}
     }
 
+   @Test
     public void test_getValueAsLong_long() {
         assertEquals(0L, MillisDurationField.INSTANCE.getValueAsLong(0L));
         assertEquals(1234L, MillisDurationField.INSTANCE.getValueAsLong(1234L));
@@ -95,6 +85,7 @@ public class TestMillisDurationField extends TestCase {
         assertEquals(((long) (Integer.MAX_VALUE)) + 1L, MillisDurationField.INSTANCE.getValueAsLong(((long) (Integer.MAX_VALUE)) + 1L));
     }
 
+   @Test
     public void test_getValue_long_long() {
         assertEquals(0, MillisDurationField.INSTANCE.getValue(0L, 567L));
         assertEquals(1234, MillisDurationField.INSTANCE.getValue(1234L, 567L));
@@ -105,6 +96,7 @@ public class TestMillisDurationField extends TestCase {
         } catch (ArithmeticException ex) {}
     }
 
+   @Test
     public void test_getValueAsLong_long_long() {
         assertEquals(0L, MillisDurationField.INSTANCE.getValueAsLong(0L, 567L));
         assertEquals(1234L, MillisDurationField.INSTANCE.getValueAsLong(1234L, 567L));
@@ -113,24 +105,28 @@ public class TestMillisDurationField extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_getMillis_int() {
         assertEquals(0, MillisDurationField.INSTANCE.getMillis(0));
         assertEquals(1234, MillisDurationField.INSTANCE.getMillis(1234));
         assertEquals(-1234, MillisDurationField.INSTANCE.getMillis(-1234));
     }
 
+   @Test
     public void test_getMillis_long() {
         assertEquals(0L, MillisDurationField.INSTANCE.getMillis(0L));
         assertEquals(1234L, MillisDurationField.INSTANCE.getMillis(1234L));
         assertEquals(-1234L, MillisDurationField.INSTANCE.getMillis(-1234L));
     }
 
+   @Test
     public void test_getMillis_int_long() {
         assertEquals(0, MillisDurationField.INSTANCE.getMillis(0, 567L));
         assertEquals(1234, MillisDurationField.INSTANCE.getMillis(1234, 567L));
         assertEquals(-1234, MillisDurationField.INSTANCE.getMillis(-1234, 567L));
     }
 
+   @Test
     public void test_getMillis_long_long() {
         assertEquals(0L, MillisDurationField.INSTANCE.getMillis(0L, 567L));
         assertEquals(1234L, MillisDurationField.INSTANCE.getMillis(1234L, 567L));
@@ -138,6 +134,7 @@ public class TestMillisDurationField extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_add_long_int() {
         assertEquals(567L, MillisDurationField.INSTANCE.add(567L, 0));
         assertEquals(567L + 1234L, MillisDurationField.INSTANCE.add(567L, 1234));
@@ -148,6 +145,7 @@ public class TestMillisDurationField extends TestCase {
         } catch (ArithmeticException ex) {}
     }
 
+   @Test
     public void test_add_long_long() {
         assertEquals(567L, MillisDurationField.INSTANCE.add(567L, 0L));
         assertEquals(567L + 1234L, MillisDurationField.INSTANCE.add(567L, 1234L));
@@ -159,6 +157,7 @@ public class TestMillisDurationField extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_getDifference_long_int() {
         assertEquals(567, MillisDurationField.INSTANCE.getDifference(567L, 0L));
         assertEquals(567 - 1234, MillisDurationField.INSTANCE.getDifference(567L, 1234L));
@@ -169,6 +168,7 @@ public class TestMillisDurationField extends TestCase {
         } catch (ArithmeticException ex) {}
     }
 
+   @Test
     public void test_getDifferenceAsLong_long_long() {
         assertEquals(567L, MillisDurationField.INSTANCE.getDifferenceAsLong(567L, 0L));
         assertEquals(567L - 1234L, MillisDurationField.INSTANCE.getDifferenceAsLong(567L, 1234L));
@@ -180,6 +180,7 @@ public class TestMillisDurationField extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_compareTo() {
         assertEquals(0, MillisDurationField.INSTANCE.compareTo(MillisDurationField.INSTANCE));
         assertEquals(-1, MillisDurationField.INSTANCE.compareTo(ISOChronology.getInstance().seconds()));
@@ -196,6 +197,7 @@ public class TestMillisDurationField extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSerialization() throws Exception {
         DurationField test = MillisDurationField.INSTANCE;
         

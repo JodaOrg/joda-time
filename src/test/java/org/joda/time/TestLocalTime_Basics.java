@@ -15,6 +15,16 @@
  */
 package org.joda.time;
 
+import org.joda.time.chrono.BuddhistChronology;
+import org.joda.time.chrono.CopticChronology;
+import org.joda.time.chrono.GregorianChronology;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -22,21 +32,14 @@ import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.Locale;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.joda.time.chrono.BuddhistChronology;
-import org.joda.time.chrono.CopticChronology;
-import org.joda.time.chrono.GregorianChronology;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 /**
  * This class is a Junit unit test for LocalTime.
  *
  * @author Stephen Colebourne
  */
-public class TestLocalTime_Basics extends TestCase {
+public class TestLocalTime_Basics extends Assert {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
@@ -68,31 +71,22 @@ public class TestLocalTime_Basics extends TestCase {
 
     private DateTimeZone zone = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestLocalTime_Basics.class);
-    }
-
-    public TestLocalTime_Basics(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(LONDON);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
         zone = null;
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGet_DateTimeFieldType() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         assertEquals(10, test.get(DateTimeFieldType.hourOfDay()));
@@ -129,11 +123,13 @@ public class TestLocalTime_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testSize() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         assertEquals(4, test.size());
     }
 
+   @Test
     public void testGetFieldType_int() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         assertSame(DateTimeFieldType.hourOfDay(), test.getFieldType(0));
@@ -148,6 +144,7 @@ public class TestLocalTime_Basics extends TestCase {
         } catch (IndexOutOfBoundsException ex) {}
     }
 
+   @Test
     public void testGetFieldTypes() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         DateTimeFieldType[] fields = test.getFieldTypes();
@@ -158,6 +155,7 @@ public class TestLocalTime_Basics extends TestCase {
         assertNotSame(test.getFieldTypes(), test.getFieldTypes());
     }
 
+   @Test
     public void testGetField_int() {
         LocalTime test = new LocalTime(10, 20, 30, 40, COPTIC_UTC);
         assertSame(COPTIC_UTC.hourOfDay(), test.getField(0));
@@ -172,6 +170,7 @@ public class TestLocalTime_Basics extends TestCase {
         } catch (IndexOutOfBoundsException ex) {}
     }
 
+   @Test
     public void testGetFields() {
         LocalTime test = new LocalTime(10, 20, 30, 40, COPTIC_UTC);
         DateTimeField[] fields = test.getFields();
@@ -182,6 +181,7 @@ public class TestLocalTime_Basics extends TestCase {
         assertNotSame(test.getFields(), test.getFields());
     }
 
+   @Test
     public void testGetValue_int() {
         LocalTime test = new LocalTime(10, 20, 30, 40, COPTIC_PARIS);
         assertEquals(10, test.getValue(0));
@@ -196,6 +196,7 @@ public class TestLocalTime_Basics extends TestCase {
         } catch (IndexOutOfBoundsException ex) {}
     }
 
+   @Test
     public void testGetValues() {
         LocalTime test = new LocalTime(10, 20, 30, 40, COPTIC_UTC);
         int[] values = test.getValues();
@@ -206,6 +207,7 @@ public class TestLocalTime_Basics extends TestCase {
         assertNotSame(test.getValues(), test.getValues());
     }
 
+   @Test
     public void testIsSupported_DateTimeFieldType() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         assertEquals(true, test.isSupported(DateTimeFieldType.hourOfDay()));
@@ -251,6 +253,7 @@ public class TestLocalTime_Basics extends TestCase {
         assertEquals(false, test.isSupported(d));
     }
 
+   @Test
     public void testIsSupported_DurationFieldType() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         assertEquals(true, test.isSupported(DurationFieldType.hours()));
@@ -263,6 +266,7 @@ public class TestLocalTime_Basics extends TestCase {
         assertEquals(false, test.isSupported((DurationFieldType) null));
     }
 
+   @Test
     public void testEqualsHashCode() {
         LocalTime test1 = new LocalTime(10, 20, 30, 40, COPTIC_PARIS);
         LocalTime test2 = new LocalTime(10, 20, 30, 40, COPTIC_PARIS);
@@ -307,6 +311,7 @@ public class TestLocalTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testCompareTo() {
         LocalTime test1 = new LocalTime(10, 20, 30, 40);
         LocalTime test1a = new LocalTime(10, 20, 30, 40);
@@ -345,6 +350,7 @@ public class TestLocalTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testIsEqual_LocalTime() {
         LocalTime test1 = new LocalTime(10, 20, 30, 40);
         LocalTime test1a = new LocalTime(10, 20, 30, 40);
@@ -369,6 +375,7 @@ public class TestLocalTime_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testIsBefore_LocalTime() {
         LocalTime test1 = new LocalTime(10, 20, 30, 40);
         LocalTime test1a = new LocalTime(10, 20, 30, 40);
@@ -393,6 +400,7 @@ public class TestLocalTime_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testIsAfter_LocalTime() {
         LocalTime test1 = new LocalTime(10, 20, 30, 40);
         LocalTime test1a = new LocalTime(10, 20, 30, 40);
@@ -417,6 +425,7 @@ public class TestLocalTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithField_DateTimeFieldType_int_1() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime result = test.withField(DateTimeFieldType.hourOfDay(), 15);
@@ -425,6 +434,7 @@ public class TestLocalTime_Basics extends TestCase {
         assertEquals(new LocalTime(15, 20, 30, 40), result);
     }
 
+   @Test
     public void testWithField_DateTimeFieldType_int_2() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         try {
@@ -433,6 +443,7 @@ public class TestLocalTime_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithField_DateTimeFieldType_int_3() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         try {
@@ -441,6 +452,7 @@ public class TestLocalTime_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithField_DateTimeFieldType_int_4() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime result = test.withField(DateTimeFieldType.hourOfDay(), 10);
@@ -448,6 +460,7 @@ public class TestLocalTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithFieldAdded_DurationFieldType_int_1() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime result = test.withFieldAdded(DurationFieldType.hours(), 6);
@@ -456,6 +469,7 @@ public class TestLocalTime_Basics extends TestCase {
         assertEquals(new LocalTime(16, 20, 30, 40), result);
     }
 
+   @Test
     public void testWithFieldAdded_DurationFieldType_int_2() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         try {
@@ -464,6 +478,7 @@ public class TestLocalTime_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithFieldAdded_DurationFieldType_int_3() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         try {
@@ -472,12 +487,14 @@ public class TestLocalTime_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithFieldAdded_DurationFieldType_int_4() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime result = test.withFieldAdded(DurationFieldType.hours(), 0);
         assertSame(test, result);
     }
 
+   @Test
     public void testWithFieldAdded_DurationFieldType_int_5() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         try {
@@ -486,6 +503,7 @@ public class TestLocalTime_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithFieldAdded_DurationFieldType_int_6() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime result = test.withFieldAdded(DurationFieldType.hours(), 16);
@@ -494,6 +512,7 @@ public class TestLocalTime_Basics extends TestCase {
         assertEquals(new LocalTime(2, 20, 30, 40), result);
     }
 
+   @Test
     public void testWithFieldAdded_DurationFieldType_int_7() {
         LocalTime test = new LocalTime(23, 59, 59, 999);
         LocalTime result = test.withFieldAdded(DurationFieldType.millis(), 1);
@@ -512,6 +531,7 @@ public class TestLocalTime_Basics extends TestCase {
         assertEquals(new LocalTime(0, 59, 59, 999), result);
     }
 
+   @Test
     public void testWithFieldAdded_DurationFieldType_int_8() {
         LocalTime test = new LocalTime(0, 0, 0, 0);
         LocalTime result = test.withFieldAdded(DurationFieldType.millis(), -1);
@@ -531,6 +551,7 @@ public class TestLocalTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPlus_RP() {
         LocalTime test = new LocalTime(10, 20, 30, 40, BUDDHIST_LONDON);
         LocalTime result = test.plus(new Period(1, 2, 3, 4, 5, 6, 7, 8));
@@ -541,6 +562,7 @@ public class TestLocalTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testPlusHours_int() {
         LocalTime test = new LocalTime(1, 2, 3, 4, BUDDHIST_LONDON);
         LocalTime result = test.plusHours(1);
@@ -551,6 +573,7 @@ public class TestLocalTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testPlusMinutes_int() {
         LocalTime test = new LocalTime(1, 2, 3, 4, BUDDHIST_LONDON);
         LocalTime result = test.plusMinutes(1);
@@ -561,6 +584,7 @@ public class TestLocalTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testPlusSeconds_int() {
         LocalTime test = new LocalTime(1, 2, 3, 4, BUDDHIST_LONDON);
         LocalTime result = test.plusSeconds(1);
@@ -571,6 +595,7 @@ public class TestLocalTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testPlusMillis_int() {
         LocalTime test = new LocalTime(1, 2, 3, 4, BUDDHIST_LONDON);
         LocalTime result = test.plusMillis(1);
@@ -582,6 +607,7 @@ public class TestLocalTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testMinus_RP() {
         LocalTime test = new LocalTime(10, 20, 30, 40, BUDDHIST_LONDON);
         LocalTime result = test.minus(new Period(1, 1, 1, 1, 1, 1, 1, 1));
@@ -592,6 +618,7 @@ public class TestLocalTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusHours_int() {
         LocalTime test = new LocalTime(1, 2, 3, 4, BUDDHIST_LONDON);
         LocalTime result = test.minusHours(1);
@@ -602,6 +629,7 @@ public class TestLocalTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusMinutes_int() {
         LocalTime test = new LocalTime(1, 2, 3, 4, BUDDHIST_LONDON);
         LocalTime result = test.minusMinutes(1);
@@ -612,6 +640,7 @@ public class TestLocalTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusSeconds_int() {
         LocalTime test = new LocalTime(1, 2, 3, 4, BUDDHIST_LONDON);
         LocalTime result = test.minusSeconds(1);
@@ -622,6 +651,7 @@ public class TestLocalTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusMillis_int() {
         LocalTime test = new LocalTime(1, 2, 3, 4, BUDDHIST_LONDON);
         LocalTime result = test.minusMillis(1);
@@ -633,6 +663,7 @@ public class TestLocalTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetters() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         assertEquals(10, test.getHourOfDay());
@@ -643,6 +674,7 @@ public class TestLocalTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithers() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         check(test.withHourOfDay(6), 6, 20, 30, 40);
@@ -661,6 +693,7 @@ public class TestLocalTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToDateTimeTodayDefaultZone() {
         LocalTime base = new LocalTime(10, 20, 30, 40, COPTIC_PARIS); // PARIS irrelevant
         DateTime dt = new DateTime(2004, 6, 9, 6, 7, 8, 9);
@@ -677,6 +710,7 @@ public class TestLocalTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToDateTimeToday_Zone() {
         LocalTime base = new LocalTime(10, 20, 30, 40, COPTIC_PARIS); // PARIS irrelevant
         DateTime dt = new DateTime(2004, 6, 9, 6, 7, 8, 9);
@@ -692,6 +726,7 @@ public class TestLocalTime_Basics extends TestCase {
         assertEquals(expected, test);
     }
 
+   @Test
     public void testToDateTimeToday_nullZone() {
         LocalTime base = new LocalTime(10, 20, 30, 40, COPTIC_PARIS); // PARIS irrelevant
         DateTime dt = new DateTime(2004, 6, 9, 6, 7, 8, 9);
@@ -708,6 +743,7 @@ public class TestLocalTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToDateTime_RI() {
         LocalTime base = new LocalTime(10, 20, 30, 40, COPTIC_PARIS);
         DateTime dt = new DateTime(0L); // LONDON zone
@@ -719,6 +755,7 @@ public class TestLocalTime_Basics extends TestCase {
         assertEquals("1970-01-01T10:20:30.040+01:00", test.toString());
     }
 
+   @Test
     public void testToDateTime_nullRI() {
         LocalTime base = new LocalTime(1, 2, 3, 4);
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME2);
@@ -729,6 +766,7 @@ public class TestLocalTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testProperty() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         assertEquals(test.hourOfDay(), test.property(DateTimeFieldType.hourOfDay()));
@@ -756,6 +794,7 @@ public class TestLocalTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSerialization() throws Exception {
         LocalTime test = new LocalTime(10, 20, 30, 40, COPTIC_PARIS);
         
@@ -777,12 +816,14 @@ public class TestLocalTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         assertEquals("10:20:30.040", test.toString());
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString_String() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         assertEquals("\ufffd\ufffd\ufffd\ufffd 10", test.toString("yyyy HH"));
@@ -790,6 +831,7 @@ public class TestLocalTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString_String_Locale() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         assertEquals("10 20", test.toString("H m", Locale.ENGLISH));
@@ -799,6 +841,7 @@ public class TestLocalTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString_DTFormatter() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         assertEquals("\ufffd\ufffd\ufffd\ufffd 10", test.toString(DateTimeFormat.forPattern("yyyy HH")));

@@ -15,24 +15,27 @@
  */
 package org.joda.time;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+
 
 /**
  * This class is a Junit unit test for YearMonth.
  *
  * @author Stephen Colebourne
  */
-public class TestYearMonth_Constructors extends TestCase {
+public class TestYearMonth_Constructors extends Assert {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
@@ -55,42 +58,35 @@ public class TestYearMonth_Constructors extends TestCase {
         
     private DateTimeZone zone = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestYearMonth_Constructors.class);
-    }
-
-    public TestYearMonth_Constructors(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(LONDON);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
         zone = null;
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParse_noFormatter() throws Throwable {
         assertEquals(new YearMonth(2010, 6), YearMonth.parse("2010-06-30"));
         assertEquals(new YearMonth(2010, 1), YearMonth.parse("2010-002"));
     }
 
+   @Test
     public void testParse_formatter() throws Throwable {
         DateTimeFormatter f = DateTimeFormat.forPattern("yyyy--MM").withChronology(ISOChronology.getInstance(PARIS));
         assertEquals(new YearMonth(2010, 6), YearMonth.parse("2010--06", f));
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactory_FromCalendarFields() throws Exception {
         GregorianCalendar cal = new GregorianCalendar(1970, 1, 3, 4, 5, 6);
         cal.set(Calendar.MILLISECOND, 7);
@@ -103,6 +99,7 @@ public class TestYearMonth_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactory_FromDateFields() throws Exception {
         GregorianCalendar cal = new GregorianCalendar(1970, 1, 3, 4, 5, 6);
         cal.set(Calendar.MILLISECOND, 7);
@@ -118,6 +115,7 @@ public class TestYearMonth_Constructors extends TestCase {
     /**
      * Test constructor ()
      */
+   @Test
     public void testConstructor() throws Throwable {
         YearMonth test = new YearMonth();
         assertEquals(ISO_UTC, test.getChronology());
@@ -129,6 +127,7 @@ public class TestYearMonth_Constructors extends TestCase {
     /**
      * Test constructor (DateTimeZone)
      */
+   @Test
     public void testConstructor_DateTimeZone() throws Throwable {
         DateTime dt = new DateTime(2005, 6, 30, 23, 59, 0, 0, LONDON);
         DateTimeUtils.setCurrentMillisFixed(dt.getMillis());
@@ -150,6 +149,7 @@ public class TestYearMonth_Constructors extends TestCase {
     /**
      * Test constructor (DateTimeZone=null)
      */
+   @Test
     public void testConstructor_nullDateTimeZone() throws Throwable {
         DateTime dt = new DateTime(2005, 6, 30, 23, 59, 0, 0, LONDON);
         DateTimeUtils.setCurrentMillisFixed(dt.getMillis());
@@ -164,6 +164,7 @@ public class TestYearMonth_Constructors extends TestCase {
     /**
      * Test constructor (Chronology)
      */
+   @Test
     public void testConstructor_Chronology() throws Throwable {
         YearMonth test = new YearMonth(GREGORIAN_PARIS);
         assertEquals(GREGORIAN_UTC, test.getChronology());
@@ -175,6 +176,7 @@ public class TestYearMonth_Constructors extends TestCase {
     /**
      * Test constructor (Chronology=null)
      */
+   @Test
     public void testConstructor_nullChronology() throws Throwable {
         YearMonth test = new YearMonth((Chronology) null);
         assertEquals(ISO_UTC, test.getChronology());
@@ -186,6 +188,7 @@ public class TestYearMonth_Constructors extends TestCase {
     /**
      * Test constructor (long)
      */
+   @Test
     public void testConstructor_long1() throws Throwable {
         YearMonth test = new YearMonth(TEST_TIME1);
         assertEquals(ISO_UTC, test.getChronology());
@@ -196,6 +199,7 @@ public class TestYearMonth_Constructors extends TestCase {
     /**
      * Test constructor (long)
      */
+   @Test
     public void testConstructor_long2() throws Throwable {
         YearMonth test = new YearMonth(TEST_TIME2);
         assertEquals(ISO_UTC, test.getChronology());
@@ -206,6 +210,7 @@ public class TestYearMonth_Constructors extends TestCase {
     /**
      * Test constructor (long, Chronology)
      */
+   @Test
     public void testConstructor_long1_Chronology() throws Throwable {
         YearMonth test = new YearMonth(TEST_TIME1, GREGORIAN_PARIS);
         assertEquals(GREGORIAN_UTC, test.getChronology());
@@ -216,6 +221,7 @@ public class TestYearMonth_Constructors extends TestCase {
     /**
      * Test constructor (long, Chronology)
      */
+   @Test
     public void testConstructor_long2_Chronology() throws Throwable {
         YearMonth test = new YearMonth(TEST_TIME2, GREGORIAN_PARIS);
         assertEquals(GREGORIAN_UTC, test.getChronology());
@@ -226,6 +232,7 @@ public class TestYearMonth_Constructors extends TestCase {
     /**
      * Test constructor (long, Chronology=null)
      */
+   @Test
     public void testConstructor_long_nullChronology() throws Throwable {
         YearMonth test = new YearMonth(TEST_TIME1, null);
         assertEquals(ISO_UTC, test.getChronology());
@@ -234,6 +241,7 @@ public class TestYearMonth_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_Object() throws Throwable {
         Date date = new Date(TEST_TIME1);
         YearMonth test = new YearMonth(date);
@@ -242,6 +250,7 @@ public class TestYearMonth_Constructors extends TestCase {
         assertEquals(4, test.getMonthOfYear());
     }
 
+   @Test
     public void testConstructor_nullObject() throws Throwable {
         YearMonth test = new YearMonth((Object) null);
         assertEquals(ISO_UTC, test.getChronology());
@@ -249,6 +258,7 @@ public class TestYearMonth_Constructors extends TestCase {
         assertEquals(6, test.getMonthOfYear());
     }
 
+   @Test
     public void testConstructor_ObjectString1() throws Throwable {
         YearMonth test = new YearMonth("1972-12");
         assertEquals(ISO_UTC, test.getChronology());
@@ -256,6 +266,7 @@ public class TestYearMonth_Constructors extends TestCase {
         assertEquals(12, test.getMonthOfYear());
     }
 
+   @Test
     public void testConstructor_ObjectString5() throws Throwable {
         YearMonth test = new YearMonth("10");
         assertEquals(ISO_UTC, test.getChronology());
@@ -263,6 +274,7 @@ public class TestYearMonth_Constructors extends TestCase {
         assertEquals(1, test.getMonthOfYear());
     }
 
+   @Test
     public void testConstructor_ObjectStringEx1() throws Throwable {
         try {
             new YearMonth("T10:20:30.040");
@@ -272,6 +284,7 @@ public class TestYearMonth_Constructors extends TestCase {
         }
     }
 
+   @Test
     public void testConstructor_ObjectStringEx2() throws Throwable {
         try {
             new YearMonth("T10:20:30.040+14:00");
@@ -281,6 +294,7 @@ public class TestYearMonth_Constructors extends TestCase {
         }
     }
 
+   @Test
     public void testConstructor_ObjectStringEx3() throws Throwable {
         try {
             new YearMonth("10:20:30.040");
@@ -290,6 +304,7 @@ public class TestYearMonth_Constructors extends TestCase {
         }
     }
 
+   @Test
     public void testConstructor_ObjectStringEx4() throws Throwable {
         try {
             new YearMonth("10:20:30.040+14:00");
@@ -303,6 +318,7 @@ public class TestYearMonth_Constructors extends TestCase {
     /**
      * Test constructor (Object, Chronology)
      */
+   @Test
     public void testConstructor_Object_Chronology() throws Throwable {
         Date date = new Date(TEST_TIME1);
         YearMonth test = new YearMonth(date, GREGORIAN_PARIS);
@@ -314,6 +330,7 @@ public class TestYearMonth_Constructors extends TestCase {
     /**
      * Test constructor (Object=null, Chronology)
      */
+   @Test
     public void testConstructor_nullObject_Chronology() throws Throwable {
         YearMonth test = new YearMonth((Object) null, GREGORIAN_PARIS);
         assertEquals(GREGORIAN_UTC, test.getChronology());
@@ -324,6 +341,7 @@ public class TestYearMonth_Constructors extends TestCase {
     /**
      * Test constructor (Object, Chronology=null)
      */
+   @Test
     public void testConstructor_Object_nullChronology() throws Throwable {
         Date date = new Date(TEST_TIME1);
         YearMonth test = new YearMonth(date, null);
@@ -335,6 +353,7 @@ public class TestYearMonth_Constructors extends TestCase {
     /**
      * Test constructor (Object=null, Chronology=null)
      */
+   @Test
     public void testConstructor_nullObject_nullChronology() throws Throwable {
         YearMonth test = new YearMonth((Object) null, null);
         assertEquals(ISO_UTC, test.getChronology());
@@ -346,6 +365,7 @@ public class TestYearMonth_Constructors extends TestCase {
     /**
      * Test constructor (int, int)
      */
+   @Test
     public void testConstructor_int_int() throws Throwable {
         YearMonth test = new YearMonth(1970, 6);
         assertEquals(ISO_UTC, test.getChronology());
@@ -372,6 +392,7 @@ public class TestYearMonth_Constructors extends TestCase {
     /**
      * Test constructor (int, int, Chronology)
      */
+   @Test
     public void testConstructor_int_int_Chronology() throws Throwable {
         YearMonth test = new YearMonth(1970, 6, GREGORIAN_PARIS);
         assertEquals(GREGORIAN_UTC, test.getChronology());
@@ -398,6 +419,7 @@ public class TestYearMonth_Constructors extends TestCase {
     /**
      * Test constructor (int, int, Chronology=null)
      */
+   @Test
     public void testConstructor_int_int_nullChronology() throws Throwable {
         YearMonth test = new YearMonth(1970, 6, null);
         assertEquals(ISO_UTC, test.getChronology());

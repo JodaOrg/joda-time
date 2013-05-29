@@ -15,25 +15,28 @@
  */
 package org.joda.time;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+
 
 /**
  * This class is a Junit unit test for LocalDate.
  *
  * @author Stephen Colebourne
  */
-public class TestLocalDate_Constructors extends TestCase {
+public class TestLocalDate_Constructors extends Assert {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
@@ -58,42 +61,35 @@ public class TestLocalDate_Constructors extends TestCase {
 
     private DateTimeZone zone = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestLocalDate_Constructors.class);
-    }
-
-    public TestLocalDate_Constructors(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(LONDON);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
         zone = null;
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParse_noFormatter() throws Throwable {
         assertEquals(new LocalDate(2010, 6, 30), LocalDate.parse("2010-06-30"));
         assertEquals(new LocalDate(2010, 1, 2), LocalDate.parse("2010-002"));
     }
 
+   @Test
     public void testParse_formatter() throws Throwable {
         DateTimeFormatter f = DateTimeFormat.forPattern("yyyy--dd MM").withChronology(ISOChronology.getInstance(PARIS));
         assertEquals(new LocalDate(2010, 6, 30), LocalDate.parse("2010--30 06", f));
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactory_fromCalendarFields() throws Exception {
         GregorianCalendar cal = new GregorianCalendar(1970, 1, 3, 4, 5, 6);
         cal.set(Calendar.MILLISECOND, 7);
@@ -101,6 +97,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(expected, LocalDate.fromCalendarFields(cal));
     }
 
+   @Test
     public void testFactory_fromCalendarFields_beforeYearZero1() throws Exception {
         GregorianCalendar cal = new GregorianCalendar(1, 1, 3, 4, 5, 6);
         cal.set(Calendar.ERA, GregorianCalendar.BC);
@@ -109,6 +106,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(expected, LocalDate.fromCalendarFields(cal));
     }
 
+   @Test
     public void testFactory_fromCalendarFields_beforeYearZero3() throws Exception {
         GregorianCalendar cal = new GregorianCalendar(3, 1, 3, 4, 5, 6);
         cal.set(Calendar.ERA, GregorianCalendar.BC);
@@ -117,6 +115,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(expected, LocalDate.fromCalendarFields(cal));
     }
 
+   @Test
     public void testFactory_fromCalendarFields_null() throws Exception {
         try {
             LocalDate.fromCalendarFields((Calendar) null);
@@ -125,6 +124,7 @@ public class TestLocalDate_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactory_fromDateFields_after1970() throws Exception {
         GregorianCalendar cal = new GregorianCalendar(1970, 1, 3, 4, 5, 6);
         cal.set(Calendar.MILLISECOND, 7);
@@ -132,6 +132,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(expected, LocalDate.fromDateFields(cal.getTime()));
     }
 
+   @Test
     public void testFactory_fromDateFields_before1970() throws Exception {
         GregorianCalendar cal = new GregorianCalendar(1969, 1, 3, 4, 5, 6);
         cal.set(Calendar.MILLISECOND, 7);
@@ -139,6 +140,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(expected, LocalDate.fromDateFields(cal.getTime()));
     }
 
+   @Test
     public void testFactory_fromDateFields_beforeYearZero1() throws Exception {
         GregorianCalendar cal = new GregorianCalendar(1, 1, 3, 4, 5, 6);
         cal.set(Calendar.ERA, GregorianCalendar.BC);
@@ -147,6 +149,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(expected, LocalDate.fromDateFields(cal.getTime()));
     }
 
+   @Test
     public void testFactory_fromDateFields_beforeYearZero3() throws Exception {
         GregorianCalendar cal = new GregorianCalendar(3, 1, 3, 4, 5, 6);
         cal.set(Calendar.ERA, GregorianCalendar.BC);
@@ -155,6 +158,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(expected, LocalDate.fromDateFields(cal.getTime()));
     }
 
+   @Test
     public void testFactory_fromDateFields_null() throws Exception {
         try {
             LocalDate.fromDateFields((Date) null);
@@ -163,6 +167,7 @@ public class TestLocalDate_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor() throws Throwable {
         LocalDate test = new LocalDate();
         assertEquals(ISO_UTC, test.getChronology());
@@ -172,6 +177,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(test, LocalDate.now());
     }
 
+   @Test
     public void testConstructor_DateTimeZone() throws Throwable {
         DateTime dt = new DateTime(2005, 6, 8, 23, 59, 0, 0, LONDON);
         DateTimeUtils.setCurrentMillisFixed(dt.getMillis());
@@ -192,6 +198,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(test, LocalDate.now(PARIS));
     }
 
+   @Test
     public void testConstructor_nullDateTimeZone() throws Throwable {
         DateTime dt = new DateTime(2005, 6, 8, 23, 59, 0, 0, LONDON);
         DateTimeUtils.setCurrentMillisFixed(dt.getMillis());
@@ -204,6 +211,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(8, test.getDayOfMonth());
     }
 
+   @Test
     public void testConstructor_Chronology() throws Throwable {
         LocalDate test = new LocalDate(GREGORIAN_PARIS);
         assertEquals(GREGORIAN_UTC, test.getChronology());
@@ -213,6 +221,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(test, LocalDate.now(GREGORIAN_PARIS));
     }
 
+   @Test
     public void testConstructor_nullChronology() throws Throwable {
         LocalDate test = new LocalDate((Chronology) null);
         assertEquals(ISO_UTC, test.getChronology());
@@ -222,6 +231,7 @@ public class TestLocalDate_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_long1() throws Throwable {
         LocalDate test = new LocalDate(TEST_TIME1);
         assertEquals(ISO_UTC, test.getChronology());
@@ -230,6 +240,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(6, test.getDayOfMonth());
     }
 
+   @Test
     public void testConstructor_long2() throws Throwable {
         LocalDate test = new LocalDate(TEST_TIME2);
         assertEquals(ISO_UTC, test.getChronology());
@@ -238,6 +249,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(7, test.getDayOfMonth());
     }
 
+   @Test
     public void testConstructor_long1_DateTimeZone() throws Throwable {
         LocalDate test = new LocalDate(TEST_TIME1, PARIS);
         assertEquals(ISO_UTC, test.getChronology());
@@ -247,6 +259,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(TEST_TIME1_ROUNDED, test.getLocalMillis());
     }
 
+   @Test
     public void testConstructor_long2_DateTimeZone() throws Throwable {
         LocalDate test = new LocalDate(TEST_TIME2, PARIS);
         assertEquals(ISO_UTC, test.getChronology());
@@ -255,6 +268,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(7, test.getDayOfMonth());
     }
 
+   @Test
     public void testConstructor_long3_DateTimeZone() throws Throwable {
         DateTime dt = new DateTime(2006, 6, 9, 0, 0, 0, 0, PARIS);
         DateTime dtUTC = new DateTime(2006, 6, 9, 0, 0, 0, 0, DateTimeZone.UTC);
@@ -267,6 +281,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(dtUTC.getMillis(), test.getLocalMillis());
     }
 
+   @Test
     public void testConstructor_long4_DateTimeZone() throws Throwable {
         DateTime dt = new DateTime(2006, 6, 9, 23, 59, 59, 999, PARIS);
         DateTime dtUTC = new DateTime(2006, 6, 9, 0, 0, 0, 0, DateTimeZone.UTC);
@@ -279,6 +294,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(dtUTC.getMillis(), test.getLocalMillis());
     }
 
+   @Test
     public void testConstructor_long_nullDateTimeZone() throws Throwable {
         LocalDate test = new LocalDate(TEST_TIME1, (DateTimeZone) null);
         assertEquals(ISO_UTC, test.getChronology());
@@ -287,6 +303,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(6, test.getDayOfMonth());
     }
 
+   @Test
     public void testConstructor_long1_Chronology() throws Throwable {
         LocalDate test = new LocalDate(TEST_TIME1, GREGORIAN_PARIS);
         assertEquals(GREGORIAN_UTC, test.getChronology());
@@ -295,6 +312,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(6, test.getDayOfMonth());
     }
 
+   @Test
     public void testConstructor_long2_Chronology() throws Throwable {
         LocalDate test = new LocalDate(TEST_TIME2, GREGORIAN_PARIS);
         assertEquals(GREGORIAN_UTC, test.getChronology());
@@ -303,6 +321,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(7, test.getDayOfMonth());
     }
 
+   @Test
     public void testConstructor_long_nullChronology() throws Throwable {
         LocalDate test = new LocalDate(TEST_TIME1, (Chronology) null);
         assertEquals(ISO_UTC, test.getChronology());
@@ -312,6 +331,7 @@ public class TestLocalDate_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_Object1() throws Throwable {
         Date date = new Date(TEST_TIME1);
         LocalDate test = new LocalDate(date);
@@ -321,6 +341,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(6, test.getDayOfMonth());
     }
 
+   @Test
     public void testConstructor_nullObject() throws Throwable {
         LocalDate test = new LocalDate((Object) null);
         assertEquals(ISO_UTC, test.getChronology());
@@ -329,6 +350,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(9, test.getDayOfMonth());
     }
 
+   @Test
     public void testConstructor_ObjectString1() throws Throwable {
         LocalDate test = new LocalDate("1972-04-06");
         assertEquals(ISO_UTC, test.getChronology());
@@ -337,6 +359,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(6, test.getDayOfMonth());
     }
 
+   @Test
     public void testConstructor_ObjectString2() throws Throwable {
         LocalDate test = new LocalDate("1972-037");
         assertEquals(ISO_UTC, test.getChronology());
@@ -345,6 +368,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(6, test.getDayOfMonth());
     }
 
+   @Test
     public void testConstructor_ObjectString3() throws Throwable {
         LocalDate test = new LocalDate("1972-02");
         assertEquals(ISO_UTC, test.getChronology());
@@ -353,6 +377,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(1, test.getDayOfMonth());
     }
 
+   @Test
     public void testConstructor_ObjectStringEx1() throws Throwable {
         try {
             new LocalDate("1970-04-06T+14:00");
@@ -360,6 +385,7 @@ public class TestLocalDate_Constructors extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testConstructor_ObjectStringEx2() throws Throwable {
         try {
             new LocalDate("1970-04-06T10:20:30.040");
@@ -367,6 +393,7 @@ public class TestLocalDate_Constructors extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testConstructor_ObjectStringEx3() throws Throwable {
         try {
             new LocalDate("1970-04-06T10:20:30.040+14:00");
@@ -374,6 +401,7 @@ public class TestLocalDate_Constructors extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testConstructor_ObjectStringEx4() throws Throwable {
         try {
             new LocalDate("T10:20:30.040");
@@ -381,6 +409,7 @@ public class TestLocalDate_Constructors extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testConstructor_ObjectStringEx5() throws Throwable {
         try {
             new LocalDate("T10:20:30.040+14:00");
@@ -388,6 +417,7 @@ public class TestLocalDate_Constructors extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testConstructor_ObjectStringEx6() throws Throwable {
         try {
             new LocalDate("10:20:30.040");
@@ -395,6 +425,7 @@ public class TestLocalDate_Constructors extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testConstructor_ObjectStringEx7() throws Throwable {
         try {
             new LocalDate("10:20:30.040+14:00");
@@ -402,6 +433,7 @@ public class TestLocalDate_Constructors extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testConstructor_ObjectLocalDate() throws Throwable {
         LocalDate date = new LocalDate(1970, 4, 6, BUDDHIST_UTC);
         LocalDate test = new LocalDate(date);
@@ -411,6 +443,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(6, test.getDayOfMonth());
     }
 
+   @Test
     public void testConstructor_ObjectLocalTime() throws Throwable {
         LocalTime time = new LocalTime(10, 20, 30, 40, BUDDHIST_UTC);
         try {
@@ -419,6 +452,7 @@ public class TestLocalDate_Constructors extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testConstructor_ObjectLocalDateTime() throws Throwable {
         LocalDateTime dt = new LocalDateTime(1970, 5, 6, 10, 20, 30, 40, BUDDHIST_UTC);
         LocalDate test = new LocalDate(dt);
@@ -429,6 +463,7 @@ public class TestLocalDate_Constructors extends TestCase {
     }
 
     @SuppressWarnings("deprecation")
+   @Test
     public void testConstructor_ObjectYearMonthDay() throws Throwable {
         YearMonthDay date = new YearMonthDay(1970, 4, 6, BUDDHIST_UTC);
         LocalDate test = new LocalDate(date);
@@ -439,6 +474,7 @@ public class TestLocalDate_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_Object_DateTimeZone() throws Throwable {
         Date date = new Date(TEST_TIME1);
         LocalDate test = new LocalDate(date, PARIS);
@@ -448,6 +484,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(6, test.getDayOfMonth());
     }
 
+   @Test
     public void testConstructor_nullObject_DateTimeZone() throws Throwable {
         LocalDate test = new LocalDate((Object) null, PARIS);
         assertEquals(ISO_UTC, test.getChronology());
@@ -456,6 +493,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(9, test.getDayOfMonth());
     }
 
+   @Test
     public void testConstructor_Object_nullDateTimeZone() throws Throwable {
         Date date = new Date(TEST_TIME1);
         LocalDate test = new LocalDate(date, (DateTimeZone) null);
@@ -465,6 +503,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(6, test.getDayOfMonth());
     }
 
+   @Test
     public void testConstructor_nullObject_nullDateTimeZone() throws Throwable {
         LocalDate test = new LocalDate((Object) null, (DateTimeZone) null);
         assertEquals(ISO_UTC, test.getChronology());
@@ -473,6 +512,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(9, test.getDayOfMonth());
     }
 
+   @Test
     public void testConstructor_Object_Chronology() throws Throwable {
         Date date = new Date(TEST_TIME1);
         LocalDate test = new LocalDate(date, GREGORIAN_PARIS);
@@ -482,6 +522,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(6, test.getDayOfMonth());
     }
 
+   @Test
     public void testConstructor_Object_Chronology_crossChronology() throws Throwable {
         LocalDate input = new LocalDate(1970, 4, 6, ISO_UTC);
         LocalDate test = new LocalDate(input, BUDDHIST_UTC);
@@ -491,6 +532,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(6, test.getDayOfMonth());
     }
 
+   @Test
     public void testConstructor_nullObject_Chronology() throws Throwable {
         LocalDate test = new LocalDate((Object) null, GREGORIAN_PARIS);
         assertEquals(GREGORIAN_UTC, test.getChronology());
@@ -499,6 +541,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(9, test.getDayOfMonth());
     }
 
+   @Test
     public void testConstructor_Object_nullChronology() throws Throwable {
         Date date = new Date(TEST_TIME1);
         LocalDate test = new LocalDate(date, (Chronology) null);
@@ -508,6 +551,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(6, test.getDayOfMonth());
     }
 
+   @Test
     public void testConstructor_nullObject_nullChronology() throws Throwable {
         LocalDate test = new LocalDate((Object) null, (Chronology) null);
         assertEquals(ISO_UTC, test.getChronology());
@@ -517,6 +561,7 @@ public class TestLocalDate_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_int_int_int() throws Throwable {
         LocalDate test = new LocalDate(1970, 6, 9);
         assertEquals(ISO_UTC, test.getChronology());
@@ -554,6 +599,7 @@ public class TestLocalDate_Constructors extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testConstructor_int_int_int_Chronology() throws Throwable {
         LocalDate test = new LocalDate(1970, 6, 9, GREGORIAN_PARIS);
         assertEquals(GREGORIAN_UTC, test.getChronology());
@@ -591,6 +637,7 @@ public class TestLocalDate_Constructors extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testConstructor_int_int_int_nullChronology() throws Throwable {
         LocalDate test = new LocalDate(1970, 6, 9, null);
         assertEquals(ISO_UTC, test.getChronology());

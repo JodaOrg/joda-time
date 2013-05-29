@@ -15,24 +15,23 @@
  */
 package org.joda.time.format;
 
+import org.joda.time.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeUtils;
-import org.joda.time.DateTimeZone;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
 
 /**
  * This class is a Junit unit test for ISOPeriodFormat.
  *
  * @author Stephen Colebourne
  */
-public class TestISOPeriodFormatParsing extends TestCase {
+public class TestISOPeriodFormatParsing extends Assert {
 
     private static final Period PERIOD = new Period(1, 2, 3, 4, 5, 6, 7, 8);
     private static final Period EMPTY_PERIOD = new Period(0, 0, 0, 0, 0, 0, 0, 0);
@@ -56,19 +55,8 @@ public class TestISOPeriodFormatParsing extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestISOPeriodFormatParsing.class);
-    }
-
-    public TestISOPeriodFormatParsing(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -78,7 +66,8 @@ public class TestISOPeriodFormatParsing extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -89,6 +78,7 @@ public class TestISOPeriodFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParseStandard1() {
         PeriodFormatter parser = ISOPeriodFormat.standard();
         Period p = parser.parsePeriod("P1Y2M3W4DT5H6M7.008S");
@@ -96,6 +86,7 @@ public class TestISOPeriodFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParseStandard2() {
         PeriodFormatter parser = ISOPeriodFormat.standard();
         Period p = parser.parsePeriod("P0Y0M0W0DT5H6M7.008S");
@@ -103,6 +94,7 @@ public class TestISOPeriodFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParseStandard3() {
         PeriodFormatter parser = ISOPeriodFormat.standard();
         Period p = parser.parsePeriod("P0DT5H6M7.008S");
@@ -110,6 +102,7 @@ public class TestISOPeriodFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParseStandard4() {
         PeriodFormatter parser = ISOPeriodFormat.standard();
         Period p = parser.parsePeriod("P2Y3DT5H6M7.008S");
@@ -117,6 +110,7 @@ public class TestISOPeriodFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParseStandard5() {
         PeriodFormatter parser = ISOPeriodFormat.standard();
         Period p = parser.parsePeriod("P2YT5H6M7.008S");
@@ -124,6 +118,7 @@ public class TestISOPeriodFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParseStandard6() {
         PeriodFormatter parser = ISOPeriodFormat.standard();
         Period p = parser.parsePeriod("PT5H6M7.008S");
@@ -131,6 +126,7 @@ public class TestISOPeriodFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParseStandard7() {
         PeriodFormatter parser = ISOPeriodFormat.standard();
         Period p = parser.parsePeriod("P1Y2M3W4D");
@@ -138,6 +134,7 @@ public class TestISOPeriodFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParseStandard8() {
         PeriodFormatter parser = ISOPeriodFormat.standard();
         Period p = parser.parsePeriod("PT5H6M7S");
@@ -145,6 +142,7 @@ public class TestISOPeriodFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParseStandard9() {
         PeriodFormatter parser = ISOPeriodFormat.standard();
         Period p = parser.parsePeriod("PT0S");
@@ -152,6 +150,7 @@ public class TestISOPeriodFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParseStandard10() {
         PeriodFormatter parser = ISOPeriodFormat.standard();
         Period p = parser.parsePeriod("P0D");
@@ -159,6 +158,7 @@ public class TestISOPeriodFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParseStandard11() {
         PeriodFormatter parser = ISOPeriodFormat.standard();
         Period p = parser.parsePeriod("P0Y");
@@ -166,6 +166,7 @@ public class TestISOPeriodFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParseStandardFail1() {
         PeriodFormatter parser = ISOPeriodFormat.standard();
         try {
@@ -175,6 +176,7 @@ public class TestISOPeriodFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParseStandardFail2() {
         PeriodFormatter parser = ISOPeriodFormat.standard();
         try {
@@ -184,6 +186,7 @@ public class TestISOPeriodFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParseStandardFail3() {
         PeriodFormatter parser = ISOPeriodFormat.standard();
         try {
@@ -193,6 +196,7 @@ public class TestISOPeriodFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParseStandardFail4() {
         PeriodFormatter parser = ISOPeriodFormat.standard();
         try {

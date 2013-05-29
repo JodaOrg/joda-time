@@ -15,34 +15,25 @@
  */
 package org.joda.time.tz;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.StringTokenizer;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.tz.ZoneInfoCompiler.DateTimeOfYear;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.*;
+import java.util.StringTokenizer;
+
+
 
 /**
  * Test cases for ZoneInfoCompiler.
  *
  * @author Brian S O'Neill
  */
-public class TestCompiler extends TestCase {
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestCompiler.class);
-    }
-
+public class TestCompiler extends Assert {
     static final String AMERICA_LOS_ANGELES_FILE =
         "# Rules for building just America/Los_Angeles time zone.\n" + 
         "\n" + 
@@ -71,20 +62,19 @@ public class TestCompiler extends TestCase {
 
     private DateTimeZone originalDateTimeZone = null;
 
-    public TestCompiler(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         originalDateTimeZone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(DateTimeZone.UTC);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeZone.setDefault(originalDateTimeZone);
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testDateTimeZoneBuilder() throws Exception {
         // test multithreading, issue #18
         getTestDataTimeZoneBuilder().toDateTimeZone("TestDTZ1", true);
@@ -108,6 +98,7 @@ public class TestCompiler extends TestCase {
     }    
 
     //-----------------------------------------------------------------------
+   @Test
     public void testCompile() throws Exception {
         Provider provider = compileAndLoad(AMERICA_LOS_ANGELES_FILE);
         DateTimeZone tz = provider.getZone("America/Los_Angeles");
@@ -173,6 +164,7 @@ public class TestCompiler extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_2400_fromDay() {
         StringTokenizer st = new StringTokenizer("Apr Sun>=1  24:00");
         DateTimeOfYear test = new DateTimeOfYear(st);
@@ -183,6 +175,7 @@ public class TestCompiler extends TestCase {
         assertEquals(true, test.iAdvanceDayOfWeek);
     }
 
+   @Test
     public void test_2400_last() {
         StringTokenizer st = new StringTokenizer("Mar lastSun 24:00");
         DateTimeOfYear test = new DateTimeOfYear(st);
@@ -193,6 +186,7 @@ public class TestCompiler extends TestCase {
         assertEquals(false, test.iAdvanceDayOfWeek);
     }
 
+   @Test
     public void test_Amman_2003() {
         DateTimeZone zone = DateTimeZone.forID("Asia/Amman");
         DateTime dt = new DateTime(2003, 3, 1, 0, 0, zone);
@@ -200,6 +194,7 @@ public class TestCompiler extends TestCase {
         assertEquals(next, new DateTime(2003, 3, 28, 0, 0, DateTimeZone.forOffsetHours(2)).getMillis());
     }
 
+   @Test
     public void test_Amman_2004() {
         DateTimeZone zone = DateTimeZone.forID("Asia/Amman");
         DateTime dt = new DateTime(2004, 3, 1, 0, 0, zone);
@@ -207,6 +202,7 @@ public class TestCompiler extends TestCase {
         assertEquals(next, new DateTime(2004, 3, 26, 0, 0, DateTimeZone.forOffsetHours(2)).getMillis());
     }
 
+   @Test
     public void test_Amman_2005() {
         DateTimeZone zone = DateTimeZone.forID("Asia/Amman");
         DateTime dt = new DateTime(2005, 3, 1, 0, 0, zone);
@@ -214,6 +210,7 @@ public class TestCompiler extends TestCase {
         assertEquals(next, new DateTime(2005, 4, 1, 0, 0, DateTimeZone.forOffsetHours(2)).getMillis());
     }
 
+   @Test
     public void test_Amman_2006() {
         DateTimeZone zone = DateTimeZone.forID("Asia/Amman");
         DateTime dt = new DateTime(2006, 3, 1, 0, 0, zone);

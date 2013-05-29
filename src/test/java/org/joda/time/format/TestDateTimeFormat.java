@@ -15,19 +15,17 @@
  */
 package org.joda.time.format;
 
+import org.joda.time.*;
+import org.joda.time.chrono.GJChronology;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.joda.time.Chronology;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeFieldType;
-import org.joda.time.DateTimeUtils;
-import org.joda.time.DateTimeZone;
-import org.joda.time.chrono.GJChronology;
 
 /**
  * This class is a Junit unit test for DateTime Formating.
@@ -35,7 +33,7 @@ import org.joda.time.chrono.GJChronology;
  * @author Stephen Colebourne
  * @author Fredrik Borgh
  */
-public class TestDateTimeFormat extends TestCase {
+public class TestDateTimeFormat extends Assert {
 
     private static final DateTimeZone UTC = DateTimeZone.UTC;
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
@@ -55,19 +53,8 @@ public class TestDateTimeFormat extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestDateTimeFormat.class);
-    }
-
-    public TestDateTimeFormat(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -77,7 +64,8 @@ public class TestDateTimeFormat extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -88,6 +76,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSubclassableConstructor() {
         DateTimeFormat f = new DateTimeFormat() {
             // test constructor is protected
@@ -96,6 +85,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_era() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("G").withLocale(Locale.UK);
@@ -109,6 +99,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_centuryOfEra() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("C").withLocale(Locale.UK);
@@ -125,6 +116,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_yearOfEra() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("Y").withLocale(Locale.UK);
@@ -140,6 +132,7 @@ public class TestDateTimeFormat extends TestCase {
         assertEquals(dt.toString(), "124", f.print(dt));  // 124th year of BCE
     }        
 
+   @Test
     public void testFormat_yearOfEra_twoDigit() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("YY").withLocale(Locale.UK);
@@ -188,6 +181,7 @@ public class TestDateTimeFormat extends TestCase {
         f.parseDateTime("-50");
     }
 
+   @Test
     public void testFormat_yearOfEraParse() {
         Chronology chrono = GJChronology.getInstanceUTC();
 
@@ -206,6 +200,7 @@ public class TestDateTimeFormat extends TestCase {
     }        
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_year() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("y").withLocale(Locale.UK);
@@ -232,6 +227,7 @@ public class TestDateTimeFormat extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testFormat_year_twoDigit() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("yy").withLocale(Locale.UK);
@@ -347,6 +343,7 @@ public class TestDateTimeFormat extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testFormat_year_long() {
         DateTime dt = new DateTime(278004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("yyyy");
@@ -362,6 +359,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_weekyear() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("x").withLocale(Locale.UK);
@@ -377,6 +375,7 @@ public class TestDateTimeFormat extends TestCase {
         assertEquals(dt.toString(), "-123", f.print(dt));
     }
 
+   @Test
     public void testFormat_weekyearOfEra_twoDigit() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("xx").withLocale(Locale.UK);
@@ -493,6 +492,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_weekOfWeekyear() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("w").withLocale(Locale.UK);
@@ -506,6 +506,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_dayOfWeek() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("e").withLocale(Locale.UK);
@@ -519,6 +520,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_dayOfWeekShortText() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("E").withLocale(Locale.UK);
@@ -535,6 +537,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_dayOfWeekText() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("EEEE").withLocale(Locale.UK);
@@ -551,6 +554,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_dayOfYearText() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("D").withLocale(Locale.UK);
@@ -564,6 +568,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_monthOfYear() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("M").withLocale(Locale.UK);
@@ -577,6 +582,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_monthOfYearShortText() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("MMM").withLocale(Locale.UK);
@@ -593,6 +599,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_monthOfYearText() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("MMMM").withLocale(Locale.UK);
@@ -609,6 +616,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_dayOfMonth() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("d").withLocale(Locale.UK);
@@ -622,6 +630,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_halfdayOfDay() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("a").withLocale(Locale.UK);
@@ -635,6 +644,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_hourOfHalfday() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("K").withLocale(Locale.UK);
@@ -651,6 +661,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_clockhourOfHalfday() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("h").withLocale(Locale.UK);
@@ -667,6 +678,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_hourOfDay() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("H").withLocale(Locale.UK);
@@ -683,6 +695,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_clockhourOfDay() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("k").withLocale(Locale.UK);
@@ -699,6 +712,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_minute() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("m").withLocale(Locale.UK);
@@ -712,6 +726,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_second() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("s").withLocale(Locale.UK);
@@ -725,6 +740,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_fractionOfSecond() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("SSS").withLocale(Locale.UK);
@@ -738,6 +754,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_fractionOfSecondLong() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("SSSSSS").withLocale(Locale.UK);
@@ -751,6 +768,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_zoneText() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("z").withLocale(Locale.UK);
@@ -763,6 +781,7 @@ public class TestDateTimeFormat extends TestCase {
         assertEquals(dt.toString(), "JST", f.print(dt));
     }
 
+   @Test
     public void testFormat_zoneLongText() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("zzzz").withLocale(Locale.UK);
@@ -776,6 +795,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_zoneAmount() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("Z").withLocale(Locale.UK);
@@ -788,6 +808,7 @@ public class TestDateTimeFormat extends TestCase {
         assertEquals(dt.toString(), "+0900", f.print(dt));
     }
 
+   @Test
     public void testFormat_zoneAmountColon() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("ZZ").withLocale(Locale.UK);
@@ -800,6 +821,7 @@ public class TestDateTimeFormat extends TestCase {
         assertEquals(dt.toString(), "+09:00", f.print(dt));
     }
 
+   @Test
     public void testFormat_zoneAmountID() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("ZZZ").withLocale(Locale.UK);
@@ -813,12 +835,14 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_other() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("'Hello' ''");
         assertEquals("Hello '", f.print(dt));
     }
 
+   @Test
     public void testFormat_invalid() {
         try {
             DateTimeFormat.forPattern(null);
@@ -838,12 +862,14 @@ public class TestDateTimeFormat extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testFormat_samples() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("yyyy-MM-dd HH.mm.ss");
         assertEquals("2004-06-09 10.20.30", f.print(dt));
     }
 
+   @Test
     public void testFormat_shortBasicParse() {
         // Tests special two digit parse to make sure it properly switches
         // between lenient and strict parsing.
@@ -863,6 +889,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParse_pivotYear() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd.MM.yy").withPivotYear(2050).withZoneUTC();
         
@@ -876,6 +903,7 @@ public class TestDateTimeFormat extends TestCase {
         assertEquals(date.getYear(), 2099);
     }
 
+   @Test
     public void testParse_pivotYear_ignored4DigitYear() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd.MM.yyyy").withPivotYear(2050).withZoneUTC();
         
@@ -890,6 +918,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormatParse_textMonthJanShort_UK() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM yyyy")
             .withLocale(Locale.UK).withZoneUTC();
@@ -900,6 +929,7 @@ public class TestDateTimeFormat extends TestCase {
         check(date, 2007, 1, 23);
     }
 
+   @Test
     public void testFormatParse_textMonthJanShortLowerCase_UK() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM yyyy")
             .withLocale(Locale.UK).withZoneUTC();
@@ -907,6 +937,7 @@ public class TestDateTimeFormat extends TestCase {
         check(date, 2007, 1, 23);
     }
 
+   @Test
     public void testFormatParse_textMonthJanShortUpperCase_UK() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM yyyy")
             .withLocale(Locale.UK).withZoneUTC();
@@ -914,6 +945,7 @@ public class TestDateTimeFormat extends TestCase {
         check(date, 2007, 1, 23);
     }
 
+   @Test
     public void testParse_textMonthJanLong_UK() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM yyyy")
             .withLocale(Locale.UK).withZoneUTC();
@@ -922,6 +954,7 @@ public class TestDateTimeFormat extends TestCase {
         check(date, 2007, 1, 23);
     }
 
+   @Test
     public void testFormatParse_textMonthJanLongLowerCase_UK() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM yyyy")
             .withLocale(Locale.UK).withZoneUTC();
@@ -929,6 +962,7 @@ public class TestDateTimeFormat extends TestCase {
         check(date, 2007, 1, 23);
     }
 
+   @Test
     public void testFormatParse_textMonthJanLongUpperCase_UK() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM yyyy")
             .withLocale(Locale.UK).withZoneUTC();
@@ -936,6 +970,7 @@ public class TestDateTimeFormat extends TestCase {
         check(date, 2007, 1, 23);
     }
 
+   @Test
     public void testFormatParse_textMonthJanShort_France() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM yyyy")
             .withLocale(Locale.FRANCE).withZoneUTC();
@@ -946,6 +981,7 @@ public class TestDateTimeFormat extends TestCase {
         check(date, 2007, 1, 23);
     }
 
+   @Test
     public void testFormatParse_textMonthJanLong_France() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM yyyy")
             .withLocale(Locale.FRANCE).withZoneUTC();
@@ -954,6 +990,7 @@ public class TestDateTimeFormat extends TestCase {
         check(date, 2007, 1, 23);
     }
 
+   @Test
     public void testFormatParse_textMonthApr_France() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM yyyy")
             .withLocale(Locale.FRANCE).withZoneUTC();
@@ -964,6 +1001,7 @@ public class TestDateTimeFormat extends TestCase {
         check(date, 2007, 2, 23);
     }
 
+   @Test
     public void testFormatParse_textMonthAtEnd_France() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM")
             .withLocale(Locale.FRANCE).withZoneUTC();
@@ -974,6 +1012,7 @@ public class TestDateTimeFormat extends TestCase {
         check(date, 2000, 6, 23);
     }
 
+   @Test
     public void testFormatParse_textMonthAtEnd_France_withSpecifiedDefault() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM")
             .withLocale(Locale.FRANCE).withZoneUTC().withDefaultYear(1980);
@@ -984,6 +1023,7 @@ public class TestDateTimeFormat extends TestCase {
         check(date, 1980, 6, 23);
     }
 
+   @Test
     public void testFormatParse_textMonthApr_Korean() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("EEEE, d MMMM yyyy HH:mm")
             .withLocale(Locale.KOREAN).withZoneUTC();
@@ -994,6 +1034,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormatParse_textHalfdayAM_UK() {
         DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
             .appendLiteral('$')
@@ -1011,6 +1052,7 @@ public class TestDateTimeFormat extends TestCase {
         check(date, 2007, 1, 1);
     }
 
+   @Test
     public void testFormatParse_textHalfdayAM_France() {
         DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
             .appendLiteral('$')
@@ -1029,6 +1071,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormatParse_textEraAD_UK() {
         DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
             .appendLiteral('$')
@@ -1043,6 +1086,7 @@ public class TestDateTimeFormat extends TestCase {
         check(date, 2007, 1, 1);
     }
 
+   @Test
     public void testFormatParse_textEraAD_France() {
         DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
             .appendLiteral('$')
@@ -1057,6 +1101,7 @@ public class TestDateTimeFormat extends TestCase {
         check(date, 2007, 1, 1);
     }
 
+   @Test
     public void testFormatParse_textEraBC_France() {
         DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
             .appendLiteral('$')
@@ -1072,6 +1117,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormatParse_textYear_UK() {
         DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
             .appendLiteral('$')
@@ -1089,6 +1135,7 @@ public class TestDateTimeFormat extends TestCase {
         }
     }
 
+   @Test
     public void testFormatParse_textYear_France() {
         DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
             .appendLiteral('$')
@@ -1107,6 +1154,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormatParse_textAdjoiningHelloWorld_UK() {
         DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
             .appendLiteral('$')
@@ -1121,6 +1169,7 @@ public class TestDateTimeFormat extends TestCase {
         dateFormatter.parseDateTime(str);
     }
 
+   @Test
     public void testFormatParse_textAdjoiningMonthDOW_UK() {
         DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
             .appendLiteral('$')
@@ -1136,6 +1185,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormatParse_zoneId_noColon() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("HH:mm Z").withZoneUTC();
         String str = new DateTime(2007, 6, 23, 1, 2, 0, 0, UTC).toString(dateFormatter);
@@ -1145,6 +1195,7 @@ public class TestDateTimeFormat extends TestCase {
         assertEquals(2, parsed.getMinuteOfHour());
     }
 
+   @Test
     public void testFormatParse_zoneId_noColon_parseZ() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("HH:mm Z").withZoneUTC();
         DateTime parsed = dateFormatter.parseDateTime("01:02 Z");
@@ -1152,6 +1203,7 @@ public class TestDateTimeFormat extends TestCase {
         assertEquals(2, parsed.getMinuteOfHour());
     }
 
+   @Test
     public void testFormatParse_zoneId_colon() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("HH:mm ZZ").withZoneUTC();
         String str = new DateTime(2007, 6, 23, 1, 2, 0, 0, UTC).toString(dateFormatter);
@@ -1161,6 +1213,7 @@ public class TestDateTimeFormat extends TestCase {
         assertEquals(2, parsed.getMinuteOfHour());
     }
 
+   @Test
     public void testFormatParse_zoneId_colon_parseZ() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("HH:mm ZZ").withZoneUTC();
         DateTime parsed = dateFormatter.parseDateTime("01:02 Z");

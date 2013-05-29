@@ -15,40 +15,23 @@
  */
 package org.joda.time;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.convert.StringConvert;
 import org.joda.time.chrono.ISOChronology;
+import org.junit.Assert;
+import org.junit.Test;
+
+
 
 /**
  * Test string conversion.
  *
  * @author Stephen Colebourne
  */
-public class TestStringConvert extends TestCase {
+public class TestStringConvert extends Assert {
 
     private static final DateTimeZone ZONE = DateTimeZone.forID("+02:00");
-
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestStringConvert.class);
-    }
-
-    public TestStringConvert(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
-    }
-
     //-----------------------------------------------------------------------
+   @Test
     public void testDateMidnight() {
         DateMidnight test = new DateMidnight(2010, 6, 30, ISOChronology.getInstance(ZONE));
         String str = StringConvert.INSTANCE.convertToString(test);
@@ -56,6 +39,7 @@ public class TestStringConvert extends TestCase {
         assertEquals(test, StringConvert.INSTANCE.convertFromString(DateMidnight.class, str));
     }
 
+   @Test
     public void testDateTime() {
         DateTime test = new DateTime(2010, 6, 30, 2, 30, 50, 678, ISOChronology.getInstance(ZONE));
         String str = StringConvert.INSTANCE.convertToString(test);
@@ -63,6 +47,7 @@ public class TestStringConvert extends TestCase {
         assertEquals(test, StringConvert.INSTANCE.convertFromString(DateTime.class, str));
     }
 
+   @Test
     public void testMutableDateTime() {
         MutableDateTime test = new MutableDateTime(2010, 6, 30, 2, 30, 50, 678, ISOChronology.getInstance(ZONE));
         String str = StringConvert.INSTANCE.convertToString(test);
@@ -70,6 +55,7 @@ public class TestStringConvert extends TestCase {
         assertEquals(test, StringConvert.INSTANCE.convertFromString(MutableDateTime.class, str));
     }
 
+   @Test
     public void testLocalDateTime() {
         LocalDateTime test = new LocalDateTime(2010, 6, 30, 2, 30);
         String str = StringConvert.INSTANCE.convertToString(test);
@@ -77,6 +63,7 @@ public class TestStringConvert extends TestCase {
         assertEquals(test, StringConvert.INSTANCE.convertFromString(LocalDateTime.class, str));
     }
 
+   @Test
     public void testLocalDate() {
         LocalDate test = new LocalDate(2010, 6, 30);
         String str = StringConvert.INSTANCE.convertToString(test);
@@ -84,6 +71,7 @@ public class TestStringConvert extends TestCase {
         assertEquals(test, StringConvert.INSTANCE.convertFromString(LocalDate.class, str));
     }
 
+   @Test
     public void testLocalTime() {
         LocalTime test = new LocalTime(2, 30, 50, 678);
         String str = StringConvert.INSTANCE.convertToString(test);
@@ -91,6 +79,7 @@ public class TestStringConvert extends TestCase {
         assertEquals(test, StringConvert.INSTANCE.convertFromString(LocalTime.class, str));
     }
 
+   @Test
     public void testYearMonth() {
         YearMonth test = new YearMonth(2010, 6);
         String str = StringConvert.INSTANCE.convertToString(test);
@@ -98,6 +87,7 @@ public class TestStringConvert extends TestCase {
         assertEquals(test, StringConvert.INSTANCE.convertFromString(YearMonth.class, str));
     }
 
+   @Test
     public void testMonthDay() {
         MonthDay test = new MonthDay(6, 30);
         String str = StringConvert.INSTANCE.convertToString(test);
@@ -105,6 +95,7 @@ public class TestStringConvert extends TestCase {
         assertEquals(test, StringConvert.INSTANCE.convertFromString(MonthDay.class, str));
     }
 
+   @Test
     public void testMonthDay_leapDay() {
         MonthDay test = new MonthDay(2, 29);
         String str = StringConvert.INSTANCE.convertToString(test);
@@ -113,6 +104,7 @@ public class TestStringConvert extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testTimeZone() {
         DateTimeZone test = DateTimeZone.forID("Europe/Paris");
         String str = StringConvert.INSTANCE.convertToString(test);
@@ -129,6 +121,7 @@ public class TestStringConvert extends TestCase {
 //        assertEquals(test, StringConvert.INSTANCE.convertFromString(Interval.class, str));
 //    }
 
+   @Test
     public void testDuration() {
         Duration test = new Duration(12345678L);
         String str = StringConvert.INSTANCE.convertToString(test);
@@ -136,6 +129,7 @@ public class TestStringConvert extends TestCase {
         assertEquals(test, StringConvert.INSTANCE.convertFromString(Duration.class, str));
     }
 
+   @Test
     public void testPeriod() {
         Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
         String str = StringConvert.INSTANCE.convertToString(test);
@@ -143,6 +137,7 @@ public class TestStringConvert extends TestCase {
         assertEquals(test, StringConvert.INSTANCE.convertFromString(Period.class, str));
     }
 
+   @Test
     public void testMutablePeriod() {
         MutablePeriod test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         String str = StringConvert.INSTANCE.convertToString(test);
@@ -150,6 +145,7 @@ public class TestStringConvert extends TestCase {
         assertEquals(test, StringConvert.INSTANCE.convertFromString(MutablePeriod.class, str));
     }
 
+   @Test
     public void testYears() {
         Years test = Years.years(5);
         String str = StringConvert.INSTANCE.convertToString(test);
@@ -157,6 +153,7 @@ public class TestStringConvert extends TestCase {
         assertEquals(test, StringConvert.INSTANCE.convertFromString(Years.class, str));
     }
 
+   @Test
     public void testMonths() {
         Months test = Months.months(5);
         String str = StringConvert.INSTANCE.convertToString(test);
@@ -164,6 +161,7 @@ public class TestStringConvert extends TestCase {
         assertEquals(test, StringConvert.INSTANCE.convertFromString(Months.class, str));
     }
 
+   @Test
     public void testWeeks() {
         Weeks test = Weeks.weeks(5);
         String str = StringConvert.INSTANCE.convertToString(test);
@@ -171,6 +169,7 @@ public class TestStringConvert extends TestCase {
         assertEquals(test, StringConvert.INSTANCE.convertFromString(Weeks.class, str));
     }
 
+   @Test
     public void testDays() {
         Days test = Days.days(5);
         String str = StringConvert.INSTANCE.convertToString(test);
@@ -178,6 +177,7 @@ public class TestStringConvert extends TestCase {
         assertEquals(test, StringConvert.INSTANCE.convertFromString(Days.class, str));
     }
 
+   @Test
     public void testHours() {
         Hours test = Hours.hours(5);
         String str = StringConvert.INSTANCE.convertToString(test);
@@ -185,6 +185,7 @@ public class TestStringConvert extends TestCase {
         assertEquals(test, StringConvert.INSTANCE.convertFromString(Hours.class, str));
     }
 
+   @Test
     public void testMinutes() {
         Minutes test = Minutes.minutes(5);
         String str = StringConvert.INSTANCE.convertToString(test);
@@ -192,6 +193,7 @@ public class TestStringConvert extends TestCase {
         assertEquals(test, StringConvert.INSTANCE.convertFromString(Minutes.class, str));
     }
 
+   @Test
     public void testSeconds() {
         Seconds test = Seconds.seconds(5);
         String str = StringConvert.INSTANCE.convertToString(test);

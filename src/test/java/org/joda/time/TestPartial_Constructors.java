@@ -15,20 +15,23 @@
  */
 package org.joda.time;
 
-import java.util.Arrays;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.Arrays;
+
+
 
 /**
  * This class is a Junit unit test for Partial.
  *
  * @author Stephen Colebourne
  */
-public class TestPartial_Constructors extends TestCase {
+public class TestPartial_Constructors extends Assert {
 
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
@@ -58,25 +61,15 @@ public class TestPartial_Constructors extends TestCase {
         
     private DateTimeZone zone = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestPartial_Constructors.class);
-    }
-
-    public TestPartial_Constructors(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(LONDON);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
         zone = null;
@@ -86,6 +79,7 @@ public class TestPartial_Constructors extends TestCase {
     /**
      * Test constructor
      */
+   @Test
     public void testConstructor() throws Throwable {
         Partial test = new Partial();
         assertEquals(ISO_UTC, test.getChronology());
@@ -96,6 +90,7 @@ public class TestPartial_Constructors extends TestCase {
     /**
      * Test constructor
      */
+   @Test
     public void testConstructor_Chrono() throws Throwable {
         Partial test = new Partial((Chronology) null);
         assertEquals(ISO_UTC, test.getChronology());
@@ -110,6 +105,7 @@ public class TestPartial_Constructors extends TestCase {
     /**
      * Test constructor
      */
+   @Test
     public void testConstructor_Type_int() throws Throwable {
         Partial test = new Partial(DateTimeFieldType.dayOfYear(), 4);
         assertEquals(ISO_UTC, test.getChronology());
@@ -122,6 +118,7 @@ public class TestPartial_Constructors extends TestCase {
     /**
      * Test constructor
      */
+   @Test
     public void testConstructorEx1_Type_int() throws Throwable {
         try {
             new Partial(null, 4);
@@ -134,6 +131,7 @@ public class TestPartial_Constructors extends TestCase {
     /**
      * Test constructor
      */
+   @Test
     public void testConstructorEx2_Type_int() throws Throwable {
         try {
             new Partial(DateTimeFieldType.dayOfYear(), 0);
@@ -147,6 +145,7 @@ public class TestPartial_Constructors extends TestCase {
     /**
      * Test constructor
      */
+   @Test
     public void testConstructor_Type_int_Chrono() throws Throwable {
         Partial test = new Partial(DateTimeFieldType.dayOfYear(), 4, GREGORIAN_PARIS);
         assertEquals(GREGORIAN_UTC, test.getChronology());
@@ -159,6 +158,7 @@ public class TestPartial_Constructors extends TestCase {
     /**
      * Test constructor
      */
+   @Test
     public void testConstructorEx_Type_int_Chrono() throws Throwable {
         try {
             new Partial(null, 4, ISO_UTC);
@@ -171,6 +171,7 @@ public class TestPartial_Constructors extends TestCase {
     /**
      * Test constructor
      */
+   @Test
     public void testConstructorEx2_Type_int_Chrono() throws Throwable {
         try {
             new Partial(DateTimeFieldType.dayOfYear(), 0, ISO_UTC);
@@ -184,6 +185,7 @@ public class TestPartial_Constructors extends TestCase {
     /**
      * Test constructor
      */
+   @Test
     public void testConstructor_TypeArray_intArray() throws Throwable {
         DateTimeFieldType[] types = new DateTimeFieldType[] {
             DateTimeFieldType.year(),
@@ -206,6 +208,7 @@ public class TestPartial_Constructors extends TestCase {
     /**
      * Test constructor
      */
+   @Test
     public void testConstructor2_TypeArray_intArray() throws Throwable {
         DateTimeFieldType[] types = new DateTimeFieldType[0];
         int[] values = new int[0];
@@ -217,6 +220,7 @@ public class TestPartial_Constructors extends TestCase {
     /**
      * Test constructor
      */
+   @Test
     public void testConstructorEx1_TypeArray_intArray() throws Throwable {
         try {
             new Partial((DateTimeFieldType[]) null, new int[] {1});
@@ -229,6 +233,7 @@ public class TestPartial_Constructors extends TestCase {
     /**
      * Test constructor
      */
+   @Test
     public void testConstructorEx3_TypeArray_intArray() throws Throwable {
         try {
             new Partial(new DateTimeFieldType[] {DateTimeFieldType.dayOfYear()}, null);
@@ -241,6 +246,7 @@ public class TestPartial_Constructors extends TestCase {
     /**
      * Test constructor
      */
+   @Test
     public void testConstructorEx5_TypeArray_intArray() throws Throwable {
         try {
             new Partial(new DateTimeFieldType[] {DateTimeFieldType.dayOfYear()}, new int[2]);
@@ -253,6 +259,7 @@ public class TestPartial_Constructors extends TestCase {
     /**
      * Test constructor
      */
+   @Test
     public void testConstructorEx6_TypeArray_intArray() throws Throwable {
         try {
             new Partial(new DateTimeFieldType[] {null, DateTimeFieldType.dayOfYear()}, new int[2]);
@@ -271,6 +278,7 @@ public class TestPartial_Constructors extends TestCase {
     /**
      * Test constructor
      */
+   @Test
     public void testConstructorEx7_TypeArray_intArray() throws Throwable {
         int[] values = new int[] {1, 1, 1};
         DateTimeFieldType[] types = new DateTimeFieldType[] {
@@ -331,6 +339,7 @@ public class TestPartial_Constructors extends TestCase {
     /**
      * Test constructor
      */
+   @Test
     public void testConstructorEx8_TypeArray_intArray() throws Throwable {
         int[] values = new int[] {1, 1, 1};
         DateTimeFieldType[] types = new DateTimeFieldType[] {
@@ -364,6 +373,7 @@ public class TestPartial_Constructors extends TestCase {
     /**
      * Test constructor
      */
+   @Test
     public void testConstructorEx9_TypeArray_intArray() throws Throwable {
         int[] values = new int[] {3, 0};
         DateTimeFieldType[] types = new DateTimeFieldType[] {
@@ -380,6 +390,7 @@ public class TestPartial_Constructors extends TestCase {
     /**
      * Test constructor
      */
+   @Test
     public void testConstructor_TypeArray_intArray_Chrono() throws Throwable {
         DateTimeFieldType[] types = new DateTimeFieldType[] {
             DateTimeFieldType.year(),
@@ -403,6 +414,7 @@ public class TestPartial_Constructors extends TestCase {
     /**
      * Test constructor
      */
+   @Test
     public void testConstructor_Partial() throws Throwable {
         YearMonthDay ymd = new YearMonthDay(2005, 6, 25, GREGORIAN_PARIS);
         Partial test = new Partial(ymd);
@@ -422,6 +434,7 @@ public class TestPartial_Constructors extends TestCase {
     /**
      * Test constructor
      */
+   @Test
     public void testConstructorEx_Partial() throws Throwable {
         try {
             new Partial((ReadablePartial) null);

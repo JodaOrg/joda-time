@@ -15,43 +15,29 @@
  */
 package org.joda.time;
 
+import org.joda.time.chrono.ISOChronology;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.joda.time.chrono.ISOChronology;
 /**
  * This class is a Junit unit test for the
  * org.joda.time.DateTimeComparator class.
  *
  * @author Guy Allard
  */
-public class TestDateTimeComparator extends TestCase {
+public class TestDateTimeComparator extends Assert {
 
     private static final Chronology ISO = ISOChronology.getInstance();
-    
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestDateTimeComparator.class);
-    }
-
-    public TestDateTimeComparator(String name) {
-        super(name);
-    }
 
     /**
      * A reference to a DateTime object.
@@ -131,10 +117,11 @@ public class TestDateTimeComparator extends TestCase {
     /**
      * Junit <code>setUp()</code> method.
      */
-    public void setUp() /* throws Exception */ {
+   @Before
+   public void setUp() /* throws Exception */ {
         Chronology chrono = ISOChronology.getInstanceUTC();
 
-        // super.setUp();
+        //
         // Obtain comparator's
         cMillis = DateTimeComparator.getInstance(null, DateTimeFieldType.secondOfMinute());
         cSecond = DateTimeComparator.getInstance(DateTimeFieldType.secondOfMinute(), DateTimeFieldType.minuteOfHour());
@@ -154,8 +141,9 @@ public class TestDateTimeComparator extends TestCase {
     /**
      * Junit <code>tearDown()</code> method.
      */
-    protected void tearDown() /* throws Exception */ {
-        // super.tearDown();
+   @After
+   public void tearDown() /* throws Exception */ {
+        //
         aDateTime = null;
         bDateTime = null;
         //
@@ -175,6 +163,7 @@ public class TestDateTimeComparator extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testClass() {
         assertEquals(true, Modifier.isPublic(DateTimeComparator.class.getModifiers()));
         assertEquals(false, Modifier.isFinal(DateTimeComparator.class.getModifiers()));
@@ -183,12 +172,14 @@ public class TestDateTimeComparator extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testStaticGetInstance() {
         DateTimeComparator c = DateTimeComparator.getInstance();
         assertEquals(null, c.getLowerLimit());
         assertEquals(null, c.getUpperLimit());
         assertEquals("DateTimeComparator[]", c.toString());
     }        
+   @Test
     public void testStaticGetDateOnlyInstance() {
         DateTimeComparator c = DateTimeComparator.getDateOnlyInstance();
         assertEquals(DateTimeFieldType.dayOfYear(), c.getLowerLimit());
@@ -197,6 +188,7 @@ public class TestDateTimeComparator extends TestCase {
         
         assertSame(DateTimeComparator.getDateOnlyInstance(), DateTimeComparator.getDateOnlyInstance());
     }
+   @Test
     public void testStaticGetTimeOnlyInstance() {
         DateTimeComparator c = DateTimeComparator.getTimeOnlyInstance();
         assertEquals(null, c.getLowerLimit());
@@ -205,6 +197,7 @@ public class TestDateTimeComparator extends TestCase {
         
         assertSame(DateTimeComparator.getTimeOnlyInstance(), DateTimeComparator.getTimeOnlyInstance());
     }
+   @Test
     public void testStaticGetInstanceLower() {
         DateTimeComparator c = DateTimeComparator.getInstance(DateTimeFieldType.hourOfDay());
         assertEquals(DateTimeFieldType.hourOfDay(), c.getLowerLimit());
@@ -214,6 +207,7 @@ public class TestDateTimeComparator extends TestCase {
         c = DateTimeComparator.getInstance(null);
         assertSame(DateTimeComparator.getInstance(), c);
     }
+   @Test
     public void testStaticGetInstanceLowerUpper() {
         DateTimeComparator c = DateTimeComparator.getInstance(DateTimeFieldType.hourOfDay(), DateTimeFieldType.dayOfYear());
         assertEquals(DateTimeFieldType.hourOfDay(), c.getLowerLimit());
@@ -236,6 +230,7 @@ public class TestDateTimeComparator extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testEqualsHashCode() {
         DateTimeComparator c1 = DateTimeComparator.getInstance();
         assertEquals(true, c1.equals(c1));
@@ -263,6 +258,7 @@ public class TestDateTimeComparator extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testSerialization1() throws Exception {
         DateTimeField f = ISO.dayOfYear();
         f.toString();
@@ -283,6 +279,7 @@ public class TestDateTimeComparator extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSerialization2() throws Exception {
         DateTimeComparator c = DateTimeComparator.getInstance();
         
@@ -304,6 +301,7 @@ public class TestDateTimeComparator extends TestCase {
     /**
      * Test all basic comparator operation with DateTime objects.
      */
+   @Test
     public void testBasicComps1() {
         aDateTime = new DateTime( System.currentTimeMillis(), DateTimeZone.UTC );
         bDateTime = new DateTime( aDateTime.getMillis(), DateTimeZone.UTC );
@@ -328,6 +326,7 @@ public class TestDateTimeComparator extends TestCase {
     /**
      * Test all basic comparator operation with ReadableInstant objects.
      */
+   @Test
     public void testBasicComps2() {
         ReadableInstant aDateTime = new DateTime( System.currentTimeMillis(), DateTimeZone.UTC );
         ReadableInstant bDateTime = new DateTime( aDateTime.getMillis(), DateTimeZone.UTC );
@@ -351,6 +350,7 @@ public class TestDateTimeComparator extends TestCase {
     /**
      * Test all basic comparator operation with java Date objects.
      */
+   @Test
     public void testBasicComps3() {
         Date aDateTime
             = new Date( System.currentTimeMillis() );
@@ -374,6 +374,7 @@ public class TestDateTimeComparator extends TestCase {
     /**
      * Test all basic comparator operation with Long objects.
      */
+   @Test
     public void testBasicComps4() {
         Long aDateTime
             = new Long( System.currentTimeMillis() );
@@ -397,6 +398,7 @@ public class TestDateTimeComparator extends TestCase {
     /**
      * Test all basic comparator operation with Calendar objects.
      */
+   @Test
     public void testBasicComps5() {
         Calendar aDateTime
             = Calendar.getInstance();   // right now
@@ -420,6 +422,7 @@ public class TestDateTimeComparator extends TestCase {
     /**
      * Test unequal comparisons with millis of second comparators.
      */
+   @Test
     public void testMillis() {
         aDateTime = new DateTime( System.currentTimeMillis(), DateTimeZone.UTC );
         bDateTime = new DateTime( aDateTime.getMillis() + 1, DateTimeZone.UTC );
@@ -430,6 +433,7 @@ public class TestDateTimeComparator extends TestCase {
     /**
      * Test unequal comparisons with second comparators.
      */
+   @Test
     public void testSecond() {
         aDateTime = getADate( "1969-12-31T23:59:58" );
         bDateTime = getADate( "1969-12-31T23:50:59" );
@@ -444,6 +448,7 @@ public class TestDateTimeComparator extends TestCase {
     /**
      * Test unequal comparisons with minute comparators.
      */
+   @Test
     public void testMinute() {
         aDateTime = getADate( "1969-12-31T23:58:00" );
         bDateTime = getADate( "1969-12-31T23:59:00" );
@@ -458,6 +463,7 @@ public class TestDateTimeComparator extends TestCase {
     /**
      * Test unequal comparisons with hour comparators.
      */
+   @Test
     public void testHour() {
         aDateTime = getADate( "1969-12-31T22:00:00" );
         bDateTime = getADate( "1969-12-31T23:00:00" );
@@ -476,6 +482,7 @@ public class TestDateTimeComparator extends TestCase {
     /**
      * Test unequal comparisons with day of week comparators.
      */
+   @Test
     public void testDOW() {
         /*
          * Dates chosen when I wrote the code, so I know what day of
@@ -490,6 +497,7 @@ public class TestDateTimeComparator extends TestCase {
     /**
      * Test unequal comparisons with day of month comparators.
      */
+   @Test
     public void testDOM() {
         aDateTime = getADate( "2002-04-12T00:00:00" );
         bDateTime = getADate( "2002-04-13T00:00:00" );
@@ -504,6 +512,7 @@ public class TestDateTimeComparator extends TestCase {
     /**
      * Test unequal comparisons with day of year comparators.
      */
+   @Test
     public void testDOY() {
         aDateTime = getADate( "2002-04-12T00:00:00" );
         bDateTime = getADate( "2002-04-13T00:00:00" );
@@ -518,6 +527,7 @@ public class TestDateTimeComparator extends TestCase {
     /**
      * Test unequal comparisons with week of weekyear comparators.
      */
+   @Test
     public void testWOW() {
         // 1st week of year contains Jan 04.
         aDateTime = getADate( "2000-01-04T00:00:00" );
@@ -537,6 +547,7 @@ public class TestDateTimeComparator extends TestCase {
     /**
      * Test unequal comparisons with year given the week comparators.
      */
+   @Test
     public void testWOYY() {
         // How do I test the end conditions of this?
         // Don't understand ......
@@ -551,6 +562,7 @@ public class TestDateTimeComparator extends TestCase {
     /**
      * Test unequal comparisons with month comparators.
      */
+   @Test
     public void testMonth() {
         aDateTime = getADate( "2002-04-30T00:00:00" );
         bDateTime = getADate( "2002-05-01T00:00:00" );
@@ -565,6 +577,7 @@ public class TestDateTimeComparator extends TestCase {
     /**
      * Test unequal comparisons with year comparators.
      */
+   @Test
     public void testYear() {
         aDateTime = getADate( "2000-01-01T00:00:00" );
         bDateTime = getADate( "2001-01-01T00:00:00" );
@@ -587,6 +600,7 @@ public class TestDateTimeComparator extends TestCase {
      /**
       * Test sorting with full default comparator.
       */
+   @Test
      public void testListBasic() {
         String[] dtStrs = {
             "1999-02-01T00:00:00",
@@ -603,6 +617,7 @@ public class TestDateTimeComparator extends TestCase {
      /**
       * Test sorting with millis of second comparator.
       */
+   @Test
     public void testListMillis() {
         //
         List sl = new ArrayList();
@@ -624,6 +639,7 @@ public class TestDateTimeComparator extends TestCase {
      /**
       * Test sorting with second comparator.
       */
+   @Test
     public void testListSecond() {
         String[] dtStrs = {
             "1999-02-01T00:00:10",
@@ -645,6 +661,7 @@ public class TestDateTimeComparator extends TestCase {
      /**
       * Test sorting with minute comparator.
       */
+   @Test
     public void testListMinute() {
         String[] dtStrs = {
             "1999-02-01T00:10:00",
@@ -666,6 +683,7 @@ public class TestDateTimeComparator extends TestCase {
      /**
       * Test sorting with hour comparator.
       */
+   @Test
     public void testListHour() {
         String[] dtStrs = {
             "1999-02-01T10:00:00",
@@ -688,6 +706,7 @@ public class TestDateTimeComparator extends TestCase {
      /**
       * Test sorting with day of week comparator.
       */
+   @Test
     public void testListDOW() {
         String[] dtStrs = {
             /* 2002-04-15 = Monday */
@@ -710,6 +729,7 @@ public class TestDateTimeComparator extends TestCase {
      /**
       * Test sorting with day of month comparator.
       */
+   @Test
     public void testListDOM() {
         String[] dtStrs = {
             /* 2002-04-14 = Sunday */
@@ -732,6 +752,7 @@ public class TestDateTimeComparator extends TestCase {
      /**
       * Test sorting with day of year comparator.
       */
+   @Test
     public void testListDOY() {
         String[] dtStrs = {
             "2002-04-20T10:00:00",
@@ -753,6 +774,7 @@ public class TestDateTimeComparator extends TestCase {
      /**
       * Test sorting with week of weekyear comparator.
       */
+   @Test
     public void testListWOW() {
         String[] dtStrs = {
             "2002-04-01T10:00:00",
@@ -774,6 +796,7 @@ public class TestDateTimeComparator extends TestCase {
      /**
       * Test sorting with year (given week) comparator.
       */
+   @Test
     public void testListYOYY() {
         // ?? How to catch end conditions ??
         String[] dtStrs = {
@@ -792,6 +815,7 @@ public class TestDateTimeComparator extends TestCase {
      /**
       * Test sorting with month comparator.
       */
+   @Test
     public void testListMonth() {
         String[] dtStrs = {
             "2002-04-01T10:00:00",
@@ -813,6 +837,7 @@ public class TestDateTimeComparator extends TestCase {
      /**
       * Test sorting with year comparator.
       */
+   @Test
      public void testListYear() {
         String[] dtStrs = {
             "1999-02-01T00:00:00",
@@ -834,6 +859,7 @@ public class TestDateTimeComparator extends TestCase {
      /**
       * Test sorting with date only comparator.
       */
+   @Test
     public void testListDate() {
         String[] dtStrs = {
             "1999-02-01T00:00:00",
@@ -855,6 +881,7 @@ public class TestDateTimeComparator extends TestCase {
      /**
       * Test sorting with time only comparator.
       */
+   @Test
     public void testListTime() {
         String[] dtStrs = {
             "1999-02-01T01:02:05",
@@ -877,6 +904,7 @@ public class TestDateTimeComparator extends TestCase {
     /**
      * Test comparator operation with null object(s).
      */
+   @Test
     public void testNullDT() {
         // null means now
         aDateTime = getADate("2000-01-01T00:00:00");
@@ -887,6 +915,7 @@ public class TestDateTimeComparator extends TestCase {
     /**
      * Test comparator operation with an invalid object type.
      */
+   @Test
     public void testInvalidObj() {
         aDateTime = getADate("2000-01-01T00:00:00");
         try {

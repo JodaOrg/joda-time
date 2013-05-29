@@ -15,24 +15,27 @@
  */
 package org.joda.time;
 
-import java.util.Date;
-import java.util.Locale;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.MockZeroNullIntegerConverter;
 import org.joda.time.format.DateTimeFormat;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.Date;
+import java.util.Locale;
+
+
 
 /**
  * This class is a Junit unit test for DateMidnight.
  *
  * @author Stephen Colebourne
  */
-public class TestDateMidnight_Constructors extends TestCase {
+public class TestDateMidnight_Constructors extends Assert {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
@@ -83,19 +86,8 @@ public class TestDateMidnight_Constructors extends TestCase {
     private DateTimeZone zone = null;
     private Locale locale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestDateMidnight_Constructors.class);
-    }
-
-    public TestDateMidnight_Constructors(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW_UTC);
         zone = DateTimeZone.getDefault();
         locale = Locale.getDefault();
@@ -103,7 +95,8 @@ public class TestDateMidnight_Constructors extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
         Locale.setDefault(locale);
@@ -111,6 +104,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testTest() {
         assertEquals("2002-06-09T00:00:00.000Z", new Instant(TEST_TIME_NOW_UTC).toString());
         assertEquals("2002-04-05T12:24:00.000Z", new Instant(TEST_TIME1_UTC).toString());
@@ -121,6 +115,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test now ()
      */
+   @Test
     public void test_now() throws Throwable {
         DateMidnight test = DateMidnight.now();
         assertEquals(ISOChronology.getInstance(), test.getChronology());
@@ -133,6 +128,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test now (DateTimeZone)
      */
+   @Test
     public void test_now_DateTimeZone() throws Throwable {
         DateMidnight test = DateMidnight.now(PARIS);
         assertEquals(ISOChronology.getInstance(PARIS), test.getChronology());
@@ -142,6 +138,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test now (DateTimeZone=null)
      */
+   @Test
     public void test_now_nullDateTimeZone() throws Throwable {
         try {
             DateMidnight.now((DateTimeZone) null);
@@ -152,6 +149,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test now (Chronology)
      */
+   @Test
     public void test_now_Chronology() throws Throwable {
         DateMidnight test = DateMidnight.now(GregorianChronology.getInstance());
         assertEquals(GregorianChronology.getInstance(), test.getChronology());
@@ -161,6 +159,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test now (Chronology=null)
      */
+   @Test
     public void test_now_nullChronology() throws Throwable {
         try {
             DateMidnight.now((Chronology) null);
@@ -169,11 +168,13 @@ public class TestDateMidnight_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParse_noFormatter() throws Throwable {
         assertEquals(new DateMidnight(2010, 6, 30, ISOChronology.getInstance(LONDON)), DateMidnight.parse("2010-06-30"));
         assertEquals(new DateMidnight(2010, 1, 2, ISOChronology.getInstance(LONDON)), DateMidnight.parse("2010-002"));
     }
 
+   @Test
     public void testParse_formatter() throws Throwable {
         assertEquals(new DateMidnight(2010, 6, 30, ISOChronology.getInstance(LONDON)), DateMidnight.parse("2010--30 06", DateTimeFormat.forPattern("yyyy--dd MM")));
     }
@@ -182,6 +183,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor ()
      */
+   @Test
     public void testConstructor() throws Throwable {
         DateMidnight test = new DateMidnight();
         assertEquals(ISOChronology.getInstance(), test.getChronology());
@@ -194,6 +196,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (DateTimeZone)
      */
+   @Test
     public void testConstructor_DateTimeZone() throws Throwable {
         DateMidnight test = new DateMidnight(PARIS);
         assertEquals(ISOChronology.getInstance(PARIS), test.getChronology());
@@ -203,6 +206,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (DateTimeZone=null)
      */
+   @Test
     public void testConstructor_nullDateTimeZone() throws Throwable {
         DateMidnight test = new DateMidnight((DateTimeZone) null);
         assertEquals(ISOChronology.getInstance(), test.getChronology());
@@ -212,6 +216,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (Chronology)
      */
+   @Test
     public void testConstructor_Chronology() throws Throwable {
         DateMidnight test = new DateMidnight(GregorianChronology.getInstance());
         assertEquals(GregorianChronology.getInstance(), test.getChronology());
@@ -221,6 +226,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (Chronology=null)
      */
+   @Test
     public void testConstructor_nullChronology() throws Throwable {
         DateMidnight test = new DateMidnight((Chronology) null);
         assertEquals(ISOChronology.getInstance(), test.getChronology());
@@ -231,6 +237,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (long)
      */
+   @Test
     public void testConstructor_long1() throws Throwable {
         DateMidnight test = new DateMidnight(TEST_TIME1_UTC);
         assertEquals(ISOChronology.getInstance(), test.getChronology());
@@ -240,6 +247,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (long)
      */
+   @Test
     public void testConstructor_long2() throws Throwable {
         DateMidnight test = new DateMidnight(TEST_TIME2_UTC);
         assertEquals(ISOChronology.getInstance(), test.getChronology());
@@ -249,6 +257,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (long, DateTimeZone)
      */
+   @Test
     public void testConstructor_long1_DateTimeZone() throws Throwable {
         DateMidnight test = new DateMidnight(TEST_TIME1_UTC, PARIS);
         assertEquals(ISOChronology.getInstance(PARIS), test.getChronology());
@@ -258,6 +267,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (long, DateTimeZone)
      */
+   @Test
     public void testConstructor_long2_DateTimeZone() throws Throwable {
         DateMidnight test = new DateMidnight(TEST_TIME2_UTC, PARIS);
         assertEquals(ISOChronology.getInstance(PARIS), test.getChronology());
@@ -267,6 +277,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (long, DateTimeZone=null)
      */
+   @Test
     public void testConstructor_long_nullDateTimeZone() throws Throwable {
         DateMidnight test = new DateMidnight(TEST_TIME1_UTC, (DateTimeZone) null);
         assertEquals(ISOChronology.getInstance(), test.getChronology());
@@ -276,6 +287,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (long, Chronology)
      */
+   @Test
     public void testConstructor_long1_Chronology() throws Throwable {
         DateMidnight test = new DateMidnight(TEST_TIME1_UTC, GregorianChronology.getInstance());
         assertEquals(GregorianChronology.getInstance(), test.getChronology());
@@ -285,6 +297,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (long, Chronology)
      */
+   @Test
     public void testConstructor_long2_Chronology() throws Throwable {
         DateMidnight test = new DateMidnight(TEST_TIME2_UTC, GregorianChronology.getInstance());
         assertEquals(GregorianChronology.getInstance(), test.getChronology());
@@ -294,6 +307,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (long, Chronology=null)
      */
+   @Test
     public void testConstructor_long_nullChronology() throws Throwable {
         DateMidnight test = new DateMidnight(TEST_TIME1_UTC, (Chronology) null);
         assertEquals(ISOChronology.getInstance(), test.getChronology());
@@ -304,6 +318,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (Object)
      */
+   @Test
     public void testConstructor_Object() throws Throwable {
         Date date = new Date(TEST_TIME1_UTC);
         DateMidnight test = new DateMidnight(date);
@@ -314,6 +329,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (Object)
      */
+   @Test
     public void testConstructor_invalidObject() throws Throwable {
         try {
             new DateMidnight(new Object());
@@ -324,6 +340,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (Object=null)
      */
+   @Test
     public void testConstructor_nullObject() throws Throwable {
         DateMidnight test = new DateMidnight((Object) null);
         assertEquals(ISOChronology.getInstance(), test.getChronology());
@@ -333,6 +350,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (Object=null)
      */
+   @Test
     public void testConstructor_badconverterObject() throws Throwable {
         try {
             ConverterManager.getInstance().addInstantConverter(MockZeroNullIntegerConverter.INSTANCE);
@@ -347,6 +365,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (Object, DateTimeZone)
      */
+   @Test
     public void testConstructor_Object_DateTimeZone() throws Throwable {
         Date date = new Date(TEST_TIME1_UTC);
         DateMidnight test = new DateMidnight(date, PARIS);
@@ -357,6 +376,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (Object, DateTimeZone)
      */
+   @Test
     public void testConstructor_invalidObject_DateTimeZone() throws Throwable {
         try {
             new DateMidnight(new Object(), PARIS);
@@ -367,6 +387,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (Object=null, DateTimeZone)
      */
+   @Test
     public void testConstructor_nullObject_DateTimeZone() throws Throwable {
         DateMidnight test = new DateMidnight((Object) null, PARIS);
         assertEquals(ISOChronology.getInstance(PARIS), test.getChronology());
@@ -376,6 +397,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (Object, DateTimeZone=null)
      */
+   @Test
     public void testConstructor_Object_nullDateTimeZone() throws Throwable {
         Date date = new Date(TEST_TIME1_UTC);
         DateMidnight test = new DateMidnight(date, (DateTimeZone) null);
@@ -386,6 +408,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (Object=null, DateTimeZone=null)
      */
+   @Test
     public void testConstructor_nullObject_nullDateTimeZone() throws Throwable {
         DateMidnight test = new DateMidnight((Object) null, (DateTimeZone) null);
         assertEquals(ISOChronology.getInstance(), test.getChronology());
@@ -395,6 +418,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (Object, DateTimeZone)
      */
+   @Test
     public void testConstructor_badconverterObject_DateTimeZone() throws Throwable {
         try {
             ConverterManager.getInstance().addInstantConverter(MockZeroNullIntegerConverter.INSTANCE);
@@ -409,6 +433,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (Object, Chronology)
      */
+   @Test
     public void testConstructor_Object_Chronology() throws Throwable {
         Date date = new Date(TEST_TIME1_UTC);
         DateMidnight test = new DateMidnight(date, GregorianChronology.getInstance());
@@ -419,6 +444,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (Object, Chronology)
      */
+   @Test
     public void testConstructor_invalidObject_Chronology() throws Throwable {
         try {
             new DateMidnight(new Object(), GregorianChronology.getInstance());
@@ -429,6 +455,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (Object=null, Chronology)
      */
+   @Test
     public void testConstructor_nullObject_Chronology() throws Throwable {
         DateMidnight test = new DateMidnight((Object) null, GregorianChronology.getInstance());
         assertEquals(GregorianChronology.getInstance(), test.getChronology());
@@ -438,6 +465,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (Object, Chronology=null)
      */
+   @Test
     public void testConstructor_Object_nullChronology() throws Throwable {
         Date date = new Date(TEST_TIME1_UTC);
         DateMidnight test = new DateMidnight(date, (Chronology) null);
@@ -448,6 +476,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (Object=null, Chronology=null)
      */
+   @Test
     public void testConstructor_nullObject_nullChronology() throws Throwable {
         DateMidnight test = new DateMidnight((Object) null, (Chronology) null);
         assertEquals(ISOChronology.getInstance(), test.getChronology());
@@ -457,6 +486,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (Object, Chronology)
      */
+   @Test
     public void testConstructor_badconverterObject_Chronology() throws Throwable {
         try {
             ConverterManager.getInstance().addInstantConverter(MockZeroNullIntegerConverter.INSTANCE);
@@ -472,6 +502,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (int, int, int)
      */
+   @Test
     public void testConstructor_int_int_int() throws Throwable {
         DateMidnight test = new DateMidnight(2002, 6, 9);
         assertEquals(ISOChronology.getInstance(), test.getChronology());
@@ -514,6 +545,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (int, int, int, DateTimeZone)
      */
+   @Test
     public void testConstructor_int_int_int_DateTimeZone() throws Throwable {
         DateMidnight test = new DateMidnight(2002, 6, 9, PARIS);
         assertEquals(ISOChronology.getInstance(PARIS), test.getChronology());
@@ -555,6 +587,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (int, int, int, DateTimeZone=null)
      */
+   @Test
     public void testConstructor_int_int_int_nullDateTimeZone() throws Throwable {
         DateMidnight test = new DateMidnight(2002, 6, 9, (DateTimeZone) null);
         assertEquals(ISOChronology.getInstance(), test.getChronology());
@@ -567,6 +600,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (int, int, int, Chronology)
      */
+   @Test
     public void testConstructor_int_int_int_Chronology() throws Throwable {
         DateMidnight test = new DateMidnight(2002, 6, 9, GregorianChronology.getInstance());
         assertEquals(GregorianChronology.getInstance(), test.getChronology());
@@ -608,6 +642,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     /**
      * Test constructor (int, int, int, Chronology=null)
      */
+   @Test
     public void testConstructor_int_int_int_nullChronology() throws Throwable {
         DateMidnight test = new DateMidnight(2002, 6, 9, (Chronology) null);
         assertEquals(ISOChronology.getInstance(), test.getChronology());

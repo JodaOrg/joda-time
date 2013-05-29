@@ -15,17 +15,20 @@
  */
 package org.joda.time;
 
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.Locale;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * This class is a Junit unit test for Partial.
  *
  * @author Stephen Colebourne
  */
-public class TestPartial_Properties extends TestCase {
+public class TestPartial_Properties extends Assert {
 
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
@@ -59,29 +62,20 @@ public class TestPartial_Properties extends TestCase {
         + 7L * DateTimeConstants.MILLIS_PER_SECOND
         + 8L;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestPartial_Properties.class);
-    }
-
-    public TestPartial_Properties(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(DateTimeZone.UTC);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeZone.setDefault(zone);
         zone = null;
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPropertyGetHour() {
         Partial test = new Partial(TYPES, VALUES);
         assertSame(test.getChronology().hourOfDay(), test.property(DateTimeFieldType.hourOfDay()).getField());
@@ -101,6 +95,7 @@ public class TestPartial_Properties extends TestCase {
         assertEquals(2, test.property(DateTimeFieldType.hourOfDay()).getMaximumShortTextLength(null));
     }
 
+   @Test
     public void testPropertyGetMaxMinValuesHour() {
         Partial test = new Partial(TYPES, VALUES);
         assertEquals(0, test.property(DateTimeFieldType.hourOfDay()).getMinimumValue());
@@ -131,6 +126,7 @@ public class TestPartial_Properties extends TestCase {
 //        check(copy, 23, 20, 30, 40);
 //    }
 //
+   @Test
     public void testPropertyAddHour() {
         Partial test = new Partial(TYPES, VALUES);
         Partial copy = test.property(DateTimeFieldType.hourOfDay()).addToCopy(9);
@@ -159,6 +155,7 @@ public class TestPartial_Properties extends TestCase {
         check(test, 10, 20, 30, 40);
     }
 
+   @Test
     public void testPropertyAddWrapFieldHour() {
         Partial test = new Partial(TYPES, VALUES);
         Partial copy = test.property(DateTimeFieldType.hourOfDay()).addWrapFieldToCopy(9);
@@ -175,6 +172,7 @@ public class TestPartial_Properties extends TestCase {
         check(copy, 19, 20, 30, 40);
     }
 
+   @Test
     public void testPropertySetHour() {
         Partial test = new Partial(TYPES, VALUES);
         Partial copy = test.property(DateTimeFieldType.hourOfDay()).setCopy(12);
@@ -191,6 +189,7 @@ public class TestPartial_Properties extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testPropertySetTextHour() {
         Partial test = new Partial(TYPES, VALUES);
         Partial copy = test.property(DateTimeFieldType.hourOfDay()).setCopy("12");
@@ -198,6 +197,7 @@ public class TestPartial_Properties extends TestCase {
         check(copy, 12, 20, 30, 40);
     }
 
+   @Test
     public void testPropertyWithMaximumValueHour() {
         Partial test = new Partial(TYPES, VALUES);
         Partial copy = test.property(DateTimeFieldType.hourOfDay()).withMaximumValue();
@@ -205,6 +205,7 @@ public class TestPartial_Properties extends TestCase {
         check(copy, 23, 20, 30, 40);
     }
 
+   @Test
     public void testPropertyWithMinimumValueHour() {
         Partial test = new Partial(TYPES, VALUES);
         Partial copy = test.property(DateTimeFieldType.hourOfDay()).withMinimumValue();
@@ -212,6 +213,7 @@ public class TestPartial_Properties extends TestCase {
         check(copy, 0, 20, 30, 40);
     }
 
+   @Test
     public void testPropertyCompareToHour() {
         Partial test1 = new Partial(TYPES, VALUES1);
         Partial test2 = new Partial(TYPES, VALUES2);
@@ -235,6 +237,7 @@ public class TestPartial_Properties extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPropertyGetMinute() {
         Partial test = new Partial(TYPES, VALUES);
         assertSame(test.getChronology().minuteOfHour(), test.property(DateTimeFieldType.minuteOfHour()).getField());
@@ -254,6 +257,7 @@ public class TestPartial_Properties extends TestCase {
         assertEquals(2, test.property(DateTimeFieldType.minuteOfHour()).getMaximumShortTextLength(null));
     }
 
+   @Test
     public void testPropertyGetMaxMinValuesMinute() {
         Partial test = new Partial(TYPES, VALUES);
         assertEquals(0, test.property(DateTimeFieldType.minuteOfHour()).getMinimumValue());
@@ -302,6 +306,7 @@ public class TestPartial_Properties extends TestCase {
 //        check(copy, 23, 59, 30, 40);
 //    }
 
+   @Test
     public void testPropertyAddMinute() {
         Partial test = new Partial(TYPES, VALUES);
         Partial copy = test.property(DateTimeFieldType.minuteOfHour()).addToCopy(9);
@@ -348,6 +353,7 @@ public class TestPartial_Properties extends TestCase {
         check(test, 10, 20, 30, 40);
     }
 
+   @Test
     public void testPropertyAddWrapFieldMinute() {
         Partial test = new Partial(TYPES, VALUES);
         Partial copy = test.property(DateTimeFieldType.minuteOfHour()).addWrapFieldToCopy(9);
@@ -361,6 +367,7 @@ public class TestPartial_Properties extends TestCase {
         check(copy, 10, 33, 30, 40);
     }
 
+   @Test
     public void testPropertySetMinute() {
         Partial test = new Partial(TYPES, VALUES);
         Partial copy = test.property(DateTimeFieldType.minuteOfHour()).setCopy(12);
@@ -377,6 +384,7 @@ public class TestPartial_Properties extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testPropertySetTextMinute() {
         Partial test = new Partial(TYPES, VALUES);
         Partial copy = test.property(DateTimeFieldType.minuteOfHour()).setCopy("12");
@@ -384,6 +392,7 @@ public class TestPartial_Properties extends TestCase {
         check(copy, 10, 12, 30, 40);
     }
 
+   @Test
     public void testPropertyCompareToMinute() {
         Partial test1 = new Partial(TYPES, VALUES1);
         Partial test2 = new Partial(TYPES, VALUES2);

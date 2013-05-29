@@ -15,25 +15,23 @@
  */
 package org.joda.time.chrono;
 
+import org.joda.time.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.joda.time.Chronology;
-import org.joda.time.DateMidnight;
-import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeUtils;
-import org.joda.time.DateTimeZone;
-import org.joda.time.YearMonthDay;
 
 /**
  * This class is a Junit unit test for GregorianChronology.
  *
  * @author Stephen Colebourne
  */
-public class TestGregorianChronology extends TestCase {
+public class TestGregorianChronology extends Assert {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
@@ -51,19 +49,8 @@ public class TestGregorianChronology extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestGregorianChronology.class);
-    }
-
-    public TestGregorianChronology(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -73,7 +60,8 @@ public class TestGregorianChronology extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -84,16 +72,19 @@ public class TestGregorianChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactoryUTC() {
         assertEquals(DateTimeZone.UTC, GregorianChronology.getInstanceUTC().getZone());
         assertSame(GregorianChronology.class, GregorianChronology.getInstanceUTC().getClass());
     }
 
+   @Test
     public void testFactory() {
         assertEquals(LONDON, GregorianChronology.getInstance().getZone());
         assertSame(GregorianChronology.class, GregorianChronology.getInstance().getClass());
     }
 
+   @Test
     public void testFactory_Zone() {
         assertEquals(TOKYO, GregorianChronology.getInstance(TOKYO).getZone());
         assertEquals(PARIS, GregorianChronology.getInstance(PARIS).getZone());
@@ -101,6 +92,7 @@ public class TestGregorianChronology extends TestCase {
         assertSame(GregorianChronology.class, GregorianChronology.getInstance(TOKYO).getClass());
     }
 
+   @Test
     public void testFactory_Zone_int() {
         GregorianChronology chrono = GregorianChronology.getInstance(TOKYO, 2);
         assertEquals(TOKYO, chrono.getZone());
@@ -117,6 +109,7 @@ public class TestGregorianChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testEquality() {
         assertSame(GregorianChronology.getInstance(TOKYO), GregorianChronology.getInstance(TOKYO));
         assertSame(GregorianChronology.getInstance(LONDON), GregorianChronology.getInstance(LONDON));
@@ -125,6 +118,7 @@ public class TestGregorianChronology extends TestCase {
         assertSame(GregorianChronology.getInstance(), GregorianChronology.getInstance(LONDON));
     }
 
+   @Test
     public void testWithUTC() {
         assertSame(GregorianChronology.getInstanceUTC(), GregorianChronology.getInstance(LONDON).withUTC());
         assertSame(GregorianChronology.getInstanceUTC(), GregorianChronology.getInstance(TOKYO).withUTC());
@@ -132,6 +126,7 @@ public class TestGregorianChronology extends TestCase {
         assertSame(GregorianChronology.getInstanceUTC(), GregorianChronology.getInstance().withUTC());
     }
 
+   @Test
     public void testWithZone() {
         assertSame(GregorianChronology.getInstance(TOKYO), GregorianChronology.getInstance(TOKYO).withZone(TOKYO));
         assertSame(GregorianChronology.getInstance(LONDON), GregorianChronology.getInstance(TOKYO).withZone(LONDON));
@@ -141,6 +136,7 @@ public class TestGregorianChronology extends TestCase {
         assertSame(GregorianChronology.getInstance(PARIS), GregorianChronology.getInstanceUTC().withZone(PARIS));
     }
 
+   @Test
     public void testToString() {
         assertEquals("GregorianChronology[Europe/London]", GregorianChronology.getInstance(LONDON).toString());
         assertEquals("GregorianChronology[Asia/Tokyo]", GregorianChronology.getInstance(TOKYO).toString());
@@ -150,6 +146,7 @@ public class TestGregorianChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testDurationFields() {
         assertEquals("eras", GregorianChronology.getInstance().eras().getName());
         assertEquals("centuries", GregorianChronology.getInstance().centuries().getName());
@@ -215,6 +212,7 @@ public class TestGregorianChronology extends TestCase {
         assertEquals(true, GregorianChronology.getInstance(gmt).millis().isPrecise());
     }
 
+   @Test
     public void testDateFields() {
         assertEquals("era", GregorianChronology.getInstance().era().getName());
         assertEquals("centuryOfEra", GregorianChronology.getInstance().centuryOfEra().getName());
@@ -243,6 +241,7 @@ public class TestGregorianChronology extends TestCase {
         assertEquals(true, GregorianChronology.getInstance().dayOfWeek().isSupported());
     }
 
+   @Test
     public void testTimeFields() {
         assertEquals("halfdayOfDay", GregorianChronology.getInstance().halfdayOfDay().getName());
         assertEquals("clockhourOfHalfday", GregorianChronology.getInstance().clockhourOfHalfday().getName());
@@ -269,6 +268,7 @@ public class TestGregorianChronology extends TestCase {
         assertEquals(true, GregorianChronology.getInstance().millisOfSecond().isSupported());
     }
 
+   @Test
     public void testMaximumValue() {
         YearMonthDay ymd1 = new YearMonthDay(1999, DateTimeConstants.FEBRUARY, 1);
         DateMidnight dm1 = new DateMidnight(1999, DateTimeConstants.FEBRUARY, 1);

@@ -15,6 +15,15 @@
  */
 package org.joda.time;
 
+import org.joda.time.base.AbstractInterval;
+import org.joda.time.chrono.CopticChronology;
+import org.joda.time.chrono.GJChronology;
+import org.joda.time.chrono.ISOChronology;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -22,20 +31,14 @@ import java.io.ObjectOutputStream;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.joda.time.base.AbstractInterval;
-import org.joda.time.chrono.CopticChronology;
-import org.joda.time.chrono.GJChronology;
-import org.joda.time.chrono.ISOChronology;
 
 /**
  * This class is a Junit unit test for Instant.
  *
  * @author Stephen Colebourne
  */
-public class TestMutableInterval_Basics extends TestCase {
+public class TestMutableInterval_Basics extends Assert {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
@@ -72,19 +75,8 @@ public class TestMutableInterval_Basics extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestMutableInterval_Basics.class);
-    }
-
-    public TestMutableInterval_Basics(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -94,7 +86,8 @@ public class TestMutableInterval_Basics extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -105,6 +98,7 @@ public class TestMutableInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testTest() {
         assertEquals("2002-06-09T00:00:00.000Z", new Instant(TEST_TIME_NOW).toString());
         assertEquals("2002-04-05T12:24:00.000Z", new Instant(TEST_TIME1).toString());
@@ -112,6 +106,7 @@ public class TestMutableInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetMillis() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         assertEquals(TEST_TIME1, test.getStartMillis());
@@ -122,17 +117,20 @@ public class TestMutableInterval_Basics extends TestCase {
         assertEquals(TEST_TIME2 - TEST_TIME1, test.toDuration().getMillis());
     }
 
+   @Test
     public void testGetDuration1() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         assertEquals(TEST_TIME2 - TEST_TIME1, test.toDurationMillis());
         assertEquals(TEST_TIME2 - TEST_TIME1, test.toDuration().getMillis());
     }
 
+   @Test
     public void testGetDuration2() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME1);
         assertSame(Duration.ZERO, test.toDuration());
     }
 
+   @Test
     public void testEqualsHashCode() {
         MutableInterval test1 = new MutableInterval(TEST_TIME1, TEST_TIME2);
         MutableInterval test2 = new MutableInterval(TEST_TIME1, TEST_TIME2);
@@ -179,7 +177,7 @@ public class TestMutableInterval_Basics extends TestCase {
     
     class MockInterval extends AbstractInterval {
         public MockInterval() {
-            super();
+
         }
         public Chronology getChronology() {
             return ISOChronology.getInstance();
@@ -193,6 +191,7 @@ public class TestMutableInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testContains_long() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         assertEquals(true, test.contains(TEST_TIME1));
@@ -202,6 +201,7 @@ public class TestMutableInterval_Basics extends TestCase {
         assertEquals(true, test.contains(TEST_TIME2 - 1));
     }
 
+   @Test
     public void testContainsNow() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         
@@ -217,6 +217,7 @@ public class TestMutableInterval_Basics extends TestCase {
         assertEquals(true, test.containsNow());
     }
 
+   @Test
     public void testContains_RI() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         assertEquals(true, test.contains(new Instant(TEST_TIME1)));
@@ -228,6 +229,7 @@ public class TestMutableInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testContains_RInterval() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         
@@ -260,6 +262,7 @@ public class TestMutableInterval_Basics extends TestCase {
         assertEquals(true, test.contains((ReadableInterval) null));
     }
 
+   @Test
     public void testOverlaps_RInterval() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         
@@ -295,6 +298,7 @@ public class TestMutableInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testIsBefore_long() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         
@@ -307,6 +311,7 @@ public class TestMutableInterval_Basics extends TestCase {
         assertEquals(true, test.isBefore(TEST_TIME2 + 1));
     }
 
+   @Test
     public void testIsBeforeNow() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         
@@ -318,6 +323,7 @@ public class TestMutableInterval_Basics extends TestCase {
         assertEquals(true, test.isBeforeNow());
     }
 
+   @Test
     public void testIsBefore_RI() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         
@@ -332,6 +338,7 @@ public class TestMutableInterval_Basics extends TestCase {
         assertEquals(false, test.isBefore((ReadableInstant) null));
     }
 
+   @Test
     public void testIsBefore_RInterval() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         
@@ -347,6 +354,7 @@ public class TestMutableInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testIsAfter_long() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         
@@ -359,6 +367,7 @@ public class TestMutableInterval_Basics extends TestCase {
         assertEquals(false, test.isAfter(TEST_TIME2 + 1));
     }
 
+   @Test
     public void testIsAfterNow() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         
@@ -370,6 +379,7 @@ public class TestMutableInterval_Basics extends TestCase {
         assertEquals(false, test.isAfterNow());
     }
 
+   @Test
     public void testIsAfter_RI() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         
@@ -384,6 +394,7 @@ public class TestMutableInterval_Basics extends TestCase {
         assertEquals(false, test.isAfter((ReadableInstant) null));
     }
 
+   @Test
     public void testIsAfter_RInterval() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         
@@ -399,6 +410,7 @@ public class TestMutableInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToInterval1() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         Interval result = test.toInterval();
@@ -406,6 +418,7 @@ public class TestMutableInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToMutableInterval1() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         MutableInterval result = test.toMutableInterval();
@@ -414,6 +427,7 @@ public class TestMutableInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToPeriod() {
         DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10, COPTIC_PARIS);
         DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18, COPTIC_PARIS);
@@ -425,6 +439,7 @@ public class TestMutableInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToPeriod_PeriodType1() {
         DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10, COPTIC_PARIS);
         DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18, COPTIC_PARIS);
@@ -435,6 +450,7 @@ public class TestMutableInterval_Basics extends TestCase {
         assertEquals(expected, test);
     }
 
+   @Test
     public void testToPeriod_PeriodType2() {
         DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10);
         DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18);
@@ -446,6 +462,7 @@ public class TestMutableInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSerialization() throws Exception {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         
@@ -464,6 +481,7 @@ public class TestMutableInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10, DateTimeZone.UTC);
         DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18, DateTimeZone.UTC);
@@ -472,12 +490,14 @@ public class TestMutableInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testCopy() {
         MutableInterval test = new MutableInterval(123L, 456L, COPTIC_PARIS);
         MutableInterval cloned = test.copy();
         assertEquals(test, cloned);
         assertNotSame(test, cloned);
     }
+   @Test
     public void testClone() {
         MutableInterval test = new MutableInterval(123L, 456L, COPTIC_PARIS);
         MutableInterval cloned = (MutableInterval) test.clone();

@@ -15,32 +15,29 @@
  */
 package org.joda.time.convert;
 
+import org.joda.time.*;
+import org.joda.time.chrono.BuddhistChronology;
+import org.joda.time.chrono.ISOChronology;
+import org.joda.time.chrono.JulianChronology;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Locale;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.joda.time.Chronology;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.MutableInterval;
-import org.joda.time.MutablePeriod;
-import org.joda.time.PeriodType;
-import org.joda.time.TimeOfDay;
-import org.joda.time.chrono.BuddhistChronology;
-import org.joda.time.chrono.ISOChronology;
-import org.joda.time.chrono.JulianChronology;
 
 /**
  * This class is a Junit unit test for StringConverter.
  *
  * @author Stephen Colebourne
  */
-public class TestStringConverter extends TestCase {
+public class TestStringConverter extends Assert {
 
     private static final DateTimeZone ONE_HOUR = DateTimeZone.forOffsetHours(1);
     private static final DateTimeZone SIX = DateTimeZone.forOffsetHours(6);
@@ -58,19 +55,8 @@ public class TestStringConverter extends TestCase {
     private DateTimeZone zone = null;
     private Locale locale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestStringConverter.class);
-    }
-
-    public TestStringConverter(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         zone = DateTimeZone.getDefault();
         locale = Locale.getDefault();
         DateTimeZone.setDefault(LONDON);
@@ -80,13 +66,15 @@ public class TestStringConverter extends TestCase {
         ISO = ISOChronology.getInstance();
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeZone.setDefault(zone);
         Locale.setDefault(locale);
         zone = null;
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSingleton() throws Exception {
         Class cls = StringConverter.class;
         assertEquals(false, Modifier.isPublic(cls.getModifiers()));
@@ -104,11 +92,13 @@ public class TestStringConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSupportedType() throws Exception {
         assertEquals(String.class, StringConverter.INSTANCE.getSupportedType());
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetInstantMillis_Object() throws Exception {
         DateTime dt = new DateTime(2004, 6, 9, 12, 24, 48, 501, EIGHT);
         assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24:48.501+08:00", ISO_EIGHT));
@@ -153,6 +143,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24:48.501", ISO));
     }
 
+   @Test
     public void testGetInstantMillis_Object_Zone() throws Exception {
         DateTime dt = new DateTime(2004, 6, 9, 12, 24, 48, 501, PARIS);
         assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24:48.501+02:00", ISO_PARIS));
@@ -167,11 +158,13 @@ public class TestStringConverter extends TestCase {
         assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24:48.501", ISO_LONDON));
     }
 
+   @Test
     public void testGetInstantMillis_Object_Chronology() throws Exception {
         DateTime dt = new DateTime(2004, 6, 9, 12, 24, 48, 501, JulianChronology.getInstance(LONDON));
         assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24:48.501+01:00", JULIAN));
     }
 
+   @Test
     public void testGetInstantMillisInvalid() {
         try {
             StringConverter.INSTANCE.getInstantMillis("", (Chronology) null);
@@ -184,6 +177,7 @@ public class TestStringConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetChronology_Object_Zone() throws Exception {
         assertEquals(ISOChronology.getInstance(PARIS), StringConverter.INSTANCE.getChronology("2004-06-09T12:24:48.501+01:00", PARIS));
         assertEquals(ISOChronology.getInstance(PARIS), StringConverter.INSTANCE.getChronology("2004-06-09T12:24:48.501", PARIS));
@@ -191,6 +185,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(ISOChronology.getInstance(LONDON), StringConverter.INSTANCE.getChronology("2004-06-09T12:24:48.501", (DateTimeZone) null));
     }
 
+   @Test
     public void testGetChronology_Object_Chronology() throws Exception {
         assertEquals(JulianChronology.getInstance(LONDON), StringConverter.INSTANCE.getChronology("2004-06-09T12:24:48.501+01:00", JULIAN));
         assertEquals(JulianChronology.getInstance(LONDON), StringConverter.INSTANCE.getChronology("2004-06-09T12:24:48.501", JULIAN));
@@ -199,6 +194,7 @@ public class TestStringConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetPartialValues() throws Exception {
         TimeOfDay tod = new TimeOfDay();
         int[] expected = new int[] {3, 4, 5, 6};
@@ -207,12 +203,14 @@ public class TestStringConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetDateTime() throws Exception {
         DateTime base = new DateTime(2004, 6, 9, 12, 24, 48, 501, PARIS);
         DateTime test = new DateTime(base.toString(), PARIS);
         assertEquals(base, test);
     }
 
+   @Test
     public void testGetDateTime1() throws Exception {
         DateTime test = new DateTime("2004-06-09T12:24:48.501+01:00");
         assertEquals(2004, test.getYear());
@@ -225,6 +223,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(LONDON, test.getZone());
     }
 
+   @Test
     public void testGetDateTime2() throws Exception {
         DateTime test = new DateTime("2004-06-09T12:24:48.501");
         assertEquals(2004, test.getYear());
@@ -237,6 +236,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(LONDON, test.getZone());
     }
 
+   @Test
     public void testGetDateTime3() throws Exception {
         DateTime test = new DateTime("2004-06-09T12:24:48.501+02:00", PARIS);
         assertEquals(2004, test.getYear());
@@ -249,6 +249,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(PARIS, test.getZone());
     }
 
+   @Test
     public void testGetDateTime4() throws Exception {
         DateTime test = new DateTime("2004-06-09T12:24:48.501", PARIS);
         assertEquals(2004, test.getYear());
@@ -261,6 +262,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(PARIS, test.getZone());
     }
 
+   @Test
     public void testGetDateTime5() throws Exception {
         DateTime test = new DateTime("2004-06-09T12:24:48.501+02:00", JulianChronology.getInstance(PARIS));
         assertEquals(2004, test.getYear());
@@ -273,6 +275,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(PARIS, test.getZone());
     }
 
+   @Test
     public void testGetDateTime6() throws Exception {
         DateTime test = new DateTime("2004-06-09T12:24:48.501", JulianChronology.getInstance(PARIS));
         assertEquals(2004, test.getYear());
@@ -286,6 +289,7 @@ public class TestStringConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetDurationMillis_Object1() throws Exception {
         long millis = StringConverter.INSTANCE.getDurationMillis("PT12.345S");
         assertEquals(12345, millis);
@@ -315,6 +319,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(12345, millis);
     }
 
+   @Test
     public void testGetDurationMillis_Object2() throws Exception {
         try {
             StringConverter.INSTANCE.getDurationMillis("P2Y6M9DXYZ");
@@ -355,11 +360,13 @@ public class TestStringConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetPeriodType_Object() throws Exception {
         assertEquals(PeriodType.standard(),
             StringConverter.INSTANCE.getPeriodType("P2Y6M9D"));
     }
 
+   @Test
     public void testSetIntoPeriod_Object1() throws Exception {
         MutablePeriod m = new MutablePeriod(PeriodType.yearMonthDayTime());
         StringConverter.INSTANCE.setInto(m, "P2Y6M9DT12H24M48S", null);
@@ -372,6 +379,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(0, m.getMillis());
     }
 
+   @Test
     public void testSetIntoPeriod_Object2() throws Exception {
         MutablePeriod m = new MutablePeriod(PeriodType.yearWeekDayTime());
         StringConverter.INSTANCE.setInto(m, "P2Y4W3DT12H24M48S", null);
@@ -384,6 +392,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(0, m.getMillis());
     }        
 
+   @Test
     public void testSetIntoPeriod_Object3() throws Exception {
         MutablePeriod m = new MutablePeriod(PeriodType.yearWeekDayTime());
         StringConverter.INSTANCE.setInto(m, "P2Y4W3DT12H24M48.034S", null);
@@ -396,6 +405,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(34, m.getMillis());
     }        
 
+   @Test
     public void testSetIntoPeriod_Object4() throws Exception {
         MutablePeriod m = new MutablePeriod(PeriodType.yearWeekDayTime());
         StringConverter.INSTANCE.setInto(m, "P2Y4W3DT12H24M.056S", null);
@@ -408,6 +418,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(56, m.getMillis());
     }        
 
+   @Test
     public void testSetIntoPeriod_Object5() throws Exception {
         MutablePeriod m = new MutablePeriod(PeriodType.yearWeekDayTime());
         StringConverter.INSTANCE.setInto(m, "P2Y4W3DT12H24M56.S", null);
@@ -420,6 +431,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(0, m.getMillis());
     }        
 
+   @Test
     public void testSetIntoPeriod_Object6() throws Exception {
         MutablePeriod m = new MutablePeriod(PeriodType.yearWeekDayTime());
         StringConverter.INSTANCE.setInto(m, "P2Y4W3DT12H24M56.1234567S", null);
@@ -432,6 +444,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(123, m.getMillis());
     }        
 
+   @Test
     public void testSetIntoPeriod_Object7() throws Exception {
         MutablePeriod m = new MutablePeriod(1, 0, 1, 1, 1, 1, 1, 1, PeriodType.yearWeekDayTime());
         StringConverter.INSTANCE.setInto(m, "P2Y4W3D", null);
@@ -444,6 +457,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(0, m.getMillis());
     }        
 
+   @Test
     public void testSetIntoPeriod_Object8() throws Exception {
         MutablePeriod m = new MutablePeriod();
         try {
@@ -467,10 +481,12 @@ public class TestStringConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testIsReadableInterval_Object_Chronology() throws Exception {
         assertEquals(false, StringConverter.INSTANCE.isReadableInterval("", null));
     }
 
+   @Test
     public void testSetIntoInterval_Object_Chronology1() throws Exception {
         MutableInterval m = new MutableInterval(-1000L, 1000L);
         StringConverter.INSTANCE.setInto(m, "2004-06-09/P1Y2M", null);
@@ -479,6 +495,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(ISOChronology.getInstance(), m.getChronology());
     }
 
+   @Test
     public void testSetIntoInterval_Object_Chronology2() throws Exception {
         MutableInterval m = new MutableInterval(-1000L, 1000L);
         StringConverter.INSTANCE.setInto(m, "P1Y2M/2004-06-09", null);
@@ -487,6 +504,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(ISOChronology.getInstance(), m.getChronology());
     }
 
+   @Test
     public void testSetIntoInterval_Object_Chronology3() throws Exception {
         MutableInterval m = new MutableInterval(-1000L, 1000L);
         StringConverter.INSTANCE.setInto(m, "2003-08-09/2004-06-09", null);
@@ -495,6 +513,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(ISOChronology.getInstance(), m.getChronology());
     }
 
+   @Test
     public void testSetIntoInterval_Object_Chronology4() throws Exception {
         MutableInterval m = new MutableInterval(-1000L, 1000L);
         StringConverter.INSTANCE.setInto(m, "2004-06-09T+06:00/P1Y2M", null);
@@ -503,6 +522,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(ISOChronology.getInstance(), m.getChronology());
     }
 
+   @Test
     public void testSetIntoInterval_Object_Chronology5() throws Exception {
         MutableInterval m = new MutableInterval(-1000L, 1000L);
         StringConverter.INSTANCE.setInto(m, "P1Y2M/2004-06-09T+06:00", null);
@@ -511,6 +531,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(ISOChronology.getInstance(), m.getChronology());
     }
 
+   @Test
     public void testSetIntoInterval_Object_Chronology6() throws Exception {
         MutableInterval m = new MutableInterval(-1000L, 1000L);
         StringConverter.INSTANCE.setInto(m, "2003-08-09T+06:00/2004-06-09T+07:00", null);
@@ -519,6 +540,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(ISOChronology.getInstance(), m.getChronology());
     }
 
+   @Test
     public void testSetIntoInterval_Object_Chronology7() throws Exception {
         MutableInterval m = new MutableInterval(-1000L, 1000L);
         StringConverter.INSTANCE.setInto(m, "2003-08-09/2004-06-09", BuddhistChronology.getInstance());
@@ -527,6 +549,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(BuddhistChronology.getInstance(), m.getChronology());
     }
 
+   @Test
     public void testSetIntoInterval_Object_Chronology8() throws Exception {
         MutableInterval m = new MutableInterval(-1000L, 1000L);
         StringConverter.INSTANCE.setInto(m, "2003-08-09T+06:00/2004-06-09T+07:00", BuddhistChronology.getInstance(EIGHT));
@@ -535,6 +558,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(BuddhistChronology.getInstance(EIGHT), m.getChronology());
     }
 
+   @Test
     public void testSetIntoIntervalEx_Object_Chronology1() throws Exception {
         MutableInterval m = new MutableInterval(-1000L, 1000L);
         try {
@@ -543,6 +567,7 @@ public class TestStringConverter extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testSetIntoIntervalEx_Object_Chronology2() throws Exception {
         MutableInterval m = new MutableInterval(-1000L, 1000L);
         try {
@@ -551,6 +576,7 @@ public class TestStringConverter extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testSetIntoIntervalEx_Object_Chronology3() throws Exception {
         MutableInterval m = new MutableInterval(-1000L, 1000L);
         try {
@@ -559,6 +585,7 @@ public class TestStringConverter extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testSetIntoIntervalEx_Object_Chronology4() throws Exception {
         MutableInterval m = new MutableInterval(-1000L, 1000L);
         try {
@@ -567,6 +594,7 @@ public class TestStringConverter extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testSetIntoIntervalEx_Object_Chronology5() throws Exception {
         MutableInterval m = new MutableInterval(-1000L, 1000L);
         try {
@@ -576,6 +604,7 @@ public class TestStringConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         assertEquals("Converter[java.lang.String]", StringConverter.INSTANCE.toString());
     }

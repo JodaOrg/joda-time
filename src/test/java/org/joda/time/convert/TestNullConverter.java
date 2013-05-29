@@ -15,6 +15,16 @@
  */
 package org.joda.time.convert;
 
+import org.joda.time.*;
+import org.joda.time.chrono.CopticChronology;
+import org.joda.time.chrono.GJChronology;
+import org.joda.time.chrono.ISOChronology;
+import org.joda.time.chrono.JulianChronology;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -22,28 +32,14 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.joda.time.Chronology;
-import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeUtils;
-import org.joda.time.DateTimeZone;
-import org.joda.time.MutableInterval;
-import org.joda.time.MutablePeriod;
-import org.joda.time.PeriodType;
-import org.joda.time.TimeOfDay;
-import org.joda.time.chrono.CopticChronology;
-import org.joda.time.chrono.GJChronology;
-import org.joda.time.chrono.ISOChronology;
-import org.joda.time.chrono.JulianChronology;
 
 /**
  * This class is a Junit unit test for NullConverter.
  *
  * @author Stephen Colebourne
  */
-public class TestNullConverter extends TestCase {
+public class TestNullConverter extends Assert {
 
     private long TEST_TIME_NOW =
             20 * DateTimeConstants.MILLIS_PER_DAY
@@ -63,19 +59,8 @@ public class TestNullConverter extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestNullConverter.class);
-    }
-
-    public TestNullConverter(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -88,7 +73,8 @@ public class TestNullConverter extends TestCase {
         JULIAN = JulianChronology.getInstance();
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -99,6 +85,7 @@ public class TestNullConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSingleton() throws Exception {
         Class cls = NullConverter.class;
         assertEquals(false, Modifier.isPublic(cls.getModifiers()));
@@ -116,28 +103,33 @@ public class TestNullConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSupportedType() throws Exception {
         assertEquals(null, NullConverter.INSTANCE.getSupportedType());
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetInstantMillis_Object_Chronology() throws Exception {
         assertEquals(TEST_TIME_NOW, NullConverter.INSTANCE.getInstantMillis(null, JULIAN));
         assertEquals(TEST_TIME_NOW, NullConverter.INSTANCE.getInstantMillis(null, (Chronology) null));
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetChronology_Object_Zone() throws Exception {
         assertEquals(ISO_PARIS, NullConverter.INSTANCE.getChronology(null, PARIS));
         assertEquals(ISO, NullConverter.INSTANCE.getChronology(null, (DateTimeZone) null));
     }
 
+   @Test
     public void testGetChronology_Object_Chronology() throws Exception {
         assertEquals(JULIAN, NullConverter.INSTANCE.getChronology(null, JULIAN));
         assertEquals(ISO, NullConverter.INSTANCE.getChronology(null, (Chronology) null));
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetPartialValues() throws Exception {
         TimeOfDay tod = new TimeOfDay();
         int[] expected = new int[] {10 + 1, 20, 30, 40}; // now
@@ -146,16 +138,19 @@ public class TestNullConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetDurationMillis_Object() throws Exception {
         assertEquals(0L, NullConverter.INSTANCE.getDurationMillis(null));
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetPeriodType_Object() throws Exception {
         assertEquals(PeriodType.standard(),
             NullConverter.INSTANCE.getPeriodType(null));
     }
 
+   @Test
     public void testSetInto_Object() throws Exception {
         MutablePeriod m = new MutablePeriod(PeriodType.millis());
         NullConverter.INSTANCE.setInto(m, null, null);
@@ -163,10 +158,12 @@ public class TestNullConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testIsReadableInterval_Object_Chronology() throws Exception {
         assertEquals(false, NullConverter.INSTANCE.isReadableInterval(null, null));
     }
 
+   @Test
     public void testSetInto_Object_Chronology1() throws Exception {
         MutableInterval m = new MutableInterval(1000L, 2000L, GJChronology.getInstance());
         NullConverter.INSTANCE.setInto(m, null, null);
@@ -175,6 +172,7 @@ public class TestNullConverter extends TestCase {
         assertEquals(ISOChronology.getInstance(), m.getChronology());
     }
 
+   @Test
     public void testSetInto_Object_Chronology2() throws Exception {
         MutableInterval m = new MutableInterval(1000L, 2000L, GJChronology.getInstance());
         NullConverter.INSTANCE.setInto(m, null, CopticChronology.getInstance());
@@ -184,6 +182,7 @@ public class TestNullConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         assertEquals("Converter[null]", NullConverter.INSTANCE.toString());
     }

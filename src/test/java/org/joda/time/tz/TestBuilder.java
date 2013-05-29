@@ -15,32 +15,27 @@
  */
 package org.joda.time.tz;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+
 
 /**
  * Test cases for DateTimeZoneBuilder.
  *
  * @author Brian S O'Neill
  */
-public class TestBuilder extends TestCase {
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestBuilder.class);
-    }
-
+public class TestBuilder extends Assert {
     static final DateTimeFormatter OFFSET_FORMATTER = new DateTimeFormatterBuilder()
         .appendTimeZoneOffset(null, true, 2, 4)
         .toFormatter();
@@ -193,25 +188,25 @@ public class TestBuilder extends TestCase {
 
     private DateTimeZone originalDateTimeZone = null;
 
-    public TestBuilder(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         originalDateTimeZone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(DateTimeZone.UTC);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeZone.setDefault(originalDateTimeZone);
     }
 
+   @Test
     public void testID() {
         DateTimeZone tz = buildAmericaLosAngeles();
         assertEquals("America/Los_Angeles", tz.getID());
         assertEquals(false, tz.isFixed());
     }
 
+   @Test
     public void testForwardTransitions() {
         DateTimeZone tz = buildAmericaLosAngeles();
         testForwardTransitions(tz, AMERICA_LOS_ANGELES_DATA);
@@ -250,6 +245,7 @@ public class TestBuilder extends TestCase {
         }
     }
 
+   @Test
     public void testReverseTransitions() {
         DateTimeZone tz = buildAmericaLosAngeles();
         testReverseTransitions(tz, AMERICA_LOS_ANGELES_DATA);
@@ -274,6 +270,7 @@ public class TestBuilder extends TestCase {
         }
     }
 
+   @Test
     public void testSerialization() throws IOException {
         DateTimeZone tz = testSerialization
             (buildAmericaLosAngelesBuilder(), "America/Los_Angeles");
@@ -294,6 +291,7 @@ public class TestBuilder extends TestCase {
         return tz;
     }
 
+   @Test
     public void testFixed() throws IOException {
         DateTimeZoneBuilder builder = new DateTimeZoneBuilder()
             .setStandardOffset(3600000)

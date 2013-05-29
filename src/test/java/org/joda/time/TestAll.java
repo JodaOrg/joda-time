@@ -15,9 +15,9 @@
  */
 package org.joda.time;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+
 
 /**
  * Entry point for all tests in this package.
@@ -26,117 +26,104 @@ import junit.framework.TestSuite;
  * 
  * @author Stephen Colebourne
  */
-public class TestAll extends TestCase {
+@RunWith( Suite.class )
+@Suite.SuiteClasses( {
+        TestChronology.class,
+        TestDateTimeFieldType.class,
+        TestDurationFieldType.class,
 
-    public TestAll(String testName) {
-        super(testName);
-    }
+        TestInstant_Constructors.class,
+        TestInstant_Basics.class,
 
-    public static Test suite() {
-        TestSuite suite = new TestSuite();
-        suite.addTest(TestChronology.suite());
-        suite.addTest(TestDateTimeFieldType.suite());
-        suite.addTest(TestDurationFieldType.suite());
-        
-        suite.addTest(TestInstant_Constructors.suite());
-        suite.addTest(TestInstant_Basics.suite());
-        
-        suite.addTest(TestDateTime_Constructors.suite());
-        suite.addTest(TestDateTime_Basics.suite());
-        suite.addTest(TestDateTime_Properties.suite());
-        
-        suite.addTest(TestMutableDateTime_Constructors.suite());
-        suite.addTest(TestMutableDateTime_Basics.suite());
-        suite.addTest(TestMutableDateTime_Sets.suite());
-        suite.addTest(TestMutableDateTime_Adds.suite());
-        suite.addTest(TestMutableDateTime_Properties.suite());
-        
-        suite.addTest(TestDateMidnight_Constructors.suite());
-        suite.addTest(TestDateMidnight_Basics.suite());
-        suite.addTest(TestDateMidnight_Properties.suite());
-        
-        suite.addTest(TestDuration_Constructors.suite());
-        suite.addTest(TestDuration_Basics.suite());
-        
-        suite.addTest(TestInterval_Constructors.suite());
-        suite.addTest(TestInterval_Basics.suite());
-        
-        suite.addTest(TestLocalDateTime_Constructors.suite());
-        suite.addTest(TestLocalDateTime_Basics.suite());
-        suite.addTest(TestLocalDateTime_Properties.suite());
-        
-        suite.addTest(TestLocalDate_Constructors.suite());
-        suite.addTest(TestLocalDate_Basics.suite());
-        suite.addTest(TestLocalDate_Properties.suite());
-        
-        suite.addTest(TestLocalTime_Constructors.suite());
-        suite.addTest(TestLocalTime_Basics.suite());
-        suite.addTest(TestLocalTime_Properties.suite());
-        
-        suite.addTest(TestMutableInterval_Constructors.suite());
-        suite.addTest(TestMutableInterval_Basics.suite());
-        suite.addTest(TestMutableInterval_Updates.suite());
-        
-        suite.addTest(TestPeriod_Constructors.suite());
-        suite.addTest(TestPeriod_Basics.suite());
-        
-        suite.addTest(TestMutablePeriod_Constructors.suite());
-        suite.addTest(TestMutablePeriod_Basics.suite());
-        suite.addTest(TestMutablePeriod_Updates.suite());
-        
-        suite.addTest(TestBaseSingleFieldPeriod.suite());
-        suite.addTest(TestYears.suite());
-        suite.addTest(TestMonths.suite());
-        suite.addTest(TestWeeks.suite());
-        suite.addTest(TestDays.suite());
-        suite.addTest(TestHours.suite());
-        suite.addTest(TestMinutes.suite());
-        suite.addTest(TestSeconds.suite());
-        
-        suite.addTest(TestTimeOfDay_Basics.suite());
-        suite.addTest(TestTimeOfDay_Constructors.suite());
-        suite.addTest(TestTimeOfDay_Properties.suite());
-        
-        suite.addTest(TestYearMonthDay_Basics.suite());
-        suite.addTest(TestYearMonthDay_Constructors.suite());
-        suite.addTest(TestYearMonthDay_Properties.suite());
-        
-        suite.addTest(TestYearMonth_Basics.suite());
-        suite.addTest(TestYearMonth_Constructors.suite());
-        suite.addTest(TestYearMonth_Properties.suite());
-        
-        suite.addTest(TestMonthDay_Basics.suite());
-        suite.addTest(TestMonthDay_Constructors.suite());
-        suite.addTest(TestMonthDay_Properties.suite());
-        
-        suite.addTest(TestPartial_Basics.suite());
-        suite.addTest(TestPartial_Constructors.suite());
-        suite.addTest(TestPartial_Properties.suite());
-        suite.addTest(TestPartial_Match.suite());
-        
-        suite.addTest(TestAbstractPartial.suite());
-        suite.addTest(TestBasePartial.suite());
-        
-        suite.addTest(TestDateTimeComparator.suite());
-        suite.addTest(TestDateTimeConstants.suite());
-        suite.addTest(TestDateTimeUtils.suite());
-        suite.addTest(TestDateTimeZone.suite());
-        suite.addTest(TestDateTimeZoneCutover.suite());
-        suite.addTest(TestPeriodType.suite());
-//        suite.addTest(TestParseISO.suite());
-        suite.addTest(TestDurationField.suite());
-        
-        suite.addTest(TestStringConvert.suite());
-        suite.addTest(TestSerialization.suite());
-        suite.addTest(TestIllegalFieldValueException.suite());
-        return suite;
-    }
+        TestDateTime_Constructors.class,
+        TestDateTime_Basics.class,
+        TestDateTime_Properties.class,
 
-    public static void main(String args[]) {
-        String[] testCaseName = {
-            TestAll.class.getName()
-        };
-        junit.textui.TestRunner.main(testCaseName);
-    }
+        TestMutableDateTime_Constructors.class,
+        TestMutableDateTime_Basics.class,
+        TestMutableDateTime_Sets.class,
+        TestMutableDateTime_Adds.class,
+        TestMutableDateTime_Properties.class,
 
+        TestDateMidnight_Constructors.class,
+        TestDateMidnight_Basics.class,
+        TestDateMidnight_Properties.class,
+
+        TestDuration_Constructors.class,
+        TestDuration_Basics.class,
+
+        TestInterval_Constructors.class,
+        TestInterval_Basics.class,
+
+        TestLocalDateTime_Constructors.class,
+        TestLocalDateTime_Basics.class,
+        TestLocalDateTime_Properties.class,
+
+        TestLocalDate_Constructors.class,
+        TestLocalDate_Basics.class,
+        TestLocalDate_Properties.class,
+
+        TestLocalTime_Constructors.class,
+        TestLocalTime_Basics.class,
+        TestLocalTime_Properties.class,
+
+        TestMutableInterval_Constructors.class,
+        TestMutableInterval_Basics.class,
+        TestMutableInterval_Updates.class,
+
+        TestPeriod_Constructors.class,
+        TestPeriod_Basics.class,
+
+        TestMutablePeriod_Constructors.class,
+        TestMutablePeriod_Basics.class,
+        TestMutablePeriod_Updates.class,
+
+        TestBaseSingleFieldPeriod.class,
+        TestYears.class,
+        TestMonths.class,
+        TestWeeks.class,
+        TestDays.class,
+        TestHours.class,
+        TestMinutes.class,
+        TestSeconds.class,
+
+        TestTimeOfDay_Basics.class,
+        TestTimeOfDay_Constructors.class,
+        TestTimeOfDay_Properties.class,
+
+        TestYearMonthDay_Basics.class,
+        TestYearMonthDay_Constructors.class,
+        TestYearMonthDay_Properties.class,
+
+        TestYearMonth_Basics.class,
+        TestYearMonth_Constructors.class,
+        TestYearMonth_Properties.class,
+
+        TestMonthDay_Basics.class,
+        TestMonthDay_Constructors.class,
+        TestMonthDay_Properties.class,
+
+        TestPartial_Basics.class,
+        TestPartial_Constructors.class,
+        TestPartial_Properties.class,
+        TestPartial_Match.class,
+
+        TestAbstractPartial.class,
+        TestBasePartial.class,
+
+        TestDateTimeComparator.class,
+        TestDateTimeConstants.class,
+        TestDateTimeUtils.class,
+        TestDateTimeZone.class,
+        TestDateTimeZoneCutover.class,
+        TestPeriodType.class,
+//        TestParseISO.class,
+        TestDurationField.class,
+
+        TestStringConvert.class,
+        TestSerialization.class,
+        TestIllegalFieldValueException.class
+} )
+
+public class TestAll {
 }

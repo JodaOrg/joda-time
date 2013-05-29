@@ -15,43 +15,27 @@
  */
 package org.joda.time;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * This class is a Junit unit test for Seconds.
  *
  * @author Stephen Colebourne
  */
-public class TestSeconds extends TestCase {
+public class TestSeconds extends Assert {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestSeconds.class);
-    }
-
-    public TestSeconds(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
-    }
-
     //-----------------------------------------------------------------------
+   @Test
     public void testConstants() {
         assertEquals(0, Seconds.ZERO.getSeconds());
         assertEquals(1, Seconds.ONE.getSeconds());
@@ -62,6 +46,7 @@ public class TestSeconds extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactory_seconds_int() {
         assertSame(Seconds.ZERO, Seconds.seconds(0));
         assertSame(Seconds.ONE, Seconds.seconds(1));
@@ -74,6 +59,7 @@ public class TestSeconds extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactory_secondsBetween_RInstant() {
         DateTime start = new DateTime(2006, 6, 9, 12, 0, 3, 0, PARIS);
         DateTime end1 = new DateTime(2006, 6, 9, 12, 0, 6, 0, PARIS);
@@ -86,6 +72,7 @@ public class TestSeconds extends TestCase {
         assertEquals(6, Seconds.secondsBetween(start, end2).getSeconds());
     }
 
+   @Test
     public void testFactory_secondsBetween_RPartial() {
         LocalTime start = new LocalTime(12, 0, 3);
         LocalTime end1 = new LocalTime(12, 0, 6);
@@ -98,6 +85,7 @@ public class TestSeconds extends TestCase {
         assertEquals(6, Seconds.secondsBetween(start, end2).getSeconds());
     }
 
+   @Test
     public void testFactory_secondsIn_RInterval() {
         DateTime start = new DateTime(2006, 6, 9, 12, 0, 3, 0, PARIS);
         DateTime end1 = new DateTime(2006, 6, 9, 12, 0, 6, 0, PARIS);
@@ -110,6 +98,7 @@ public class TestSeconds extends TestCase {
         assertEquals(6, Seconds.secondsIn(new Interval(start, end2)).getSeconds());
     }
 
+   @Test
     public void testFactory_standardSecondsIn_RPeriod() {
         assertEquals(0, Seconds.standardSecondsIn((ReadablePeriod) null).getSeconds());
         assertEquals(0, Seconds.standardSecondsIn(Period.ZERO).getSeconds());
@@ -125,6 +114,7 @@ public class TestSeconds extends TestCase {
         }
     }
 
+   @Test
     public void testFactory_parseSeconds_String() {
         assertEquals(0, Seconds.parseSeconds((String) null).getSeconds());
         assertEquals(0, Seconds.parseSeconds("PT0S").getSeconds());
@@ -147,22 +137,26 @@ public class TestSeconds extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetMethods() {
         Seconds test = Seconds.seconds(20);
         assertEquals(20, test.getSeconds());
     }
 
+   @Test
     public void testGetFieldType() {
         Seconds test = Seconds.seconds(20);
         assertEquals(DurationFieldType.seconds(), test.getFieldType());
     }
 
+   @Test
     public void testGetPeriodType() {
         Seconds test = Seconds.seconds(20);
         assertEquals(PeriodType.seconds(), test.getPeriodType());
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testIsGreaterThan() {
         assertEquals(true, Seconds.THREE.isGreaterThan(Seconds.TWO));
         assertEquals(false, Seconds.THREE.isGreaterThan(Seconds.THREE));
@@ -171,6 +165,7 @@ public class TestSeconds extends TestCase {
         assertEquals(false, Seconds.seconds(-1).isGreaterThan(null));
     }
 
+   @Test
     public void testIsLessThan() {
         assertEquals(false, Seconds.THREE.isLessThan(Seconds.TWO));
         assertEquals(false, Seconds.THREE.isLessThan(Seconds.THREE));
@@ -180,6 +175,7 @@ public class TestSeconds extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         Seconds test = Seconds.seconds(20);
         assertEquals("PT20S", test.toString());
@@ -189,6 +185,7 @@ public class TestSeconds extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSerialization() throws Exception {
         Seconds test = Seconds.THREE;
         
@@ -207,30 +204,35 @@ public class TestSeconds extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToStandardWeeks() {
         Seconds test = Seconds.seconds(60 * 60 * 24 * 7 * 2);
         Weeks expected = Weeks.weeks(2);
         assertEquals(expected, test.toStandardWeeks());
     }
 
+   @Test
     public void testToStandardDays() {
         Seconds test = Seconds.seconds(60 * 60 * 24 * 2);
         Days expected = Days.days(2);
         assertEquals(expected, test.toStandardDays());
     }
 
+   @Test
     public void testToStandardHours() {
         Seconds test = Seconds.seconds(60 * 60 * 2);
         Hours expected = Hours.hours(2);
         assertEquals(expected, test.toStandardHours());
     }
 
+   @Test
     public void testToStandardMinutes() {
         Seconds test = Seconds.seconds(60 * 2);
         Minutes expected = Minutes.minutes(2);
         assertEquals(expected, test.toStandardMinutes());
     }
 
+   @Test
     public void testToStandardDuration() {
         Seconds test = Seconds.seconds(20);
         Duration expected = new Duration(20L * DateTimeConstants.MILLIS_PER_SECOND);
@@ -241,6 +243,7 @@ public class TestSeconds extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPlus_int() {
         Seconds test2 = Seconds.seconds(2);
         Seconds result = test2.plus(3);
@@ -257,6 +260,7 @@ public class TestSeconds extends TestCase {
         }
     }
 
+   @Test
     public void testPlus_Seconds() {
         Seconds test2 = Seconds.seconds(2);
         Seconds test3 = Seconds.seconds(3);
@@ -276,6 +280,7 @@ public class TestSeconds extends TestCase {
         }
     }
 
+   @Test
     public void testMinus_int() {
         Seconds test2 = Seconds.seconds(2);
         Seconds result = test2.minus(3);
@@ -292,6 +297,7 @@ public class TestSeconds extends TestCase {
         }
     }
 
+   @Test
     public void testMinus_Seconds() {
         Seconds test2 = Seconds.seconds(2);
         Seconds test3 = Seconds.seconds(3);
@@ -311,6 +317,7 @@ public class TestSeconds extends TestCase {
         }
     }
 
+   @Test
     public void testMultipliedBy_int() {
         Seconds test = Seconds.seconds(2);
         assertEquals(6, test.multipliedBy(3).getSeconds());
@@ -327,6 +334,7 @@ public class TestSeconds extends TestCase {
         }
     }
 
+   @Test
     public void testDividedBy_int() {
         Seconds test = Seconds.seconds(12);
         assertEquals(6, test.dividedBy(2).getSeconds());
@@ -345,6 +353,7 @@ public class TestSeconds extends TestCase {
         }
     }
 
+   @Test
     public void testNegated() {
         Seconds test = Seconds.seconds(12);
         assertEquals(-12, test.negated().getSeconds());
@@ -359,6 +368,7 @@ public class TestSeconds extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testAddToLocalDate() {
         Seconds test = Seconds.seconds(26);
         LocalDateTime date = new LocalDateTime(2006, 6, 1, 0, 0, 0, 0);

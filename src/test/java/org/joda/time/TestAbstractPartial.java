@@ -15,20 +15,23 @@
  */
 package org.joda.time;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.base.AbstractPartial;
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.AbstractPartialFieldProperty;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+
 
 /**
  * This class is a Junit unit test for YearMonthDay.
  *
  * @author Stephen Colebourne
  */
-public class TestAbstractPartial extends TestCase {
+public class TestAbstractPartial extends Assert {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     
@@ -47,31 +50,22 @@ public class TestAbstractPartial extends TestCase {
         
     private DateTimeZone zone = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestAbstractPartial.class);
-    }
-
-    public TestAbstractPartial(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(DateTimeZone.UTC);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
         zone = null;
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetValue() throws Throwable {
         MockPartial mock = new MockPartial();
         assertEquals(1970, mock.getValue(0));
@@ -87,6 +81,7 @@ public class TestAbstractPartial extends TestCase {
         } catch (IndexOutOfBoundsException ex) {}
     }
 
+   @Test
     public void testGetValues() throws Throwable {
         MockPartial mock = new MockPartial();
         int[] vals = mock.getValues();
@@ -95,6 +90,7 @@ public class TestAbstractPartial extends TestCase {
         assertEquals(1, vals[1]);
     }
 
+   @Test
     public void testGetField() throws Throwable {
         MockPartial mock = new MockPartial();
         assertEquals(BuddhistChronology.getInstanceUTC().year(), mock.getField(0));
@@ -110,6 +106,7 @@ public class TestAbstractPartial extends TestCase {
         } catch (IndexOutOfBoundsException ex) {}
     }
 
+   @Test
     public void testGetFieldType() throws Throwable {
         MockPartial mock = new MockPartial();
         assertEquals(DateTimeFieldType.year(), mock.getFieldType(0));
@@ -125,6 +122,7 @@ public class TestAbstractPartial extends TestCase {
         } catch (IndexOutOfBoundsException ex) {}
     }
 
+   @Test
     public void testGetFieldTypes() throws Throwable {
         MockPartial mock = new MockPartial();
         DateTimeFieldType[] vals = mock.getFieldTypes();
@@ -133,6 +131,7 @@ public class TestAbstractPartial extends TestCase {
         assertEquals(DateTimeFieldType.monthOfYear(), vals[1]);
     }
 
+   @Test
     public void testGetPropertyEquals() throws Throwable {
         MockProperty0 prop0 = new MockProperty0();
         assertEquals(true, prop0.equals(prop0));
@@ -151,7 +150,7 @@ public class TestAbstractPartial extends TestCase {
         int[] val = new int[] {1970, 1};
         
         MockPartial() {
-            super();
+
         }
 
         protected DateTimeField getField(int index, Chronology chrono) {

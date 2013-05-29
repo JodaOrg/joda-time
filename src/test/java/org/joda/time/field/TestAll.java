@@ -15,9 +15,9 @@
  */
 package org.joda.time.field;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+
 
 /**
  * Entry point for all tests in this package.
@@ -26,34 +26,18 @@ import junit.framework.TestSuite;
  * 
  * @author Stephen Colebourne
  */
-public class TestAll extends TestCase {
+@RunWith(Suite.class)
+@Suite.SuiteClasses( {
+        TestFieldUtils.class,
+        TestBaseDateTimeField.class,
+        TestOffsetDateTimeField.class,
+        TestPreciseDurationDateTimeField.class,
+        TestPreciseDateTimeField.class,
 
-    public TestAll(String testName) {
-        super(testName);
-    }
-
-    public static void main(String args[]) {
-        String[] testCaseName = {
-            TestAll.class.getName()
-        };
-        junit.textui.TestRunner.main(testCaseName);
-    }
-
-    public static Test suite() {
-        TestSuite suite = new TestSuite();
-        
-        suite.addTest(TestFieldUtils.suite());
-
-        suite.addTest(TestBaseDateTimeField.suite());
-        suite.addTest(TestOffsetDateTimeField.suite());
-        suite.addTest(TestPreciseDurationDateTimeField.suite());
-        suite.addTest(TestPreciseDateTimeField.suite());
-        
-        suite.addTest(TestMillisDurationField.suite());
-        suite.addTest(TestPreciseDurationField.suite());
-        suite.addTest(TestScaledDurationField.suite());
-        suite.addTest(TestUnsupportedDateTimeField.suite());
-        return suite;
-    }
-
+        TestMillisDurationField.class,
+        TestPreciseDurationField.class,
+        TestScaledDurationField.class,
+        TestUnsupportedDateTimeField.class
+} )
+public class TestAll {
 }

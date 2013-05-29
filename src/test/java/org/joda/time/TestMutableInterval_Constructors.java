@@ -15,24 +15,27 @@
  */
 package org.joda.time;
 
-import java.util.Locale;
-import java.util.TimeZone;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.IntervalConverter;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.Locale;
+import java.util.TimeZone;
+
+
 
 /**
  * This class is a JUnit test for Interval.
  *
  * @author Stephen Colebourne
  */
-public class TestMutableInterval_Constructors extends TestCase {
+public class TestMutableInterval_Constructors extends Assert {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
@@ -68,19 +71,8 @@ public class TestMutableInterval_Constructors extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestMutableInterval_Constructors.class);
-    }
-
-    public TestMutableInterval_Constructors(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -90,7 +82,8 @@ public class TestMutableInterval_Constructors extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -101,6 +94,7 @@ public class TestMutableInterval_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testTest() {
         assertEquals("2002-06-09T00:00:00.000Z", new Instant(TEST_TIME_NOW).toString());
         assertEquals("2002-04-05T12:24:00.000Z", new Instant(TEST_TIME1).toString());
@@ -108,6 +102,7 @@ public class TestMutableInterval_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParse_noFormatter() throws Throwable {
         DateTime start = new DateTime(2010, 6, 30, 12, 30, ISOChronology.getInstance(PARIS));
         DateTime end = new DateTime(2010, 7, 1, 14, 30, ISOChronology.getInstance(PARIS));
@@ -117,6 +112,7 @@ public class TestMutableInterval_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor() throws Throwable {
         MutableInterval test = new MutableInterval();
         assertEquals(0L, test.getStartMillis());
@@ -124,6 +120,7 @@ public class TestMutableInterval_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_long_long1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
@@ -133,6 +130,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(ISOChronology.getInstance(), test.getChronology());
     }
 
+   @Test
     public void testConstructor_long_long2() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         MutableInterval test = new MutableInterval(dt1.getMillis(), dt1.getMillis());
@@ -141,6 +139,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(ISOChronology.getInstance(), test.getChronology());
     }
 
+   @Test
     public void testConstructor_long_long3() throws Throwable {
         DateTime dt1 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
         DateTime dt2 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
@@ -151,6 +150,7 @@ public class TestMutableInterval_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_long_long_Chronology1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
@@ -160,6 +160,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(GJChronology.getInstance(), test.getChronology());
     }
 
+   @Test
     public void testConstructor_long_long_Chronology2() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
@@ -170,6 +171,7 @@ public class TestMutableInterval_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_RI_RI1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
@@ -178,6 +180,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(dt2.getMillis(), test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RI_RI2() throws Throwable {
         Instant dt1 = new Instant(new DateTime(2004, 6, 9, 0, 0, 0, 0));
         Instant dt2 = new Instant(new DateTime(2005, 7, 10, 1, 1, 1, 1));
@@ -186,12 +189,14 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(dt2.getMillis(), test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RI_RI3() throws Throwable {
         MutableInterval test = new MutableInterval((ReadableInstant) null, (ReadableInstant) null);
         assertEquals(TEST_TIME_NOW, test.getStartMillis());
         assertEquals(TEST_TIME_NOW, test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RI_RI4() throws Throwable {
         DateTime dt1 = new DateTime(2000, 6, 9, 0, 0, 0, 0);
         MutableInterval test = new MutableInterval(dt1, (ReadableInstant) null);
@@ -199,6 +204,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(TEST_TIME_NOW, test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RI_RI5() throws Throwable {
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
         MutableInterval test = new MutableInterval((ReadableInstant) null, dt2);
@@ -206,6 +212,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(dt2.getMillis(), test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RI_RI6() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         MutableInterval test = new MutableInterval(dt1, dt1);
@@ -213,6 +220,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(dt1.getMillis(), test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RI_RI7() throws Throwable {
         DateTime dt1 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
         DateTime dt2 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
@@ -222,6 +230,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testConstructor_RI_RI8() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0, GJChronology.getInstance());
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
@@ -231,6 +240,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(GJChronology.getInstance(), test.getChronology());
     }
 
+   @Test
     public void testConstructor_RI_RI9() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1, GJChronology.getInstance());
@@ -241,6 +251,7 @@ public class TestMutableInterval_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_RI_RP1() throws Throwable {
         DateTime dt = new DateTime(TEST_TIME_NOW);
         Period dur = new Period(0, 6, 0, 0, 1, 0, 0, 0);
@@ -253,6 +264,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(result, test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RI_RP2() throws Throwable {
         Instant dt = new Instant(new DateTime(TEST_TIME_NOW));
         Period dur = new Period(0, 6, 0, 3, 1, 0, 0, 0);
@@ -266,6 +278,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(result, test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RI_RP3() throws Throwable {
         DateTime dt = new DateTime(TEST_TIME_NOW, ISOChronology.getInstanceUTC());
         Period dur = new Period(0, 6, 0, 3, 1, 0, 0, 0, PeriodType.standard());
@@ -279,6 +292,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(result, test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RI_RP4() throws Throwable {
         DateTime dt = new DateTime(TEST_TIME_NOW);
         Period dur = new Period(1 * DateTimeConstants.MILLIS_PER_HOUR + 23L);
@@ -291,12 +305,14 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(result, test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RI_RP5() throws Throwable {
         MutableInterval test = new MutableInterval((ReadableInstant) null, (ReadablePeriod) null);
         assertEquals(TEST_TIME_NOW, test.getStartMillis());
         assertEquals(TEST_TIME_NOW, test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RI_RP6() throws Throwable {
         DateTime dt = new DateTime(TEST_TIME_NOW);
         MutableInterval test = new MutableInterval(dt, (ReadablePeriod) null);
@@ -304,6 +320,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(dt.getMillis(), test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RI_RP7() throws Throwable {
         Period dur = new Period(0, 6, 0, 0, 1, 0, 0, 0);
         long result = TEST_TIME_NOW;
@@ -315,6 +332,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(result, test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RI_RP8() throws Throwable {
         DateTime dt = new DateTime(TEST_TIME_NOW);
         Period dur = new Period(0, 0, 0, 0, 0, 0, 0, -1);
@@ -325,6 +343,7 @@ public class TestMutableInterval_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_RP_RI1() throws Throwable {
         DateTime dt = new DateTime(TEST_TIME_NOW);
         Period dur = new Period(0, 6, 0, 0, 1, 0, 0, 0);
@@ -337,6 +356,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(dt.getMillis(), test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RP_RI2() throws Throwable {
         Instant dt = new Instant(new DateTime(TEST_TIME_NOW));
         Period dur = new Period(0, 6, 0, 3, 1, 0, 0, 0);
@@ -350,6 +370,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(dt.getMillis(), test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RP_RI3() throws Throwable {
         DateTime dt = new DateTime(TEST_TIME_NOW, ISOChronology.getInstanceUTC());
         Period dur = new Period(0, 6, 0, 3, 1, 0, 0, 0, PeriodType.standard());
@@ -363,6 +384,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(dt.getMillis(), test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RP_RI4() throws Throwable {
         DateTime dt = new DateTime(TEST_TIME_NOW);
         Period dur = new Period(1 * DateTimeConstants.MILLIS_PER_HOUR + 23L);
@@ -375,12 +397,14 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(dt.getMillis(), test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RP_RI5() throws Throwable {
         MutableInterval test = new MutableInterval((ReadablePeriod) null, (ReadableInstant) null);
         assertEquals(TEST_TIME_NOW, test.getStartMillis());
         assertEquals(TEST_TIME_NOW, test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RP_RI6() throws Throwable {
         DateTime dt = new DateTime(TEST_TIME_NOW);
         MutableInterval test = new MutableInterval((ReadablePeriod) null, dt);
@@ -388,6 +412,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(dt.getMillis(), test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RP_RI7() throws Throwable {
         Period dur = new Period(0, 6, 0, 0, 1, 0, 0, 0);
         long result = TEST_TIME_NOW;
@@ -399,6 +424,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(TEST_TIME_NOW, test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RP_RI8() throws Throwable {
         DateTime dt = new DateTime(TEST_TIME_NOW);
         Period dur = new Period(0, 0, 0, 0, 0, 0, 0, -1);
@@ -409,6 +435,7 @@ public class TestMutableInterval_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_RI_RD1() throws Throwable {
         long result = TEST_TIME_NOW;
         result = ISOChronology.getInstance().months().add(result, 6);
@@ -422,12 +449,14 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(result, test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RI_RD2() throws Throwable {
         MutableInterval test = new MutableInterval((ReadableInstant) null, (ReadableDuration) null);
         assertEquals(TEST_TIME_NOW, test.getStartMillis());
         assertEquals(TEST_TIME_NOW, test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RI_RD3() throws Throwable {
         DateTime dt = new DateTime(TEST_TIME_NOW);
         MutableInterval test = new MutableInterval(dt, (ReadableDuration) null);
@@ -435,6 +464,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(dt.getMillis(), test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RI_RD4() throws Throwable {
         long result = TEST_TIME_NOW;
         result = ISOChronology.getInstance().monthOfYear().add(result, 6);
@@ -447,6 +477,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(result, test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RI_RD5() throws Throwable {
         DateTime dt = new DateTime(TEST_TIME_NOW);
         Duration dur = new Duration(-1);
@@ -457,6 +488,7 @@ public class TestMutableInterval_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_RD_RI1() throws Throwable {
         long result = TEST_TIME_NOW;
         result = ISOChronology.getInstance().months().add(result, -6);
@@ -470,12 +502,14 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(dt.getMillis(), test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RD_RI2() throws Throwable {
         MutableInterval test = new MutableInterval((ReadableDuration) null, (ReadableInstant) null);
         assertEquals(TEST_TIME_NOW, test.getStartMillis());
         assertEquals(TEST_TIME_NOW, test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RD_RI3() throws Throwable {
         DateTime dt = new DateTime(TEST_TIME_NOW);
         MutableInterval test = new MutableInterval((ReadableDuration) null, dt);
@@ -483,6 +517,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(dt.getMillis(), test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RD_RI4() throws Throwable {
         long result = TEST_TIME_NOW;
         result = ISOChronology.getInstance().monthOfYear().add(result, -6);
@@ -495,6 +530,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(TEST_TIME_NOW, test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_RD_RI5() throws Throwable {
         DateTime dt = new DateTime(TEST_TIME_NOW);
         Duration dur = new Duration(-1);
@@ -505,6 +541,7 @@ public class TestMutableInterval_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_Object1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
@@ -513,6 +550,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(dt2.getMillis(), test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_Object2() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
@@ -523,6 +561,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(dt2.getMillis(), test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_Object3() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
@@ -533,6 +572,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(dt2.getMillis(), test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_Object4() throws Throwable {
         MockInterval base = new MockInterval();
         MutableInterval test = new MutableInterval(base);
@@ -540,6 +580,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(base.getEndMillis(), test.getEndMillis());
     }
 
+   @Test
     public void testConstructor_Object5() throws Throwable {
         IntervalConverter oldConv = ConverterManager.getInstance().getIntervalConverter("");
         IntervalConverter conv = new IntervalConverter() {
@@ -566,6 +607,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         }
     }
 
+   @Test
     public void testConstructor_Object6() throws Throwable {
         IntervalConverter oldConv = ConverterManager.getInstance().getIntervalConverter(new MutableInterval(0L, 0L));
         IntervalConverter conv = new IntervalConverter() {
@@ -655,6 +697,7 @@ public class TestMutableInterval_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_Object_Chronology1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
@@ -666,6 +709,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals(BuddhistChronology.getInstance(), test.getChronology());
     }
 
+   @Test
     public void testConstructor_Object_Chronology2() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);

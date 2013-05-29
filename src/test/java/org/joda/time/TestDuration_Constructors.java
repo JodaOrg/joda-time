@@ -15,18 +15,21 @@
  */
 package org.joda.time;
 
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * This class is a JUnit test for Duration.
  *
  * @author Stephen Colebourne
  */
-public class TestDuration_Constructors extends TestCase {
+public class TestDuration_Constructors extends Assert {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
@@ -62,19 +65,8 @@ public class TestDuration_Constructors extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestDuration_Constructors.class);
-    }
-
-    public TestDuration_Constructors(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -84,7 +76,8 @@ public class TestDuration_Constructors extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -98,18 +91,21 @@ public class TestDuration_Constructors extends TestCase {
     /**
      * Test constructor ()
      */
+   @Test
     public void testZERO() throws Throwable {
         Duration test = Duration.ZERO;
         assertEquals(0, test.getMillis());
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParse_noFormatter() throws Throwable {
         assertEquals(new Duration(3200), Duration.parse("PT3.2S"));
         assertEquals(new Duration(6000), Duration.parse("PT6S"));
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactory_standardDays_long() throws Throwable {
         Duration test = Duration.standardDays(1);
         assertEquals(24L * 60L * 60L * 1000L, test.getMillis());
@@ -122,6 +118,7 @@ public class TestDuration_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactory_standardHours_long() throws Throwable {
         Duration test = Duration.standardHours(1);
         assertEquals(60L * 60L * 1000L, test.getMillis());
@@ -134,6 +131,7 @@ public class TestDuration_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactory_standardMinutes_long() throws Throwable {
         Duration test = Duration.standardMinutes(1);
         assertEquals(60L * 1000L, test.getMillis());
@@ -146,6 +144,7 @@ public class TestDuration_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactory_standardSeconds_long() throws Throwable {
         Duration test = Duration.standardSeconds(1);
         assertEquals(1000L, test.getMillis());
@@ -158,6 +157,7 @@ public class TestDuration_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactory_millis_long() throws Throwable {
         Duration test = Duration.millis(1);
         assertEquals(1L, test.getMillis());
@@ -170,6 +170,7 @@ public class TestDuration_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_long1() throws Throwable {
         long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
@@ -180,6 +181,7 @@ public class TestDuration_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_long_long1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
@@ -188,6 +190,7 @@ public class TestDuration_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor_RI_RI1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
@@ -195,6 +198,7 @@ public class TestDuration_Constructors extends TestCase {
         assertEquals(dt2.getMillis() - dt1.getMillis(), test.getMillis());
     }
 
+   @Test
     public void testConstructor_RI_RI2() throws Throwable {
         DateTime dt1 = null;  // 2002-06-09T01:00+01:00
         DateTime dt2 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
@@ -202,6 +206,7 @@ public class TestDuration_Constructors extends TestCase {
         assertEquals(dt2.getMillis() - TEST_TIME_NOW, test.getMillis());
     }
 
+   @Test
     public void testConstructor_RI_RI3() throws Throwable {
         DateTime dt1 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
         DateTime dt2 = null;  // 2002-06-09T01:00+01:00
@@ -209,6 +214,7 @@ public class TestDuration_Constructors extends TestCase {
         assertEquals(TEST_TIME_NOW - dt1.getMillis(), test.getMillis());
     }
 
+   @Test
     public void testConstructor_RI_RI4() throws Throwable {
         DateTime dt1 = null;  // 2002-06-09T01:00+01:00
         DateTime dt2 = null;  // 2002-06-09T01:00+01:00
@@ -220,16 +226,19 @@ public class TestDuration_Constructors extends TestCase {
     /**
      * Test constructor (Object)
      */
+   @Test
     public void testConstructor_Object1() throws Throwable {
         Duration test = new Duration("PT72.345S");
         assertEquals(72345, test.getMillis());
     }
 
+   @Test
     public void testConstructor_Object2() throws Throwable {
         Duration test = new Duration((Object) null);
         assertEquals(0L, test.getMillis());
     }
 
+   @Test
     public void testConstructor_Object3() throws Throwable {
         long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
@@ -240,6 +249,7 @@ public class TestDuration_Constructors extends TestCase {
         assertEquals(length, test.getMillis());
     }
 
+   @Test
     public void testConstructor_Object4() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
@@ -248,6 +258,7 @@ public class TestDuration_Constructors extends TestCase {
         assertEquals(dt2.getMillis() - dt1.getMillis(), test.getMillis());
     }
 
+   @Test
     public void testConstructor_Object5() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);

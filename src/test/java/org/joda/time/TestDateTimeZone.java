@@ -15,43 +15,27 @@
  */
 package org.joda.time;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.PrintStream;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.security.AllPermission;
-import java.security.CodeSource;
-import java.security.Permission;
-import java.security.PermissionCollection;
-import java.security.Permissions;
-import java.security.Policy;
-import java.security.ProtectionDomain;
-import java.text.DateFormatSymbols;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.TimeZone;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-import org.joda.time.tz.DefaultNameProvider;
-import org.joda.time.tz.NameProvider;
+import org.joda.time.tz.*;
 import org.joda.time.tz.Provider;
-import org.joda.time.tz.UTCProvider;
-import org.joda.time.tz.ZoneInfoProvider;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.*;
+import java.lang.reflect.Modifier;
+import java.security.*;
+import java.text.DateFormatSymbols;
+import java.util.*;
+
+
 
 /**
  * This class is a JUnit test for DateTimeZone.
  *
  * @author Stephen Colebourne
  */
-public class TestDateTimeZone extends TestCase {
+public class TestDateTimeZone extends Assert {
     private static final boolean OLD_JDK;
     static {
         String str = System.getProperty("java.version");
@@ -134,30 +118,21 @@ public class TestDateTimeZone extends TestCase {
     private DateTimeZone zone;
     private Locale locale;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestDateTimeZone.class);
-    }
-
-    public TestDateTimeZone(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         locale = Locale.getDefault();
         zone = DateTimeZone.getDefault();
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         Locale.setDefault(locale);
         DateTimeZone.setDefault(zone);
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testDefault() {
         assertNotNull(DateTimeZone.getDefault());
         
@@ -170,6 +145,7 @@ public class TestDateTimeZone extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
             
+   @Test
     public void testDefaultSecurity() {
         if (OLD_JDK) {
             return;
@@ -188,6 +164,7 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForID_String() {
         assertEquals(DateTimeZone.getDefault(), DateTimeZone.forID((String) null));
         
@@ -242,6 +219,7 @@ public class TestDateTimeZone extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testForID_String_old() {
         Map<String, String> map = new LinkedHashMap<String, String>();
         map.put("GMT", "UTC");
@@ -290,6 +268,7 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForOffsetHours_int() {
         assertEquals(DateTimeZone.UTC, DateTimeZone.forOffsetHours(0));
         assertEquals(DateTimeZone.forID("+03:00"), DateTimeZone.forOffsetHours(3));
@@ -301,6 +280,7 @@ public class TestDateTimeZone extends TestCase {
     }        
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForOffsetHoursMinutes_int_int() {
         assertEquals(DateTimeZone.UTC, DateTimeZone.forOffsetHoursMinutes(0, 0));
         assertEquals(DateTimeZone.forID("+03:15"), DateTimeZone.forOffsetHoursMinutes(3, 15));
@@ -329,6 +309,7 @@ public class TestDateTimeZone extends TestCase {
     }        
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForOffsetMillis_int() {
         assertSame(DateTimeZone.UTC, DateTimeZone.forOffsetMillis(0));
         assertEquals(DateTimeZone.forID("+03:00"), DateTimeZone.forOffsetMillis(3 * 60 * 60 * 1000));
@@ -339,6 +320,7 @@ public class TestDateTimeZone extends TestCase {
     }        
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForTimeZone_TimeZone() {
         assertEquals(DateTimeZone.getDefault(), DateTimeZone.forTimeZone((TimeZone) null));
         
@@ -380,6 +362,7 @@ public class TestDateTimeZone extends TestCase {
         assertEquals("America/New_York", zone.getID());
     }
 
+   @Test
     public void testTimeZoneConversion() {
         TimeZone jdkTimeZone = TimeZone.getTimeZone("GMT-10");
         assertEquals("GMT-10:00", jdkTimeZone.getID());
@@ -396,11 +379,13 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetAvailableIDs() {
         assertTrue(DateTimeZone.getAvailableIDs().contains("UTC"));
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testProvider() {
         try {
             assertNotNull(DateTimeZone.getProvider());
@@ -466,6 +451,7 @@ public class TestDateTimeZone extends TestCase {
         }
     }
     
+   @Test
     public void testProviderSecurity() {
         if (OLD_JDK) {
             return;
@@ -533,6 +519,7 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testNameProvider() {
         try {
             assertNotNull(DateTimeZone.getNameProvider());
@@ -580,6 +567,7 @@ public class TestDateTimeZone extends TestCase {
         }
     }        
     
+   @Test
     public void testNameProviderSecurity() {
         if (OLD_JDK) {
             return;
@@ -607,6 +595,7 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor() {
         assertEquals(1, DateTimeZone.class.getDeclaredConstructors().length);
         assertTrue(Modifier.isProtected(DateTimeZone.class.getDeclaredConstructors()[0].getModifiers()));
@@ -638,11 +627,13 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetID() {
         DateTimeZone zone = DateTimeZone.forID("Europe/Paris");
         assertEquals("Europe/Paris", zone.getID());
     }
 
+   @Test
     public void testGetNameKey() {
         DateTimeZone zone = DateTimeZone.forID("Europe/London");
         assertEquals("BST", zone.getNameKey(TEST_TIME_SUMMER));
@@ -660,6 +651,7 @@ public class TestDateTimeZone extends TestCase {
       JDK6 = jdk6;
     }
 
+   @Test
     public void testGetShortName() {
         DateTimeZone zone = DateTimeZone.forID("Europe/London");
         assertEquals("BST", zone.getShortName(TEST_TIME_SUMMER));
@@ -667,6 +659,7 @@ public class TestDateTimeZone extends TestCase {
         assertEquals("BST", zone.getShortName(TEST_TIME_SUMMER, Locale.ENGLISH));
     }
 
+   @Test
     public void testGetShortName_berlin() {
         DateTimeZone berlin = DateTimeZone.forID("Europe/Berlin");
         assertEquals("CET", berlin.getShortName(TEST_TIME_WINTER, Locale.ENGLISH));
@@ -680,6 +673,7 @@ public class TestDateTimeZone extends TestCase {
         }
     }
 
+   @Test
     public void testGetShortNameProviderName() {
         assertEquals(null, DateTimeZone.getNameProvider().getShortName(null, "Europe/London", "BST"));
         assertEquals(null, DateTimeZone.getNameProvider().getShortName(Locale.ENGLISH, null, "BST"));
@@ -687,11 +681,13 @@ public class TestDateTimeZone extends TestCase {
         assertEquals(null, DateTimeZone.getNameProvider().getShortName(null, null, null));
     }
 
+   @Test
     public void testGetShortNameNullKey() {
         DateTimeZone zone = new MockDateTimeZone("Europe/London");
         assertEquals("Europe/London", zone.getShortName(TEST_TIME_SUMMER, Locale.ENGLISH));
     }
 
+   @Test
     public void testGetName() {
         DateTimeZone zone = DateTimeZone.forID("Europe/London");
         assertEquals("British Summer Time", zone.getName(TEST_TIME_SUMMER));
@@ -699,6 +695,7 @@ public class TestDateTimeZone extends TestCase {
         assertEquals("British Summer Time", zone.getName(TEST_TIME_SUMMER, Locale.ENGLISH));
     }
 
+   @Test
     public void testGetName_berlin() {
       DateTimeZone berlin = DateTimeZone.forID("Europe/Berlin");
       assertEquals("Central European Time", berlin.getName(TEST_TIME_WINTER, Locale.ENGLISH));
@@ -712,6 +709,7 @@ public class TestDateTimeZone extends TestCase {
       }
   }
 
+   @Test
     public void testGetNameProviderName() {
         assertEquals(null, DateTimeZone.getNameProvider().getName(null, "Europe/London", "BST"));
         assertEquals(null, DateTimeZone.getNameProvider().getName(Locale.ENGLISH, null, "BST"));
@@ -719,6 +717,7 @@ public class TestDateTimeZone extends TestCase {
         assertEquals(null, DateTimeZone.getNameProvider().getName(null, null, null));
     }
 
+   @Test
     public void testGetNameNullKey() {
         DateTimeZone zone = new MockDateTimeZone("Europe/London");
         assertEquals("Europe/London", zone.getName(TEST_TIME_SUMMER, Locale.ENGLISH));
@@ -726,7 +725,7 @@ public class TestDateTimeZone extends TestCase {
 
     static class MockDateTimeZone extends DateTimeZone {
         public MockDateTimeZone(String id) {
-            super(id);
+            super( id );
         }
         public String getNameKey(long instant) {
             return null;  // null
@@ -752,6 +751,7 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetOffset_long() {
         DateTimeZone zone = DateTimeZone.forID("Europe/Paris");
         assertEquals(2L * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffset(TEST_TIME_SUMMER));
@@ -767,6 +767,7 @@ public class TestDateTimeZone extends TestCase {
         assertEquals(true, zone.isStandardOffset(TEST_TIME_WINTER));
     }
 
+   @Test
     public void testGetOffset_RI() {
         DateTimeZone zone = DateTimeZone.forID("Europe/Paris");
         assertEquals(2L * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffset(new Instant(TEST_TIME_SUMMER)));
@@ -775,6 +776,7 @@ public class TestDateTimeZone extends TestCase {
         assertEquals(zone.getOffset(DateTimeUtils.currentTimeMillis()), zone.getOffset(null));
     }
 
+   @Test
     public void testGetOffsetFixed() {
         DateTimeZone zone = DateTimeZone.forID("+01:00");
         assertEquals(1L * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffset(TEST_TIME_SUMMER));
@@ -790,6 +792,7 @@ public class TestDateTimeZone extends TestCase {
         assertEquals(true, zone.isStandardOffset(TEST_TIME_WINTER));
     }
 
+   @Test
     public void testGetOffsetFixed_RI() {
         DateTimeZone zone = DateTimeZone.forID("+01:00");
         assertEquals(1L * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffset(new Instant(TEST_TIME_SUMMER)));
@@ -799,6 +802,7 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetMillisKeepLocal() {
         long millisLondon = TEST_TIME_SUMMER;
         long millisParis = TEST_TIME_SUMMER - 1L * DateTimeConstants.MILLIS_PER_HOUR;
@@ -821,6 +825,7 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testIsFixed() {
         DateTimeZone zone = DateTimeZone.forID("Europe/Paris");
         assertEquals(false, zone.isFixed());
@@ -828,6 +833,7 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testTransitionFixed() {
         DateTimeZone zone = DateTimeZone.forID("+01:00");
         assertEquals(TEST_TIME_SUMMER, zone.nextTransition(TEST_TIME_SUMMER));
@@ -871,6 +877,7 @@ public class TestDateTimeZone extends TestCase {
 //    }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testIsLocalDateTimeGap_Berlin() {
         DateTimeZone zone = DateTimeZone.forID("Europe/Berlin");
         assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, 3, 25, 1, 0)));
@@ -888,6 +895,7 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testIsLocalDateTimeGap_NewYork() {
         DateTimeZone zone = DateTimeZone.forID("America/New_York");
         assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, 3, 11, 1, 0)));
@@ -905,6 +913,7 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToTimeZone() {
         DateTimeZone zone = DateTimeZone.forID("Europe/Paris");
         TimeZone tz = zone.toTimeZone();
@@ -912,6 +921,7 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testEqualsHashCode() {
         DateTimeZone zone1 = DateTimeZone.forID("Europe/Paris");
         DateTimeZone zone2 = DateTimeZone.forID("Europe/Paris");
@@ -956,6 +966,7 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         DateTimeZone zone = DateTimeZone.forID("Europe/Paris");
         assertEquals("Europe/Paris", zone.toString());
@@ -963,6 +974,7 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSerialization1() throws Exception {
         DateTimeZone zone = DateTimeZone.forID("Europe/Paris");
         
@@ -981,6 +993,7 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSerialization2() throws Exception {
         DateTimeZone zone = DateTimeZone.forID("+01:00");
         
@@ -998,6 +1011,7 @@ public class TestDateTimeZone extends TestCase {
         assertSame(zone, result);
     }
 
+   @Test
     public void testCommentParse() throws Exception {
         // A bug in ZoneInfoCompiler's handling of comments broke Europe/Athens
         // after 1980. This test is included to make sure it doesn't break again.
@@ -1007,6 +1021,7 @@ public class TestDateTimeZone extends TestCase {
         assertEquals(1115313015000L, dt.getMillis());
     }
 
+   @Test
     public void testPatchedNameKeysLondon() throws Exception {
         // the tz database does not have unique name keys [1716305]
         DateTimeZone zone = DateTimeZone.forID("Europe/London");
@@ -1017,6 +1032,7 @@ public class TestDateTimeZone extends TestCase {
         assertEquals(false, str1.equals(str2));
     }
 
+   @Test
     public void testPatchedNameKeysSydney() throws Exception {
         // the tz database does not have unique name keys [1716305]
         DateTimeZone zone = DateTimeZone.forID("Australia/Sydney");
@@ -1027,6 +1043,7 @@ public class TestDateTimeZone extends TestCase {
         assertEquals(false, str1.equals(str2));
     }
 
+   @Test
     public void testPatchedNameKeysSydneyHistoric() throws Exception {
         // the tz database does not have unique name keys [1716305]
         DateTimeZone zone = DateTimeZone.forID("Australia/Sydney");
@@ -1037,6 +1054,7 @@ public class TestDateTimeZone extends TestCase {
         assertEquals(false, str1.equals(str2));
     }
 
+   @Test
     public void testPatchedNameKeysGazaHistoric() throws Exception {
         // the tz database does not have unique name keys [1716305]
         DateTimeZone zone = DateTimeZone.forID("Africa/Johannesburg");

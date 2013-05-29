@@ -15,6 +15,12 @@
  */
 package org.joda.time;
 
+import org.joda.time.base.BasePeriod;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -22,17 +28,14 @@ import java.io.ObjectOutputStream;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.joda.time.base.BasePeriod;
 
 /**
  * This class is a Junit unit test for MutableDuration.
  *
  * @author Stephen Colebourne
  */
-public class TestMutablePeriod_Basics extends TestCase {
+public class TestMutablePeriod_Basics extends Assert {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
@@ -68,19 +71,8 @@ public class TestMutablePeriod_Basics extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestMutablePeriod_Basics.class);
-    }
-
-    public TestMutablePeriod_Basics(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -90,7 +82,8 @@ public class TestMutablePeriod_Basics extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -101,6 +94,7 @@ public class TestMutablePeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testTest() {
         assertEquals("2002-06-09T00:00:00.000Z", new Instant(TEST_TIME_NOW).toString());
         assertEquals("2002-04-05T12:24:00.000Z", new Instant(TEST_TIME1).toString());
@@ -108,11 +102,13 @@ public class TestMutablePeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetPeriodType() {
         MutablePeriod test = new MutablePeriod();
         assertEquals(PeriodType.standard(), test.getPeriodType());
     }
 
+   @Test
     public void testGetMethods() {
         MutablePeriod test = new MutablePeriod();
         assertEquals(0, test.getYears());
@@ -126,6 +122,7 @@ public class TestMutablePeriod_Basics extends TestCase {
         assertEquals(0, test.getMillis());
     }
 
+   @Test
     public void testEqualsHashCode() {
         MutablePeriod test1 = new MutablePeriod(123L);
         MutablePeriod test2 = new MutablePeriod(123L);
@@ -157,6 +154,7 @@ public class TestMutablePeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSerialization() throws Exception {
         MutablePeriod test = new MutablePeriod(123L);
         
@@ -400,6 +398,7 @@ public class TestMutablePeriod_Basics extends TestCase {
 //    }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         MutablePeriod test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         assertEquals("P1Y2M3W4DT5H6M7.008S", test.toString());
@@ -412,12 +411,14 @@ public class TestMutablePeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToPeriod() {
         MutablePeriod test = new MutablePeriod(123L);
         Period result = test.toPeriod();
         assertEquals(test, result);
     }
 
+   @Test
     public void testToMutablePeriod() {
         MutablePeriod test = new MutablePeriod(123L);
         MutablePeriod result = test.toMutablePeriod();
@@ -430,12 +431,14 @@ public class TestMutablePeriod_Basics extends TestCase {
 //        assertEquals(123L, test.toDurationMillisFrom(0L, null));
 //    }
 
+   @Test
     public void testToDurationFrom() {
         MutablePeriod test = new MutablePeriod(123L);
         assertEquals(new Duration(123L), test.toDurationFrom(new Instant(0L)));
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testCopy() {
         MutablePeriod test = new MutablePeriod(123L);
         MutablePeriod copy = test.copy();
@@ -444,6 +447,7 @@ public class TestMutablePeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testClone() {
         MutablePeriod test = new MutablePeriod(123L);
         MutablePeriod copy = (MutablePeriod) test.clone();

@@ -15,49 +15,28 @@
  */
 package org.joda.time.convert;
 
+import org.joda.time.*;
+import org.joda.time.format.DateTimeFormatter;
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.security.AllPermission;
-import java.security.CodeSource;
-import java.security.Permission;
-import java.security.PermissionCollection;
-import java.security.Permissions;
-import java.security.Policy;
-import java.security.ProtectionDomain;
+import java.security.*;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.joda.time.Chronology;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.Duration;
-import org.joda.time.ReadablePartial;
-import org.joda.time.ReadablePeriod;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
-import org.joda.time.Interval;
-import org.joda.time.JodaTimePermission;
-import org.joda.time.ReadWritablePeriod;
-import org.joda.time.ReadWritableInterval;
-import org.joda.time.ReadableDateTime;
-import org.joda.time.ReadableDuration;
-import org.joda.time.ReadableInstant;
-import org.joda.time.ReadableInterval;
-import org.joda.time.TimeOfDay;
-import org.joda.time.format.DateTimeFormatter;
 
 /**
  * This class is a JUnit test for ConverterManager.
  *
  * @author Stephen Colebourne
  */
-public class TestConverterManager extends TestCase {
+public class TestConverterManager extends Assert {
     private static final boolean OLD_JDK;
     static {
         String str = System.getProperty("java.version");
@@ -102,19 +81,8 @@ public class TestConverterManager extends TestCase {
         };
     }
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestConverterManager.class);
-    }
-
-    public TestConverterManager(String name) {
-        super(name);
-    }
-
     //-----------------------------------------------------------------------
+   @Test
     public void testSingleton() throws Exception {
         Class cls = ConverterManager.class;
         assertEquals(true, Modifier.isPublic(cls.getModifiers()));
@@ -128,6 +96,7 @@ public class TestConverterManager extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetInstantConverter() {
         InstantConverter c = ConverterManager.getInstance().getInstantConverter(new Long(0L));
         assertEquals(Long.class, c.getSupportedType());
@@ -153,6 +122,7 @@ public class TestConverterManager extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testGetInstantConverterRemovedNull() {
         try {
             ConverterManager.getInstance().removeInstantConverter(NullConverter.INSTANCE);
@@ -166,6 +136,7 @@ public class TestConverterManager extends TestCase {
         assertEquals(6, ConverterManager.getInstance().getInstantConverters().length);
     }
 
+   @Test
     public void testGetInstantConverterOKMultipleMatches() {
         InstantConverter c = new InstantConverter() {
             public long getInstantMillis(Object object, Chronology chrono) {return 0;}
@@ -184,6 +155,7 @@ public class TestConverterManager extends TestCase {
         assertEquals(6, ConverterManager.getInstance().getInstantConverters().length);
     }
 
+   @Test
     public void testGetInstantConverterBadMultipleMatches() {
         InstantConverter c = new InstantConverter() {
             public long getInstantMillis(Object object, Chronology chrono) {return 0;}
@@ -206,12 +178,14 @@ public class TestConverterManager extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetInstantConverters() {
         InstantConverter[] array = ConverterManager.getInstance().getInstantConverters();
         assertEquals(6, array.length);
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testAddInstantConverter1() {
         InstantConverter c = new InstantConverter() {
             public long getInstantMillis(Object object, Chronology chrono) {return 0;}
@@ -230,6 +204,7 @@ public class TestConverterManager extends TestCase {
         assertEquals(6, ConverterManager.getInstance().getInstantConverters().length);
     }
 
+   @Test
     public void testAddInstantConverter2() {
         InstantConverter c = new InstantConverter() {
             public long getInstantMillis(Object object, Chronology chrono) {return 0;}
@@ -248,18 +223,21 @@ public class TestConverterManager extends TestCase {
         assertEquals(6, ConverterManager.getInstance().getInstantConverters().length);
     }
 
+   @Test
     public void testAddInstantConverter3() {
         InstantConverter removed = ConverterManager.getInstance().addInstantConverter(StringConverter.INSTANCE);
         assertEquals(null, removed);
         assertEquals(6, ConverterManager.getInstance().getInstantConverters().length);
     }
 
+   @Test
     public void testAddInstantConverter4() {
         InstantConverter removed = ConverterManager.getInstance().addInstantConverter(null);
         assertEquals(null, removed);
         assertEquals(6, ConverterManager.getInstance().getInstantConverters().length);
     }
 
+   @Test
     public void testAddInstantConverterSecurity() {
         if (OLD_JDK) {
             return;
@@ -279,6 +257,7 @@ public class TestConverterManager extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testRemoveInstantConverter1() {
         try {
             InstantConverter removed = ConverterManager.getInstance().removeInstantConverter(StringConverter.INSTANCE);
@@ -290,6 +269,7 @@ public class TestConverterManager extends TestCase {
         assertEquals(6, ConverterManager.getInstance().getInstantConverters().length);
     }
 
+   @Test
     public void testRemoveInstantConverter2() {
         InstantConverter c = new InstantConverter() {
             public long getInstantMillis(Object object, Chronology chrono) {return 0;}
@@ -302,12 +282,14 @@ public class TestConverterManager extends TestCase {
         assertEquals(6, ConverterManager.getInstance().getInstantConverters().length);
     }
 
+   @Test
     public void testRemoveInstantConverter3() {
         InstantConverter removed = ConverterManager.getInstance().removeInstantConverter(null);
         assertEquals(null, removed);
         assertEquals(6, ConverterManager.getInstance().getInstantConverters().length);
     }
 
+   @Test
     public void testRemoveInstantConverterSecurity() {
         if (OLD_JDK) {
             return;
@@ -330,6 +312,7 @@ public class TestConverterManager extends TestCase {
     //-----------------------------------------------------------------------
     private static final int PARTIAL_SIZE = 7;
     
+   @Test
     public void testGetPartialConverter() {
         PartialConverter c = ConverterManager.getInstance().getPartialConverter(new Long(0L));
         assertEquals(Long.class, c.getSupportedType());
@@ -358,6 +341,7 @@ public class TestConverterManager extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testGetPartialConverterRemovedNull() {
         try {
             ConverterManager.getInstance().removePartialConverter(NullConverter.INSTANCE);
@@ -371,6 +355,7 @@ public class TestConverterManager extends TestCase {
         assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
+   @Test
     public void testGetPartialConverterOKMultipleMatches() {
         PartialConverter c = new PartialConverter() {
             public int[] getPartialValues(ReadablePartial partial, Object object, Chronology chrono) {return null;}
@@ -390,6 +375,7 @@ public class TestConverterManager extends TestCase {
         assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
+   @Test
     public void testGetPartialConverterBadMultipleMatches() {
         PartialConverter c = new PartialConverter() {
             public int[] getPartialValues(ReadablePartial partial, Object object, Chronology chrono) {return null;}
@@ -413,12 +399,14 @@ public class TestConverterManager extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetPartialConverters() {
         PartialConverter[] array = ConverterManager.getInstance().getPartialConverters();
         assertEquals(PARTIAL_SIZE, array.length);
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testAddPartialConverter1() {
         PartialConverter c = new PartialConverter() {
             public int[] getPartialValues(ReadablePartial partial, Object object, Chronology chrono) {return null;}
@@ -438,6 +426,7 @@ public class TestConverterManager extends TestCase {
         assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
+   @Test
     public void testAddPartialConverter2() {
         PartialConverter c = new PartialConverter() {
             public int[] getPartialValues(ReadablePartial partial, Object object, Chronology chrono) {return null;}
@@ -457,18 +446,21 @@ public class TestConverterManager extends TestCase {
         assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
+   @Test
     public void testAddPartialConverter3() {
         PartialConverter removed = ConverterManager.getInstance().addPartialConverter(StringConverter.INSTANCE);
         assertEquals(null, removed);
         assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
+   @Test
     public void testAddPartialConverter4() {
         PartialConverter removed = ConverterManager.getInstance().addPartialConverter(null);
         assertEquals(null, removed);
         assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
+   @Test
     public void testAddPartialConverterSecurity() {
         if (OLD_JDK) {
             return;
@@ -488,6 +480,7 @@ public class TestConverterManager extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testRemovePartialConverter1() {
         try {
             PartialConverter removed = ConverterManager.getInstance().removePartialConverter(StringConverter.INSTANCE);
@@ -499,6 +492,7 @@ public class TestConverterManager extends TestCase {
         assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
+   @Test
     public void testRemovePartialConverter2() {
         PartialConverter c = new PartialConverter() {
             public int[] getPartialValues(ReadablePartial partial, Object object, Chronology chrono) {return null;}
@@ -512,12 +506,14 @@ public class TestConverterManager extends TestCase {
         assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
+   @Test
     public void testRemovePartialConverter3() {
         PartialConverter removed = ConverterManager.getInstance().removePartialConverter(null);
         assertEquals(null, removed);
         assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
+   @Test
     public void testRemovePartialConverterSecurity() {
         if (OLD_JDK) {
             return;
@@ -540,6 +536,7 @@ public class TestConverterManager extends TestCase {
     //-----------------------------------------------------------------------
     private static int DURATION_SIZE = 5;
     
+   @Test
     public void testGetDurationConverter() {
         DurationConverter c = ConverterManager.getInstance().getDurationConverter(new Long(0L));
         assertEquals(Long.class, c.getSupportedType());
@@ -562,6 +559,7 @@ public class TestConverterManager extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testGetDurationConverterRemovedNull() {
         try {
             ConverterManager.getInstance().removeDurationConverter(NullConverter.INSTANCE);
@@ -576,12 +574,14 @@ public class TestConverterManager extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetDurationConverters() {
         DurationConverter[] array = ConverterManager.getInstance().getDurationConverters();
         assertEquals(DURATION_SIZE, array.length);
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testAddDurationConverter1() {
         DurationConverter c = new DurationConverter() {
             public long getDurationMillis(Object object) {return 0;}
@@ -598,6 +598,7 @@ public class TestConverterManager extends TestCase {
         assertEquals(DURATION_SIZE, ConverterManager.getInstance().getDurationConverters().length);
     }
 
+   @Test
     public void testAddDurationConverter2() {
         DurationConverter c = new DurationConverter() {
             public long getDurationMillis(Object object) {return 0;}
@@ -614,12 +615,14 @@ public class TestConverterManager extends TestCase {
         assertEquals(DURATION_SIZE, ConverterManager.getInstance().getDurationConverters().length);
     }
 
+   @Test
     public void testAddDurationConverter3() {
         DurationConverter removed = ConverterManager.getInstance().addDurationConverter(null);
         assertEquals(null, removed);
         assertEquals(DURATION_SIZE, ConverterManager.getInstance().getDurationConverters().length);
     }
 
+   @Test
     public void testAddDurationConverterSecurity() {
         if (OLD_JDK) {
             return;
@@ -639,6 +642,7 @@ public class TestConverterManager extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testRemoveDurationConverter1() {
         try {
             DurationConverter removed = ConverterManager.getInstance().removeDurationConverter(StringConverter.INSTANCE);
@@ -650,6 +654,7 @@ public class TestConverterManager extends TestCase {
         assertEquals(DURATION_SIZE, ConverterManager.getInstance().getDurationConverters().length);
     }
 
+   @Test
     public void testRemoveDurationConverter2() {
         DurationConverter c = new DurationConverter() {
             public long getDurationMillis(Object object) {return 0;}
@@ -660,12 +665,14 @@ public class TestConverterManager extends TestCase {
         assertEquals(DURATION_SIZE, ConverterManager.getInstance().getDurationConverters().length);
     }
 
+   @Test
     public void testRemoveDurationConverter3() {
         DurationConverter removed = ConverterManager.getInstance().removeDurationConverter(null);
         assertEquals(null, removed);
         assertEquals(DURATION_SIZE, ConverterManager.getInstance().getDurationConverters().length);
     }
 
+   @Test
     public void testRemoveDurationConverterSecurity() {
         if (OLD_JDK) {
             return;
@@ -688,6 +695,7 @@ public class TestConverterManager extends TestCase {
     //-----------------------------------------------------------------------
     private static int PERIOD_SIZE = 5;
     
+   @Test
     public void testGetPeriodConverter() {
         PeriodConverter c = ConverterManager.getInstance().getPeriodConverter(new Period(1, 2, 3, 4, 5, 6, 7, 8));
         assertEquals(ReadablePeriod.class, c.getSupportedType());
@@ -710,6 +718,7 @@ public class TestConverterManager extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testGetPeriodConverterRemovedNull() {
         try {
             ConverterManager.getInstance().removePeriodConverter(NullConverter.INSTANCE);
@@ -724,12 +733,14 @@ public class TestConverterManager extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetPeriodConverters() {
         PeriodConverter[] array = ConverterManager.getInstance().getPeriodConverters();
         assertEquals(PERIOD_SIZE, array.length);
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testAddPeriodConverter1() {
         PeriodConverter c = new PeriodConverter() {
             public void setInto(ReadWritablePeriod duration, Object object, Chronology c) {}
@@ -747,6 +758,7 @@ public class TestConverterManager extends TestCase {
         assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
     }
 
+   @Test
     public void testAddPeriodConverter2() {
         PeriodConverter c = new PeriodConverter() {
             public void setInto(ReadWritablePeriod duration, Object object, Chronology c) {}
@@ -764,12 +776,14 @@ public class TestConverterManager extends TestCase {
         assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
     }
 
+   @Test
     public void testAddPeriodConverter3() {
         PeriodConverter removed = ConverterManager.getInstance().addPeriodConverter(null);
         assertEquals(null, removed);
         assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
     }
 
+   @Test
     public void testAddPeriodConverterSecurity() {
         if (OLD_JDK) {
             return;
@@ -789,6 +803,7 @@ public class TestConverterManager extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testRemovePeriodConverter1() {
         try {
             PeriodConverter removed = ConverterManager.getInstance().removePeriodConverter(StringConverter.INSTANCE);
@@ -800,6 +815,7 @@ public class TestConverterManager extends TestCase {
         assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
     }
 
+   @Test
     public void testRemovePeriodConverter2() {
         PeriodConverter c = new PeriodConverter() {
             public void setInto(ReadWritablePeriod duration, Object object, Chronology c) {}
@@ -811,12 +827,14 @@ public class TestConverterManager extends TestCase {
         assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
     }
 
+   @Test
     public void testRemovePeriodConverter3() {
         PeriodConverter removed = ConverterManager.getInstance().removePeriodConverter(null);
         assertEquals(null, removed);
         assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
     }
 
+   @Test
     public void testRemovePeriodConverterSecurity() {
         if (OLD_JDK) {
             return;
@@ -839,6 +857,7 @@ public class TestConverterManager extends TestCase {
     //-----------------------------------------------------------------------
     private static int INTERVAL_SIZE = 3;
 
+   @Test
     public void testGetIntervalConverter() {
         IntervalConverter c = ConverterManager.getInstance().getIntervalConverter(new Interval(0L, 1000L));
         assertEquals(ReadableInterval.class, c.getSupportedType());
@@ -859,6 +878,7 @@ public class TestConverterManager extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testGetIntervalConverterRemovedNull() {
         try {
             ConverterManager.getInstance().removeIntervalConverter(NullConverter.INSTANCE);
@@ -873,12 +893,14 @@ public class TestConverterManager extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetIntervalConverters() {
         IntervalConverter[] array = ConverterManager.getInstance().getIntervalConverters();
         assertEquals(INTERVAL_SIZE, array.length);
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testAddIntervalConverter1() {
         IntervalConverter c = new IntervalConverter() {
             public boolean isReadableInterval(Object object, Chronology chrono) {return false;}
@@ -896,6 +918,7 @@ public class TestConverterManager extends TestCase {
         assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
     }
 
+   @Test
     public void testAddIntervalConverter2() {
         IntervalConverter c = new IntervalConverter() {
             public boolean isReadableInterval(Object object, Chronology chrono) {return false;}
@@ -913,12 +936,14 @@ public class TestConverterManager extends TestCase {
         assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
     }
 
+   @Test
     public void testAddIntervalConverter3() {
         IntervalConverter removed = ConverterManager.getInstance().addIntervalConverter(null);
         assertEquals(null, removed);
         assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
     }
 
+   @Test
     public void testAddIntervalConverterSecurity() {
         if (OLD_JDK) {
             return;
@@ -938,6 +963,7 @@ public class TestConverterManager extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testRemoveIntervalConverter1() {
         try {
             IntervalConverter removed = ConverterManager.getInstance().removeIntervalConverter(StringConverter.INSTANCE);
@@ -949,6 +975,7 @@ public class TestConverterManager extends TestCase {
         assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
     }
 
+   @Test
     public void testRemoveIntervalConverter2() {
         IntervalConverter c = new IntervalConverter() {
             public boolean isReadableInterval(Object object, Chronology chrono) {return false;}
@@ -960,12 +987,14 @@ public class TestConverterManager extends TestCase {
         assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
     }
 
+   @Test
     public void testRemoveIntervalConverter3() {
         IntervalConverter removed = ConverterManager.getInstance().removeIntervalConverter(null);
         assertEquals(null, removed);
         assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
     }
 
+   @Test
     public void testRemoveIntervalConverterSecurity() {
         if (OLD_JDK) {
             return;
@@ -985,6 +1014,7 @@ public class TestConverterManager extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         assertEquals("ConverterManager[6 instant,7 partial,5 duration,5 period,3 interval]", ConverterManager.getInstance().toString());
     }

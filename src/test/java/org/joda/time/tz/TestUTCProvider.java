@@ -15,37 +15,27 @@
  */
 package org.joda.time.tz;
 
+import org.joda.time.DateTimeZone;
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.util.Set;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.joda.time.DateTimeZone;
 
 /**
  * This class is a JUnit test for UTCProvider.
  *
  * @author Stephen Colebourne
  */
-public class TestUTCProvider extends TestCase {
+public class TestUTCProvider extends Assert {
 
     private DateTimeZone zone = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestUTCProvider.class);
-    }
-
-    public TestUTCProvider(String name) {
-        super(name);
-    }
-
     //-----------------------------------------------------------------------
+   @Test
     public void testClass() throws Exception {
         Class cls = UTCProvider.class;
         assertEquals(true, Modifier.isPublic(cls.getModifiers()));
@@ -56,6 +46,7 @@ public class TestUTCProvider extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetAvailableIDs() throws Exception {
         Provider p = new UTCProvider();
         Set set = p.getAvailableIDs();
@@ -64,6 +55,7 @@ public class TestUTCProvider extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetZone_String() throws Exception {
         Provider p = new UTCProvider();
         assertSame(DateTimeZone.UTC, p.getZone("UTC"));

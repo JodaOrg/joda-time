@@ -15,37 +15,31 @@
  */
 package org.joda.time;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
-import java.util.TimeZone;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.base.AbstractInstant;
-import org.joda.time.chrono.BaseChronology;
-import org.joda.time.chrono.BuddhistChronology;
-import org.joda.time.chrono.CopticChronology;
-import org.joda.time.chrono.GJChronology;
-import org.joda.time.chrono.GregorianChronology;
-import org.joda.time.chrono.ISOChronology;
+import org.joda.time.chrono.*;
 import org.joda.time.field.UnsupportedDateTimeField;
 import org.joda.time.field.UnsupportedDurationField;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.*;
+
+
 
 /**
  * This class is a Junit unit test for DateTime.
  *
  * @author Stephen Colebourne
  */
-public class TestDateTime_Basics extends TestCase {
+public class TestDateTime_Basics extends Assert {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
@@ -94,19 +88,8 @@ public class TestDateTime_Basics extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestDateTime_Basics.class);
-    }
-
-    public TestDateTime_Basics(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -116,7 +99,8 @@ public class TestDateTime_Basics extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -127,6 +111,7 @@ public class TestDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testTest() {
         assertEquals("2002-06-09T00:00:00.000Z", new Instant(TEST_TIME_NOW).toString());
         assertEquals("2002-04-05T12:24:00.000Z", new Instant(TEST_TIME1).toString());
@@ -134,6 +119,7 @@ public class TestDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGet_DateTimeField() {
         DateTime test = new DateTime();
         assertEquals(1, test.get(ISO_DEFAULT.era()));
@@ -164,6 +150,7 @@ public class TestDateTime_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testGet_DateTimeFieldType() {
         DateTime test = new DateTime();
         assertEquals(1, test.get(DateTimeFieldType.era()));
@@ -194,6 +181,7 @@ public class TestDateTime_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testIsSupported_DateTimeFieldType() {
         DateTime test = new DateTime();
         assertEquals(true, test.isSupported(DateTimeFieldType.era()));
@@ -222,6 +210,7 @@ public class TestDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetters() {
         DateTime test = new DateTime();
         
@@ -249,6 +238,7 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals(60 * 60 * 1000, test.getMillisOfDay());
     }
 
+   @Test
     public void testWithers() {
         DateTime test = new DateTime(1970, 6, 9, 10, 20, 30, 40, GJ_DEFAULT);
         check(test.withYear(2000), 2000, 6, 9, 10, 20, 30, 40);
@@ -279,6 +269,7 @@ public class TestDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testEqualsHashCode() {
         DateTime test1 = new DateTime(TEST_TIME1);
         DateTime test2 = new DateTime(TEST_TIME1);
@@ -335,6 +326,7 @@ public class TestDateTime_Basics extends TestCase {
         }
     }
 
+   @Test
     public void testCompareTo() {
         DateTime test1 = new DateTime(TEST_TIME1);
         DateTime test1a = new DateTime(TEST_TIME1);
@@ -366,18 +358,21 @@ public class TestDateTime_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testIsEqual_long() {
         assertEquals(false, new DateTime(TEST_TIME1).isEqual(TEST_TIME2));
         assertEquals(true, new DateTime(TEST_TIME1).isEqual(TEST_TIME1));
         assertEquals(false, new DateTime(TEST_TIME2).isEqual(TEST_TIME1));
     }
     
+   @Test
     public void testIsEqualNow() {
         assertEquals(false, new DateTime(TEST_TIME_NOW - 1).isEqualNow());
         assertEquals(true, new DateTime(TEST_TIME_NOW).isEqualNow());
         assertEquals(false, new DateTime(TEST_TIME_NOW + 1).isEqualNow());
     }
     
+   @Test
     public void testIsEqual_RI() {
         DateTime test1 = new DateTime(TEST_TIME1);
         DateTime test1a = new DateTime(TEST_TIME1);
@@ -404,18 +399,21 @@ public class TestDateTime_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testIsBefore_long() {
         assertEquals(true, new DateTime(TEST_TIME1).isBefore(TEST_TIME2));
         assertEquals(false, new DateTime(TEST_TIME1).isBefore(TEST_TIME1));
         assertEquals(false, new DateTime(TEST_TIME2).isBefore(TEST_TIME1));
     }
     
+   @Test
     public void testIsBeforeNow() {
         assertEquals(true, new DateTime(TEST_TIME_NOW - 1).isBeforeNow());
         assertEquals(false, new DateTime(TEST_TIME_NOW).isBeforeNow());
         assertEquals(false, new DateTime(TEST_TIME_NOW + 1).isBeforeNow());
     }
     
+   @Test
     public void testIsBefore_RI() {
         DateTime test1 = new DateTime(TEST_TIME1);
         DateTime test1a = new DateTime(TEST_TIME1);
@@ -442,18 +440,21 @@ public class TestDateTime_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testIsAfter_long() {
         assertEquals(false, new DateTime(TEST_TIME1).isAfter(TEST_TIME2));
         assertEquals(false, new DateTime(TEST_TIME1).isAfter(TEST_TIME1));
         assertEquals(true, new DateTime(TEST_TIME2).isAfter(TEST_TIME1));
     }
     
+   @Test
     public void testIsAfterNow() {
         assertEquals(false, new DateTime(TEST_TIME_NOW - 1).isAfterNow());
         assertEquals(false, new DateTime(TEST_TIME_NOW).isAfterNow());
         assertEquals(true, new DateTime(TEST_TIME_NOW + 1).isAfterNow());
     }
     
+   @Test
     public void testIsAfter_RI() {
         DateTime test1 = new DateTime(TEST_TIME1);
         DateTime test1a = new DateTime(TEST_TIME1);
@@ -480,6 +481,7 @@ public class TestDateTime_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testSerialization() throws Exception {
         DateTime test = new DateTime(TEST_TIME_NOW);
         
@@ -498,6 +500,7 @@ public class TestDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         DateTime test = new DateTime(TEST_TIME_NOW);
         assertEquals("2002-06-09T01:00:00.000+01:00", test.toString());
@@ -506,12 +509,14 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals("2002-06-09T02:00:00.000+02:00", test.toString());
     }
 
+   @Test
     public void testToString_String() {
         DateTime test = new DateTime(TEST_TIME_NOW);
         assertEquals("2002 01", test.toString("yyyy HH"));
         assertEquals("2002-06-09T01:00:00.000+01:00", test.toString((String) null));
     }
 
+   @Test
     public void testToString_String_Locale() {
         DateTime test = new DateTime(TEST_TIME_NOW);
         assertEquals("Sun 9/6", test.toString("EEE d/M", Locale.ENGLISH));
@@ -521,6 +526,7 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals("2002-06-09T01:00:00.000+01:00", test.toString(null, null));
     }
 
+   @Test
     public void testToString_DTFormatter() {
         DateMidnight test = new DateMidnight(TEST_TIME_NOW);
         assertEquals("2002 00", test.toString(DateTimeFormat.forPattern("yyyy HH")));
@@ -528,18 +534,21 @@ public class TestDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToInstant() {
         DateTime test = new DateTime(TEST_TIME1);
         Instant result = test.toInstant();
         assertEquals(TEST_TIME1, result.getMillis());
     }
 
+   @Test
     public void testToDateTime() {
         DateTime test = new DateTime(TEST_TIME1);
         DateTime result = test.toDateTime();
         assertSame(test, result);
     }
 
+   @Test
     public void testToDateTimeISO() {
         DateTime test = new DateTime(TEST_TIME1);
         DateTime result = test.toDateTimeISO();
@@ -570,6 +579,7 @@ public class TestDateTime_Basics extends TestCase {
         assertNotSame(test, result);
     }
 
+   @Test
     public void testToDateTime_DateTimeZone() {
         DateTime test = new DateTime(TEST_TIME1);
         DateTime result = test.toDateTime(LONDON);
@@ -590,6 +600,7 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testToDateTime_Chronology() {
         DateTime test = new DateTime(TEST_TIME1);
         DateTime result = test.toDateTime(ISO_DEFAULT);
@@ -610,6 +621,7 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testToMutableDateTime() {
         DateTime test = new DateTime(TEST_TIME1, PARIS);
         MutableDateTime result = test.toMutableDateTime();
@@ -617,6 +629,7 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals(ISO_PARIS, result.getChronology());
     }
 
+   @Test
     public void testToMutableDateTimeISO() {
         DateTime test = new DateTime(TEST_TIME1, PARIS);
         MutableDateTime result = test.toMutableDateTimeISO();
@@ -626,6 +639,7 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals(ISO_PARIS, result.getChronology());
     }
 
+   @Test
     public void testToMutableDateTime_DateTimeZone() {
         DateTime test = new DateTime(TEST_TIME1);
         MutableDateTime result = test.toMutableDateTime(LONDON);
@@ -648,6 +662,7 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals(ISO_DEFAULT, result.getChronology());
     }
 
+   @Test
     public void testToMutableDateTime_Chronology() {
         DateTime test = new DateTime(TEST_TIME1);
         MutableDateTime result = test.toMutableDateTime(ISO_DEFAULT);
@@ -670,12 +685,14 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals(ISO_DEFAULT, result.getChronology());
     }
 
+   @Test
     public void testToDate() {
         DateTime test = new DateTime(TEST_TIME1);
         Date result = test.toDate();
         assertEquals(test.getMillis(), result.getTime());
     }
 
+   @Test
     public void testToCalendar_Locale() {
         DateTime test = new DateTime(TEST_TIME1);
         Calendar result = test.toCalendar(null);
@@ -693,6 +710,7 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals(TimeZone.getTimeZone("Europe/Paris"), result.getTimeZone());
     }
 
+   @Test
     public void testToGregorianCalendar() {
         DateTime test = new DateTime(TEST_TIME1);
         GregorianCalendar result = test.toGregorianCalendar();
@@ -706,36 +724,42 @@ public class TestDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToDateMidnight() {
         DateTime base = new DateTime(TEST_TIME1, COPTIC_DEFAULT);
         DateMidnight test = base.toDateMidnight();
         assertEquals(new DateMidnight(base, COPTIC_DEFAULT), test);
     }
 
+   @Test
     public void testToYearMonthDay() {
         DateTime base = new DateTime(TEST_TIME1, COPTIC_DEFAULT);
         YearMonthDay test = base.toYearMonthDay();
         assertEquals(new YearMonthDay(TEST_TIME1, COPTIC_DEFAULT), test);
     }
 
+   @Test
     public void testToTimeOfDay() {
         DateTime base = new DateTime(TEST_TIME1, COPTIC_DEFAULT);
         TimeOfDay test = base.toTimeOfDay();
         assertEquals(new TimeOfDay(TEST_TIME1, COPTIC_DEFAULT), test);
     }
 
+   @Test
     public void testToLocalDateTime() {
         DateTime base = new DateTime(TEST_TIME1, COPTIC_DEFAULT);
         LocalDateTime test = base.toLocalDateTime();
         assertEquals(new LocalDateTime(TEST_TIME1, COPTIC_DEFAULT), test);
     }
 
+   @Test
     public void testToLocalDate() {
         DateTime base = new DateTime(TEST_TIME1, COPTIC_DEFAULT);
         LocalDate test = base.toLocalDate();
         assertEquals(new LocalDate(TEST_TIME1, COPTIC_DEFAULT), test);
     }
 
+   @Test
     public void testToLocalTime() {
         DateTime base = new DateTime(TEST_TIME1, COPTIC_DEFAULT);
         LocalTime test = base.toLocalTime();
@@ -743,6 +767,7 @@ public class TestDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithMillis_long() {
         DateTime test = new DateTime(TEST_TIME1);
         DateTime result = test.withMillis(TEST_TIME2);
@@ -759,6 +784,7 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testWithChronology_Chronology() {
         DateTime test = new DateTime(TEST_TIME1);
         DateTime result = test.withChronology(GREGORIAN_PARIS);
@@ -780,6 +806,7 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testWithZone_DateTimeZone() {
         DateTime test = new DateTime(TEST_TIME1);
         DateTime result = test.withZone(PARIS);
@@ -796,6 +823,7 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testWithZoneRetainFields_DateTimeZone() {
         DateTime test = new DateTime(TEST_TIME1);
         DateTime result = test.withZoneRetainFields(PARIS);
@@ -821,6 +849,7 @@ public class TestDateTime_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testWithDate_int_int_int() {
         DateTime test = new DateTime(2002, 4, 5, 1, 2, 3, 4, ISO_UTC);
         DateTime result = test.withDate(2003, 5, 6);
@@ -834,6 +863,7 @@ public class TestDateTime_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
     
+   @Test
     public void testWithTime_int_int_int() {
         DateTime test = new DateTime(TEST_TIME1 - 12345L, BUDDHIST_UTC);
         DateTime result = test.withTime(12, 24, 0, 0);
@@ -847,6 +877,7 @@ public class TestDateTime_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
     
+   @Test
     public void testWithFields_RPartial() {
         DateTime test = new DateTime(2004, 5, 6, 7, 8, 9, 0);
         DateTime result = test.withFields(new YearMonthDay(2003, 4, 5));
@@ -859,6 +890,7 @@ public class TestDateTime_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testWithField1() {
         DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime result = test.withField(DateTimeFieldType.year(), 2006);
@@ -867,6 +899,7 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals(new DateTime(2006, 6, 9, 0, 0, 0, 0), result);
     }
 
+   @Test
     public void testWithField2() {
         DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         try {
@@ -876,6 +909,7 @@ public class TestDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithFieldAdded1() {
         DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime result = test.withFieldAdded(DurationFieldType.years(), 6);
@@ -884,6 +918,7 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals(new DateTime(2010, 6, 9, 0, 0, 0, 0), result);
     }
 
+   @Test
     public void testWithFieldAdded2() {
         DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         try {
@@ -892,6 +927,7 @@ public class TestDateTime_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithFieldAdded3() {
         DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         try {
@@ -900,6 +936,7 @@ public class TestDateTime_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithFieldAdded4() {
         DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime result = test.withFieldAdded(DurationFieldType.years(), 0);
@@ -907,6 +944,7 @@ public class TestDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithDurationAdded_long_int() {
         DateTime test = new DateTime(TEST_TIME1, BUDDHIST_DEFAULT);
         DateTime result = test.withDurationAdded(123456789L, 1);
@@ -926,6 +964,7 @@ public class TestDateTime_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testWithDurationAdded_RD_int() {
         DateTime test = new DateTime(TEST_TIME1, BUDDHIST_DEFAULT);
         DateTime result = test.withDurationAdded(new Duration(123456789L), 1);
@@ -948,6 +987,7 @@ public class TestDateTime_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testWithDurationAdded_RP_int() {
         DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BUDDHIST_DEFAULT);
         DateTime result = test.withPeriodAdded(new Period(1, 2, 3, 4, 5, 6, 7, 8), 1);
@@ -970,6 +1010,7 @@ public class TestDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------    
+   @Test
     public void testPlus_long() {
         DateTime test = new DateTime(TEST_TIME1, BUDDHIST_DEFAULT);
         DateTime result = test.plus(123456789L);
@@ -977,6 +1018,7 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals(expected, result);
     }
     
+   @Test
     public void testPlus_RD() {
         DateTime test = new DateTime(TEST_TIME1, BUDDHIST_DEFAULT);
         DateTime result = test.plus(new Duration(123456789L));
@@ -987,6 +1029,7 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
     
+   @Test
     public void testPlus_RP() {
         DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BUDDHIST_DEFAULT);
         DateTime result = test.plus(new Period(1, 2, 3, 4, 5, 6, 7, 8));
@@ -997,6 +1040,7 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testPlusYears_int() {
         DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BUDDHIST_DEFAULT);
         DateTime result = test.plusYears(1);
@@ -1007,6 +1051,7 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testPlusMonths_int() {
         DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BUDDHIST_DEFAULT);
         DateTime result = test.plusMonths(1);
@@ -1017,6 +1062,7 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testPlusWeeks_int() {
         DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BUDDHIST_DEFAULT);
         DateTime result = test.plusWeeks(1);
@@ -1027,6 +1073,7 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testPlusDays_int() {
         DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BUDDHIST_DEFAULT);
         DateTime result = test.plusDays(1);
@@ -1037,6 +1084,7 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testPlusHours_int() {
         DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BUDDHIST_DEFAULT);
         DateTime result = test.plusHours(1);
@@ -1047,6 +1095,7 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testPlusMinutes_int() {
         DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BUDDHIST_DEFAULT);
         DateTime result = test.plusMinutes(1);
@@ -1057,6 +1106,7 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testPlusSeconds_int() {
         DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BUDDHIST_DEFAULT);
         DateTime result = test.plusSeconds(1);
@@ -1067,6 +1117,7 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testPlusMillis_int() {
         DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BUDDHIST_DEFAULT);
         DateTime result = test.plusMillis(1);
@@ -1078,6 +1129,7 @@ public class TestDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------    
+   @Test
     public void testMinus_long() {
         DateTime test = new DateTime(TEST_TIME1, BUDDHIST_DEFAULT);
         DateTime result = test.minus(123456789L);
@@ -1085,6 +1137,7 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals(expected, result);
     }
     
+   @Test
     public void testMinus_RD() {
         DateTime test = new DateTime(TEST_TIME1, BUDDHIST_DEFAULT);
         DateTime result = test.minus(new Duration(123456789L));
@@ -1095,6 +1148,7 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
     
+   @Test
     public void testMinus_RP() {
         DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BUDDHIST_DEFAULT);
         DateTime result = test.minus(new Period(1, 1, 1, 1, 1, 1, 1, 1));
@@ -1105,6 +1159,7 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusYears_int() {
         DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BUDDHIST_DEFAULT);
         DateTime result = test.minusYears(1);
@@ -1115,6 +1170,7 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusMonths_int() {
         DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BUDDHIST_DEFAULT);
         DateTime result = test.minusMonths(1);
@@ -1125,6 +1181,7 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusWeeks_int() {
         DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BUDDHIST_DEFAULT);
         DateTime result = test.minusWeeks(1);
@@ -1135,6 +1192,7 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusDays_int() {
         DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BUDDHIST_DEFAULT);
         DateTime result = test.minusDays(1);
@@ -1145,6 +1203,7 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusHours_int() {
         DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BUDDHIST_DEFAULT);
         DateTime result = test.minusHours(1);
@@ -1155,6 +1214,7 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusMinutes_int() {
         DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BUDDHIST_DEFAULT);
         DateTime result = test.minusMinutes(1);
@@ -1165,6 +1225,7 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusSeconds_int() {
         DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BUDDHIST_DEFAULT);
         DateTime result = test.minusSeconds(1);
@@ -1175,6 +1236,7 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusMillis_int() {
         DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BUDDHIST_DEFAULT);
         DateTime result = test.minusMillis(1);
@@ -1186,6 +1248,7 @@ public class TestDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testProperty() {
         DateTime test = new DateTime();
         assertEquals(test.year(), test.property(DateTimeFieldType.year()));

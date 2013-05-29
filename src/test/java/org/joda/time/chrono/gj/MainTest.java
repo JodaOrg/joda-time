@@ -15,15 +15,19 @@
  */
 package org.joda.time.chrono.gj;
 
-import java.util.Random;
-
-import junit.framework.TestCase;
-
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeField;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.JulianChronology;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Random;
 
 /**
  * Tests either the Julian or Gregorian chronology from org.joda.time.chrono.gj
@@ -47,7 +51,8 @@ import org.joda.time.chrono.JulianChronology;
  *
  * @author Brian S O'Neill
  */
-public class MainTest extends TestCase {
+@RunWith(Parameterized.class)
+public class MainTest extends Assert {
     public static final int GREGORIAN_MODE = 0;
     public static final int JULIAN_MODE = 1;
 
@@ -95,13 +100,18 @@ public class MainTest extends TestCase {
     private final Chronology iTest;
     private final Chronology iActual;
 
+    @Parameterized.Parameters
+    public static Collection<Object[]> data() {
+        Object[][] data = new Object[][] { { 1000, 0, 1345435247779935L }, { 1000, 1, 1345435247779935L } };
+        return Arrays.asList(data);
+    }
+
     /**
      * @param iterations number of test iterations to perform
      * @param mode GREGORIAN_MODE or JULIAN_MODE,0=Gregorian, 1=Julian
      * @param seed seed for random number generator
      */
     public MainTest(int iterations, int mode, long seed) {
-        super("testChronology");
         iIterations = iterations;
         iMode = mode;
         iSeed = seed;
@@ -118,6 +128,7 @@ public class MainTest extends TestCase {
     /**
      * Main junit test
      */
+   @Test
     public void testChronology() {
         int iterations = iIterations;
         long seed = iSeed;

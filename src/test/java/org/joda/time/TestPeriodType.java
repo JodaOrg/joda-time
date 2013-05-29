@@ -15,6 +15,11 @@
  */
 package org.joda.time;
 
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -22,15 +27,13 @@ import java.io.ObjectOutputStream;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * This class is a JUnit test for PeriodType.
  *
  * @author Stephen Colebourne
  */
-public class TestPeriodType extends TestCase {
+public class TestPeriodType extends Assert {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
@@ -66,19 +69,8 @@ public class TestPeriodType extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestPeriodType.class);
-    }
-
-    public TestPeriodType(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -88,7 +80,8 @@ public class TestPeriodType extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -99,6 +92,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testTest() {
         assertEquals("2002-06-09T00:00:00.000Z", new Instant(TEST_TIME_NOW).toString());
         assertEquals("2002-04-05T12:24:00.000Z", new Instant(TEST_TIME1).toString());
@@ -137,6 +131,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testStandard() throws Exception {
         PeriodType type = PeriodType.standard();
         assertEquals(8, type.size());
@@ -160,6 +155,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testYearMonthDayTime() throws Exception {
         PeriodType type = PeriodType.yearMonthDayTime();
         assertEquals(7, type.size());
@@ -182,6 +178,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testYearMonthDay() throws Exception {
         PeriodType type = PeriodType.yearMonthDay();
         assertEquals(3, type.size());
@@ -200,6 +197,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testYearWeekDayTime() throws Exception {
         PeriodType type = PeriodType.yearWeekDayTime();
         assertEquals(7, type.size());
@@ -222,6 +220,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testYearWeekDay() throws Exception {
         PeriodType type = PeriodType.yearWeekDay();
         assertEquals(3, type.size());
@@ -240,6 +239,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testYearDayTime() throws Exception {
         PeriodType type = PeriodType.yearDayTime();
         assertEquals(6, type.size());
@@ -261,6 +261,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testYearDay() throws Exception {
         PeriodType type = PeriodType.yearDay();
         assertEquals(2, type.size());
@@ -278,6 +279,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testDayTime() throws Exception {
         PeriodType type = PeriodType.dayTime();
         assertEquals(5, type.size());
@@ -298,6 +300,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testTime() throws Exception {
         PeriodType type = PeriodType.time();
         assertEquals(4, type.size());
@@ -317,6 +320,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testYears() throws Exception {
         PeriodType type = PeriodType.years();
         assertEquals(1, type.size());
@@ -333,6 +337,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testMonths() throws Exception {
         PeriodType type = PeriodType.months();
         assertEquals(1, type.size());
@@ -349,6 +354,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWeeks() throws Exception {
         PeriodType type = PeriodType.weeks();
         assertEquals(1, type.size());
@@ -365,6 +371,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testDays() throws Exception {
         PeriodType type = PeriodType.days();
         assertEquals(1, type.size());
@@ -381,6 +388,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testHours() throws Exception {
         PeriodType type = PeriodType.hours();
         assertEquals(1, type.size());
@@ -397,6 +405,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testMinutes() throws Exception {
         PeriodType type = PeriodType.minutes();
         assertEquals(1, type.size());
@@ -413,6 +422,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSeconds() throws Exception {
         PeriodType type = PeriodType.seconds();
         assertEquals(1, type.size());
@@ -429,6 +439,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testMillis() throws Exception {
         PeriodType type = PeriodType.millis();
         assertEquals(1, type.size());
@@ -445,6 +456,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields1() throws Exception {
         PeriodType type = PeriodType.forFields(new DurationFieldType[] {
             DurationFieldType.years(),
@@ -480,6 +492,7 @@ public class TestPeriodType extends TestCase {
         assertSame(PeriodType.millis(), type);
     }
 
+   @Test
     public void testForFields2() throws Exception {
         DurationFieldType[] types = new DurationFieldType[] {
             DurationFieldType.years(),
@@ -500,6 +513,7 @@ public class TestPeriodType extends TestCase {
         assertSameAfterSerialization(type);
     }
 
+   @Test
     public void testForFields3() throws Exception {
         DurationFieldType[] types = new DurationFieldType[] {
             DurationFieldType.months(),
@@ -520,6 +534,7 @@ public class TestPeriodType extends TestCase {
         assertSameAfterSerialization(type);
     }
 
+   @Test
     public void testForFields4() throws Exception {
         DurationFieldType[] types = new DurationFieldType[] {
             DurationFieldType.weeks(),
@@ -536,6 +551,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(true, type == type2);
     }
 
+   @Test
     public void testForFields5() throws Exception {
         DurationFieldType[] types = new DurationFieldType[] {
             DurationFieldType.centuries(),
@@ -555,6 +571,7 @@ public class TestPeriodType extends TestCase {
         }
     }
 
+   @Test
     public void testForFields6() throws Exception {
         DurationFieldType[] types = null;
         try {
@@ -596,6 +613,7 @@ public class TestPeriodType extends TestCase {
     }
 
     // ensure hash key distribution
+   @Test
     public void testForFields7() throws Exception {
         DurationFieldType[] types = new DurationFieldType[] {
             DurationFieldType.weeks(),
@@ -612,6 +630,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testMaskYears() throws Exception {
         PeriodType type = PeriodType.standard().withYearsRemoved();
         assertEquals(7, type.size());
@@ -634,6 +653,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testMaskMonths() throws Exception {
         PeriodType type = PeriodType.standard().withMonthsRemoved();
         assertEquals(7, type.size());
@@ -656,6 +676,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testMaskWeeks() throws Exception {
         PeriodType type = PeriodType.standard().withWeeksRemoved();
         assertEquals(7, type.size());
@@ -678,6 +699,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testMaskDays() throws Exception {
         PeriodType type = PeriodType.standard().withDaysRemoved();
         assertEquals(7, type.size());
@@ -700,6 +722,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testMaskHours() throws Exception {
         PeriodType type = PeriodType.standard().withHoursRemoved();
         assertEquals(7, type.size());
@@ -722,6 +745,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testMaskMinutes() throws Exception {
         PeriodType type = PeriodType.standard().withMinutesRemoved();
         assertEquals(7, type.size());
@@ -744,6 +768,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testMaskSeconds() throws Exception {
         PeriodType type = PeriodType.standard().withSecondsRemoved();
         assertEquals(7, type.size());
@@ -766,6 +791,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testMaskMillis() throws Exception {
         PeriodType type = PeriodType.standard().withMillisRemoved();
         assertEquals(7, type.size());
@@ -788,6 +814,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testMaskHoursMinutesSeconds() throws Exception {
         PeriodType type = PeriodType.standard().withHoursRemoved().withMinutesRemoved().withSecondsRemoved();
         assertEquals(5, type.size());
@@ -808,6 +835,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testMaskTwice1() throws Exception {
         PeriodType type = PeriodType.standard().withYearsRemoved();
         PeriodType type2 = type.withYearsRemoved();
@@ -843,6 +871,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testMaskTwice2() throws Exception {
         PeriodType type = PeriodType.dayTime();
         PeriodType type2 = type.withYearsRemoved();
@@ -874,6 +903,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testEquals() throws Exception {
         PeriodType type = PeriodType.dayTime().withMillisRemoved();
         assertEquals(true, type.equals(type));
@@ -882,12 +912,14 @@ public class TestPeriodType extends TestCase {
         assertEquals(false, type.equals(""));
     }
 
+   @Test
     public void testHashCode() throws Exception {
         PeriodType type = PeriodType.dayTime().withMillisRemoved();
         assertEquals(type.hashCode(), type.hashCode());
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testIsSupported() throws Exception {
         PeriodType type = PeriodType.dayTime().withMillisRemoved();
         assertEquals(false, type.isSupported(DurationFieldType.years()));
@@ -901,6 +933,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testIndexOf() throws Exception {
         PeriodType type = PeriodType.dayTime().withMillisRemoved();
         assertEquals(-1, type.indexOf(DurationFieldType.years()));

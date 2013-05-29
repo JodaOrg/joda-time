@@ -15,44 +15,36 @@
  */
 package org.joda.time.tz;
 
+import org.joda.time.DateTimeZone;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.Date;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.joda.time.DateTimeZone;
 
 /**
  * Test cases for FixedDateTimeZone.
  *
  * @author Stephen Colebourne
  */
-public class TestFixedDateTimeZone extends TestCase {
-
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestFixedDateTimeZone.class);
-    }
-
+public class TestFixedDateTimeZone extends Assert {
     private DateTimeZone originalDateTimeZone = null;
-
-    public TestFixedDateTimeZone(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         originalDateTimeZone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(DateTimeZone.UTC);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeZone.setDefault(originalDateTimeZone);
     }
 
+   @Test
     public void testEquals() throws Exception {
         FixedDateTimeZone zone1 = new FixedDateTimeZone("A", "B", 1, 5);
         FixedDateTimeZone zone1b = new FixedDateTimeZone("A", "B", 1, 5);
@@ -67,6 +59,7 @@ public class TestFixedDateTimeZone extends TestCase {
         assertEquals(false, zone1.equals(zone4));
     }
 
+   @Test
     public void testHashCode() throws Exception {
         FixedDateTimeZone zone1 = new FixedDateTimeZone("A", "B", 1, 5);
         FixedDateTimeZone zone1b = new FixedDateTimeZone("A", "B", 1, 5);
@@ -81,6 +74,7 @@ public class TestFixedDateTimeZone extends TestCase {
         assertEquals(false, zone1.hashCode() == zone4.hashCode());
     }
 
+   @Test
     public void testToTimeZone1() throws Exception {
         FixedDateTimeZone zone = new FixedDateTimeZone("+00:01", "+00:01", 60000, 60000);
         java.util.TimeZone tz = zone.toTimeZone();
@@ -90,6 +84,7 @@ public class TestFixedDateTimeZone extends TestCase {
         assertEquals(60000, getOffset(tz, 1185951600000L));
     }
 
+   @Test
     public void testToTimeZone2() throws Exception {
         FixedDateTimeZone zone = new FixedDateTimeZone("A", "B", 1, 5);
         java.util.TimeZone tz = zone.toTimeZone();

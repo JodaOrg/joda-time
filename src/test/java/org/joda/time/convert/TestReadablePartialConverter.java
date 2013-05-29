@@ -15,31 +15,28 @@
  */
 package org.joda.time.convert;
 
+import org.joda.time.*;
+import org.joda.time.base.BasePartial;
+import org.joda.time.chrono.BuddhistChronology;
+import org.joda.time.chrono.ISOChronology;
+import org.joda.time.chrono.JulianChronology;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.joda.time.Chronology;
-import org.joda.time.DateTimeField;
-import org.joda.time.DateTimeZone;
-import org.joda.time.ReadablePartial;
-import org.joda.time.TimeOfDay;
-import org.joda.time.YearMonthDay;
-import org.joda.time.base.BasePartial;
-import org.joda.time.chrono.BuddhistChronology;
-import org.joda.time.chrono.ISOChronology;
-import org.joda.time.chrono.JulianChronology;
 
 /**
  * This class is a Junit unit test for ReadablePartialConverter.
  *
  * @author Stephen Colebourne
  */
-public class TestReadablePartialConverter extends TestCase {
+public class TestReadablePartialConverter extends Assert {
 
     private static final DateTimeZone UTC = DateTimeZone.UTC;
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
@@ -50,25 +47,15 @@ public class TestReadablePartialConverter extends TestCase {
     
     private DateTimeZone zone = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestReadablePartialConverter.class);
-    }
-
-    public TestReadablePartialConverter(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         JULIAN = JulianChronology.getInstance();
         ISO = ISOChronology.getInstance();
         BUDDHIST = BuddhistChronology.getInstance();
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSingleton() throws Exception {
         Class cls = ReadablePartialConverter.class;
         assertEquals(false, Modifier.isPublic(cls.getModifiers()));
@@ -86,17 +73,20 @@ public class TestReadablePartialConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSupportedType() throws Exception {
         assertEquals(ReadablePartial.class, ReadablePartialConverter.INSTANCE.getSupportedType());
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetChronology_Object_Zone() throws Exception {
         assertEquals(ISO_PARIS, ReadablePartialConverter.INSTANCE.getChronology(new TimeOfDay(123L), PARIS));
         assertEquals(ISO, ReadablePartialConverter.INSTANCE.getChronology(new TimeOfDay(123L), DateTimeZone.getDefault()));
         assertEquals(ISO, ReadablePartialConverter.INSTANCE.getChronology(new TimeOfDay(123L), (DateTimeZone) null));
     }
 
+   @Test
     public void testGetChronology_Object_Chronology() throws Exception {
         assertEquals(JULIAN, ReadablePartialConverter.INSTANCE.getChronology(new TimeOfDay(123L, BUDDHIST), JULIAN));
         assertEquals(JULIAN, ReadablePartialConverter.INSTANCE.getChronology(new TimeOfDay(123L), JULIAN));
@@ -104,6 +94,7 @@ public class TestReadablePartialConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetPartialValues() throws Exception {
         TimeOfDay tod = new TimeOfDay();
         int[] expected = new int[] {1, 2, 3, 4};
@@ -140,6 +131,7 @@ public class TestReadablePartialConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         assertEquals("Converter[org.joda.time.ReadablePartial]", ReadablePartialConverter.INSTANCE.toString());
     }

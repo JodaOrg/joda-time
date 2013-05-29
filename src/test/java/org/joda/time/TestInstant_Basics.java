@@ -15,6 +15,14 @@
  */
 package org.joda.time;
 
+import org.joda.time.base.AbstractInstant;
+import org.joda.time.chrono.GregorianChronology;
+import org.joda.time.chrono.ISOChronology;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -24,19 +32,14 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.joda.time.base.AbstractInstant;
-import org.joda.time.chrono.GregorianChronology;
-import org.joda.time.chrono.ISOChronology;
 
 /**
  * This class is a Junit unit test for Instant.
  *
  * @author Stephen Colebourne
  */
-public class TestInstant_Basics extends TestCase {
+public class TestInstant_Basics extends Assert {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
@@ -72,19 +75,8 @@ public class TestInstant_Basics extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestInstant_Basics.class);
-    }
-
-    public TestInstant_Basics(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -94,7 +86,8 @@ public class TestInstant_Basics extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -105,6 +98,7 @@ public class TestInstant_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testTest() {
         assertEquals("2002-06-09T00:00:00.000Z", new Instant(TEST_TIME_NOW).toString());
         assertEquals("2002-04-05T12:24:00.000Z", new Instant(TEST_TIME1).toString());
@@ -112,6 +106,7 @@ public class TestInstant_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGet_DateTimeFieldType() {
         Instant test = new Instant();  // 2002-06-09
         assertEquals(1, test.get(DateTimeFieldType.era()));
@@ -142,6 +137,7 @@ public class TestInstant_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testGet_DateTimeField() {
         Instant test = new Instant();  // 2002-06-09
         assertEquals(1, test.get(ISOChronology.getInstance().era()));
@@ -172,6 +168,7 @@ public class TestInstant_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testGetMethods() {
         Instant test = new Instant();
         
@@ -180,6 +177,7 @@ public class TestInstant_Basics extends TestCase {
         assertEquals(TEST_TIME_NOW, test.getMillis());
     }
 
+   @Test
     public void testEqualsHashCode() {
         Instant test1 = new Instant(TEST_TIME1);
         Instant test2 = new Instant(TEST_TIME1);
@@ -216,6 +214,7 @@ public class TestInstant_Basics extends TestCase {
         }
     }
 
+   @Test
     public void testCompareTo() {
         Instant test1 = new Instant(TEST_TIME1);
         Instant test1a = new Instant(TEST_TIME1);
@@ -247,18 +246,21 @@ public class TestInstant_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testIsEqual_long() {
         assertEquals(false, new Instant(TEST_TIME1).isEqual(TEST_TIME2));
         assertEquals(true, new Instant(TEST_TIME1).isEqual(TEST_TIME1));
         assertEquals(false, new Instant(TEST_TIME2).isEqual(TEST_TIME1));
     }
     
+   @Test
     public void testIsEqualNow() {
         assertEquals(false, new Instant(TEST_TIME_NOW - 1).isEqualNow());
         assertEquals(true, new Instant(TEST_TIME_NOW).isEqualNow());
         assertEquals(false, new Instant(TEST_TIME_NOW + 1).isEqualNow());
     }
     
+   @Test
     public void testIsEqual_RI() {
         Instant test1 = new Instant(TEST_TIME1);
         Instant test1a = new Instant(TEST_TIME1);
@@ -285,18 +287,21 @@ public class TestInstant_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testIsBefore_long() {
         assertEquals(true, new Instant(TEST_TIME1).isBefore(TEST_TIME2));
         assertEquals(false, new Instant(TEST_TIME1).isBefore(TEST_TIME1));
         assertEquals(false, new Instant(TEST_TIME2).isBefore(TEST_TIME1));
     }
     
+   @Test
     public void testIsBeforeNow() {
         assertEquals(true, new Instant(TEST_TIME_NOW - 1).isBeforeNow());
         assertEquals(false, new Instant(TEST_TIME_NOW).isBeforeNow());
         assertEquals(false, new Instant(TEST_TIME_NOW + 1).isBeforeNow());
     }
     
+   @Test
     public void testIsBefore_RI() {
         Instant test1 = new Instant(TEST_TIME1);
         Instant test1a = new Instant(TEST_TIME1);
@@ -323,18 +328,21 @@ public class TestInstant_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testIsAfter_long() {
         assertEquals(false, new Instant(TEST_TIME1).isAfter(TEST_TIME2));
         assertEquals(false, new Instant(TEST_TIME1).isAfter(TEST_TIME1));
         assertEquals(true, new Instant(TEST_TIME2).isAfter(TEST_TIME1));
     }
     
+   @Test
     public void testIsAfterNow() {
         assertEquals(false, new Instant(TEST_TIME_NOW - 1).isAfterNow());
         assertEquals(false, new Instant(TEST_TIME_NOW).isAfterNow());
         assertEquals(true, new Instant(TEST_TIME_NOW + 1).isAfterNow());
     }
     
+   @Test
     public void testIsAfter_RI() {
         Instant test1 = new Instant(TEST_TIME1);
         Instant test1a = new Instant(TEST_TIME1);
@@ -361,6 +369,7 @@ public class TestInstant_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testSerialization() throws Exception {
         Instant test = new Instant(TEST_TIME_NOW);
         
@@ -379,18 +388,21 @@ public class TestInstant_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         Instant test = new Instant(TEST_TIME_NOW);
         assertEquals("2002-06-09T00:00:00.000Z", test.toString());
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToInstant() {
         Instant test = new Instant(TEST_TIME1);
         Instant result = test.toInstant();
         assertSame(test, result);
     }
 
+   @Test
     public void testToDateTime() {
         Instant test = new Instant(TEST_TIME1);
         DateTime result = test.toDateTime();
@@ -398,6 +410,7 @@ public class TestInstant_Basics extends TestCase {
         assertEquals(ISOChronology.getInstance(), result.getChronology());
     }
 
+   @Test
     public void testToDateTimeISO() {
         Instant test = new Instant(TEST_TIME1);
         DateTime result = test.toDateTimeISO();
@@ -407,6 +420,7 @@ public class TestInstant_Basics extends TestCase {
         assertEquals(ISOChronology.getInstance(), result.getChronology());
     }
 
+   @Test
     public void testToDateTime_DateTimeZone() {
         Instant test = new Instant(TEST_TIME1);
         DateTime result = test.toDateTime(LONDON);
@@ -424,6 +438,7 @@ public class TestInstant_Basics extends TestCase {
         assertEquals(ISOChronology.getInstance(), result.getChronology());
     }
 
+   @Test
     public void testToDateTime_Chronology() {
         Instant test = new Instant(TEST_TIME1);
         DateTime result = test.toDateTime(ISOChronology.getInstance());
@@ -440,6 +455,7 @@ public class TestInstant_Basics extends TestCase {
         assertEquals(ISOChronology.getInstance(), result.getChronology());
     }
 
+   @Test
     public void testToMutableDateTime() {
         Instant test = new Instant(TEST_TIME1);
         MutableDateTime result = test.toMutableDateTime();
@@ -447,6 +463,7 @@ public class TestInstant_Basics extends TestCase {
         assertEquals(ISOChronology.getInstance(), result.getChronology());
     }
 
+   @Test
     public void testToMutableDateTimeISO() {
         Instant test = new Instant(TEST_TIME1);
         MutableDateTime result = test.toMutableDateTimeISO();
@@ -456,6 +473,7 @@ public class TestInstant_Basics extends TestCase {
         assertEquals(ISOChronology.getInstance(), result.getChronology());
     }
 
+   @Test
     public void testToMutableDateTime_DateTimeZone() {
         Instant test = new Instant(TEST_TIME1);
         MutableDateTime result = test.toMutableDateTime(LONDON);
@@ -473,6 +491,7 @@ public class TestInstant_Basics extends TestCase {
         assertEquals(ISOChronology.getInstance(), result.getChronology());
     }
 
+   @Test
     public void testToMutableDateTime_Chronology() {
         Instant test = new Instant(TEST_TIME1);
         MutableDateTime result = test.toMutableDateTime(ISOChronology.getInstance());
@@ -490,6 +509,7 @@ public class TestInstant_Basics extends TestCase {
         assertEquals(ISOChronology.getInstance(), result.getChronology());
     }
 
+   @Test
     public void testToDate() {
         Instant test = new Instant(TEST_TIME1);
         Date result = test.toDate();
@@ -497,6 +517,7 @@ public class TestInstant_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithMillis_long() {
         Instant test = new Instant(TEST_TIME1);
         Instant result = test.withMillis(TEST_TIME2);
@@ -509,6 +530,7 @@ public class TestInstant_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithDurationAdded_long_int() {
         Instant test = new Instant(TEST_TIME1);
         Instant result = test.withDurationAdded(123456789L, 1);
@@ -528,6 +550,7 @@ public class TestInstant_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testWithDurationAdded_RD_int() {
         Instant test = new Instant(TEST_TIME1);
         Instant result = test.withDurationAdded(new Duration(123456789L), 1);
@@ -550,6 +573,7 @@ public class TestInstant_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------    
+   @Test
     public void testPlus_long() {
         Instant test = new Instant(TEST_TIME1);
         Instant result = test.plus(123456789L);
@@ -557,6 +581,7 @@ public class TestInstant_Basics extends TestCase {
         assertEquals(expected, result);
     }
     
+   @Test
     public void testPlus_RD() {
         Instant test = new Instant(TEST_TIME1);
         Instant result = test.plus(new Duration(123456789L));
@@ -568,6 +593,7 @@ public class TestInstant_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------    
+   @Test
     public void testMinus_long() {
         Instant test = new Instant(TEST_TIME1);
         Instant result = test.minus(123456789L);
@@ -575,6 +601,7 @@ public class TestInstant_Basics extends TestCase {
         assertEquals(expected, result);
     }
     
+   @Test
     public void testMinus_RD() {
         Instant test = new Instant(TEST_TIME1);
         Instant result = test.minus(new Duration(123456789L));
@@ -586,6 +613,7 @@ public class TestInstant_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testImmutable() {
         assertTrue(Modifier.isFinal(Instant.class.getModifiers()));
     }

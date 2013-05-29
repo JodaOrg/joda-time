@@ -15,28 +15,24 @@
  */
 package org.joda.time.chrono;
 
+import org.joda.time.*;
+import org.joda.time.DateTime.Property;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.joda.time.Chronology;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeField;
-import org.joda.time.DateTimeUtils;
-import org.joda.time.DateTimeZone;
-import org.joda.time.DurationField;
-import org.joda.time.DurationFieldType;
-import org.joda.time.DateTime.Property;
 
 /**
  * This class is a Junit unit test for CopticChronology.
  *
  * @author Stephen Colebourne
  */
-public class TestCopticChronology extends TestCase {
+public class TestCopticChronology extends Assert {
 
     private static final int MILLIS_PER_DAY = DateTimeConstants.MILLIS_PER_DAY;
 
@@ -61,20 +57,8 @@ public class TestCopticChronology extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        SKIP = 1 * MILLIS_PER_DAY;
-        return new TestSuite(TestCopticChronology.class);
-    }
-
-    public TestCopticChronology(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -84,7 +68,8 @@ public class TestCopticChronology extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -95,16 +80,19 @@ public class TestCopticChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactoryUTC() {
         assertEquals(DateTimeZone.UTC, CopticChronology.getInstanceUTC().getZone());
         assertSame(CopticChronology.class, CopticChronology.getInstanceUTC().getClass());
     }
 
+   @Test
     public void testFactory() {
         assertEquals(LONDON, CopticChronology.getInstance().getZone());
         assertSame(CopticChronology.class, CopticChronology.getInstance().getClass());
     }
 
+   @Test
     public void testFactory_Zone() {
         assertEquals(TOKYO, CopticChronology.getInstance(TOKYO).getZone());
         assertEquals(PARIS, CopticChronology.getInstance(PARIS).getZone());
@@ -113,6 +101,7 @@ public class TestCopticChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testEquality() {
         assertSame(CopticChronology.getInstance(TOKYO), CopticChronology.getInstance(TOKYO));
         assertSame(CopticChronology.getInstance(LONDON), CopticChronology.getInstance(LONDON));
@@ -121,6 +110,7 @@ public class TestCopticChronology extends TestCase {
         assertSame(CopticChronology.getInstance(), CopticChronology.getInstance(LONDON));
     }
 
+   @Test
     public void testWithUTC() {
         assertSame(CopticChronology.getInstanceUTC(), CopticChronology.getInstance(LONDON).withUTC());
         assertSame(CopticChronology.getInstanceUTC(), CopticChronology.getInstance(TOKYO).withUTC());
@@ -128,6 +118,7 @@ public class TestCopticChronology extends TestCase {
         assertSame(CopticChronology.getInstanceUTC(), CopticChronology.getInstance().withUTC());
     }
 
+   @Test
     public void testWithZone() {
         assertSame(CopticChronology.getInstance(TOKYO), CopticChronology.getInstance(TOKYO).withZone(TOKYO));
         assertSame(CopticChronology.getInstance(LONDON), CopticChronology.getInstance(TOKYO).withZone(LONDON));
@@ -137,6 +128,7 @@ public class TestCopticChronology extends TestCase {
         assertSame(CopticChronology.getInstance(PARIS), CopticChronology.getInstanceUTC().withZone(PARIS));
     }
 
+   @Test
     public void testToString() {
         assertEquals("CopticChronology[Europe/London]", CopticChronology.getInstance(LONDON).toString());
         assertEquals("CopticChronology[Asia/Tokyo]", CopticChronology.getInstance(TOKYO).toString());
@@ -145,6 +137,7 @@ public class TestCopticChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testDurationFields() {
         assertEquals("eras", CopticChronology.getInstance().eras().getName());
         assertEquals("centuries", CopticChronology.getInstance().centuries().getName());
@@ -210,6 +203,7 @@ public class TestCopticChronology extends TestCase {
         assertEquals(true, CopticChronology.getInstance(gmt).millis().isPrecise());
     }
 
+   @Test
     public void testDateFields() {
         assertEquals("era", CopticChronology.getInstance().era().getName());
         assertEquals("centuryOfEra", CopticChronology.getInstance().centuryOfEra().getName());
@@ -238,6 +232,7 @@ public class TestCopticChronology extends TestCase {
         assertEquals(true, CopticChronology.getInstance().dayOfWeek().isSupported());
     }
 
+   @Test
     public void testTimeFields() {
         assertEquals("halfdayOfDay", CopticChronology.getInstance().halfdayOfDay().getName());
         assertEquals("clockhourOfHalfday", CopticChronology.getInstance().clockhourOfHalfday().getName());
@@ -265,11 +260,13 @@ public class TestCopticChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testEpoch() {
         DateTime epoch = new DateTime(1, 1, 1, 0, 0, 0, 0, COPTIC_UTC);
         assertEquals(new DateTime(284, 8, 29, 0, 0, 0, 0, JULIAN_UTC), epoch.withChronology(JULIAN_UTC));
     }
 
+   @Test
     public void testEra() {
         assertEquals(1, CopticChronology.AM);
         try {
@@ -282,6 +279,7 @@ public class TestCopticChronology extends TestCase {
     /**
      * Tests era, year, monthOfYear, dayOfMonth and dayOfWeek.
      */
+   @Test
     public void testCalendar() {
         if (TestAll.FAST) {
             return;
@@ -366,6 +364,7 @@ public class TestCopticChronology extends TestCase {
         }
     }
 
+   @Test
     public void testSampleDate() {
         DateTime dt = new DateTime(2004, 6, 9, 0, 0, 0, 0, ISO_UTC).withChronology(COPTIC_UTC);
         assertEquals(CopticChronology.AM, dt.getEra());
@@ -431,6 +430,7 @@ public class TestCopticChronology extends TestCase {
         assertEquals(0, dt.getMillisOfSecond());
     }
 
+   @Test
     public void testSampleDateWithZone() {
         DateTime dt = new DateTime(2004, 6, 9, 12, 0, 0, 0, PARIS).withChronology(COPTIC_UTC);
         assertEquals(CopticChronology.AM, dt.getEra());
@@ -444,6 +444,7 @@ public class TestCopticChronology extends TestCase {
         assertEquals(0, dt.getMillisOfSecond());
     }
 
+   @Test
     public void testDurationYear() {
         // Leap 1723
         DateTime dt20 = new DateTime(1720, 10, 2, 0, 0, 0, 0, COPTIC_UTC);
@@ -496,6 +497,7 @@ public class TestCopticChronology extends TestCase {
         assertEquals(dt24.getMillis(), fld.add(dt20.getMillis(), 4L));
     }
 
+   @Test
     public void testDurationMonth() {
         // Leap 1723
         DateTime dt11 = new DateTime(1723, 11, 2, 0, 0, 0, 0, COPTIC_UTC);

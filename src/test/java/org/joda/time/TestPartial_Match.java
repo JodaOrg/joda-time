@@ -15,19 +15,22 @@
  */
 package org.joda.time;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.ISOChronology;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+
 
 /**
  * This class is a Junit unit test for Partial.
  *
  * @author Stephen Colebourne
  */
-public class TestPartial_Match extends TestCase {
+public class TestPartial_Match extends Assert {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
@@ -67,31 +70,22 @@ public class TestPartial_Match extends TestCase {
         
     private DateTimeZone zone = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestPartial_Match.class);
-    }
-
-    public TestPartial_Match(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(LONDON);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
         zone = null;
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testIsMatch_Instant() {
         // Year=2005, Month=7 (July), DayOfWeek=2 (Tuesday)
         Partial test = createYMDwPartial(ISO_UTC, 2005, 7, 2);
@@ -124,6 +118,7 @@ public class TestPartial_Match extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testIsMatch_Partial() {
         // Year=2005, Month=7 (July), DayOfWeek=2 (Tuesday)
         Partial test = createYMDwPartial(ISO_UTC, 2005, 7, 2);

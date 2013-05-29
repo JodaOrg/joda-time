@@ -15,43 +15,27 @@
  */
 package org.joda.time;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * This class is a Junit unit test for Months.
  *
  * @author Stephen Colebourne
  */
-public class TestMonths extends TestCase {
+public class TestMonths extends Assert {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestMonths.class);
-    }
-
-    public TestMonths(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
-    }
-
     //-----------------------------------------------------------------------
+   @Test
     public void testConstants() {
         assertEquals(0, Months.ZERO.getMonths());
         assertEquals(1, Months.ONE.getMonths());
@@ -71,6 +55,7 @@ public class TestMonths extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactory_months_int() {
         assertSame(Months.ZERO, Months.months(0));
         assertSame(Months.ONE, Months.months(1));
@@ -92,6 +77,7 @@ public class TestMonths extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactory_monthsBetween_RInstant() {
         DateTime start = new DateTime(2006, 6, 9, 12, 0, 0, 0, PARIS);
         DateTime end1 = new DateTime(2006, 9, 9, 12, 0, 0, 0, PARIS);
@@ -104,6 +90,7 @@ public class TestMonths extends TestCase {
         assertEquals(6, Months.monthsBetween(start, end2).getMonths());
     }
 
+   @Test
     public void testFactory_monthsBetween_RPartial() {
         LocalDate start = new LocalDate(2006, 6, 9);
         LocalDate end1 = new LocalDate(2006, 9, 9);
@@ -116,6 +103,7 @@ public class TestMonths extends TestCase {
         assertEquals(6, Months.monthsBetween(start, end2).getMonths());
     }
 
+   @Test
     public void testFactory_monthsIn_RInterval() {
         DateTime start = new DateTime(2006, 6, 9, 12, 0, 0, 0, PARIS);
         DateTime end1 = new DateTime(2006, 9, 9, 12, 0, 0, 0, PARIS);
@@ -128,6 +116,7 @@ public class TestMonths extends TestCase {
         assertEquals(6, Months.monthsIn(new Interval(start, end2)).getMonths());
     }
 
+   @Test
     public void testFactory_parseMonths_String() {
         assertEquals(0, Months.parseMonths((String) null).getMonths());
         assertEquals(0, Months.parseMonths("P0M").getMonths());
@@ -150,22 +139,26 @@ public class TestMonths extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetMethods() {
         Months test = Months.months(20);
         assertEquals(20, test.getMonths());
     }
 
+   @Test
     public void testGetFieldType() {
         Months test = Months.months(20);
         assertEquals(DurationFieldType.months(), test.getFieldType());
     }
 
+   @Test
     public void testGetPeriodType() {
         Months test = Months.months(20);
         assertEquals(PeriodType.months(), test.getPeriodType());
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testIsGreaterThan() {
         assertEquals(true, Months.THREE.isGreaterThan(Months.TWO));
         assertEquals(false, Months.THREE.isGreaterThan(Months.THREE));
@@ -174,6 +167,7 @@ public class TestMonths extends TestCase {
         assertEquals(false, Months.months(-1).isGreaterThan(null));
     }
 
+   @Test
     public void testIsLessThan() {
         assertEquals(false, Months.THREE.isLessThan(Months.TWO));
         assertEquals(false, Months.THREE.isLessThan(Months.THREE));
@@ -183,6 +177,7 @@ public class TestMonths extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         Months test = Months.months(20);
         assertEquals("P20M", test.toString());
@@ -192,6 +187,7 @@ public class TestMonths extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSerialization() throws Exception {
         Months test = Months.THREE;
         
@@ -210,6 +206,7 @@ public class TestMonths extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPlus_int() {
         Months test2 = Months.months(2);
         Months result = test2.plus(3);
@@ -226,6 +223,7 @@ public class TestMonths extends TestCase {
         }
     }
 
+   @Test
     public void testPlus_Months() {
         Months test2 = Months.months(2);
         Months test3 = Months.months(3);
@@ -245,6 +243,7 @@ public class TestMonths extends TestCase {
         }
     }
 
+   @Test
     public void testMinus_int() {
         Months test2 = Months.months(2);
         Months result = test2.minus(3);
@@ -261,6 +260,7 @@ public class TestMonths extends TestCase {
         }
     }
 
+   @Test
     public void testMinus_Months() {
         Months test2 = Months.months(2);
         Months test3 = Months.months(3);
@@ -280,6 +280,7 @@ public class TestMonths extends TestCase {
         }
     }
 
+   @Test
     public void testMultipliedBy_int() {
         Months test = Months.months(2);
         assertEquals(6, test.multipliedBy(3).getMonths());
@@ -296,6 +297,7 @@ public class TestMonths extends TestCase {
         }
     }
 
+   @Test
     public void testDividedBy_int() {
         Months test = Months.months(12);
         assertEquals(6, test.dividedBy(2).getMonths());
@@ -314,6 +316,7 @@ public class TestMonths extends TestCase {
         }
     }
 
+   @Test
     public void testNegated() {
         Months test = Months.months(12);
         assertEquals(-12, test.negated().getMonths());
@@ -328,6 +331,7 @@ public class TestMonths extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testAddToLocalDate() {
         Months test = Months.months(3);
         LocalDate date = new LocalDate(2006, 6, 1);

@@ -15,39 +15,23 @@
  */
 package org.joda.time.chrono;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.MockZone;
+import org.junit.Assert;
+import org.junit.Test;
+
+
 
 /**
  *
  * @author Brian S O'Neill
  * @author Blair Martin
  */
-public class TestLenientChronology extends TestCase {
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestLenientChronology.class);
-    }
-
-    public TestLenientChronology(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
-    }
-
+public class TestLenientChronology extends Assert {
     //-----------------------------------------------------------------------
+   @Test
     public void test_setYear() {
         Chronology zone = LenientChronology.getInstance(ISOChronology.getInstanceUTC());
         DateTime dt = new DateTime(2007, 1, 1, 0, 0 ,0, 0, zone);
@@ -57,6 +41,7 @@ public class TestLenientChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_setMonthOfYear() {
         Chronology zone = LenientChronology.getInstance(ISOChronology.getInstanceUTC());
         DateTime dt = new DateTime(2007, 1, 1, 0, 0 ,0, 0, zone);
@@ -68,6 +53,7 @@ public class TestLenientChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_setDayOfMonth() {
         Chronology zone = LenientChronology.getInstance(ISOChronology.getInstanceUTC());
         DateTime dt = new DateTime(2007, 1, 1, 0, 0 ,0, 0, zone);
@@ -79,6 +65,7 @@ public class TestLenientChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_setHourOfDay() {
         Chronology zone = LenientChronology.getInstance(ISOChronology.getInstanceUTC());
         DateTime dt = new DateTime(2007, 1, 1, 0, 0 ,0, 0, zone);
@@ -92,6 +79,7 @@ public class TestLenientChronology extends TestCase {
     //-----------------------------------------------------------------------
     //------------------------ Bug ------------------------------------------
     //-----------------------------------------------------------------------
+   @Test
     public void testNearDstTransition() {
         // This is just a regression test. Test case provided by Blair Martin.
 
@@ -123,6 +111,7 @@ public class TestLenientChronology extends TestCase {
     private static final DateTimeZone MOCK_TURK = new MockZone(CUTOVER_TURK, OFFSET_TURK, 3600);
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_MockTurkIsCorrect() {
         DateTime pre = new DateTime(CUTOVER_TURK - 1L, MOCK_TURK);
         assertEquals("2007-03-31T23:59:59.999-05:00", pre.toString());
@@ -132,6 +121,7 @@ public class TestLenientChronology extends TestCase {
         assertEquals("2007-04-01T01:00:00.001-04:00", post.toString());
     }
 
+   @Test
     public void test_lenientChrononolgy_Chicago() {
         DateTimeZone zone = DateTimeZone.forID("America/Chicago");
         Chronology lenient = LenientChronology.getInstance(ISOChronology.getInstance(zone));
@@ -139,12 +129,14 @@ public class TestLenientChronology extends TestCase {
         assertEquals("2007-03-11T03:30:00.000-05:00", dt.toString());
     }
 
+   @Test
     public void test_lenientChrononolgy_Turk() {
         Chronology lenient = LenientChronology.getInstance(ISOChronology.getInstance(MOCK_TURK));
         DateTime dt = new DateTime(2007, 4, 1, 0, 30, 0, 0, lenient);
         assertEquals("2007-04-01T01:30:00.000-04:00", dt.toString());
     }
 
+   @Test
     public void test_strictChrononolgy_Chicago() {
         DateTimeZone zone = DateTimeZone.forID("America/Chicago");
         Chronology lenient = StrictChronology.getInstance(ISOChronology.getInstance(zone));
@@ -156,6 +148,7 @@ public class TestLenientChronology extends TestCase {
         }
     }
 
+   @Test
     public void test_isoChrononolgy_Chicago() {
         DateTimeZone zone = DateTimeZone.forID("America/Chicago");
         Chronology lenient = ISOChronology.getInstance(zone);

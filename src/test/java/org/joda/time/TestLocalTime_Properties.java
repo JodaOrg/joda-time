@@ -15,17 +15,20 @@
  */
 package org.joda.time;
 
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.Locale;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * This class is a Junit unit test for TimeOfDay.
  *
  * @author Stephen Colebourne
  */
-public class TestLocalTime_Properties extends TestCase {
+public class TestLocalTime_Properties extends Assert {
 
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
 
@@ -50,31 +53,22 @@ public class TestLocalTime_Properties extends TestCase {
 
     private DateTimeZone zone = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestLocalTime_Properties.class);
-    }
-
-    public TestLocalTime_Properties(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(LONDON);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
         zone = null;
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPropertyGetHour() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         assertSame(test.getChronology().hourOfDay(), test.hourOfDay().getField());
@@ -93,6 +87,7 @@ public class TestLocalTime_Properties extends TestCase {
         assertEquals(2, test.hourOfDay().getMaximumShortTextLength(null));
     }
 
+   @Test
     public void testPropertyRoundHour() {
         LocalTime test = new LocalTime(10, 20);
         check(test.hourOfDay().roundCeilingCopy(), 11, 0, 0, 0);
@@ -123,6 +118,7 @@ public class TestLocalTime_Properties extends TestCase {
         check(test.hourOfDay().roundHalfEvenCopy(), 12, 0, 0, 0);
     }
 
+   @Test
     public void testPropertyGetMaxMinValuesHour() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         assertEquals(0, test.hourOfDay().getMinimumValue());
@@ -131,12 +127,14 @@ public class TestLocalTime_Properties extends TestCase {
         assertEquals(23, test.hourOfDay().getMaximumValueOverall());
     }
 
+   @Test
     public void testPropertyWithMaxMinValueHour() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         check(test.hourOfDay().withMaximumValue(), 23, 20, 30, 40);
         check(test.hourOfDay().withMinimumValue(), 0, 20, 30, 40);
     }
 
+   @Test
     public void testPropertyPlusHour() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime copy = test.hourOfDay().addCopy(9);
@@ -159,6 +157,7 @@ public class TestLocalTime_Properties extends TestCase {
         check(copy, 23, 20, 30, 40);
     }
 
+   @Test
     public void testPropertyPlusNoWrapHour() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime copy = test.hourOfDay().addNoWrapToCopy(9);
@@ -187,6 +186,7 @@ public class TestLocalTime_Properties extends TestCase {
         check(test, 10, 20, 30, 40);
     }
 
+   @Test
     public void testPropertyPlusWrapFieldHour() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime copy = test.hourOfDay().addWrapFieldToCopy(9);
@@ -203,6 +203,7 @@ public class TestLocalTime_Properties extends TestCase {
         check(copy, 19, 20, 30, 40);
     }
 
+   @Test
     public void testPropertySetHour() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime copy = test.hourOfDay().setCopy(12);
@@ -219,6 +220,7 @@ public class TestLocalTime_Properties extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testPropertySetTextHour() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime copy = test.hourOfDay().setCopy("12");
@@ -226,6 +228,7 @@ public class TestLocalTime_Properties extends TestCase {
         check(copy, 12, 20, 30, 40);
     }
 
+   @Test
     public void testPropertyWithMaximumValueHour() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime copy = test.hourOfDay().withMaximumValue();
@@ -233,6 +236,7 @@ public class TestLocalTime_Properties extends TestCase {
         check(copy, 23, 20, 30, 40);
     }
 
+   @Test
     public void testPropertyWithMinimumValueHour() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime copy = test.hourOfDay().withMinimumValue();
@@ -240,6 +244,7 @@ public class TestLocalTime_Properties extends TestCase {
         check(copy, 0, 20, 30, 40);
     }
 
+   @Test
     public void testPropertyCompareToHour() {
         LocalTime test1 = new LocalTime(TEST_TIME1);
         LocalTime test2 = new LocalTime(TEST_TIME2);
@@ -263,6 +268,7 @@ public class TestLocalTime_Properties extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPropertyGetMinute() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         assertSame(test.getChronology().minuteOfHour(), test.minuteOfHour().getField());
@@ -281,6 +287,7 @@ public class TestLocalTime_Properties extends TestCase {
         assertEquals(2, test.minuteOfHour().getMaximumShortTextLength(null));
     }
 
+   @Test
     public void testPropertyGetMaxMinValuesMinute() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         assertEquals(0, test.minuteOfHour().getMinimumValue());
@@ -289,12 +296,14 @@ public class TestLocalTime_Properties extends TestCase {
         assertEquals(59, test.minuteOfHour().getMaximumValueOverall());
     }
 
+   @Test
     public void testPropertyWithMaxMinValueMinute() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         check(test.minuteOfHour().withMaximumValue(), 10, 59, 30, 40);
         check(test.minuteOfHour().withMinimumValue(), 10, 0, 30, 40);
     }
 
+   @Test
     public void testPropertyPlusMinute() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime copy = test.minuteOfHour().addCopy(9);
@@ -335,6 +344,7 @@ public class TestLocalTime_Properties extends TestCase {
         check(copy, 23, 59, 30, 40);
     }
 
+   @Test
     public void testPropertyPlusNoWrapMinute() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime copy = test.minuteOfHour().addNoWrapToCopy(9);
@@ -381,6 +391,7 @@ public class TestLocalTime_Properties extends TestCase {
         check(test, 10, 20, 30, 40);
     }
 
+   @Test
     public void testPropertyPlusWrapFieldMinute() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime copy = test.minuteOfHour().addWrapFieldToCopy(9);
@@ -394,6 +405,7 @@ public class TestLocalTime_Properties extends TestCase {
         check(copy, 10, 33, 30, 40);
     }
 
+   @Test
     public void testPropertySetMinute() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime copy = test.minuteOfHour().setCopy(12);
@@ -410,6 +422,7 @@ public class TestLocalTime_Properties extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testPropertySetTextMinute() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime copy = test.minuteOfHour().setCopy("12");
@@ -417,6 +430,7 @@ public class TestLocalTime_Properties extends TestCase {
         check(copy, 10, 12, 30, 40);
     }
 
+   @Test
     public void testPropertyCompareToMinute() {
         LocalTime test1 = new LocalTime(TEST_TIME1);
         LocalTime test2 = new LocalTime(TEST_TIME2);
@@ -440,6 +454,7 @@ public class TestLocalTime_Properties extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPropertyGetSecond() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         assertSame(test.getChronology().secondOfMinute(), test.secondOfMinute().getField());
@@ -458,6 +473,7 @@ public class TestLocalTime_Properties extends TestCase {
         assertEquals(2, test.secondOfMinute().getMaximumShortTextLength(null));
     }
 
+   @Test
     public void testPropertyGetMaxMinValuesSecond() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         assertEquals(0, test.secondOfMinute().getMinimumValue());
@@ -466,12 +482,14 @@ public class TestLocalTime_Properties extends TestCase {
         assertEquals(59, test.secondOfMinute().getMaximumValueOverall());
     }
 
+   @Test
     public void testPropertyWithMaxMinValueSecond() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         check(test.secondOfMinute().withMaximumValue(), 10, 20, 59, 40);
         check(test.secondOfMinute().withMinimumValue(), 10, 20, 0, 40);
     }
 
+   @Test
     public void testPropertyPlusSecond() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime copy = test.secondOfMinute().addCopy(9);
@@ -509,6 +527,7 @@ public class TestLocalTime_Properties extends TestCase {
         check(copy, 23, 59, 59, 40);
     }
 
+   @Test
     public void testPropertyPlusNoWrapSecond() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime copy = test.secondOfMinute().addNoWrapToCopy(9);
@@ -552,6 +571,7 @@ public class TestLocalTime_Properties extends TestCase {
         check(test, 10, 20, 30, 40);
     }
 
+   @Test
     public void testPropertyPlusWrapFieldSecond() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime copy = test.secondOfMinute().addWrapFieldToCopy(9);
@@ -565,6 +585,7 @@ public class TestLocalTime_Properties extends TestCase {
         check(copy, 10, 20, 43, 40);
     }
 
+   @Test
     public void testPropertySetSecond() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime copy = test.secondOfMinute().setCopy(12);
@@ -581,6 +602,7 @@ public class TestLocalTime_Properties extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testPropertySetTextSecond() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime copy = test.secondOfMinute().setCopy("12");
@@ -588,6 +610,7 @@ public class TestLocalTime_Properties extends TestCase {
         check(copy, 10, 20, 12, 40);
     }
 
+   @Test
     public void testPropertyCompareToSecond() {
         LocalTime test1 = new LocalTime(TEST_TIME1);
         LocalTime test2 = new LocalTime(TEST_TIME2);
@@ -611,6 +634,7 @@ public class TestLocalTime_Properties extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPropertyGetMilli() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         assertSame(test.getChronology().millisOfSecond(), test.millisOfSecond().getField());
@@ -629,6 +653,7 @@ public class TestLocalTime_Properties extends TestCase {
         assertEquals(3, test.millisOfSecond().getMaximumShortTextLength(null));
     }
 
+   @Test
     public void testPropertyGetMaxMinValuesMilli() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         assertEquals(0, test.millisOfSecond().getMinimumValue());
@@ -637,12 +662,14 @@ public class TestLocalTime_Properties extends TestCase {
         assertEquals(999, test.millisOfSecond().getMaximumValueOverall());
     }
 
+   @Test
     public void testPropertyWithMaxMinValueMilli() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         check(test.millisOfSecond().withMaximumValue(), 10, 20, 30, 999);
         check(test.millisOfSecond().withMinimumValue(), 10, 20, 30, 0);
     }
 
+   @Test
     public void testPropertyPlusMilli() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime copy = test.millisOfSecond().addCopy(9);
@@ -677,6 +704,7 @@ public class TestLocalTime_Properties extends TestCase {
         check(copy, 23, 59, 59, 999);
     }
 
+   @Test
     public void testPropertyPlusNoWrapMilli() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime copy = test.millisOfSecond().addNoWrapToCopy(9);
@@ -717,6 +745,7 @@ public class TestLocalTime_Properties extends TestCase {
         check(test, 10, 20, 30, 40);
     }
 
+   @Test
     public void testPropertyPlusWrapFieldMilli() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime copy = test.millisOfSecond().addWrapFieldToCopy(9);
@@ -730,6 +759,7 @@ public class TestLocalTime_Properties extends TestCase {
         check(copy, 10, 20, 30, 993);
     }
 
+   @Test
     public void testPropertySetMilli() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime copy = test.millisOfSecond().setCopy(12);
@@ -746,6 +776,7 @@ public class TestLocalTime_Properties extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testPropertySetTextMilli() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
         LocalTime copy = test.millisOfSecond().setCopy("12");
@@ -753,6 +784,7 @@ public class TestLocalTime_Properties extends TestCase {
         check(copy, 10, 20, 30, 12);
     }
 
+   @Test
     public void testPropertyCompareToMilli() {
         LocalTime test1 = new LocalTime(TEST_TIME1);
         LocalTime test2 = new LocalTime(TEST_TIME2);

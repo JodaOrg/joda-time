@@ -15,43 +15,27 @@
  */
 package org.joda.time;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * This class is a Junit unit test for Years.
  *
  * @author Stephen Colebourne
  */
-public class TestYears extends TestCase {
+public class TestYears extends Assert {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestYears.class);
-    }
-
-    public TestYears(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
-    }
-
     //-----------------------------------------------------------------------
+   @Test
     public void testConstants() {
         assertEquals(0, Years.ZERO.getYears());
         assertEquals(1, Years.ONE.getYears());
@@ -62,6 +46,7 @@ public class TestYears extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactory_years_int() {
         assertSame(Years.ZERO, Years.years(0));
         assertSame(Years.ONE, Years.years(1));
@@ -74,6 +59,7 @@ public class TestYears extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactory_yearsBetween_RInstant() {
         DateTime start = new DateTime(2006, 6, 9, 12, 0, 0, 0, PARIS);
         DateTime end1 = new DateTime(2009, 6, 9, 12, 0, 0, 0, PARIS);
@@ -86,6 +72,7 @@ public class TestYears extends TestCase {
         assertEquals(6, Years.yearsBetween(start, end2).getYears());
     }
 
+   @Test
     public void testFactory_yearsBetween_RPartial() {
         LocalDate start = new LocalDate(2006, 6, 9);
         LocalDate end1 = new LocalDate(2009, 6, 9);
@@ -98,6 +85,7 @@ public class TestYears extends TestCase {
         assertEquals(6, Years.yearsBetween(start, end2).getYears());
     }
 
+   @Test
     public void testFactory_yearsIn_RInterval() {
         DateTime start = new DateTime(2006, 6, 9, 12, 0, 0, 0, PARIS);
         DateTime end1 = new DateTime(2009, 6, 9, 12, 0, 0, 0, PARIS);
@@ -110,6 +98,7 @@ public class TestYears extends TestCase {
         assertEquals(6, Years.yearsIn(new Interval(start, end2)).getYears());
     }
 
+   @Test
     public void testFactory_parseYears_String() {
         assertEquals(0, Years.parseYears((String) null).getYears());
         assertEquals(0, Years.parseYears("P0Y").getYears());
@@ -132,22 +121,26 @@ public class TestYears extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetMethods() {
         Years test = Years.years(20);
         assertEquals(20, test.getYears());
     }
 
+   @Test
     public void testGetFieldType() {
         Years test = Years.years(20);
         assertEquals(DurationFieldType.years(), test.getFieldType());
     }
 
+   @Test
     public void testGetPeriodType() {
         Years test = Years.years(20);
         assertEquals(PeriodType.years(), test.getPeriodType());
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testIsGreaterThan() {
         assertEquals(true, Years.THREE.isGreaterThan(Years.TWO));
         assertEquals(false, Years.THREE.isGreaterThan(Years.THREE));
@@ -156,6 +149,7 @@ public class TestYears extends TestCase {
         assertEquals(false, Years.years(-1).isGreaterThan(null));
     }
 
+   @Test
     public void testIsLessThan() {
         assertEquals(false, Years.THREE.isLessThan(Years.TWO));
         assertEquals(false, Years.THREE.isLessThan(Years.THREE));
@@ -165,6 +159,7 @@ public class TestYears extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         Years test = Years.years(20);
         assertEquals("P20Y", test.toString());
@@ -174,6 +169,7 @@ public class TestYears extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSerialization() throws Exception {
         Years test = Years.THREE;
         
@@ -192,6 +188,7 @@ public class TestYears extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPlus_int() {
         Years test2 = Years.years(2);
         Years result = test2.plus(3);
@@ -208,6 +205,7 @@ public class TestYears extends TestCase {
         }
     }
 
+   @Test
     public void testPlus_Years() {
         Years test2 = Years.years(2);
         Years test3 = Years.years(3);
@@ -227,6 +225,7 @@ public class TestYears extends TestCase {
         }
     }
 
+   @Test
     public void testMinus_int() {
         Years test2 = Years.years(2);
         Years result = test2.minus(3);
@@ -243,6 +242,7 @@ public class TestYears extends TestCase {
         }
     }
 
+   @Test
     public void testMinus_Years() {
         Years test2 = Years.years(2);
         Years test3 = Years.years(3);
@@ -262,6 +262,7 @@ public class TestYears extends TestCase {
         }
     }
 
+   @Test
     public void testMultipliedBy_int() {
         Years test = Years.years(2);
         assertEquals(6, test.multipliedBy(3).getYears());
@@ -278,6 +279,7 @@ public class TestYears extends TestCase {
         }
     }
 
+   @Test
     public void testDividedBy_int() {
         Years test = Years.years(12);
         assertEquals(6, test.dividedBy(2).getYears());
@@ -296,6 +298,7 @@ public class TestYears extends TestCase {
         }
     }
 
+   @Test
     public void testNegated() {
         Years test = Years.years(12);
         assertEquals(-12, test.negated().getYears());
@@ -310,6 +313,7 @@ public class TestYears extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testAddToLocalDate() {
         Years test = Years.years(3);
         LocalDate date = new LocalDate(2006, 6, 1);

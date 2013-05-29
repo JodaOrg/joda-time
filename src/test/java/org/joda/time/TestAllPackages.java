@@ -15,12 +15,13 @@
  */
 package org.joda.time;
 
+import org.junit.Assert;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * Entry point for all tests in Joda Time.
@@ -29,24 +30,20 @@ import junit.framework.TestSuite;
  * 
  * @author Stephen Colebourne
  */
-public class TestAllPackages extends TestCase {
+@RunWith(Suite.class)
+@Suite.SuiteClasses( {
+        org.joda.time.TestAll.class,
+        org.joda.time.chrono.TestAll.class,
+        org.joda.time.chrono.gj.TestAll.class,
+        org.joda.time.convert.TestAll.class,
+        org.joda.time.field.TestAll.class,
+        org.joda.time.format.TestAll.class,
+        org.joda.time.tz.TestAll.class
+}
+)
+public class TestAllPackages extends Assert {
 
-    public TestAllPackages(String testName) {
-        super(testName);
-    }
-
-    public static Test suite() {
-        TestSuite suite = new TestSuite();
-        suite.addTest(org.joda.time.TestAll.suite());
-        suite.addTest(org.joda.time.chrono.TestAll.suite());
-        suite.addTest(org.joda.time.chrono.gj.TestAll.suite());
-        suite.addTest(org.joda.time.convert.TestAll.suite());
-        suite.addTest(org.joda.time.field.TestAll.suite());
-        suite.addTest(org.joda.time.format.TestAll.suite());
-        suite.addTest(org.joda.time.tz.TestAll.suite());
-        return suite;
-    }
-
+    //TODO: need this?
     public static void main(String args[]) {
         // setup a time zone other than one tester is in
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));

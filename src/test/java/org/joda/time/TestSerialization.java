@@ -15,36 +15,28 @@
  */
 package org.joda.time;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.Locale;
-import java.util.TimeZone;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-import org.joda.time.chrono.BuddhistChronology;
-import org.joda.time.chrono.CopticChronology;
-import org.joda.time.chrono.GJChronology;
-import org.joda.time.chrono.GregorianChronology;
-import org.joda.time.chrono.ISOChronology;
-import org.joda.time.chrono.JulianChronology;
+import org.joda.time.chrono.*;
 import org.joda.time.field.DelegatedDurationField;
 import org.joda.time.field.MillisDurationField;
 import org.joda.time.field.UnsupportedDateTimeField;
 import org.joda.time.field.UnsupportedDurationField;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.*;
+import java.util.Locale;
+import java.util.TimeZone;
+
+
 
 /**
  * This class is a Junit unit test for serialization.
  *
  * @author Stephen Colebourne
  */
-public class TestSerialization extends TestCase {
+public class TestSerialization extends Assert {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
@@ -88,19 +80,8 @@ public class TestSerialization extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestSerialization.class);
-    }
-
-    public TestSerialization(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -110,7 +91,8 @@ public class TestSerialization extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -121,6 +103,7 @@ public class TestSerialization extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testTest() {
         assertEquals("2002-06-09T00:00:00.000Z", new Instant(TEST_TIME_NOW).toString());
         assertEquals("2002-04-05T12:24:00.000Z", new Instant(TEST_TIME1).toString());
@@ -128,90 +111,105 @@ public class TestSerialization extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSerializedInstant() throws Exception {
         Instant test = new Instant();
         loadAndCompare(test, "Instant", false);
         inlineCompare(test, false);
     }
 
+   @Test
     public void testSerializedDateTime() throws Exception {
         DateTime test = new DateTime();
         loadAndCompare(test, "DateTime", false);
         inlineCompare(test, false);
     }
 
+   @Test
     public void testSerializedDateTimeProperty() throws Exception {
         DateTime.Property test = new DateTime().hourOfDay();
         loadAndCompare(test, "DateTimeProperty", false);
         inlineCompare(test, false);
     }
 
+   @Test
     public void testSerializedMutableDateTime() throws Exception {
         MutableDateTime test = new MutableDateTime();
         loadAndCompare(test, "MutableDateTime", false);
         inlineCompare(test, false);
     }
 
+   @Test
     public void testSerializedMutableDateTimeProperty() throws Exception {
         MutableDateTime.Property test = new MutableDateTime().hourOfDay();
         loadAndCompare(test, "MutableDateTimeProperty", false);
         inlineCompare(test, false);
     }
 
+   @Test
     public void testSerializedDateMidnight() throws Exception {
         DateMidnight test = new DateMidnight();
         loadAndCompare(test, "DateMidnight", false);
         inlineCompare(test, false);
     }
 
+   @Test
     public void testSerializedDateMidnightProperty() throws Exception {
         DateMidnight.Property test = new DateMidnight().monthOfYear();
         loadAndCompare(test, "DateMidnightProperty", false);
         inlineCompare(test, false);
     }
 
+   @Test
     public void testSerializedLocalDate() throws Exception {
         LocalDate test = new LocalDate();
         loadAndCompare(test, "LocalDate", false);
         inlineCompare(test, false);
     }
 
+   @Test
     public void testSerializedLocalDateBuddhist() throws Exception {
         LocalDate test = new LocalDate(BuddhistChronology.getInstanceUTC());
         loadAndCompare(test, "LocalDateBuddhist", false);
         inlineCompare(test, false);
     }
 
+   @Test
     public void testSerializedLocalTime() throws Exception {
         LocalTime test = new LocalTime();
         loadAndCompare(test, "LocalTime", false);
         inlineCompare(test, false);
     }
 
+   @Test
     public void testSerializedLocalDateTime() throws Exception {
         LocalDateTime test = new LocalDateTime();
         loadAndCompare(test, "LocalDateTime", false);
         inlineCompare(test, false);
     }
 
+   @Test
     public void testSerializedYearMonthDay() throws Exception {
         YearMonthDay test = new YearMonthDay();
         loadAndCompare(test, "YearMonthDay", false);
         inlineCompare(test, false);
     }
 
+   @Test
     public void testSerializedTimeOfDay() throws Exception {
         TimeOfDay test = new TimeOfDay();
         loadAndCompare(test, "TimeOfDay", false);
         inlineCompare(test, false);
     }
 
+   @Test
     public void testSerializedDateTimeZoneUTC() throws Exception {
         DateTimeZone test = DateTimeZone.UTC;
         loadAndCompare(test, "DateTimeZoneUTC", true);
         inlineCompare(test, true);
     }
 
+   @Test
     public void testSerializedDateTimeZone() throws Exception {
         // have to re-get the zone, as TestDateTimeZone may have
         // changed the cache, or a SoftReference may have got cleared
@@ -220,66 +218,77 @@ public class TestSerialization extends TestCase {
         inlineCompare(test, true);
     }
 
+   @Test
     public void testDuration() throws Exception {
         Duration test = Duration.millis(12345);
         loadAndCompare(test, "Duration", false);
         inlineCompare(test, false);
     }
 
+   @Test
     public void testSerializedCopticChronology() throws Exception {
         CopticChronology test = CopticChronology.getInstance(LONDON);
         loadAndCompare(test, "CopticChronology", true);
         inlineCompare(test, true);
     }
 
+   @Test
     public void testSerializedISOChronology() throws Exception {
         ISOChronology test = ISOChronology.getInstance(PARIS);
         loadAndCompare(test, "ISOChronology", true);
         inlineCompare(test, true);
     }
 
+   @Test
     public void testSerializedGJChronology() throws Exception {
         GJChronology test = GJChronology.getInstance(TOKYO);
         loadAndCompare(test, "GJChronology", true);
         inlineCompare(test, true);
     }
 
+   @Test
     public void testSerializedGJChronologyChangedInternals() throws Exception {
         GJChronology test = GJChronology.getInstance(PARIS, 123L, 2);
         loadAndCompare(test, "GJChronologyChangedInternals", true);
         inlineCompare(test, true);
     }
 
+   @Test
     public void testSerializedGregorianChronology() throws Exception {
         GregorianChronology test = GregorianChronology.getInstance(PARIS);
         loadAndCompare(test, "GregorianChronology", true);
         inlineCompare(test, true);
     }
 
+   @Test
     public void testSerializedJulianChronology() throws Exception {
         JulianChronology test = JulianChronology.getInstance(PARIS);
         loadAndCompare(test, "JulianChronology", true);
         inlineCompare(test, true);
     }
 
+   @Test
     public void testSerializedBuddhistChronology() throws Exception {
         BuddhistChronology test = BuddhistChronology.getInstance(PARIS);
         loadAndCompare(test, "BuddhistChronology", true);
         inlineCompare(test, true);
     }
 
+   @Test
     public void testSerializedPeriodType() throws Exception {
         PeriodType test = PeriodType.dayTime();
         loadAndCompare(test, "PeriodType", false);
         inlineCompare(test, false);
     }
 
+   @Test
     public void testSerializedDateTimeFieldType() throws Exception {
         DateTimeFieldType test = DateTimeFieldType.clockhourOfDay();
         loadAndCompare(test, "DateTimeFieldType", true);
         inlineCompare(test, true);
     }
 
+   @Test
     public void testSerializedUnsupportedDateTimeField() throws Exception {
         UnsupportedDateTimeField test = UnsupportedDateTimeField.getInstance(
                 DateTimeFieldType.year(),

@@ -15,6 +15,17 @@
  */
 package org.joda.time;
 
+import org.joda.time.chrono.BuddhistChronology;
+import org.joda.time.chrono.CopticChronology;
+import org.joda.time.chrono.GregorianChronology;
+import org.joda.time.chrono.ISOChronology;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -22,22 +33,14 @@ import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.Locale;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.joda.time.chrono.BuddhistChronology;
-import org.joda.time.chrono.CopticChronology;
-import org.joda.time.chrono.GregorianChronology;
-import org.joda.time.chrono.ISOChronology;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 /**
  * This class is a Junit unit test for YearMonthDay.
  *
  * @author Stephen Colebourne
  */
-public class TestYearMonthDay_Basics extends TestCase {
+public class TestYearMonthDay_Basics extends Assert {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
@@ -71,31 +74,22 @@ public class TestYearMonthDay_Basics extends TestCase {
         
     private DateTimeZone zone = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestYearMonthDay_Basics.class);
-    }
-
-    public TestYearMonthDay_Basics(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(LONDON);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
         zone = null;
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGet() {
         YearMonthDay test = new YearMonthDay();
         assertEquals(1970, test.get(DateTimeFieldType.year()));
@@ -111,11 +105,13 @@ public class TestYearMonthDay_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testSize() {
         YearMonthDay test = new YearMonthDay();
         assertEquals(3, test.size());
     }
 
+   @Test
     public void testGetFieldType() {
         YearMonthDay test = new YearMonthDay(COPTIC_PARIS);
         assertSame(DateTimeFieldType.year(), test.getFieldType(0));
@@ -129,6 +125,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         } catch (IndexOutOfBoundsException ex) {}
     }
 
+   @Test
     public void testGetFieldTypes() {
         YearMonthDay test = new YearMonthDay(COPTIC_PARIS);
         DateTimeFieldType[] fields = test.getFieldTypes();
@@ -138,6 +135,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertNotSame(test.getFieldTypes(), test.getFieldTypes());
     }
 
+   @Test
     public void testGetField() {
         YearMonthDay test = new YearMonthDay(COPTIC_PARIS);
         assertSame(COPTIC_UTC.year(), test.getField(0));
@@ -151,6 +149,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         } catch (IndexOutOfBoundsException ex) {}
     }
 
+   @Test
     public void testGetFields() {
         YearMonthDay test = new YearMonthDay(COPTIC_PARIS);
         DateTimeField[] fields = test.getFields();
@@ -160,6 +159,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertNotSame(test.getFields(), test.getFields());
     }
 
+   @Test
     public void testGetValue() {
         YearMonthDay test = new YearMonthDay();
         assertEquals(1970, test.getValue(0));
@@ -173,6 +173,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         } catch (IndexOutOfBoundsException ex) {}
     }
 
+   @Test
     public void testGetValues() {
         YearMonthDay test = new YearMonthDay();
         int[] values = test.getValues();
@@ -182,6 +183,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertNotSame(test.getValues(), test.getValues());
     }
 
+   @Test
     public void testIsSupported() {
         YearMonthDay test = new YearMonthDay(COPTIC_PARIS);
         assertEquals(true, test.isSupported(DateTimeFieldType.year()));
@@ -190,6 +192,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertEquals(false, test.isSupported(DateTimeFieldType.hourOfDay()));
     }
 
+   @Test
     public void testEqualsHashCode() {
         YearMonthDay test1 = new YearMonthDay(1970, 6, 9, COPTIC_PARIS);
         YearMonthDay test2 = new YearMonthDay(1970, 6, 9, COPTIC_PARIS);
@@ -231,6 +234,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testCompareTo() {
         YearMonthDay test1 = new YearMonthDay(2005, 6, 2);
         YearMonthDay test1a = new YearMonthDay(2005, 6, 2);
@@ -279,6 +283,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testIsEqual_YMD() {
         YearMonthDay test1 = new YearMonthDay(2005, 6, 2);
         YearMonthDay test1a = new YearMonthDay(2005, 6, 2);
@@ -303,6 +308,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testIsBefore_YMD() {
         YearMonthDay test1 = new YearMonthDay(2005, 6, 2);
         YearMonthDay test1a = new YearMonthDay(2005, 6, 2);
@@ -327,6 +333,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testIsAfter_YMD() {
         YearMonthDay test1 = new YearMonthDay(2005, 6, 2);
         YearMonthDay test1a = new YearMonthDay(2005, 6, 2);
@@ -351,6 +358,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testWithChronologyRetainFields_Chrono() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS);
         YearMonthDay test = base.withChronologyRetainFields(BUDDHIST_TOKYO);
@@ -360,12 +368,14 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertEquals(BUDDHIST_UTC, test.getChronology());
     }
 
+   @Test
     public void testWithChronologyRetainFields_sameChrono() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS);
         YearMonthDay test = base.withChronologyRetainFields(COPTIC_TOKYO);
         assertSame(base, test);
     }
 
+   @Test
     public void testWithChronologyRetainFields_nullChrono() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS);
         YearMonthDay test = base.withChronologyRetainFields(null);
@@ -375,6 +385,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertEquals(ISO_UTC, test.getChronology());
     }
 
+   @Test
     public void testWithChronologyRetainFields_invalidInNewChrono() {
         YearMonthDay base = new YearMonthDay(2005, 1, 31, ISO_UTC);
         try {
@@ -386,6 +397,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithField1() {
         YearMonthDay test = new YearMonthDay(2004, 6, 9);
         YearMonthDay result = test.withField(DateTimeFieldType.year(), 2006);
@@ -394,6 +406,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertEquals(new YearMonthDay(2006, 6, 9), result);
     }
 
+   @Test
     public void testWithField2() {
         YearMonthDay test = new YearMonthDay(2004, 6, 9);
         try {
@@ -402,6 +415,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithField3() {
         YearMonthDay test = new YearMonthDay(2004, 6, 9);
         try {
@@ -410,6 +424,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithField4() {
         YearMonthDay test = new YearMonthDay(2004, 6, 9);
         YearMonthDay result = test.withField(DateTimeFieldType.year(), 2004);
@@ -418,6 +433,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithFieldAdded1() {
         YearMonthDay test = new YearMonthDay(2004, 6, 9);
         YearMonthDay result = test.withFieldAdded(DurationFieldType.years(), 6);
@@ -426,6 +442,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertEquals(new YearMonthDay(2010, 6, 9), result);
     }
 
+   @Test
     public void testWithFieldAdded2() {
         YearMonthDay test = new YearMonthDay(2004, 6, 9);
         try {
@@ -434,6 +451,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithFieldAdded3() {
         YearMonthDay test = new YearMonthDay(2004, 6, 9);
         try {
@@ -442,12 +460,14 @@ public class TestYearMonthDay_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithFieldAdded4() {
         YearMonthDay test = new YearMonthDay(2004, 6, 9);
         YearMonthDay result = test.withFieldAdded(DurationFieldType.years(), 0);
         assertSame(test, result);
     }
 
+   @Test
     public void testWithFieldAdded5() {
         YearMonthDay test = new YearMonthDay(2004, 6, 9);
         try {
@@ -457,6 +477,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPlus_RP() {
         YearMonthDay test = new YearMonthDay(2002, 5, 3, BuddhistChronology.getInstance());
         YearMonthDay result = test.plus(new Period(1, 2, 3, 4, 5, 6, 7, 8));
@@ -467,6 +488,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testPlusYears_int() {
         YearMonthDay test = new YearMonthDay(2002, 5, 3, BuddhistChronology.getInstance());
         YearMonthDay result = test.plusYears(1);
@@ -477,6 +499,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testPlusMonths_int() {
         YearMonthDay test = new YearMonthDay(2002, 5, 3, BuddhistChronology.getInstance());
         YearMonthDay result = test.plusMonths(1);
@@ -487,6 +510,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testPlusDays_int() {
         YearMonthDay test = new YearMonthDay(2002, 5, 3, BuddhistChronology.getInstance());
         YearMonthDay result = test.plusDays(1);
@@ -498,6 +522,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testMinus_RP() {
         YearMonthDay test = new YearMonthDay(2002, 5, 3, BuddhistChronology.getInstance());
         YearMonthDay result = test.minus(new Period(1, 1, 1, 1, 1, 1, 1, 1));
@@ -508,6 +533,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusYears_int() {
         YearMonthDay test = new YearMonthDay(2002, 5, 3, BuddhistChronology.getInstance());
         YearMonthDay result = test.minusYears(1);
@@ -518,6 +544,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusMonths_int() {
         YearMonthDay test = new YearMonthDay(2002, 5, 3, BuddhistChronology.getInstance());
         YearMonthDay result = test.minusMonths(1);
@@ -528,6 +555,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusDays_int() {
         YearMonthDay test = new YearMonthDay(2002, 5, 3, BuddhistChronology.getInstance());
         YearMonthDay result = test.minusDays(1);
@@ -539,6 +567,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToLocalDate() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_UTC);
         LocalDate test = base.toLocalDate();
@@ -546,6 +575,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToDateTimeAtMidnight() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS);
         
@@ -555,6 +585,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToDateTimeAtMidnight_Zone() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS);
         
@@ -563,6 +594,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertEquals(new DateTime(2005, 6, 9, 0, 0, 0, 0, COPTIC_TOKYO), test);
     }
 
+   @Test
     public void testToDateTimeAtMidnight_nullZone() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS);
         
@@ -572,6 +604,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToDateTimeAtCurrentTime() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
         DateTime dt = new DateTime(2004, 6, 9, 6, 7, 8, 9);
@@ -587,6 +620,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToDateTimeAtCurrentTime_Zone() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
         DateTime dt = new DateTime(2004, 6, 9, 6, 7, 8, 9);
@@ -601,6 +635,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertEquals(expected, test);
     }
 
+   @Test
     public void testToDateTimeAtCurrentTime_nullZone() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
         DateTime dt = new DateTime(2004, 6, 9, 6, 7, 8, 9);
@@ -616,6 +651,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToDateTime_TOD() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
         TimeOfDay tod = new TimeOfDay(12, 13, 14, 15, BUDDHIST_TOKYO);
@@ -626,6 +662,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertEquals(expected, test);
     }
 
+   @Test
     public void testToDateTime_nullTOD() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
         long now = new DateTime(2004, 5, 8, 12, 13, 14, 15, COPTIC_LONDON).getMillis();
@@ -638,6 +675,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToDateTime_TOD_Zone() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
         TimeOfDay tod = new TimeOfDay(12, 13, 14, 15, BUDDHIST_TOKYO);
@@ -648,6 +686,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertEquals(expected, test);
     }
 
+   @Test
     public void testToDateTime_TOD_nullZone() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
         TimeOfDay tod = new TimeOfDay(12, 13, 14, 15, BUDDHIST_TOKYO);
@@ -658,6 +697,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertEquals(expected, test);
     }
 
+   @Test
     public void testToDateTime_nullTOD_Zone() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
         long now = new DateTime(2004, 5, 8, 12, 13, 14, 15, COPTIC_TOKYO).getMillis();
@@ -670,6 +710,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToDateMidnight() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS);
         
@@ -679,6 +720,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToDateMidnight_Zone() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS);
         
@@ -687,6 +729,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertEquals(new DateMidnight(2005, 6, 9, COPTIC_TOKYO), test);
     }
 
+   @Test
     public void testToDateMidnight_nullZone() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS);
         
@@ -696,6 +739,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToDateTime_RI() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS);
         DateTime dt = new DateTime(2002, 1, 3, 4, 5, 6, 7);
@@ -709,6 +753,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertEquals(expected, test);
     }
 
+   @Test
     public void testToDateTime_nullRI() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9);
         DateTime dt = new DateTime(2002, 1, 3, 4, 5, 6, 7);
@@ -724,6 +769,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToInterval() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
         Interval test = base.toInterval();
@@ -735,6 +781,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToInterval_Zone() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
         Interval test = base.toInterval(TOKYO);
@@ -745,6 +792,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertEquals(expected, test);
     }
 
+   @Test
     public void testToInterval_nullZone() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
         Interval test = base.toInterval(null);
@@ -756,6 +804,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithers() {
         YearMonthDay test = new YearMonthDay(1970, 6, 9);
         check(test.withYear(2000), 2000, 6, 9);
@@ -772,6 +821,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testProperty() {
         YearMonthDay test = new YearMonthDay(2005, 6, 9);
         assertEquals(test.year(), test.property(DateTimeFieldType.year()));
@@ -788,6 +838,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSerialization() throws Exception {
         YearMonthDay test = new YearMonthDay(1972, 6, 9, COPTIC_PARIS);
         
@@ -809,12 +860,14 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         YearMonthDay test = new YearMonthDay(2002, 6, 9);
         assertEquals("2002-06-09", test.toString());
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString_String() {
         YearMonthDay test = new YearMonthDay(2002, 6, 9);
         assertEquals("2002 \ufffd\ufffd", test.toString("yyyy HH"));
@@ -822,6 +875,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString_String_Locale() {
         YearMonthDay test = new YearMonthDay(2002, 6, 9);
         assertEquals("\ufffd 9/6", test.toString("EEE d/M", Locale.ENGLISH));
@@ -832,6 +886,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString_DTFormatter() {
         YearMonthDay test = new YearMonthDay(2002, 6, 9);
         assertEquals("2002 \ufffd\ufffd", test.toString(DateTimeFormat.forPattern("yyyy HH")));

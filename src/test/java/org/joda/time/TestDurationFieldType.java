@@ -15,43 +15,27 @@
  */
 package org.joda.time;
 
+import org.joda.time.chrono.CopticChronology;
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Constructor;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.joda.time.chrono.CopticChronology;
 
 /**
  * This class is a Junit unit test for DurationFieldType.
  *
  * @author Stephen Colebourne
  */
-public class TestDurationFieldType extends TestCase {
-
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestDurationFieldType.class);
-    }
-
-    public TestDurationFieldType(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
-    }
+public class TestDurationFieldType extends Assert {
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_eras() throws Exception {
         assertEquals(DurationFieldType.eras(), DurationFieldType.eras());
         assertEquals("eras", DurationFieldType.eras().getName());
@@ -60,6 +44,7 @@ public class TestDurationFieldType extends TestCase {
         assertSerialization(DurationFieldType.eras());
     }
 
+   @Test
     public void test_centuries() throws Exception {
         assertEquals(DurationFieldType.centuries(), DurationFieldType.centuries());
         assertEquals("centuries", DurationFieldType.centuries().getName());
@@ -68,6 +53,7 @@ public class TestDurationFieldType extends TestCase {
         assertSerialization(DurationFieldType.centuries());
     }
 
+   @Test
     public void test_years() throws Exception {
         assertEquals(DurationFieldType.years(), DurationFieldType.years());
         assertEquals("years", DurationFieldType.years().getName());
@@ -76,6 +62,7 @@ public class TestDurationFieldType extends TestCase {
         assertSerialization(DurationFieldType.years());
     }
 
+   @Test
     public void test_months() throws Exception {
         assertEquals(DurationFieldType.months(), DurationFieldType.months());
         assertEquals("months", DurationFieldType.months().getName());
@@ -84,6 +71,7 @@ public class TestDurationFieldType extends TestCase {
         assertSerialization(DurationFieldType.months());
     }
 
+   @Test
     public void test_weekyears() throws Exception {
         assertEquals(DurationFieldType.weekyears(), DurationFieldType.weekyears());
         assertEquals("weekyears", DurationFieldType.weekyears().getName());
@@ -92,6 +80,7 @@ public class TestDurationFieldType extends TestCase {
         assertSerialization(DurationFieldType.weekyears());
     }
 
+   @Test
     public void test_weeks() throws Exception {
         assertEquals(DurationFieldType.weeks(), DurationFieldType.weeks());
         assertEquals("weeks", DurationFieldType.weeks().getName());
@@ -100,6 +89,7 @@ public class TestDurationFieldType extends TestCase {
         assertSerialization(DurationFieldType.weeks());
     }
 
+   @Test
     public void test_days() throws Exception {
         assertEquals(DurationFieldType.days(), DurationFieldType.days());
         assertEquals("days", DurationFieldType.days().getName());
@@ -108,6 +98,7 @@ public class TestDurationFieldType extends TestCase {
         assertSerialization(DurationFieldType.days());
     }
 
+   @Test
     public void test_halfdays() throws Exception {
         assertEquals(DurationFieldType.halfdays(), DurationFieldType.halfdays());
         assertEquals("halfdays", DurationFieldType.halfdays().getName());
@@ -116,6 +107,7 @@ public class TestDurationFieldType extends TestCase {
         assertSerialization(DurationFieldType.halfdays());
     }
 
+   @Test
     public void test_hours() throws Exception {
         assertEquals(DurationFieldType.hours(), DurationFieldType.hours());
         assertEquals("hours", DurationFieldType.hours().getName());
@@ -124,6 +116,7 @@ public class TestDurationFieldType extends TestCase {
         assertSerialization(DurationFieldType.hours());
     }
 
+   @Test
     public void test_minutes() throws Exception {
         assertEquals(DurationFieldType.minutes(), DurationFieldType.minutes());
         assertEquals("minutes", DurationFieldType.minutes().getName());
@@ -132,6 +125,7 @@ public class TestDurationFieldType extends TestCase {
         assertSerialization(DurationFieldType.minutes());
     }
 
+   @Test
     public void test_seconds() throws Exception {
         assertEquals(DurationFieldType.seconds(), DurationFieldType.seconds());
         assertEquals("seconds", DurationFieldType.seconds().getName());
@@ -140,6 +134,7 @@ public class TestDurationFieldType extends TestCase {
         assertSerialization(DurationFieldType.seconds());
     }
 
+   @Test
     public void test_millis() throws Exception {
         assertEquals(DurationFieldType.millis(), DurationFieldType.millis());
         assertEquals("millis", DurationFieldType.millis().getName());
@@ -148,6 +143,7 @@ public class TestDurationFieldType extends TestCase {
         assertSerialization(DurationFieldType.millis());
     }
 
+   @Test
     public void test_other() throws Exception {
         assertEquals(1, DurationFieldType.class.getDeclaredClasses().length);
         Class cls = DurationFieldType.class.getDeclaredClasses()[0];

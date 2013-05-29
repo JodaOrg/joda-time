@@ -15,6 +15,16 @@
  */
 package org.joda.time;
 
+import org.joda.time.chrono.BuddhistChronology;
+import org.joda.time.chrono.CopticChronology;
+import org.joda.time.chrono.ISOChronology;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -22,21 +32,14 @@ import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.Locale;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.joda.time.chrono.BuddhistChronology;
-import org.joda.time.chrono.CopticChronology;
-import org.joda.time.chrono.ISOChronology;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 /**
  * This class is a Junit unit test for Partial.
  *
  * @author Stephen Colebourne
  */
-public class TestPartial_Basics extends TestCase {
+public class TestPartial_Basics extends Assert {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
@@ -76,31 +79,22 @@ public class TestPartial_Basics extends TestCase {
         
     private DateTimeZone zone = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestPartial_Basics.class);
-    }
-
-    public TestPartial_Basics(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(LONDON);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
         zone = null;
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGet() {
         Partial test = createHourMinPartial();
         assertEquals(10, test.get(DateTimeFieldType.hourOfDay()));
@@ -115,11 +109,13 @@ public class TestPartial_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testSize() {
         Partial test = createHourMinPartial();
         assertEquals(2, test.size());
     }
 
+   @Test
     public void testGetFieldType() {
         Partial test = createHourMinPartial();
         assertSame(DateTimeFieldType.hourOfDay(), test.getFieldType(0));
@@ -132,6 +128,7 @@ public class TestPartial_Basics extends TestCase {
         } catch (IndexOutOfBoundsException ex) {}
     }
 
+   @Test
     public void testGetFieldTypes() {
         Partial test = createHourMinPartial();
         DateTimeFieldType[] fields = test.getFieldTypes();
@@ -141,6 +138,7 @@ public class TestPartial_Basics extends TestCase {
         assertNotSame(test.getFieldTypes(), test.getFieldTypes());
     }
 
+   @Test
     public void testGetField() {
         Partial test = createHourMinPartial(COPTIC_PARIS);
         assertSame(CopticChronology.getInstanceUTC().hourOfDay(), test.getField(0));
@@ -153,6 +151,7 @@ public class TestPartial_Basics extends TestCase {
         } catch (IndexOutOfBoundsException ex) {}
     }
 
+   @Test
     public void testGetFields() {
         Partial test = createHourMinPartial(COPTIC_PARIS);
         DateTimeField[] fields = test.getFields();
@@ -162,6 +161,7 @@ public class TestPartial_Basics extends TestCase {
         assertNotSame(test.getFields(), test.getFields());
     }
 
+   @Test
     public void testGetValue() {
         Partial test = createHourMinPartial(COPTIC_PARIS);
         assertEquals(10, test.getValue(0));
@@ -174,6 +174,7 @@ public class TestPartial_Basics extends TestCase {
         } catch (IndexOutOfBoundsException ex) {}
     }
 
+   @Test
     public void testGetValues() {
         Partial test = createHourMinPartial(COPTIC_PARIS);
         int[] values = test.getValues();
@@ -183,6 +184,7 @@ public class TestPartial_Basics extends TestCase {
         assertNotSame(test.getValues(), test.getValues());
     }
 
+   @Test
     public void testIsSupported() {
         Partial test = createHourMinPartial(COPTIC_PARIS);
         assertEquals(true, test.isSupported(DateTimeFieldType.hourOfDay()));
@@ -192,6 +194,7 @@ public class TestPartial_Basics extends TestCase {
         assertEquals(false, test.isSupported(DateTimeFieldType.dayOfMonth()));
     }
 
+   @Test
     public void testEqualsHashCode() {
         Partial test1 = createHourMinPartial(COPTIC_PARIS);
         Partial test2 = createHourMinPartial(COPTIC_PARIS);
@@ -217,6 +220,7 @@ public class TestPartial_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testCompareTo() {
         Partial test1 = createHourMinPartial();
         Partial test1a = createHourMinPartial();
@@ -255,6 +259,7 @@ public class TestPartial_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testIsEqual_TOD() {
         Partial test1 = createHourMinPartial();
         Partial test1a = createHourMinPartial();
@@ -279,6 +284,7 @@ public class TestPartial_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testIsBefore_TOD() {
         Partial test1 = createHourMinPartial();
         Partial test1a = createHourMinPartial();
@@ -303,6 +309,7 @@ public class TestPartial_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testIsAfter_TOD() {
         Partial test1 = createHourMinPartial();
         Partial test1a = createHourMinPartial();
@@ -327,6 +334,7 @@ public class TestPartial_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testWithChronologyRetainFields_Chrono() {
         Partial base = createHourMinPartial(COPTIC_PARIS);
         Partial test = base.withChronologyRetainFields(BUDDHIST_TOKYO);
@@ -336,12 +344,14 @@ public class TestPartial_Basics extends TestCase {
         assertEquals(BUDDHIST_UTC, test.getChronology());
     }
 
+   @Test
     public void testWithChronologyRetainFields_sameChrono() {
         Partial base = createHourMinPartial(COPTIC_PARIS);
         Partial test = base.withChronologyRetainFields(COPTIC_TOKYO);
         assertSame(base, test);
     }
 
+   @Test
     public void testWithChronologyRetainFields_nullChrono() {
         Partial base = createHourMinPartial(COPTIC_PARIS);
         Partial test = base.withChronologyRetainFields(null);
@@ -352,6 +362,7 @@ public class TestPartial_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWith1() {
         Partial test = createHourMinPartial();
         Partial result = test.with(DateTimeFieldType.hourOfDay(), 15);
@@ -359,6 +370,7 @@ public class TestPartial_Basics extends TestCase {
         check(result, 15, 20);
     }
 
+   @Test
     public void testWith2() {
         Partial test = createHourMinPartial();
         try {
@@ -368,6 +380,7 @@ public class TestPartial_Basics extends TestCase {
         check(test, 10, 20);
     }
 
+   @Test
     public void testWith3a() {
         Partial test = createHourMinPartial();
         Partial result = test.with(DateTimeFieldType.secondOfMinute(), 15);
@@ -384,6 +397,7 @@ public class TestPartial_Basics extends TestCase {
         assertEquals(15, result.get(DateTimeFieldType.secondOfMinute()));
     }
 
+   @Test
     public void testWith3b() {
         Partial test = createHourMinPartial();
         Partial result = test.with(DateTimeFieldType.minuteOfDay(), 15);
@@ -400,6 +414,7 @@ public class TestPartial_Basics extends TestCase {
         assertEquals(15, result.get(DateTimeFieldType.minuteOfDay()));
     }
 
+   @Test
     public void testWith3c() {
         Partial test = createHourMinPartial();
         Partial result = test.with(DateTimeFieldType.dayOfMonth(), 15);
@@ -416,6 +431,7 @@ public class TestPartial_Basics extends TestCase {
         assertEquals(15, result.get(DateTimeFieldType.dayOfMonth()));
     }
 
+   @Test
     public void testWith3d() {
         Partial test = new Partial(DateTimeFieldType.year(), 2005);
         Partial result = test.with(DateTimeFieldType.monthOfYear(), 6);
@@ -424,6 +440,7 @@ public class TestPartial_Basics extends TestCase {
         assertEquals(6, result.get(DateTimeFieldType.monthOfYear()));
     }        
 
+   @Test
     public void testWith3e() {
         Partial test = new Partial(DateTimeFieldType.era(), 1);
         Partial result = test.with(DateTimeFieldType.halfdayOfDay(), 0);
@@ -434,6 +451,7 @@ public class TestPartial_Basics extends TestCase {
         assertEquals(1, result.indexOf(DateTimeFieldType.halfdayOfDay()));
     }        
 
+   @Test
     public void testWith3f() {
         Partial test = new Partial(DateTimeFieldType.halfdayOfDay(), 0);
         Partial result = test.with(DateTimeFieldType.era(), 1);
@@ -444,6 +462,7 @@ public class TestPartial_Basics extends TestCase {
         assertEquals(1, result.indexOf(DateTimeFieldType.halfdayOfDay()));
     }        
 
+   @Test
     public void testWith4() {
         Partial test = createHourMinPartial();
         Partial result = test.with(DateTimeFieldType.hourOfDay(), 10);
@@ -451,6 +470,7 @@ public class TestPartial_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithout1() {
         Partial test = createHourMinPartial();
         Partial result = test.without(DateTimeFieldType.year());
@@ -458,6 +478,7 @@ public class TestPartial_Basics extends TestCase {
         check(result, 10, 20);
     }
 
+   @Test
     public void testWithout2() {
         Partial test = createHourMinPartial();
         Partial result = test.without((DateTimeFieldType) null);
@@ -465,6 +486,7 @@ public class TestPartial_Basics extends TestCase {
         check(result, 10, 20);
     }
 
+   @Test
     public void testWithout3() {
         Partial test = createHourMinPartial();
         Partial result = test.without(DateTimeFieldType.hourOfDay());
@@ -475,6 +497,7 @@ public class TestPartial_Basics extends TestCase {
         assertEquals(DateTimeFieldType.minuteOfHour(), result.getFieldType(0));
     }
 
+   @Test
     public void testWithout4() {
         Partial test = createHourMinPartial();
         Partial result = test.without(DateTimeFieldType.minuteOfHour());
@@ -485,6 +508,7 @@ public class TestPartial_Basics extends TestCase {
         assertEquals(DateTimeFieldType.hourOfDay(), result.getFieldType(0));
     }
 
+   @Test
     public void testWithout5() {
         Partial test = new Partial(DateTimeFieldType.hourOfDay(), 12);
         Partial result = test.without(DateTimeFieldType.hourOfDay());
@@ -493,6 +517,7 @@ public class TestPartial_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithField1() {
         Partial test = createHourMinPartial();
         Partial result = test.withField(DateTimeFieldType.hourOfDay(), 15);
@@ -500,6 +525,7 @@ public class TestPartial_Basics extends TestCase {
         check(result, 15, 20);
     }
 
+   @Test
     public void testWithField2() {
         Partial test = createHourMinPartial();
         try {
@@ -509,6 +535,7 @@ public class TestPartial_Basics extends TestCase {
         check(test, 10, 20);
     }
 
+   @Test
     public void testWithField3() {
         Partial test = createHourMinPartial();
         try {
@@ -518,6 +545,7 @@ public class TestPartial_Basics extends TestCase {
         check(test, 10, 20);
     }
 
+   @Test
     public void testWithField4() {
         Partial test = createHourMinPartial();
         Partial result = test.withField(DateTimeFieldType.hourOfDay(), 10);
@@ -525,6 +553,7 @@ public class TestPartial_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithFieldAdded1() {
         Partial test = createHourMinPartial();
         Partial result = test.withFieldAdded(DurationFieldType.hours(), 6);
@@ -534,6 +563,7 @@ public class TestPartial_Basics extends TestCase {
         check(result, 16, 20);
     }
 
+   @Test
     public void testWithFieldAdded2() {
         Partial test = createHourMinPartial();
         try {
@@ -543,6 +573,7 @@ public class TestPartial_Basics extends TestCase {
         check(test, 10, 20);
     }
 
+   @Test
     public void testWithFieldAdded3() {
         Partial test = createHourMinPartial();
         try {
@@ -552,12 +583,14 @@ public class TestPartial_Basics extends TestCase {
         check(test, 10, 20);
     }
 
+   @Test
     public void testWithFieldAdded4() {
         Partial test = createHourMinPartial();
         Partial result = test.withFieldAdded(DurationFieldType.hours(), 0);
         assertSame(test, result);
     }
 
+   @Test
     public void testWithFieldAdded5() {
         Partial test = createHourMinPartial();
         try {
@@ -567,6 +600,7 @@ public class TestPartial_Basics extends TestCase {
         check(test, 10, 20);
     }
 
+   @Test
     public void testWithFieldAdded6() {
         Partial test = createHourMinPartial();
         try {
@@ -578,6 +612,7 @@ public class TestPartial_Basics extends TestCase {
         check(test, 10, 20);
     }
 
+   @Test
     public void testWithFieldAdded7() {
         Partial test = createHourMinPartial(23, 59, ISO_UTC);
         try {
@@ -598,6 +633,7 @@ public class TestPartial_Basics extends TestCase {
         check(test, 23, 59);
     }
 
+   @Test
     public void testWithFieldAdded8() {
         Partial test = createHourMinPartial(0, 0, ISO_UTC);
         try {
@@ -619,6 +655,7 @@ public class TestPartial_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithFieldAddWrapped1() {
         Partial test = createHourMinPartial();
         Partial result = test.withFieldAddWrapped(DurationFieldType.hours(), 6);
@@ -628,6 +665,7 @@ public class TestPartial_Basics extends TestCase {
         check(result, 16, 20);
     }
 
+   @Test
     public void testWithFieldAddWrapped2() {
         Partial test = createHourMinPartial();
         try {
@@ -637,6 +675,7 @@ public class TestPartial_Basics extends TestCase {
         check(test, 10, 20);
     }
 
+   @Test
     public void testWithFieldAddWrapped3() {
         Partial test = createHourMinPartial();
         try {
@@ -646,12 +685,14 @@ public class TestPartial_Basics extends TestCase {
         check(test, 10, 20);
     }
 
+   @Test
     public void testWithFieldAddWrapped4() {
         Partial test = createHourMinPartial();
         Partial result = test.withFieldAddWrapped(DurationFieldType.hours(), 0);
         assertSame(test, result);
     }
 
+   @Test
     public void testWithFieldAddWrapped5() {
         Partial test = createHourMinPartial();
         try {
@@ -661,6 +702,7 @@ public class TestPartial_Basics extends TestCase {
         check(test, 10, 20);
     }
 
+   @Test
     public void testWithFieldAddWrapped6() {
         Partial test = createHourMinPartial();
         Partial result = test.withFieldAddWrapped(DurationFieldType.hours(), 16);
@@ -670,6 +712,7 @@ public class TestPartial_Basics extends TestCase {
         check(result, 2, 20);
     }
 
+   @Test
     public void testWithFieldAddWrapped7() {
         Partial test = createHourMinPartial(23, 59, ISO_UTC);
         Partial result = test.withFieldAddWrapped(DurationFieldType.minutes(), 1);
@@ -682,6 +725,7 @@ public class TestPartial_Basics extends TestCase {
         check(result, 0, 59);
     }
 
+   @Test
     public void testWithFieldAddWrapped8() {
         Partial test = createHourMinPartial(0, 0, ISO_UTC);
         Partial result = test.withFieldAddWrapped(DurationFieldType.minutes(), -1);
@@ -695,6 +739,7 @@ public class TestPartial_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPlus_RP() {
         Partial test = createHourMinPartial(BUDDHIST_LONDON);
         Partial result = test.plus(new Period(1, 2, 3, 4, 5, 6, 7, 8));
@@ -706,6 +751,7 @@ public class TestPartial_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testMinus_RP() {
         Partial test = createHourMinPartial(BUDDHIST_LONDON);
         Partial result = test.minus(new Period(1, 1, 1, 1, 1, 1, 1, 1));
@@ -717,6 +763,7 @@ public class TestPartial_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToDateTime_RI() {
         Partial base = createHourMinPartial(COPTIC_PARIS);
         DateTime dt = new DateTime(0L); // LONDON zone
@@ -728,6 +775,7 @@ public class TestPartial_Basics extends TestCase {
         assertEquals("1970-01-01T10:20:00.000+01:00", test.toString());
     }
 
+   @Test
     public void testToDateTime_nullRI() {
         Partial base = createHourMinPartial(1, 2, ISO_UTC);
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME2);
@@ -738,6 +786,7 @@ public class TestPartial_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testProperty() {
         Partial test = createHourMinPartial();
         assertNotNull(test.property(DateTimeFieldType.hourOfDay()));
@@ -753,6 +802,7 @@ public class TestPartial_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSerialization() throws Exception {
         Partial test = createHourMinPartial(COPTIC_PARIS);
         
@@ -774,6 +824,7 @@ public class TestPartial_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetFormatter1() {
         Partial test = new Partial(DateTimeFieldType.year(), 2005);
         assertEquals("2005", test.getFormatter().print(test));
@@ -788,6 +839,7 @@ public class TestPartial_Basics extends TestCase {
         assertEquals("2005--25", test.getFormatter().print(test));
     }
 
+   @Test
     public void testGetFormatter2() {
         Partial test = new Partial();
         assertEquals(null, test.getFormatter());
@@ -799,6 +851,7 @@ public class TestPartial_Basics extends TestCase {
         assertEquals(null, test.getFormatter());
     }
 
+   @Test
     public void testGetFormatter3() {
         Partial test = new Partial(DateTimeFieldType.dayOfWeek(), 5);
         assertEquals("-W-5", test.getFormatter().print(test));
@@ -809,16 +862,19 @@ public class TestPartial_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString1() {
         Partial test = createHourMinPartial();
         assertEquals("10:20", test.toString());
     }
 
+   @Test
     public void testToString2() {
         Partial test = new Partial();
         assertEquals("[]", test.toString());
     }
 
+   @Test
     public void testToString3() {
         Partial test = new Partial(DateTimeFieldType.year(), 2005);
         assertEquals("2005", test.toString());
@@ -833,6 +889,7 @@ public class TestPartial_Basics extends TestCase {
         assertEquals("2005--25", test.toString());
     }
 
+   @Test
     public void testToString4() {
         Partial test = new Partial(DateTimeFieldType.dayOfWeek(), 5);
         assertEquals("-W-5", test.toString());
@@ -841,6 +898,7 @@ public class TestPartial_Basics extends TestCase {
         assertEquals("[dayOfMonth=13, dayOfWeek=5]", test.toString());
     }
 
+   @Test
     public void testToString5() {
         Partial test = new Partial(DateTimeFieldType.era(), 1);
         assertEquals("[era=1]", test.toString());
@@ -850,6 +908,7 @@ public class TestPartial_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString_String() {
         Partial test = createHourMinPartial();
         assertEquals("\ufffd\ufffd\ufffd\ufffd 10", test.toString("yyyy HH"));
@@ -857,6 +916,7 @@ public class TestPartial_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString_String_Locale() {
         Partial test = createHourMinPartial();
         assertEquals("10 20", test.toString("H m", Locale.ENGLISH));
@@ -866,6 +926,7 @@ public class TestPartial_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString_DTFormatter() {
         Partial test = createHourMinPartial();
         assertEquals("\ufffd\ufffd\ufffd\ufffd 10", test.toString(DateTimeFormat.forPattern("yyyy HH")));

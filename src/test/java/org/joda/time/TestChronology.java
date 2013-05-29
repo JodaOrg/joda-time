@@ -15,31 +15,23 @@
  */
 package org.joda.time;
 
+import org.joda.time.chrono.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.joda.time.chrono.BuddhistChronology;
-import org.joda.time.chrono.CopticChronology;
-import org.joda.time.chrono.EthiopicChronology;
-import org.joda.time.chrono.GJChronology;
-import org.joda.time.chrono.GregorianChronology;
-import org.joda.time.chrono.ISOChronology;
-import org.joda.time.chrono.IslamicChronology;
-import org.joda.time.chrono.JulianChronology;
-import org.joda.time.chrono.LenientChronology;
-import org.joda.time.chrono.LimitChronology;
-import org.joda.time.chrono.StrictChronology;
-import org.joda.time.chrono.ZonedChronology;
 
 /**
  * This class is a Junit unit test for Chronology.
  *
  * @author Stephen Colebourne
  */
-public class TestChronology extends TestCase {
+public class TestChronology extends Assert {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
@@ -75,19 +67,8 @@ public class TestChronology extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestChronology.class);
-    }
-
-    public TestChronology(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -97,7 +78,8 @@ public class TestChronology extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -108,6 +90,7 @@ public class TestChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testTest() {
         assertEquals("2002-06-09T00:00:00.000Z", new Instant(TEST_TIME_NOW).toString());
         assertEquals("2002-04-05T12:24:00.000Z", new Instant(TEST_TIME1).toString());
@@ -115,6 +98,7 @@ public class TestChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testEqualsHashCode_ISO() {
         Chronology chrono1 = ISOChronology.getInstanceUTC();
         Chronology chrono2 = ISOChronology.getInstanceUTC();
@@ -135,6 +119,7 @@ public class TestChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testEqualsHashCode_Lenient() {
         Chronology chrono1 = LenientChronology.getInstance(ISOChronology.getInstanceUTC());
         Chronology chrono2 = LenientChronology.getInstance(ISOChronology.getInstanceUTC());
@@ -155,6 +140,7 @@ public class TestChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testEqualsHashCode_Strict() {
         Chronology chrono1 = StrictChronology.getInstance(ISOChronology.getInstanceUTC());
         Chronology chrono2 = StrictChronology.getInstance(ISOChronology.getInstanceUTC());
@@ -175,6 +161,7 @@ public class TestChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testEqualsHashCode_Limit() {
         DateTime lower = new DateTime(0L);
         DateTime higherA = new DateTime(1000000L);
@@ -204,6 +191,7 @@ public class TestChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testEqualsHashCode_Zoned() {
         DateTimeZone zoneA = DateTimeZone.forID("Europe/Paris");
         DateTimeZone zoneB = DateTimeZone.forID("Asia/Tokyo");
@@ -227,6 +215,7 @@ public class TestChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         DateTimeZone paris = DateTimeZone.forID("Europe/Paris");
         ISOChronology isoParis = ISOChronology.getInstance(paris);

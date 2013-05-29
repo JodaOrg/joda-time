@@ -15,29 +15,26 @@
  */
 package org.joda.time.convert;
 
+import org.joda.time.*;
+import org.joda.time.chrono.ISOChronology;
+import org.joda.time.chrono.JulianChronology;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.joda.time.Chronology;
-import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeZone;
-import org.joda.time.Duration;
-import org.joda.time.PeriodType;
-import org.joda.time.MutablePeriod;
-import org.joda.time.ReadableDuration;
-import org.joda.time.chrono.ISOChronology;
-import org.joda.time.chrono.JulianChronology;
 
 /**
  * This class is a Junit unit test for ReadableDurationConverter.
  *
  * @author Stephen Colebourne
  */
-public class TestReadableDurationConverter extends TestCase {
+public class TestReadableDurationConverter extends Assert {
 
     private static final DateTimeZone UTC = DateTimeZone.UTC;
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
@@ -47,34 +44,23 @@ public class TestReadableDurationConverter extends TestCase {
     
     private DateTimeZone zone = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
+   @Before
+   public void setUp() throws Exception {
 
-    public static TestSuite suite() {
-        return new TestSuite(TestReadableDurationConverter.class);
-    }
-
-    public TestReadableDurationConverter(String name) {
-        super(name);
-    }
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
         JULIAN = JulianChronology.getInstance();
         ISO = ISOChronology.getInstance();
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(PARIS);
     }
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+   @After
+   public void tearDown() throws Exception {
+
         DateTimeZone.setDefault(zone);
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSingleton() throws Exception {
         Class cls = ReadableDurationConverter.class;
         assertEquals(false, Modifier.isPublic(cls.getModifiers()));
@@ -92,21 +78,25 @@ public class TestReadableDurationConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSupportedType() throws Exception {
         assertEquals(ReadableDuration.class, ReadableDurationConverter.INSTANCE.getSupportedType());
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetDurationMillis_Object() throws Exception {
         assertEquals(123L, ReadableDurationConverter.INSTANCE.getDurationMillis(new Duration(123L)));
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetPeriodType_Object() throws Exception {
         assertEquals(PeriodType.standard(),
             ReadableDurationConverter.INSTANCE.getPeriodType(new Duration(123L)));
     }
 
+   @Test
     public void testSetInto_Object() throws Exception {
         MutablePeriod m = new MutablePeriod(PeriodType.yearMonthDayTime());
         ReadableDurationConverter.INSTANCE.setInto(m, new Duration(
@@ -124,6 +114,7 @@ public class TestReadableDurationConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         assertEquals("Converter[org.joda.time.ReadableDuration]", ReadableDurationConverter.INSTANCE.toString());
     }

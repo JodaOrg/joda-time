@@ -15,30 +15,26 @@
  */
 package org.joda.time.convert;
 
+import org.joda.time.*;
+import org.joda.time.chrono.ISOChronology;
+import org.joda.time.chrono.JulianChronology;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.joda.time.Chronology;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.Instant;
-import org.joda.time.MutableDateTime;
-import org.joda.time.ReadableInstant;
-import org.joda.time.TimeOfDay;
-import org.joda.time.chrono.ISOChronology;
-import org.joda.time.chrono.JulianChronology;
 
 /**
  * This class is a Junit unit test for ReadableInstantConverter.
  *
  * @author Stephen Colebourne
  */
-public class TestReadableInstantConverter extends TestCase {
+public class TestReadableInstantConverter extends Assert {
 
     private static final DateTimeZone UTC = DateTimeZone.UTC;
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
@@ -48,24 +44,14 @@ public class TestReadableInstantConverter extends TestCase {
     
     private DateTimeZone zone = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestReadableInstantConverter.class);
-    }
-
-    public TestReadableInstantConverter(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         JULIAN = JulianChronology.getInstance();
         ISO = ISOChronology.getInstance();
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSingleton() throws Exception {
         Class cls = ReadableInstantConverter.class;
         assertEquals(false, Modifier.isPublic(cls.getModifiers()));
@@ -83,11 +69,13 @@ public class TestReadableInstantConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSupportedType() throws Exception {
         assertEquals(ReadableInstant.class, ReadableInstantConverter.INSTANCE.getSupportedType());
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetInstantMillis_Object_Chronology() throws Exception {
         assertEquals(123L, ReadableInstantConverter.INSTANCE.getInstantMillis(new Instant(123L), JULIAN));
         assertEquals(123L, ReadableInstantConverter.INSTANCE.getInstantMillis(new DateTime(123L), JULIAN));
@@ -96,6 +84,7 @@ public class TestReadableInstantConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetChronology_Object_Zone() throws Exception {
         assertEquals(ISO_PARIS, ReadableInstantConverter.INSTANCE.getChronology(new Instant(123L), PARIS));
         assertEquals(ISO_PARIS, ReadableInstantConverter.INSTANCE.getChronology(new DateTime(123L), PARIS));
@@ -114,6 +103,7 @@ public class TestReadableInstantConverter extends TestCase {
         assertEquals(ISO_PARIS, ReadableInstantConverter.INSTANCE.getChronology(mdt, PARIS));
     }
 
+   @Test
     public void testGetChronology_Object_nullChronology() throws Exception {
         assertEquals(ISO.withUTC(), ReadableInstantConverter.INSTANCE.getChronology(new Instant(123L), (Chronology) null));
         assertEquals(ISO, ReadableInstantConverter.INSTANCE.getChronology(new DateTime(123L), (Chronology) null));
@@ -126,12 +116,14 @@ public class TestReadableInstantConverter extends TestCase {
         assertEquals(ISO, ReadableInstantConverter.INSTANCE.getChronology(mdt, (Chronology) null));
     }
 
+   @Test
     public void testGetChronology_Object_Chronology() throws Exception {
         assertEquals(JULIAN, ReadableInstantConverter.INSTANCE.getChronology(new Instant(123L), JULIAN));
         assertEquals(JULIAN, ReadableInstantConverter.INSTANCE.getChronology(new DateTime(123L), JULIAN));
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetPartialValues() throws Exception {
         TimeOfDay tod = new TimeOfDay();
         int[] expected = ISOChronology.getInstance().get(tod, 12345678L);
@@ -140,6 +132,7 @@ public class TestReadableInstantConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         assertEquals("Converter[org.joda.time.ReadableInstant]", ReadableInstantConverter.INSTANCE.toString());
     }

@@ -15,9 +15,9 @@
  */
 package org.joda.time.tz;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+
 
 /**
  * Entry point for all tests in this package.
@@ -26,27 +26,14 @@ import junit.framework.TestSuite;
  * 
  * @author Stephen Colebourne
  */
-public class TestAll extends TestCase {
 
-    public TestAll(String testName) {
-        super(testName);
-    }
-
-    public static Test suite() {
-        TestSuite suite = new TestSuite();
-        suite.addTest(TestUTCProvider.suite());
-        suite.addTest(TestBuilder.suite());
-        suite.addTest(TestCompiler.suite());
-        suite.addTest(TestCachedDateTimeZone.suite());
-        suite.addTest(TestFixedDateTimeZone.suite());
-        return suite;
-    }
-
-    public static void main(String args[]) {
-        String[] testCaseName = {
-            TestAll.class.getName()
-        };
-        junit.textui.TestRunner.main(testCaseName);
-    }
-
+@RunWith(Suite.class)
+@Suite.SuiteClasses( {
+        TestUTCProvider.class,
+        TestBuilder.class,
+        TestCompiler.class,
+        TestCachedDateTimeZone.class,
+        TestFixedDateTimeZone.class
+} )
+public class TestAll {
 }

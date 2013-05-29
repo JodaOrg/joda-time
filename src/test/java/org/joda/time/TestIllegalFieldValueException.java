@@ -15,33 +15,23 @@
  */
 package org.joda.time;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.field.SkipDateTimeField;
+import org.junit.Assert;
+import org.junit.Test;
+
+
 
 /**
  * Tests IllegalFieldValueException by triggering it from other methods.
  *
  * @author Brian S O'Neill
  */
-public class TestIllegalFieldValueException extends TestCase {
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestIllegalFieldValueException.class);
-    }
-
-    public TestIllegalFieldValueException(String name) {
-        super(name);
-    }
-
+public class TestIllegalFieldValueException extends Assert {
+   @Test
     public void testVerifyValueBounds() {
         try {
             FieldUtils.verifyValueBounds(ISOChronology.getInstance().monthOfYear(), -5, 1, 31);
@@ -86,6 +76,7 @@ public class TestIllegalFieldValueException extends TestCase {
         }
     }
 
+   @Test
     public void testSkipDateTimeField() {
         DateTimeField field = new SkipDateTimeField
             (ISOChronology.getInstanceUTC(), ISOChronology.getInstanceUTC().year(), 1970);
@@ -104,6 +95,7 @@ public class TestIllegalFieldValueException extends TestCase {
         }
     }
 
+   @Test
     public void testSetText() {
         try {
             ISOChronology.getInstanceUTC().year().set(0, null, java.util.Locale.US);
@@ -190,6 +182,7 @@ public class TestIllegalFieldValueException extends TestCase {
         }
     }
 
+   @Test
     public void testZoneTransition() {
         DateTime dt = new DateTime
             (2005, 4, 3, 1, 0, 0, 0, DateTimeZone.forID("America/Los_Angeles"));
@@ -208,6 +201,7 @@ public class TestIllegalFieldValueException extends TestCase {
         }
     }
 
+   @Test
     public void testJulianYearZero() {
         DateTime dt = new DateTime(JulianChronology.getInstanceUTC());
         try {
@@ -225,6 +219,7 @@ public class TestIllegalFieldValueException extends TestCase {
         }
     }
 
+   @Test
     public void testGJCutover() {
         DateTime dt = new DateTime("1582-10-04", GJChronology.getInstanceUTC());
         try {
@@ -257,6 +252,7 @@ public class TestIllegalFieldValueException extends TestCase {
         }
     }
 
+   @Test
     public void testReadablePartialValidate() {
         try {
             new YearMonthDay(1970, -5, 1);
@@ -302,6 +298,7 @@ public class TestIllegalFieldValueException extends TestCase {
     }
 
     // Test extra constructors not currently called by anything
+   @Test
     public void testOtherConstructors() {
         IllegalFieldValueException e = new IllegalFieldValueException
             (DurationFieldType.days(), new Integer(1), new Integer(2), new Integer(3));

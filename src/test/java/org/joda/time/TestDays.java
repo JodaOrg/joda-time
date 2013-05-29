@@ -15,43 +15,27 @@
  */
 package org.joda.time;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * This class is a Junit unit test for Days.
  *
  * @author Stephen Colebourne
  */
-public class TestDays extends TestCase {
+public class TestDays extends Assert {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestDays.class);
-    }
-
-    public TestDays(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
-    }
-
     //-----------------------------------------------------------------------
+   @Test
     public void testConstants() {
         assertEquals(0, Days.ZERO.getDays());
         assertEquals(1, Days.ONE.getDays());
@@ -66,6 +50,7 @@ public class TestDays extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactory_days_int() {
         assertSame(Days.ZERO, Days.days(0));
         assertSame(Days.ONE, Days.days(1));
@@ -82,6 +67,7 @@ public class TestDays extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactory_daysBetween_RInstant() {
         DateTime start = new DateTime(2006, 6, 9, 12, 0, 0, 0, PARIS);
         DateTime end1 = new DateTime(2006, 6, 12, 12, 0, 0, 0, PARIS);
@@ -94,6 +80,7 @@ public class TestDays extends TestCase {
         assertEquals(6, Days.daysBetween(start, end2).getDays());
     }
 
+   @Test
     public void testFactory_daysBetween_RPartial() {
         LocalDate start = new LocalDate(2006, 6, 9);
         LocalDate end1 = new LocalDate(2006, 6, 12);
@@ -106,6 +93,7 @@ public class TestDays extends TestCase {
         assertEquals(6, Days.daysBetween(start, end2).getDays());
     }
 
+   @Test
     public void testFactory_daysIn_RInterval() {
         DateTime start = new DateTime(2006, 6, 9, 12, 0, 0, 0, PARIS);
         DateTime end1 = new DateTime(2006, 6, 12, 12, 0, 0, 0, PARIS);
@@ -118,6 +106,7 @@ public class TestDays extends TestCase {
         assertEquals(6, Days.daysIn(new Interval(start, end2)).getDays());
     }
 
+   @Test
     public void testFactory_standardDaysIn_RPeriod() {
         assertEquals(0, Days.standardDaysIn((ReadablePeriod) null).getDays());
         assertEquals(0, Days.standardDaysIn(Period.ZERO).getDays());
@@ -136,6 +125,7 @@ public class TestDays extends TestCase {
         }
     }
 
+   @Test
     public void testFactory_parseDays_String() {
         assertEquals(0, Days.parseDays((String) null).getDays());
         assertEquals(0, Days.parseDays("P0D").getDays());
@@ -158,22 +148,26 @@ public class TestDays extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetMethods() {
         Days test = Days.days(20);
         assertEquals(20, test.getDays());
     }
 
+   @Test
     public void testGetFieldType() {
         Days test = Days.days(20);
         assertEquals(DurationFieldType.days(), test.getFieldType());
     }
 
+   @Test
     public void testGetPeriodType() {
         Days test = Days.days(20);
         assertEquals(PeriodType.days(), test.getPeriodType());
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testIsGreaterThan() {
         assertEquals(true, Days.THREE.isGreaterThan(Days.TWO));
         assertEquals(false, Days.THREE.isGreaterThan(Days.THREE));
@@ -182,6 +176,7 @@ public class TestDays extends TestCase {
         assertEquals(false, Days.days(-1).isGreaterThan(null));
     }
 
+   @Test
     public void testIsLessThan() {
         assertEquals(false, Days.THREE.isLessThan(Days.TWO));
         assertEquals(false, Days.THREE.isLessThan(Days.THREE));
@@ -191,6 +186,7 @@ public class TestDays extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         Days test = Days.days(20);
         assertEquals("P20D", test.toString());
@@ -200,6 +196,7 @@ public class TestDays extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSerialization() throws Exception {
         Days test = Days.SEVEN;
         
@@ -218,12 +215,14 @@ public class TestDays extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToStandardWeeks() {
         Days test = Days.days(14);
         Weeks expected = Weeks.weeks(2);
         assertEquals(expected, test.toStandardWeeks());
     }
 
+   @Test
     public void testToStandardHours() {
         Days test = Days.days(2);
         Hours expected = Hours.hours(2 * 24);
@@ -237,6 +236,7 @@ public class TestDays extends TestCase {
         }
     }
 
+   @Test
     public void testToStandardMinutes() {
         Days test = Days.days(2);
         Minutes expected = Minutes.minutes(2 * 24 * 60);
@@ -250,6 +250,7 @@ public class TestDays extends TestCase {
         }
     }
 
+   @Test
     public void testToStandardSeconds() {
         Days test = Days.days(2);
         Seconds expected = Seconds.seconds(2 * 24 * 60 * 60);
@@ -263,6 +264,7 @@ public class TestDays extends TestCase {
         }
     }
 
+   @Test
     public void testToStandardDuration() {
         Days test = Days.days(20);
         Duration expected = new Duration(20L * DateTimeConstants.MILLIS_PER_DAY);
@@ -273,6 +275,7 @@ public class TestDays extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPlus_int() {
         Days test2 = Days.days(2);
         Days result = test2.plus(3);
@@ -289,6 +292,7 @@ public class TestDays extends TestCase {
         }
     }
 
+   @Test
     public void testPlus_Days() {
         Days test2 = Days.days(2);
         Days test3 = Days.days(3);
@@ -308,6 +312,7 @@ public class TestDays extends TestCase {
         }
     }
 
+   @Test
     public void testMinus_int() {
         Days test2 = Days.days(2);
         Days result = test2.minus(3);
@@ -324,6 +329,7 @@ public class TestDays extends TestCase {
         }
     }
 
+   @Test
     public void testMinus_Days() {
         Days test2 = Days.days(2);
         Days test3 = Days.days(3);
@@ -343,6 +349,7 @@ public class TestDays extends TestCase {
         }
     }
 
+   @Test
     public void testMultipliedBy_int() {
         Days test = Days.days(2);
         assertEquals(6, test.multipliedBy(3).getDays());
@@ -359,6 +366,7 @@ public class TestDays extends TestCase {
         }
     }
 
+   @Test
     public void testDividedBy_int() {
         Days test = Days.days(12);
         assertEquals(6, test.dividedBy(2).getDays());
@@ -377,6 +385,7 @@ public class TestDays extends TestCase {
         }
     }
 
+   @Test
     public void testNegated() {
         Days test = Days.days(12);
         assertEquals(-12, test.negated().getDays());
@@ -391,6 +400,7 @@ public class TestDays extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testAddToLocalDate() {
         Days test = Days.days(20);
         LocalDate date = new LocalDate(2006, 6, 1);

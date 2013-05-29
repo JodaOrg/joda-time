@@ -15,27 +15,17 @@
  */
 package org.joda.time.field;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.Assert;
+import org.junit.Test;
+
 
 /**
  * 
  *
  * @author Brian S O'Neill
  */
-public class TestFieldUtils extends TestCase {
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestFieldUtils.class);
-    }
-
-    public TestFieldUtils(String name) {
-        super(name);
-    }
-
+public class TestFieldUtils extends Assert {
+   @Test
     public void testSafeAddInt() {
         assertEquals(0, FieldUtils.safeAdd(0, 0));
 
@@ -87,6 +77,7 @@ public class TestFieldUtils extends TestCase {
         }
     }
 
+   @Test
     public void testSafeAddLong() {
         assertEquals(0L, FieldUtils.safeAdd(0L, 0L));
 
@@ -138,6 +129,7 @@ public class TestFieldUtils extends TestCase {
         }
     }
 
+   @Test
     public void testSafeSubtractLong() {
         assertEquals(0L, FieldUtils.safeSubtract(0L, 0L));
 
@@ -190,6 +182,7 @@ public class TestFieldUtils extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSafeMultiplyLongLong() {
         assertEquals(0L, FieldUtils.safeMultiply(0L, 0L));
         
@@ -238,6 +231,7 @@ public class TestFieldUtils extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSafeMultiplyLongInt() {
         assertEquals(0L, FieldUtils.safeMultiply(0L, 0));
         

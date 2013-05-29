@@ -15,43 +15,27 @@
  */
 package org.joda.time;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * This class is a Junit unit test for Hours.
  *
  * @author Stephen Colebourne
  */
-public class TestHours extends TestCase {
+public class TestHours extends Assert {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestHours.class);
-    }
-
-    public TestHours(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
-    }
-
     //-----------------------------------------------------------------------
+   @Test
     public void testConstants() {
         assertEquals(0, Hours.ZERO.getHours());
         assertEquals(1, Hours.ONE.getHours());
@@ -67,6 +51,7 @@ public class TestHours extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactory_hours_int() {
         assertSame(Hours.ZERO, Hours.hours(0));
         assertSame(Hours.ONE, Hours.hours(1));
@@ -84,6 +69,7 @@ public class TestHours extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactory_hoursBetween_RInstant() {
         DateTime start = new DateTime(2006, 6, 9, 12, 0, 0, 0, PARIS);
         DateTime end1 = new DateTime(2006, 6, 9, 15, 0, 0, 0, PARIS);
@@ -96,6 +82,7 @@ public class TestHours extends TestCase {
         assertEquals(6, Hours.hoursBetween(start, end2).getHours());
     }
 
+   @Test
     public void testFactory_hoursBetween_RPartial() {
         LocalTime start = new LocalTime(12, 0);
         LocalTime end1 = new LocalTime(15, 0);
@@ -108,6 +95,7 @@ public class TestHours extends TestCase {
         assertEquals(6, Hours.hoursBetween(start, end2).getHours());
     }
 
+   @Test
     public void testFactory_hoursIn_RInterval() {
         DateTime start = new DateTime(2006, 6, 9, 12, 0, 0, 0, PARIS);
         DateTime end1 = new DateTime(2006, 6, 9, 15, 0, 0, 0, PARIS);
@@ -120,6 +108,7 @@ public class TestHours extends TestCase {
         assertEquals(6, Hours.hoursIn(new Interval(start, end2)).getHours());
     }
 
+   @Test
     public void testFactory_standardHoursIn_RPeriod() {
         assertEquals(0, Hours.standardHoursIn((ReadablePeriod) null).getHours());
         assertEquals(0, Hours.standardHoursIn(Period.ZERO).getHours());
@@ -138,6 +127,7 @@ public class TestHours extends TestCase {
         }
     }
 
+   @Test
     public void testFactory_parseHours_String() {
         assertEquals(0, Hours.parseHours((String) null).getHours());
         assertEquals(0, Hours.parseHours("PT0H").getHours());
@@ -160,22 +150,26 @@ public class TestHours extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetMethods() {
         Hours test = Hours.hours(20);
         assertEquals(20, test.getHours());
     }
 
+   @Test
     public void testGetFieldType() {
         Hours test = Hours.hours(20);
         assertEquals(DurationFieldType.hours(), test.getFieldType());
     }
 
+   @Test
     public void testGetPeriodType() {
         Hours test = Hours.hours(20);
         assertEquals(PeriodType.hours(), test.getPeriodType());
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testIsGreaterThan() {
         assertEquals(true, Hours.THREE.isGreaterThan(Hours.TWO));
         assertEquals(false, Hours.THREE.isGreaterThan(Hours.THREE));
@@ -184,6 +178,7 @@ public class TestHours extends TestCase {
         assertEquals(false, Hours.hours(-1).isGreaterThan(null));
     }
 
+   @Test
     public void testIsLessThan() {
         assertEquals(false, Hours.THREE.isLessThan(Hours.TWO));
         assertEquals(false, Hours.THREE.isLessThan(Hours.THREE));
@@ -193,6 +188,7 @@ public class TestHours extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         Hours test = Hours.hours(20);
         assertEquals("PT20H", test.toString());
@@ -202,6 +198,7 @@ public class TestHours extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSerialization() throws Exception {
         Hours test = Hours.SEVEN;
         
@@ -220,18 +217,21 @@ public class TestHours extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToStandardWeeks() {
         Hours test = Hours.hours(24 * 7 * 2);
         Weeks expected = Weeks.weeks(2);
         assertEquals(expected, test.toStandardWeeks());
     }
 
+   @Test
     public void testToStandardDays() {
         Hours test = Hours.hours(24 * 2);
         Days expected = Days.days(2);
         assertEquals(expected, test.toStandardDays());
     }
 
+   @Test
     public void testToStandardMinutes() {
         Hours test = Hours.hours(3);
         Minutes expected = Minutes.minutes(3 * 60);
@@ -245,6 +245,7 @@ public class TestHours extends TestCase {
         }
     }
 
+   @Test
     public void testToStandardSeconds() {
         Hours test = Hours.hours(3);
         Seconds expected = Seconds.seconds(3 * 60 * 60);
@@ -258,6 +259,7 @@ public class TestHours extends TestCase {
         }
     }
 
+   @Test
     public void testToStandardDuration() {
         Hours test = Hours.hours(20);
         Duration expected = new Duration(20L * DateTimeConstants.MILLIS_PER_HOUR);
@@ -268,6 +270,7 @@ public class TestHours extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPlus_int() {
         Hours test2 = Hours.hours(2);
         Hours result = test2.plus(3);
@@ -284,6 +287,7 @@ public class TestHours extends TestCase {
         }
     }
 
+   @Test
     public void testPlus_Hours() {
         Hours test2 = Hours.hours(2);
         Hours test3 = Hours.hours(3);
@@ -303,6 +307,7 @@ public class TestHours extends TestCase {
         }
     }
 
+   @Test
     public void testMinus_int() {
         Hours test2 = Hours.hours(2);
         Hours result = test2.minus(3);
@@ -319,6 +324,7 @@ public class TestHours extends TestCase {
         }
     }
 
+   @Test
     public void testMinus_Hours() {
         Hours test2 = Hours.hours(2);
         Hours test3 = Hours.hours(3);
@@ -338,6 +344,7 @@ public class TestHours extends TestCase {
         }
     }
 
+   @Test
     public void testMultipliedBy_int() {
         Hours test = Hours.hours(2);
         assertEquals(6, test.multipliedBy(3).getHours());
@@ -354,6 +361,7 @@ public class TestHours extends TestCase {
         }
     }
 
+   @Test
     public void testDividedBy_int() {
         Hours test = Hours.hours(12);
         assertEquals(6, test.dividedBy(2).getHours());
@@ -372,6 +380,7 @@ public class TestHours extends TestCase {
         }
     }
 
+   @Test
     public void testNegated() {
         Hours test = Hours.hours(12);
         assertEquals(-12, test.negated().getHours());
@@ -386,6 +395,7 @@ public class TestHours extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testAddToLocalDate() {
         Hours test = Hours.hours(26);
         LocalDateTime date = new LocalDateTime(2006, 6, 1, 0, 0, 0, 0);

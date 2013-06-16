@@ -53,6 +53,9 @@ Bug fixes since 2.2
 - Short time-zone name parsing failed to match the longest name
   This affected two short names where one is a short form of the second such as "UT" and "UTC"
 
+- Days.daysBetween fails for MonthDay [#22]
+  Incorrect calculation around leap years
+
 
 Scala
 --------

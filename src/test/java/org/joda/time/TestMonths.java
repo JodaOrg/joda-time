@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2006 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -104,7 +104,8 @@ public class TestMonths extends TestCase {
         assertEquals(6, Months.monthsBetween(start, end2).getMonths());
     }
 
-    public void testFactory_monthsBetween_RPartial() {
+    //-------------------------------------------------------------------------
+    public void testFactory_monthsBetween_RPartial_LocalDate() {
         LocalDate start = new LocalDate(2006, 6, 9);
         LocalDate end1 = new LocalDate(2006, 9, 9);
         YearMonthDay end2 = new YearMonthDay(2006, 12, 9);
@@ -116,6 +117,32 @@ public class TestMonths extends TestCase {
         assertEquals(6, Months.monthsBetween(start, end2).getMonths());
     }
 
+    public void testFactory_monthsBetween_RPartial_YearMonth() {
+        YearMonth start1 = new YearMonth(2011, 1);
+        for (int i = 0; i < 6; i++) {
+            YearMonth start2 = new YearMonth(2011 + i, 1);
+            YearMonth end = new YearMonth(2011 + i, 3);
+            assertEquals(i * 12 + 2, Months.monthsBetween(start1, end).getMonths());
+            assertEquals(2, Months.monthsBetween(start2, end).getMonths());
+        }
+    }
+
+    public void testFactory_monthsBetween_RPartial_MonthDay() {
+        MonthDay start = new MonthDay(2, 1);
+        MonthDay end1 = new MonthDay(2, 28);
+        MonthDay end2 = new MonthDay(2, 29);
+        MonthDay end3 = new MonthDay(3, 1);
+        
+        assertEquals(0, Months.monthsBetween(start, end1).getMonths());
+        assertEquals(0, Months.monthsBetween(start, end2).getMonths());
+        assertEquals(1, Months.monthsBetween(start, end3).getMonths());
+        
+        assertEquals(0, Months.monthsBetween(end1, start).getMonths());
+        assertEquals(0, Months.monthsBetween(end2, start).getMonths());
+        assertEquals(-1, Months.monthsBetween(end3, start).getMonths());
+    }
+
+    //-------------------------------------------------------------------------
     public void testFactory_monthsIn_RInterval() {
         DateTime start = new DateTime(2006, 6, 9, 12, 0, 0, 0, PARIS);
         DateTime end1 = new DateTime(2006, 9, 9, 12, 0, 0, 0, PARIS);

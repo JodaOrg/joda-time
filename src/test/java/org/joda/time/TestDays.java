@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2006 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -94,7 +94,8 @@ public class TestDays extends TestCase {
         assertEquals(6, Days.daysBetween(start, end2).getDays());
     }
 
-    public void testFactory_daysBetween_RPartial() {
+    //-----------------------------------------------------------------------
+    public void testFactory_daysBetween_RPartial_LocalDate() {
         LocalDate start = new LocalDate(2006, 6, 9);
         LocalDate end1 = new LocalDate(2006, 6, 12);
         YearMonthDay end2 = new YearMonthDay(2006, 6, 15);
@@ -106,6 +107,37 @@ public class TestDays extends TestCase {
         assertEquals(6, Days.daysBetween(start, end2).getDays());
     }
 
+    public void testFactory_daysBetween_RPartial_YearMonth() {
+        YearMonth start1 = new YearMonth(2011, 1);
+        YearMonth start2 = new YearMonth(2012, 1);
+        YearMonth end1 = new YearMonth(2011, 3);
+        YearMonth end2 = new YearMonth(2012, 3);
+        
+        assertEquals(59, Days.daysBetween(start1, end1).getDays());
+        assertEquals(60, Days.daysBetween(start2, end2).getDays());
+        
+        assertEquals(-59, Days.daysBetween(end1, start1).getDays());
+        assertEquals(-60, Days.daysBetween(end2, start2).getDays());
+    }
+
+    public void testFactory_daysBetween_RPartial_MonthDay() {
+        MonthDay start1 = new MonthDay(2, 1);
+        MonthDay start2 = new MonthDay(2, 28);
+        MonthDay end1 = new MonthDay(2, 28);
+        MonthDay end2 = new MonthDay(2, 29);
+        
+        assertEquals(27, Days.daysBetween(start1, end1).getDays());
+        assertEquals(28, Days.daysBetween(start1, end2).getDays());
+        assertEquals(0, Days.daysBetween(start2, end1).getDays());
+        assertEquals(1, Days.daysBetween(start2, end2).getDays());
+        
+        assertEquals(-27, Days.daysBetween(end1, start1).getDays());
+        assertEquals(-28, Days.daysBetween(end2, start1).getDays());
+        assertEquals(0, Days.daysBetween(end1, start2).getDays());
+        assertEquals(-1, Days.daysBetween(end2, start2).getDays());
+    }
+
+    //-----------------------------------------------------------------------
     public void testFactory_daysIn_RInterval() {
         DateTime start = new DateTime(2006, 6, 9, 12, 0, 0, 0, PARIS);
         DateTime end1 = new DateTime(2006, 6, 12, 12, 0, 0, 0, PARIS);
@@ -118,6 +150,7 @@ public class TestDays extends TestCase {
         assertEquals(6, Days.daysIn(new Interval(start, end2)).getDays());
     }
 
+    //-----------------------------------------------------------------------
     public void testFactory_standardDaysIn_RPeriod() {
         assertEquals(0, Days.standardDaysIn((ReadablePeriod) null).getDays());
         assertEquals(0, Days.standardDaysIn(Period.ZERO).getDays());

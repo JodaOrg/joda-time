@@ -1310,6 +1310,136 @@ public class TestPeriod_Constructors extends TestCase {
         assertEquals(6, test.getMillis());
     }
 
+    //-------------------------------------------------------------------------
+    public void testConstructor_trickyDifferences_RI_RI_toFeb_standardYear() throws Throwable {
+        DateTime dt1 = new DateTime(2011, 1, 1, 0, 0);
+        DateTime dt2 = new DateTime(2011, 2, 28, 0, 0);
+        Period test = new Period(dt1, dt2);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(new Period(0, 1, 3, 6, 0, 0, 0, 0), test);
+    }
+
+    public void testConstructor_trickyDifferences_RI_RI_toFeb_leapYear() throws Throwable {
+        DateTime dt1 = new DateTime(2012, 1, 1, 0, 0);
+        DateTime dt2 = new DateTime(2012, 2, 29, 0, 0);
+        Period test = new Period(dt1, dt2);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(new Period(0, 1, 4, 0, 0, 0, 0, 0), test);
+    }
+
+    public void testConstructor_trickyDifferences_RI_RI_toFeb_exactMonths() throws Throwable {
+        DateTime dt1 = new DateTime(2004, 12, 28, 0, 0);
+        DateTime dt2 = new DateTime(2005, 2, 28, 0, 0);
+        Period test = new Period(dt1, dt2);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(new Period(0, 2, 0, 0, 0, 0, 0, 0), test);
+    }
+
+    public void testConstructor_trickyDifferences_RI_RI_toFeb_endOfMonth1() throws Throwable {
+        DateTime dt1 = new DateTime(2004, 12, 29, 0, 0);
+        DateTime dt2 = new DateTime(2005, 2, 28, 0, 0);
+        Period test = new Period(dt1, dt2);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(new Period(0, 2, 0, 0, 0, 0, 0, 0), test);
+    }
+
+    public void testConstructor_trickyDifferences_RI_RI_toFeb_endOfMonth2() throws Throwable {
+        DateTime dt1 = new DateTime(2004, 12, 30, 0, 0);
+        DateTime dt2 = new DateTime(2005, 2, 28, 0, 0);
+        Period test = new Period(dt1, dt2);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(new Period(0, 2, 0, 0, 0, 0, 0, 0), test);
+    }
+
+    public void testConstructor_trickyDifferences_RI_RI_toFeb_endOfMonth3() throws Throwable {
+        DateTime dt1 = new DateTime(2004, 12, 31, 0, 0);
+        DateTime dt2 = new DateTime(2005, 2, 28, 0, 0);
+        Period test = new Period(dt1, dt2);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(new Period(0, 2, 0, 0, 0, 0, 0, 0), test);
+    }
+
+    public void testConstructor_trickyDifferences_RI_RI_toMar_endOfMonth1() throws Throwable {
+        DateTime dt1 = new DateTime(2013, 1, 31, 0, 0);
+        DateTime dt2 = new DateTime(2013, 3, 30, 0, 0);
+        Period test = new Period(dt1, dt2);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(new Period(0, 1, 4, 2, 0, 0, 0, 0), test);
+    }
+
+    public void testConstructor_trickyDifferences_RI_RI_toMar_endOfMonth2() throws Throwable {
+        DateTime dt1 = new DateTime(2013, 1, 31, 0, 0);
+        DateTime dt2 = new DateTime(2013, 3, 31, 0, 0);
+        Period test = new Period(dt1, dt2);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(new Period(0, 2, 0, 0, 0, 0, 0, 0), test);
+    }
+
+    //-------------------------------------------------------------------------
+    public void testConstructor_trickyDifferences_LD_LD_toFeb_standardYear() throws Throwable {
+        LocalDate dt1 = new LocalDate(2011, 1, 1);
+        LocalDate dt2 = new LocalDate(2011, 2, 28);
+        Period test = new Period(dt1, dt2);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(new Period(0, 1, 3, 6, 0, 0, 0, 0), test);
+    }
+
+    public void testConstructor_trickyDifferences_LD_LD_toFeb_leapYear() throws Throwable {
+        LocalDate dt1 = new LocalDate(2012, 1, 1);
+        LocalDate dt2 = new LocalDate(2012, 2, 29);
+        Period test = new Period(dt1, dt2);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(new Period(0, 1, 4, 0, 0, 0, 0, 0), test);
+    }
+
+    public void testConstructor_trickyDifferences_LD_LD_toFeb_exactMonths() throws Throwable {
+        LocalDate dt1 = new LocalDate(2004, 12, 28);
+        LocalDate dt2 = new LocalDate(2005, 2, 28);
+        Period test = new Period(dt1, dt2);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(new Period(0, 2, 0, 0, 0, 0, 0, 0), test);
+    }
+
+    public void testConstructor_trickyDifferences_LD_LD_toFeb_endOfMonth1() throws Throwable {
+        LocalDate dt1 = new LocalDate(2004, 12, 29);
+        LocalDate dt2 = new LocalDate(2005, 2, 28);
+        Period test = new Period(dt1, dt2);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(new Period(0, 2, 0, 0, 0, 0, 0, 0), test);
+    }
+
+    public void testConstructor_trickyDifferences_LD_LD_toFeb_endOfMonth2() throws Throwable {
+        LocalDate dt1 = new LocalDate(2004, 12, 30);
+        LocalDate dt2 = new LocalDate(2005, 2, 28);
+        Period test = new Period(dt1, dt2);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(new Period(0, 2, 0, 0, 0, 0, 0, 0), test);
+    }
+
+    public void testConstructor_trickyDifferences_LD_LD_toFeb_endOfMonth3() throws Throwable {
+        LocalDate dt1 = new LocalDate(2004, 12, 31);
+        LocalDate dt2 = new LocalDate(2005, 2, 28);
+        Period test = new Period(dt1, dt2);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(new Period(0, 2, 0, 0, 0, 0, 0, 0), test);
+    }
+
+    public void testConstructor_trickyDifferences_LD_LD_toMar_endOfMonth1() throws Throwable {
+        LocalDate dt1 = new LocalDate(2013, 1, 31);
+        LocalDate dt2 = new LocalDate(2013, 3, 30);
+        Period test = new Period(dt1, dt2);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(new Period(0, 1, 4, 2, 0, 0, 0, 0), test);
+    }
+
+    public void testConstructor_trickyDifferences_LD_LD_toMar_endOfMonth2() throws Throwable {
+        LocalDate dt1 = new LocalDate(2013, 1, 31);
+        LocalDate dt2 = new LocalDate(2013, 3, 31);
+        Period test = new Period(dt1, dt2);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(new Period(0, 2, 0, 0, 0, 0, 0, 0), test);
+    }
+
     //-----------------------------------------------------------------------
     public void testFactoryFieldDifference1() throws Throwable {
         YearMonthDay start = new YearMonthDay(2005, 4, 9);

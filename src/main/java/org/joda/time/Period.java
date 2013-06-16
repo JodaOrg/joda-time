@@ -491,8 +491,16 @@ public final class Period
     }
 
     /**
-     * Creates a period from the given interval endpoints using the standard
-     * set of fields.
+     * Creates a period between the given instants using the standard set of fields.
+     * <p>
+     * Most calculations performed by this method have obvious results.
+     * The special case is where the calculation is from a "long" month to a "short" month.
+     * Here, the result favours increasing the months field rather than the days.
+     * For example, 2013-01-31 to 2013-02-28 is treated as one whole month.
+     * By contrast, 2013-01-31 to 2013-03-30 is treated as one month and 30 days
+     * (exposed as 4 weeks and 2 days).
+     * The results are explained by considering that the start date plus the
+     * calculated period result in the end date.
      *
      * @param startInstant  interval start, null means now
      * @param endInstant  interval end, null means now
@@ -502,7 +510,15 @@ public final class Period
     }
 
     /**
-     * Creates a period from the given interval endpoints.
+     * Creates a period between the given instants.
+     * <p>
+     * Most calculations performed by this method have obvious results.
+     * The special case is where the calculation is from a "long" month to a "short" month.
+     * Here, the result favours increasing the months field rather than the days.
+     * For example, 2013-01-31 to 2013-02-28 is treated as one whole month.
+     * By contrast, 2013-01-31 to 2013-03-30 is treated as one month and 30 days.
+     * The results are explained by considering that the start date plus the
+     * calculated period result in the end date.
      *
      * @param startInstant  interval start, null means now
      * @param endInstant  interval end, null means now
@@ -523,6 +539,15 @@ public final class Period
      * The two partials must also both be contiguous - see
      * {@link DateTimeUtils#isContiguous(ReadablePartial)} for a definition.
      * Both <code>LocalDate</code> and <code>LocalTime</code> are contiguous.
+     * <p>
+     * Most calculations performed by this method have obvious results.
+     * The special case is where the calculation is from a "long" month to a "short" month.
+     * Here, the result favours increasing the months field rather than the days.
+     * For example, 2013-01-31 to 2013-02-28 is treated as one whole month.
+     * By contrast, 2013-01-31 to 2013-03-30 is treated as one month and 30 days
+     * (exposed as 4 weeks and 2 days).
+     * The results are explained by considering that the start date plus the
+     * calculated period result in the end date.
      * <p>
      * An alternative way of constructing a Period from two Partials
      * is {@link #fieldDifference(ReadablePartial, ReadablePartial)}.
@@ -548,6 +573,14 @@ public final class Period
      * The two partials must also both be contiguous - see
      * {@link DateTimeUtils#isContiguous(ReadablePartial)} for a definition.
      * Both <code>LocalDate</code> and <code>LocalTime</code> are contiguous.
+     * <p>
+     * Most calculations performed by this method have obvious results.
+     * The special case is where the calculation is from a "long" month to a "short" month.
+     * Here, the result favours increasing the months field rather than the days.
+     * For example, 2013-01-31 to 2013-02-28 is treated as one whole month.
+     * By contrast, 2013-01-31 to 2013-03-30 is treated as one month and 30 days.
+     * The results are explained by considering that the start date plus the
+     * calculated period result in the end date.
      * <p>
      * An alternative way of constructing a Period from two Partials
      * is {@link #fieldDifference(ReadablePartial, ReadablePartial)}.

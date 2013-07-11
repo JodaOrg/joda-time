@@ -54,8 +54,8 @@ import org.joda.time.ReadablePartial;
  * <li>{@link #withZone(DateTimeZone)} - returns a new formatter that uses the specified time zone</li>
  * <li>{@link #withChronology(Chronology)} - returns a new formatter that uses the specified chronology</li>
  * <li>{@link #withOffsetParsed()} - returns a new formatter that returns the parsed time zone offset</li>
- * <li>{@link #withPivotYear()} - returns a new formatter with the specified pivot year</li>
- * <li>{@link #withDefaultYear()} - returns a new formatter with the specified default year</li>
+ * <li>{@link #withPivotYear(int)} - returns a new formatter with the specified pivot year</li>
+ * <li>{@link #withDefaultYear(int)} - returns a new formatter with the specified default year</li>
  * </ul>
  * Each of these returns a new formatter (instances of this class are immutable).
  * <p>

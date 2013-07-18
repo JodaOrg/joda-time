@@ -67,7 +67,13 @@ import org.joda.time.format.ISODateTimeFormat;
  *
  * @author Stephen Colebourne
  * @since 1.0
+ * @deprecated The time of midnight does not exist in some time zones
+ * where the daylight saving time forward shift skips the midnight hour.
+ * Use {@link LocalDate} to represent a date without a time zone
+ * and {@link DateTime#withTimeAtStartOfDay()} to get an instant at the
+ * start of a day.
  */
+@Deprecated
 public final class DateMidnight
         extends BaseDateTime
         implements ReadableDateTime, Serializable {

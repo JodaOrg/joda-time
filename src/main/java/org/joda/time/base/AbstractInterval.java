@@ -248,6 +248,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      *
      * @param other  a readable interval to check against
      * @return true if the intervals are equal comparing the start and end millis
+     * @since 2.3
      */
     public boolean isEqual(ReadableInterval other) {
         return getStartMillis() == other.getStartMillis() &&

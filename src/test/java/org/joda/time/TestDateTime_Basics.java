@@ -522,6 +522,7 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals("2002-06-09T01:00:00.000+01:00", test.toString(null, null));
     }
 
+    @SuppressWarnings("deprecation")
     public void testToString_DTFormatter() {
         DateMidnight test = new DateMidnight(TEST_TIME_NOW);
         assertEquals("2002 00", test.toString(DateTimeFormat.forPattern("yyyy HH")));

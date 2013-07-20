@@ -872,6 +872,7 @@ public class TestLocalDate_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    @SuppressWarnings("deprecation")
     public void testToDateMidnight() {
         LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS);
         
@@ -881,6 +882,7 @@ public class TestLocalDate_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    @SuppressWarnings("deprecation")
     public void testToDateMidnight_Zone() {
         LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS);
         
@@ -889,6 +891,7 @@ public class TestLocalDate_Basics extends TestCase {
         assertEquals(new DateMidnight(2005, 6, 9, COPTIC_TOKYO), test);
     }
 
+    @SuppressWarnings("deprecation")
     public void testToDateMidnight_nullZone() {
         LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS);
         

@@ -835,7 +835,9 @@ public final class LocalDate
      * This instance is immutable and unaffected by this method call.
      *
      * @return the DateMidnight instance in the default zone
+     * @deprecated DateMidnight is deprecated
      */
+    @Deprecated
     public DateMidnight toDateMidnight() {
         return toDateMidnight(null);
     }
@@ -856,7 +858,9 @@ public final class LocalDate
      *
      * @param zone  the zone to get the DateMidnight in, null means default zone
      * @return the DateMidnight instance
+     * @deprecated DateMidnight is deprecated
      */
+    @Deprecated
     public DateMidnight toDateMidnight(DateTimeZone zone) {
         zone = DateTimeUtils.getZone(zone);
         Chronology chrono = getChronology().withZone(zone);

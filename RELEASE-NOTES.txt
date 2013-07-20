@@ -42,7 +42,14 @@ Semantic compatible - Yes, except
 
 Deprecations since 2.2
 ----------------------
-None
+- DateMidnight [#41]
+  This class is flawed in concept
+  The time of midnight occasionally does not occur in some time-zones
+  This is a result of a daylight savings time from 00:00 to 01:00
+  DateMidnight is essentially a DateTime with a time locked to midnight
+  Such a concept is more generally a poor one to use, given LocalDate
+  Replace DateMidnight with LocalDate
+  Or replace it with DateTime, perhaps using the withTimeAtStartOfDay() method
 
 
 Bug fixes since 2.2

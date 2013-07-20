@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2010 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -49,6 +49,7 @@ public class TestStringConvert extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    @SuppressWarnings("deprecation")
     public void testDateMidnight() {
         DateMidnight test = new DateMidnight(2010, 6, 30, ISOChronology.getInstance(ZONE));
         String str = StringConvert.INSTANCE.convertToString(test);

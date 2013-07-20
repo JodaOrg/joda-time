@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -44,6 +44,7 @@ import org.joda.time.format.DateTimeFormatter;
  *
  * @author Stephen Colebourne
  */
+@SuppressWarnings("deprecation")
 public class TestDateMidnight_Basics extends TestCase {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
@@ -990,6 +991,7 @@ public class TestDateMidnight_Basics extends TestCase {
         assertEquals(test.weekOfWeekyear(), test.property(DateTimeFieldType.weekOfWeekyear()));
         assertEquals(test.property(DateTimeFieldType.millisOfSecond()), test.property(DateTimeFieldType.millisOfSecond()));
         DateTimeFieldType bad = new DateTimeFieldType("bad") {
+            private static final long serialVersionUID = 1L;
             public DurationFieldType getDurationType() {
                 return DurationFieldType.weeks();
             }

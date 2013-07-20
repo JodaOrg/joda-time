@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2011 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -69,8 +69,9 @@ import org.joda.time.format.ISODateTimeFormat;
  * @since 1.0
  * @deprecated The time of midnight does not exist in some time zones
  * where the daylight saving time forward shift skips the midnight hour.
- * Use {@link LocalDate} to represent a date without a time zone
- * and {@link DateTime#withTimeAtStartOfDay()} to get an instant at the
+ * Use {@link LocalDate} to represent a date without a time zone.
+ * Or use {@link DateTime} to represent a full date and time, perhaps
+ * using {@link DateTime#withTimeAtStartOfDay()} to get an instant at the
  * start of a day.
  */
 @Deprecated

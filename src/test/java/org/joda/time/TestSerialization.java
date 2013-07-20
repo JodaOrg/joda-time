@@ -18,7 +18,6 @@ package org.joda.time;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -34,8 +33,6 @@ import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
-import org.joda.time.field.DelegatedDurationField;
-import org.joda.time.field.MillisDurationField;
 import org.joda.time.field.UnsupportedDateTimeField;
 import org.joda.time.field.UnsupportedDurationField;
 
@@ -77,12 +74,12 @@ public class TestSerialization extends TestCase {
             + 14L * DateTimeConstants.MILLIS_PER_HOUR
             + 28L * DateTimeConstants.MILLIS_PER_MINUTE;
 
-    private static class MockDelegatedDurationField extends DelegatedDurationField implements Serializable {
-        private static final long serialVersionUID = 1878496002811998493L;        
-        public MockDelegatedDurationField() {
-            super(MillisDurationField.INSTANCE);
-        }
-    }
+//    private static class MockDelegatedDurationField extends DelegatedDurationField implements Serializable {
+//        private static final long serialVersionUID = 1878496002811998493L;        
+//        public MockDelegatedDurationField() {
+//            super(MillisDurationField.INSTANCE);
+//        }
+//    }
 
     private DateTimeZone originalDateTimeZone = null;
     private TimeZone originalTimeZone = null;
@@ -158,12 +155,14 @@ public class TestSerialization extends TestCase {
         inlineCompare(test, false);
     }
 
+    @SuppressWarnings("deprecation")
     public void testSerializedDateMidnight() throws Exception {
         DateMidnight test = new DateMidnight();
         loadAndCompare(test, "DateMidnight", false);
         inlineCompare(test, false);
     }
 
+    @SuppressWarnings("deprecation")
     public void testSerializedDateMidnightProperty() throws Exception {
         DateMidnight.Property test = new DateMidnight().monthOfYear();
         loadAndCompare(test, "DateMidnightProperty", false);
@@ -498,15 +497,15 @@ public class TestSerialization extends TestCase {
 //        store(test, "Duration.dat");
 //    }
 
-    private void store(Serializable test, String filename) throws Exception {
-        FileOutputStream fos = new FileOutputStream("src/test/resources/" + filename);
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        try {
-            oos.writeObject(test);
-        } finally {
-            oos.close();
-        }
-        oos.close();
-    }
+//    private void store(Serializable test, String filename) throws Exception {
+//        FileOutputStream fos = new FileOutputStream("src/test/resources/" + filename);
+//        ObjectOutputStream oos = new ObjectOutputStream(fos);
+//        try {
+//            oos.writeObject(test);
+//        } finally {
+//            oos.close();
+//        }
+//        oos.close();
+//    }
 
 }

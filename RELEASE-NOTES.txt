@@ -22,6 +22,13 @@ Enhancements since 2.2
   Add method to compare intervals ignoring the chronology
   https://github.com/JodaOrg/joda-time/issues/20
 
+- Chronology classes now define equals methods [#36]
+  Previously, the Chronology classes relied on caching in factory methods
+  to guarantee instances were singletons
+  Now, there are dedicated, normal, equals methods
+  This will aid weird cases where deserialization or similar avoids the caches
+  It will make no difference to most users
+
 
 Compatibility with 2.2
 ----------------------
@@ -38,6 +45,9 @@ Data compatible - Yes, except
 
 Semantic compatible - Yes, except
  - DateTimeZone is now limited to offsets from -23:59:59.999 to +23:59:59.999
+
+ - BasicChronology now defines an equals method
+   This which would affect you if you subclassed it (unlikely)
 
 
 Deprecations since 2.2

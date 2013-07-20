@@ -34,7 +34,7 @@ Source compatible - Yes
 Serialization compatible - Yes
 
 Data compatible - Yes, except
- - DateTimeZone data updated to version 2013c
+ - DateTimeZone data updated to version 2013d
 
 Semantic compatible - Yes, except
  - DateTimeZone is now limited to offsets from -23:59:59.999 to +23:59:59.999

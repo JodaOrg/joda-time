@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2011 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintStream;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.security.AllPermission;
 import java.security.CodeSource;
@@ -303,9 +302,11 @@ public class TestDateTimeZone extends TestCase {
     //-----------------------------------------------------------------------
     public void testForOffsetHoursMinutes_int_int() {
         assertEquals(DateTimeZone.UTC, DateTimeZone.forOffsetHoursMinutes(0, 0));
+        assertEquals(DateTimeZone.forID("+23:59"), DateTimeZone.forOffsetHoursMinutes(23, 59));
         assertEquals(DateTimeZone.forID("+03:15"), DateTimeZone.forOffsetHoursMinutes(3, 15));
         assertEquals(DateTimeZone.forID("-02:00"), DateTimeZone.forOffsetHoursMinutes(-2, 0));
         assertEquals(DateTimeZone.forID("-02:30"), DateTimeZone.forOffsetHoursMinutes(-2, 30));
+        assertEquals(DateTimeZone.forID("-23:59"), DateTimeZone.forOffsetHoursMinutes(-23, 59));
         try {
             DateTimeZone.forOffsetHoursMinutes(2, 60);
             fail();
@@ -323,7 +324,11 @@ public class TestDateTimeZone extends TestCase {
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            DateTimeZone.forOffsetHoursMinutes(999999, 0);
+            DateTimeZone.forOffsetHoursMinutes(24, 0);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        try {
+            DateTimeZone.forOffsetHoursMinutes(-24, 0);
             fail();
         } catch (IllegalArgumentException ex) {}
     }        
@@ -331,8 +336,10 @@ public class TestDateTimeZone extends TestCase {
     //-----------------------------------------------------------------------
     public void testForOffsetMillis_int() {
         assertSame(DateTimeZone.UTC, DateTimeZone.forOffsetMillis(0));
+        assertEquals(DateTimeZone.forID("+23:59:59.999"), DateTimeZone.forOffsetMillis((24 * 60 * 60 * 1000) - 1));
         assertEquals(DateTimeZone.forID("+03:00"), DateTimeZone.forOffsetMillis(3 * 60 * 60 * 1000));
         assertEquals(DateTimeZone.forID("-02:00"), DateTimeZone.forOffsetMillis(-2 * 60 * 60 * 1000));
+        assertEquals(DateTimeZone.forID("-23:59:59.999"), DateTimeZone.forOffsetMillis((-24 * 60 * 60 * 1000) + 1));
         assertEquals(DateTimeZone.forID("+04:45:17.045"),
                 DateTimeZone.forOffsetMillis(
                         4 * 60 * 60 * 1000 + 45 * 60 * 1000 + 17 * 1000 + 45));

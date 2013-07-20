@@ -32,7 +32,6 @@ import org.joda.convert.FromString;
 import org.joda.convert.ToString;
 import org.joda.time.chrono.BaseChronology;
 import org.joda.time.field.FieldUtils;
-import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 import org.joda.time.format.FormatUtils;
@@ -93,6 +92,8 @@ public abstract class DateTimeZone implements Serializable {
 
     /** The time zone for Universal Coordinated Time */
     public static final DateTimeZone UTC = new FixedDateTimeZone("UTC", "UTC", 0, 0);
+    /** Maximum offset. */
+    private static final int MAX_MILLIS = (86400 * 1000) - 1;
 
     /** The instance that is providing time zones. */
     private static Provider cProvider;
@@ -229,7 +230,7 @@ public abstract class DateTimeZone implements Serializable {
      * <p>
      * This factory is a convenient way of constructing zones with a fixed offset.
      * 
-     * @param hoursOffset  the offset in hours from UTC
+     * @param hoursOffset  the offset in hours from UTC, from -23 to +23
      * @return the DateTimeZone object for the offset
      * @throws IllegalArgumentException if the offset is too large or too small
      */
@@ -245,7 +246,7 @@ public abstract class DateTimeZone implements Serializable {
      * The minutes value is always positive and in the range 0 to 59.
      * If constructed with the values (-2, 30), the resulting zone is '-02:30'.
      * 
-     * @param hoursOffset  the offset in hours from UTC
+     * @param hoursOffset  the offset in hours from UTC, from -23 to +23
      * @param minutesOffset  the offset in minutes from UTC, must be between 0 and 59 inclusive
      * @return the DateTimeZone object for the offset
      * @throws IllegalArgumentException if the offset or minute is too large or too small
@@ -254,16 +255,19 @@ public abstract class DateTimeZone implements Serializable {
         if (hoursOffset == 0 && minutesOffset == 0) {
             return DateTimeZone.UTC;
         }
+        if (hoursOffset < -23 || hoursOffset > 23) {
+            throw new IllegalArgumentException("Hours out of range: " + hoursOffset);
+        }
         if (minutesOffset < 0 || minutesOffset > 59) {
             throw new IllegalArgumentException("Minutes out of range: " + minutesOffset);
         }
         int offset = 0;
         try {
-            int hoursInMinutes = FieldUtils.safeMultiply(hoursOffset, 60);
+            int hoursInMinutes = hoursOffset * 60;
             if (hoursInMinutes < 0) {
-                minutesOffset = FieldUtils.safeAdd(hoursInMinutes, -minutesOffset);
+                minutesOffset = hoursInMinutes - minutesOffset;
             } else {
-                minutesOffset = FieldUtils.safeAdd(hoursInMinutes, minutesOffset);
+                minutesOffset = hoursInMinutes + minutesOffset;
             }
             offset = FieldUtils.safeMultiply(minutesOffset, DateTimeConstants.MILLIS_PER_MINUTE);
         } catch (ArithmeticException ex) {
@@ -275,10 +279,13 @@ public abstract class DateTimeZone implements Serializable {
     /**
      * Gets a time zone instance for the specified offset to UTC in milliseconds.
      *
-     * @param millisOffset  the offset in millis from UTC
+     * @param millisOffset  the offset in millis from UTC, from -23:59:59.999 to +23:59:59.999
      * @return the DateTimeZone object for the offset
      */
     public static DateTimeZone forOffsetMillis(int millisOffset) {
+        if (millisOffset < -MAX_MILLIS || millisOffset > MAX_MILLIS) {
+            throw new IllegalArgumentException("Millis out of range: " + millisOffset);
+        }
         String id = printOffset(millisOffset);
         return fixedOffsetZone(id, millisOffset);
     }

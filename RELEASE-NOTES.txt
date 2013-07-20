@@ -36,7 +36,8 @@ Serialization compatible - Yes
 Data compatible - Yes, except
  - DateTimeZone data updated to version 2013c
 
-Semantic compatible - Yes
+Semantic compatible - Yes, except
+ - DateTimeZone is now limited to offsets from -23:59:59.999 to +23:59:59.999
 
 
 Deprecations since 2.2
@@ -55,6 +56,11 @@ Bug fixes since 2.2
 
 - Days.daysBetween fails for MonthDay [#22]
   Incorrect calculation around leap years
+
+- DateTimeZone failed to validate offsets [#43]
+  Previously, there was little validation, resulting in the ability to create large offsets
+  Those offsets could fail in other parts of the library
+  Now, it is limited to -23:59:59.999 to +23:59:59.999
 
 
 Scala

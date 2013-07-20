@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -261,6 +261,7 @@ public class TestMutableDateTime_Basics extends TestCase {
     }
 
     class MockEqualsChronology extends BaseChronology {
+        private static final long serialVersionUID = 1L;
         public boolean equals(Object obj) {
             return obj instanceof MockEqualsChronology;
         }
@@ -426,9 +427,9 @@ public class TestMutableDateTime_Basics extends TestCase {
     }
 
     public void testToString_DTFormatter() {
-        DateMidnight test = new DateMidnight(TEST_TIME_NOW);
-        assertEquals("2002 00", test.toString(DateTimeFormat.forPattern("yyyy HH")));
-        assertEquals("2002-06-09T00:00:00.000+01:00", test.toString((DateTimeFormatter) null));
+        MutableDateTime test = new MutableDateTime(TEST_TIME_NOW);
+        assertEquals("2002 01", test.toString(DateTimeFormat.forPattern("yyyy HH")));
+        assertEquals("2002-06-09T01:00:00.000+01:00", test.toString((DateTimeFormatter) null));
     }
 
     //-----------------------------------------------------------------------
@@ -730,6 +731,7 @@ public class TestMutableDateTime_Basics extends TestCase {
         assertEquals(test.secondOfMinute(), test.property(DateTimeFieldType.secondOfMinute()));
         assertEquals(test.millisOfSecond(), test.property(DateTimeFieldType.millisOfSecond()));
         DateTimeFieldType bad = new DateTimeFieldType("bad") {
+            private static final long serialVersionUID = 1L;
             public DurationFieldType getDurationType() {
                 return DurationFieldType.weeks();
             }

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -404,6 +404,7 @@ public final class GJChronology extends AssembledChronology {
         return iGregorianChronology.getMinimumDaysInFirstWeek();
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Checks if this chronology instance equals another.
      * 
@@ -412,7 +413,16 @@ public final class GJChronology extends AssembledChronology {
      * @since 1.6
      */
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof GJChronology) {
+            GJChronology chrono = (GJChronology) obj;
+            return iCutoverMillis == chrono.iCutoverMillis &&
+                    getMinimumDaysInFirstWeek() == chrono.getMinimumDaysInFirstWeek() &&
+                    getZone().equals(chrono.getZone());
+        }
+        return false;
     }
 
     /**
@@ -422,8 +432,8 @@ public final class GJChronology extends AssembledChronology {
      * @since 1.6
      */
     public int hashCode() {
-        return "GJ".hashCode() * 11 + iJulianChronology.hashCode() +
-            iGregorianChronology.hashCode() + iCutoverInstant.hashCode();
+        return "GJ".hashCode() * 11 + getZone().hashCode() +
+                getMinimumDaysInFirstWeek() + iCutoverInstant.hashCode();
     }
 
     // Output

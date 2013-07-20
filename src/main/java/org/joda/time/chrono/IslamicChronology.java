@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -275,6 +275,26 @@ public final class IslamicChronology extends BasicChronology {
         return getInstance(zone);
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * Checks if this chronology instance equals another.
+     * 
+     * @param obj  the object to compare to
+     * @return true if equal
+     * @since 2.3
+     */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof IslamicChronology) {
+            IslamicChronology chrono = (IslamicChronology) obj;
+            return getLeapYearPatternType().index == chrono.getLeapYearPatternType().index &&
+                    super.equals(obj);
+        }
+        return false;
+    }
+
     /**
      * A suitable hash code for the chronology.
      * 
@@ -538,6 +558,19 @@ public final class IslamicChronology extends BasicChronology {
                 default:
                     return this;
             }
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof LeapYearPatternType) {
+                return index == ((LeapYearPatternType) obj).index;
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return index;
         }
     }
 }

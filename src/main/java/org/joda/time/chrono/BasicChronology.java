@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -185,6 +185,7 @@ abstract class BasicChronology extends AssembledChronology {
         return iMinDaysInFirstWeek;
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Checks if this chronology instance equals another.
      * 
@@ -193,7 +194,15 @@ abstract class BasicChronology extends AssembledChronology {
      * @since 1.6
      */
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (this == obj) {
+            return true;
+        }
+        if (obj != null && getClass() == obj.getClass()) {
+            BasicChronology chrono = (BasicChronology) obj;
+            return getMinimumDaysInFirstWeek() == chrono.getMinimumDaysInFirstWeek() &&
+                    getZone().equals(chrono.getZone());
+        }
+        return false;
     }
 
     /**

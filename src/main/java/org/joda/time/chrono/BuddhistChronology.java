@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -166,6 +166,7 @@ public final class BuddhistChronology extends AssembledChronology {
         return getInstance(zone);
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Checks if this chronology instance equals another.
      * 
@@ -174,7 +175,14 @@ public final class BuddhistChronology extends AssembledChronology {
      * @since 1.6
      */
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof BuddhistChronology) {
+            BuddhistChronology chrono = (BuddhistChronology) obj;
+            return getZone().equals(chrono.getZone());
+        }
+        return false;
     }
 
     /**

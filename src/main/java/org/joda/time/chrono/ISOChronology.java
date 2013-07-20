@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -179,6 +179,7 @@ public final class ISOChronology extends AssembledChronology {
         }
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Checks if this chronology instance equals another.
      * 
@@ -187,7 +188,14 @@ public final class ISOChronology extends AssembledChronology {
      * @since 1.6
      */
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof ISOChronology) {
+            ISOChronology chrono = (ISOChronology) obj;
+            return getZone().equals(chrono.getZone());
+        }
+        return false;
     }
 
     /**
@@ -200,6 +208,7 @@ public final class ISOChronology extends AssembledChronology {
         return "ISO".hashCode() * 11 + getZone().hashCode();
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Serialize ISOChronology instances using a small stub. This reduces the
      * serialized size, and deserialized instances come from the cache.

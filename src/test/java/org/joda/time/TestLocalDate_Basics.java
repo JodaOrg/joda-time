@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2010 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -238,6 +238,7 @@ public class TestLocalDate_Basics extends TestCase {
         assertEquals(false, test.isSupported((DurationFieldType) null));
     }
 
+    @SuppressWarnings("deprecation")
     public void testEqualsHashCode() {
         LocalDate test1 = new LocalDate(1970, 6, 9, COPTIC_PARIS);
         LocalDate test2 = new LocalDate(1970, 6, 9, COPTIC_PARIS);
@@ -318,6 +319,7 @@ public class TestLocalDate_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    @SuppressWarnings("deprecation")
     public void testCompareTo() {
         LocalDate test1 = new LocalDate(2005, 6, 2);
         LocalDate test1a = new LocalDate(2005, 6, 2);

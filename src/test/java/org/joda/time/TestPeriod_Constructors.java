@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2007 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -765,6 +765,7 @@ public class TestPeriod_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    @SuppressWarnings("deprecation")
     public void testConstructor_RP_RP1() throws Throwable {
         YearMonthDay dt1 = new YearMonthDay(2004, 6, 9);
         YearMonthDay dt2 = new YearMonthDay(2005, 7, 10);
@@ -780,6 +781,7 @@ public class TestPeriod_Constructors extends TestCase {
         assertEquals(0, test.getMillis());
     }
 
+    @SuppressWarnings("deprecation")
     public void testConstructor_RP_RP2() throws Throwable {
         YearMonthDay dt1 = new YearMonthDay(2004, 6, 9);
         YearMonthDay dt2 = new YearMonthDay(2005, 5, 17);
@@ -810,6 +812,7 @@ public class TestPeriod_Constructors extends TestCase {
         assertEquals(0, test.getMillis());
     }
 
+    @SuppressWarnings("deprecation")
     public void testConstructor_RP_RP3() throws Throwable {
         YearMonthDay dt1 = null;
         YearMonthDay dt2 = new YearMonthDay(2005, 7, 17);
@@ -819,6 +822,7 @@ public class TestPeriod_Constructors extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+    @SuppressWarnings("deprecation")
     public void testConstructor_RP_RP4() throws Throwable {
         YearMonthDay dt1 = new YearMonthDay(2005, 7, 17);
         YearMonthDay dt2 = null;
@@ -828,6 +832,7 @@ public class TestPeriod_Constructors extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+    @SuppressWarnings("deprecation")
     public void testConstructor_RP_RP5() throws Throwable {
         YearMonthDay dt1 = null;
         YearMonthDay dt2 = null;
@@ -837,6 +842,7 @@ public class TestPeriod_Constructors extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+    @SuppressWarnings("deprecation")
     public void testConstructor_RP_RP6() throws Throwable {
         YearMonthDay dt1 = new YearMonthDay(2005, 7, 17);
         TimeOfDay dt2 = new TimeOfDay(10, 20, 30, 40);
@@ -865,6 +871,7 @@ public class TestPeriod_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    @SuppressWarnings("deprecation")
     public void testConstructor_RP_RP_PeriodType1() throws Throwable {
         YearMonthDay dt1 = new YearMonthDay(2004, 6, 9);
         YearMonthDay dt2 = new YearMonthDay(2005, 7, 10);
@@ -880,6 +887,7 @@ public class TestPeriod_Constructors extends TestCase {
         assertEquals(0, test.getMillis());
     }
 
+    @SuppressWarnings("deprecation")
     public void testConstructor_RP_RP_PeriodType2() throws Throwable {
         YearMonthDay dt1 = new YearMonthDay(2004, 6, 9);
         YearMonthDay dt2 = new YearMonthDay(2005, 5, 17);
@@ -910,6 +918,7 @@ public class TestPeriod_Constructors extends TestCase {
         assertEquals(0, test.getMillis());
     }
 
+    @SuppressWarnings("deprecation")
     public void testConstructor_RP_RP_PeriodType3() throws Throwable {
         YearMonthDay dt1 = null;
         YearMonthDay dt2 = new YearMonthDay(2005, 7, 17);
@@ -919,6 +928,7 @@ public class TestPeriod_Constructors extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+    @SuppressWarnings("deprecation")
     public void testConstructor_RP_RP_PeriodType4() throws Throwable {
         YearMonthDay dt1 = new YearMonthDay(2005, 7, 17);
         YearMonthDay dt2 = null;
@@ -928,6 +938,7 @@ public class TestPeriod_Constructors extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+    @SuppressWarnings("deprecation")
     public void testConstructor_RP_RP_PeriodType5() throws Throwable {
         YearMonthDay dt1 = null;
         YearMonthDay dt2 = null;
@@ -937,6 +948,7 @@ public class TestPeriod_Constructors extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+    @SuppressWarnings("deprecation")
     public void testConstructor_RP_RP_PeriodType6() throws Throwable {
         YearMonthDay dt1 = new YearMonthDay(2005, 7, 17);
         TimeOfDay dt2 = new TimeOfDay(10, 20, 30, 40);
@@ -1441,6 +1453,7 @@ public class TestPeriod_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    @SuppressWarnings("deprecation")
     public void testFactoryFieldDifference1() throws Throwable {
         YearMonthDay start = new YearMonthDay(2005, 4, 9);
         DateTimeFieldType[] types = new DateTimeFieldType[] {
@@ -1461,6 +1474,7 @@ public class TestPeriod_Constructors extends TestCase {
         assertEquals(0, test.getMillis());
     }
 
+    @SuppressWarnings("deprecation")
     public void testFactoryFieldDifference2() throws Throwable {
         YearMonthDay ymd = new YearMonthDay(2005, 4, 9);
         try {
@@ -1473,6 +1487,7 @@ public class TestPeriod_Constructors extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+    @SuppressWarnings("deprecation")
     public void testFactoryFieldDifference3() throws Throwable {
         YearMonthDay start = new YearMonthDay(2005, 4, 9);
         TimeOfDay endTime = new TimeOfDay(12, 30, 40, 0);
@@ -1482,6 +1497,7 @@ public class TestPeriod_Constructors extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+    @SuppressWarnings("deprecation")
     public void testFactoryFieldDifference4() throws Throwable {
         DateTimeFieldType[] types = new DateTimeFieldType[] {
             DateTimeFieldType.year(),

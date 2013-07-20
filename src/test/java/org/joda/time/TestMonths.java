@@ -105,6 +105,7 @@ public class TestMonths extends TestCase {
     }
 
     //-------------------------------------------------------------------------
+    @SuppressWarnings("deprecation")
     public void testFactory_monthsBetween_RPartial_LocalDate() {
         LocalDate start = new LocalDate(2006, 6, 9);
         LocalDate end1 = new LocalDate(2006, 9, 9);

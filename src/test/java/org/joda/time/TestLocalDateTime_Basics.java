@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2010 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -48,21 +48,16 @@ public class TestLocalDateTime_Basics extends TestCase {
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
-    private static final int OFFSET = 1;
     private static final GJChronology GJ_UTC = GJChronology.getInstanceUTC();
     private static final Chronology COPTIC_PARIS = CopticChronology.getInstance(PARIS);
     private static final Chronology COPTIC_LONDON = CopticChronology.getInstance(LONDON);
     private static final Chronology COPTIC_TOKYO = CopticChronology.getInstance(TOKYO);
     private static final Chronology COPTIC_UTC = CopticChronology.getInstanceUTC();
-    private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
     private static final Chronology ISO_LONDON = ISOChronology.getInstance(LONDON);
-    private static final Chronology ISO_TOKYO = ISOChronology.getInstance(TOKYO);
     private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
     private static final Chronology GREGORIAN_UTC = GregorianChronology.getInstanceUTC();
-    private static final Chronology BUDDHIST_PARIS = BuddhistChronology.getInstance(PARIS);
     private static final Chronology BUDDHIST_LONDON = BuddhistChronology.getInstance(LONDON);
     private static final Chronology BUDDHIST_TOKYO = BuddhistChronology.getInstance(TOKYO);
-    private static final Chronology BUDDHIST_UTC = BuddhistChronology.getInstanceUTC();
 
 //    private long TEST_TIME1 =
 //        (31L + 28L + 31L + 6L -1L) * DateTimeConstants.MILLIS_PER_DAY
@@ -366,11 +361,15 @@ public class TestLocalDateTime_Basics extends TestCase {
 //            fail();
 //        } catch (ClassCastException ex) {}
         try {
-            test1.compareTo(new YearMonthDay());
+            @SuppressWarnings("deprecation")
+            YearMonthDay ymd = new YearMonthDay();
+            test1.compareTo(ymd);
             fail();
         } catch (ClassCastException ex) {}
         try {
-            test1.compareTo(new TimeOfDay());
+            @SuppressWarnings("deprecation")
+            TimeOfDay tod = new TimeOfDay();
+            test1.compareTo(tod);
             fail();
         } catch (ClassCastException ex) {}
         Partial partial = new Partial()

@@ -308,6 +308,7 @@ public class TestDateTime_Properties extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+    @SuppressWarnings("deprecation")
     public void testPropertyCompareToYear2() {
         DateTime test1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         YearMonthDay ymd1 = new YearMonthDay(2003, 6, 9);

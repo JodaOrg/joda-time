@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -194,12 +194,14 @@ public class TestSerialization extends TestCase {
         inlineCompare(test, false);
     }
 
+    @SuppressWarnings("deprecation")
     public void testSerializedYearMonthDay() throws Exception {
         YearMonthDay test = new YearMonthDay();
         loadAndCompare(test, "YearMonthDay", false);
         inlineCompare(test, false);
     }
 
+    @SuppressWarnings("deprecation")
     public void testSerializedTimeOfDay() throws Exception {
         TimeOfDay test = new TimeOfDay();
         loadAndCompare(test, "TimeOfDay", false);

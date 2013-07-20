@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -80,6 +80,7 @@ public class TestBaseSingleFieldPeriod extends TestCase {
         }
     }
 
+    @SuppressWarnings("deprecation")
     public void testFactory_between_RPartial() {
         LocalDate start = new LocalDate(2006, 6, 9);
         LocalDate end1 = new LocalDate(2006, 6, 12);

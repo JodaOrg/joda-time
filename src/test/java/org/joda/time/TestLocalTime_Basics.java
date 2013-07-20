@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -225,6 +225,7 @@ public class TestLocalTime_Basics extends TestCase {
         assertEquals(false, test.isSupported((DateTimeFieldType) null));
         
         DateTimeFieldType d = new DateTimeFieldType("hours") {
+            private static final long serialVersionUID = 1L;
             public DurationFieldType getDurationType() {
                 return DurationFieldType.hours();
             }
@@ -238,6 +239,7 @@ public class TestLocalTime_Basics extends TestCase {
         assertEquals(false, test.isSupported(d));
         
         d = new DateTimeFieldType("hourOfYear") {
+            private static final long serialVersionUID = 1L;
             public DurationFieldType getDurationType() {
                 return DurationFieldType.hours();
             }
@@ -263,6 +265,7 @@ public class TestLocalTime_Basics extends TestCase {
         assertEquals(false, test.isSupported((DurationFieldType) null));
     }
 
+    @SuppressWarnings("deprecation")
     public void testEqualsHashCode() {
         LocalTime test1 = new LocalTime(10, 20, 30, 40, COPTIC_PARIS);
         LocalTime test2 = new LocalTime(10, 20, 30, 40, COPTIC_PARIS);
@@ -307,6 +310,7 @@ public class TestLocalTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    @SuppressWarnings("deprecation")
     public void testCompareTo() {
         LocalTime test1 = new LocalTime(10, 20, 30, 40);
         LocalTime test1a = new LocalTime(10, 20, 30, 40);

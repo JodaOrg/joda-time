@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -41,16 +41,10 @@ public class TestPartial_Basics extends TestCase {
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
-    private static final int OFFSET = 1;
     private static final Chronology COPTIC_PARIS = CopticChronology.getInstance(PARIS);
-    private static final Chronology COPTIC_LONDON = CopticChronology.getInstance(LONDON);
     private static final Chronology COPTIC_TOKYO = CopticChronology.getInstance(TOKYO);
     private static final Chronology COPTIC_UTC = CopticChronology.getInstanceUTC();
-    private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
-    private static final Chronology ISO_LONDON = ISOChronology.getInstance(LONDON);
-    private static final Chronology ISO_TOKYO = ISOChronology.getInstance(TOKYO);
     private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
-    private static final Chronology BUDDHIST_PARIS = BuddhistChronology.getInstance(PARIS);
     private static final Chronology BUDDHIST_LONDON = BuddhistChronology.getInstance(LONDON);
     private static final Chronology BUDDHIST_TOKYO = BuddhistChronology.getInstance(TOKYO);
     private static final Chronology BUDDHIST_UTC = BuddhistChronology.getInstanceUTC();
@@ -60,13 +54,6 @@ public class TestPartial_Basics extends TestCase {
             + 20L * DateTimeConstants.MILLIS_PER_MINUTE
             + 30L * DateTimeConstants.MILLIS_PER_SECOND
             + 40L;
-            
-    private long TEST_TIME1 =
-        1L * DateTimeConstants.MILLIS_PER_HOUR
-        + 2L * DateTimeConstants.MILLIS_PER_MINUTE
-        + 3L * DateTimeConstants.MILLIS_PER_SECOND
-        + 4L;
-        
     private long TEST_TIME2 =
         1L * DateTimeConstants.MILLIS_PER_DAY
         + 5L * DateTimeConstants.MILLIS_PER_HOUR
@@ -192,6 +179,7 @@ public class TestPartial_Basics extends TestCase {
         assertEquals(false, test.isSupported(DateTimeFieldType.dayOfMonth()));
     }
 
+    @SuppressWarnings("deprecation")
     public void testEqualsHashCode() {
         Partial test1 = createHourMinPartial(COPTIC_PARIS);
         Partial test2 = createHourMinPartial(COPTIC_PARIS);
@@ -217,6 +205,7 @@ public class TestPartial_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    @SuppressWarnings("deprecation")
     public void testCompareTo() {
         Partial test1 = createHourMinPartial();
         Partial test1a = createHourMinPartial();

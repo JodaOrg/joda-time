@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -37,38 +37,23 @@ import org.joda.time.format.DateTimeFormatter;
  *
  * @author Stephen Colebourne
  */
+@SuppressWarnings("deprecation")
 public class TestYearMonthDay_Basics extends TestCase {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
-    private static final int OFFSET = 1;
     private static final Chronology COPTIC_PARIS = CopticChronology.getInstance(PARIS);
     private static final Chronology COPTIC_LONDON = CopticChronology.getInstance(LONDON);
     private static final Chronology COPTIC_TOKYO = CopticChronology.getInstance(TOKYO);
     private static final Chronology COPTIC_UTC = CopticChronology.getInstanceUTC();
-    private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
-    private static final Chronology ISO_LONDON = ISOChronology.getInstance(LONDON);
-    private static final Chronology ISO_TOKYO = ISOChronology.getInstance(TOKYO);
     private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
-    private static final Chronology BUDDHIST_PARIS = BuddhistChronology.getInstance(PARIS);
-    private static final Chronology BUDDHIST_LONDON = BuddhistChronology.getInstance(LONDON);
     private static final Chronology BUDDHIST_TOKYO = BuddhistChronology.getInstance(TOKYO);
     private static final Chronology BUDDHIST_UTC = BuddhistChronology.getInstanceUTC();
     
     private long TEST_TIME_NOW =
             (31L + 28L + 31L + 30L + 31L + 9L -1L) * DateTimeConstants.MILLIS_PER_DAY;
-            
-    private long TEST_TIME1 =
-        (31L + 28L + 31L + 6L -1L) * DateTimeConstants.MILLIS_PER_DAY
-        + 12L * DateTimeConstants.MILLIS_PER_HOUR
-        + 24L * DateTimeConstants.MILLIS_PER_MINUTE;
-        
-    private long TEST_TIME2 =
-        (365L + 31L + 28L + 31L + 30L + 7L -1L) * DateTimeConstants.MILLIS_PER_DAY
-        + 14L * DateTimeConstants.MILLIS_PER_HOUR
-        + 28L * DateTimeConstants.MILLIS_PER_MINUTE;
-        
+
     private DateTimeZone zone = null;
 
     public static void main(String[] args) {

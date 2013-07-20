@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2006 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -86,6 +86,7 @@ public class TestWeeks extends TestCase {
         assertEquals(6, Weeks.weeksBetween(start, end2).getWeeks());
     }
 
+    @SuppressWarnings("deprecation")
     public void testFactory_weeksBetween_RPartial() {
         LocalDate start = new LocalDate(2006, 6, 9);
         LocalDate end1 = new LocalDate(2006, 6, 30);

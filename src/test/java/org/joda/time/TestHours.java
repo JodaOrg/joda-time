@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2006 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -99,6 +99,7 @@ public class TestHours extends TestCase {
     public void testFactory_hoursBetween_RPartial() {
         LocalTime start = new LocalTime(12, 0);
         LocalTime end1 = new LocalTime(15, 0);
+        @SuppressWarnings("deprecation")
         TimeOfDay end2 = new TimeOfDay(18, 0);
         
         assertEquals(3, Hours.hoursBetween(start, end1).getHours());

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -35,26 +35,12 @@ public class TestPartial_Constructors extends TestCase {
     private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
     private static final Chronology GREGORIAN_PARIS = GregorianChronology.getInstance(PARIS);
     private static final Chronology GREGORIAN_UTC = GregorianChronology.getInstanceUTC();
-    private static final int OFFSET = 1;
     
     private long TEST_TIME_NOW =
             10L * DateTimeConstants.MILLIS_PER_HOUR
             + 20L * DateTimeConstants.MILLIS_PER_MINUTE
             + 30L * DateTimeConstants.MILLIS_PER_SECOND
             + 40L;
-            
-    private long TEST_TIME1 =
-        1L * DateTimeConstants.MILLIS_PER_HOUR
-        + 2L * DateTimeConstants.MILLIS_PER_MINUTE
-        + 3L * DateTimeConstants.MILLIS_PER_SECOND
-        + 4L;
-        
-    private long TEST_TIME2 =
-        1L * DateTimeConstants.MILLIS_PER_DAY
-        + 5L * DateTimeConstants.MILLIS_PER_HOUR
-        + 6L * DateTimeConstants.MILLIS_PER_MINUTE
-        + 7L * DateTimeConstants.MILLIS_PER_SECOND
-        + 8L;
         
     private DateTimeZone zone = null;
 
@@ -403,6 +389,7 @@ public class TestPartial_Constructors extends TestCase {
     /**
      * Test constructor
      */
+    @SuppressWarnings("deprecation")
     public void testConstructor_Partial() throws Throwable {
         YearMonthDay ymd = new YearMonthDay(2005, 6, 25, GREGORIAN_PARIS);
         Partial test = new Partial(ymd);

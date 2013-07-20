@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -318,6 +318,7 @@ public class TestDateTime_Basics extends TestCase {
     }
 
     class MockEqualsChronology extends BaseChronology {
+        private static final long serialVersionUID = 1L;
         public boolean equals(Object obj) {
             return obj instanceof MockEqualsChronology;
         }
@@ -706,18 +707,21 @@ public class TestDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    @SuppressWarnings("deprecation")
     public void testToDateMidnight() {
         DateTime base = new DateTime(TEST_TIME1, COPTIC_DEFAULT);
         DateMidnight test = base.toDateMidnight();
         assertEquals(new DateMidnight(base, COPTIC_DEFAULT), test);
     }
 
+    @SuppressWarnings("deprecation")
     public void testToYearMonthDay() {
         DateTime base = new DateTime(TEST_TIME1, COPTIC_DEFAULT);
         YearMonthDay test = base.toYearMonthDay();
         assertEquals(new YearMonthDay(TEST_TIME1, COPTIC_DEFAULT), test);
     }
 
+    @SuppressWarnings("deprecation")
     public void testToTimeOfDay() {
         DateTime base = new DateTime(TEST_TIME1, COPTIC_DEFAULT);
         TimeOfDay test = base.toTimeOfDay();
@@ -847,6 +851,7 @@ public class TestDateTime_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
     
+    @SuppressWarnings("deprecation")
     public void testWithFields_RPartial() {
         DateTime test = new DateTime(2004, 5, 6, 7, 8, 9, 0);
         DateTime result = test.withFields(new YearMonthDay(2003, 4, 5));
@@ -1193,6 +1198,7 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals(test.secondOfMinute(), test.property(DateTimeFieldType.secondOfMinute()));
         assertEquals(test.millisOfSecond(), test.property(DateTimeFieldType.millisOfSecond()));
         DateTimeFieldType bad = new DateTimeFieldType("bad") {
+            private static final long serialVersionUID = 1L;
             public DurationFieldType getDurationType() {
                 return DurationFieldType.weeks();
             }

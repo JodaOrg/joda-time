@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2012 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -60,7 +60,6 @@ public class TestDateTimeUtils extends TestCase {
     // (before the late 90's they were all over the place)
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
-    private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
                      366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 
@@ -145,14 +144,14 @@ public class TestDateTimeUtils extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testClass() {
-        Class cls = DateTimeUtils.class;
+        Class<?> cls = DateTimeUtils.class;
         assertEquals(true, Modifier.isPublic(cls.getModifiers()));
         assertEquals(false, Modifier.isFinal(cls.getModifiers()));
         
         assertEquals(1, cls.getDeclaredConstructors().length);
         assertEquals(true, Modifier.isProtected(cls.getDeclaredConstructors()[0].getModifiers()));
         
-        DateTimeUtils utils = new DateTimeUtils() {};
+        new DateTimeUtils() {};
     }
     
     //-----------------------------------------------------------------------
@@ -368,6 +367,8 @@ public class TestDateTimeUtils extends TestCase {
         assertEquals(ISOChronology.getInstance(), DateTimeUtils.getIntervalChronology(null));
         
         MutableInterval ai = new MutableInterval() {
+            private static final long serialVersionUID = 1L;
+
             public Chronology getChronology() {
                 return null; // testing for this
             }
@@ -424,6 +425,7 @@ public class TestDateTimeUtils extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    @SuppressWarnings("deprecation")
     public void testIsContiguous_RP() {
         YearMonthDay ymd = new YearMonthDay(2005, 6, 9);
         assertEquals(true, DateTimeUtils.isContiguous(ymd));
@@ -447,6 +449,7 @@ public class TestDateTimeUtils extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    @SuppressWarnings("deprecation")
     public void testIsContiguous_RP_GJChronology() {
         YearMonthDay ymd = new YearMonthDay(2005, 6, 9, GJ);
         assertEquals(true, DateTimeUtils.isContiguous(ymd));

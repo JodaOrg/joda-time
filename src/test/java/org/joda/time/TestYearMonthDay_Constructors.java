@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2006 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22,8 +22,6 @@ import java.util.GregorianCalendar;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.joda.time.chrono.BuddhistChronology;
-import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 
@@ -32,13 +30,12 @@ import org.joda.time.chrono.ISOChronology;
  *
  * @author Stephen Colebourne
  */
+@SuppressWarnings("deprecation")
 public class TestYearMonthDay_Constructors extends TestCase {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
-    private static final Chronology COPTIC_UTC = CopticChronology.getInstanceUTC();
     private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
-    private static final Chronology BUDDHIST_UTC = BuddhistChronology.getInstanceUTC();
     private static final Chronology GREGORIAN_UTC = GregorianChronology.getInstanceUTC();
     private static final Chronology GREGORIAN_PARIS = GregorianChronology.getInstance(PARIS);
     

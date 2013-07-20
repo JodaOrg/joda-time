@@ -95,6 +95,7 @@ public class TestDays extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    @SuppressWarnings("deprecation")
     public void testFactory_daysBetween_RPartial_LocalDate() {
         LocalDate start = new LocalDate(2006, 6, 9);
         LocalDate end1 = new LocalDate(2006, 6, 12);

@@ -62,6 +62,12 @@ Bug fixes since 2.2
   Those offsets could fail in other parts of the library
   Now, it is limited to -23:59:59.999 to +23:59:59.999
 
+- DateTimeZone.forOffsetHoursMinutes failed to allow offsets from -00:01 to -00:59 [#42]
+  The forOffsetHoursMinutes() method could not create an offset  from -00:01 to -00:59
+  This was due to an inappropriate design
+  A backwards compatible change to the input handling has been made
+  forOffsetHoursMinutes(0, -15) now creates -00:15
+
 
 Scala
 --------

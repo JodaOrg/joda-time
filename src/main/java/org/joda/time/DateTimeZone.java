@@ -243,13 +243,31 @@ public abstract class DateTimeZone implements Serializable {
      * This method assumes 60 minutes in an hour, and standard length minutes.
      * <p>
      * This factory is a convenient way of constructing zones with a fixed offset.
-     * The minutes value is always positive and in the range 0 to 59.
-     * If constructed with the values (-2, 30), the resulting zone is '-02:30'.
+     * The hours value must be in the range -23 to +23.
+     * The minutes value must be in the range -59 to +59.
+     * The following combinations of sign for the hour and minute are possible:
+     * <pre>
+     *  Hour    Minute    Example    Result
+     * 
+     *  +ve     +ve       (2, 15)    +02:15
+     *  +ve     zero      (2, 0)     +02:00
+     *  +ve     -ve       (2, -15)   IllegalArgumentException
+     * 
+     *  zero    +ve       (0, 15)    +00:15
+     *  zero    zero      (0, 0)     +00:00
+     *  zero    -ve       (0, -15)   -00:15
+     * 
+     *  -ve     +ve       (-2, 15)   -02:15
+     *  -ve     zero      (-2, 0)    -02:00
+     *  -ve     -ve       (-2, -15)  -02:15
+     * </pre>
+     * Note that in versions before 2.3, the minutes had to be zero or positive.
      * 
      * @param hoursOffset  the offset in hours from UTC, from -23 to +23
-     * @param minutesOffset  the offset in minutes from UTC, must be between 0 and 59 inclusive
+     * @param minutesOffset  the offset in minutes from UTC, from -59 to +59
      * @return the DateTimeZone object for the offset
-     * @throws IllegalArgumentException if the offset or minute is too large or too small
+     * @throws IllegalArgumentException if any value is out of range, the minutes are negative
+     *  when the hours are positive, or the resulting offset exceeds +/- 23:59:59.000
      */
     public static DateTimeZone forOffsetHoursMinutes(int hoursOffset, int minutesOffset) throws IllegalArgumentException {
         if (hoursOffset == 0 && minutesOffset == 0) {
@@ -258,14 +276,17 @@ public abstract class DateTimeZone implements Serializable {
         if (hoursOffset < -23 || hoursOffset > 23) {
             throw new IllegalArgumentException("Hours out of range: " + hoursOffset);
         }
-        if (minutesOffset < 0 || minutesOffset > 59) {
+        if (minutesOffset < -59 || minutesOffset > 59) {
             throw new IllegalArgumentException("Minutes out of range: " + minutesOffset);
+        }
+        if (hoursOffset > 0 && minutesOffset < 0) {
+            throw new IllegalArgumentException("Positive hours must not have negative minutes: " + minutesOffset);
         }
         int offset = 0;
         try {
             int hoursInMinutes = hoursOffset * 60;
             if (hoursInMinutes < 0) {
-                minutesOffset = hoursInMinutes - minutesOffset;
+                minutesOffset = hoursInMinutes - Math.abs(minutesOffset);
             } else {
                 minutesOffset = hoursInMinutes + minutesOffset;
             }

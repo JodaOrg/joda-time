@@ -23,6 +23,7 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Instant;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
@@ -682,7 +683,8 @@ public class DateTimeFormatter {
      * one's complement operator (~) on the return value.
      * <p>
      * This parse method ignores the {@link #getDefaultYear() default year} and
-     * parses using the year from the supplied instant as the default.
+     * parses using the year from the supplied instant based on the chronology
+     * and time-zone of the supplied instant.
      * <p>
      * The parse will use the chronology of the instant.
      *
@@ -703,11 +705,12 @@ public class DateTimeFormatter {
         
         long instantMillis = instant.getMillis();
         Chronology chrono = instant.getChronology();
+        int defaultYear = DateTimeUtils.getChronology(chrono).year().get(instantMillis);
         long instantLocal = instantMillis + chrono.getZone().getOffset(instantMillis);
         chrono = selectChronology(chrono);
         
         DateTimeParserBucket bucket = new DateTimeParserBucket(
-            instantLocal, chrono, iLocale, iPivotYear, chrono.year().get(instantLocal));
+            instantLocal, chrono, iLocale, iPivotYear, defaultYear);
         int newPos = parser.parseInto(bucket, text, position);
         instant.setMillis(bucket.computeMillis(false, text));
         if (iOffsetParsed && bucket.getOffsetInteger() != null) {

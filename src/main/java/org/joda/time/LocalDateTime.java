@@ -788,29 +788,85 @@ public final class LocalDateTime
         Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom,
                         getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
         date.setTime(date.getTime() + getMillisOfSecond());
-        LocalDateTime check = LocalDateTime.fromDateFields(date);
-        if (check.isBefore(this)) {
-            // DST gap
-            // move forward in units of one minute until equal/after
-            while (check.isBefore(this)) {
-                date.setTime(date.getTime() + 60000);
-                check = LocalDateTime.fromDateFields(date);
-            }
-            // move back in units of one second until date wrong
-            while (check.isBefore(this) == false) {
-                date.setTime(date.getTime() - 1000);
-                check = LocalDateTime.fromDateFields(date);
-            }
-            date.setTime(date.getTime() + 1000);
-        } else if (check.equals(this)) {
-            // check for DST overlap
-            Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
-            check = LocalDateTime.fromDateFields(earlier);
-            if (check.equals(this)) {
-                date = earlier;
-            }
-        }
-        return date;
+
+        return correctDstTransition(date, TimeZone.getDefault());
+    }
+
+    /**
+     * Get the date time as a <code>java.util.Date</code> using the specified time zone.
+     * <p>
+     * The <code>Date</code> object created has exactly the same fields as this
+     * date-time, except when the time would be invalid due to a daylight savings
+     * gap. In that case, the time will be set to the earliest valid time after the gap.
+     * <p>
+     * In the case of a daylight savings overlap, the earlier instant is selected.
+     * <p>
+     * Converting to a JDK Date is full of complications as the JDK Date constructor
+     * doesn't behave as you might expect around DST transitions. This method works
+     * by taking a first guess and then adjusting. This also handles the situation
+     * where the JDK time zone data differs from the Joda-Time time zone data.
+     * <p>
+     * Unlike {@link #toDate()}, this implementation does not rely on Java's synchronized
+     * time zone initialization logic, and should demonstrate better concurrent performance
+     * characteristics.
+     *
+     * @return a Date initialised with this date-time, never null
+     * @since 2.0
+     */
+    public Date toDate(final TimeZone timeZone) {
+	final Calendar calendar = Calendar.getInstance(timeZone);
+	calendar.clear();
+	calendar.set(getYear(), getMonthOfYear() - 1, getDayOfMonth(),
+		getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+	Date date = calendar.getTime();
+	date.setTime(date.getTime() + getMillisOfSecond());
+
+	return correctDstTransition(date, timeZone);
+    }
+
+
+    /**
+     * Correct <code>date</code> in case of DST overlap.
+     * <p>
+     * The <code>Date</code> object created has exactly the same fields as this
+     * date-time, except when the time would be invalid due to a daylight savings
+     * gap. In that case, the time will be set to the earliest valid time after the gap.
+     * <p>
+     * In the case of a daylight savings overlap, the earlier instant is selected.
+     * <p>
+     * Converting to a JDK Date is full of complications as the JDK Date constructor
+     * doesn't behave as you might expect around DST transitions. This method works
+     * by taking a first guess and then adjusting. This also handles the situation
+     * where the JDK time zone data differs from the Joda-Time time zone data.
+     * @see #toDate()
+     */
+    private Date correctDstTransition(Date date, final TimeZone timeZone) {
+	Calendar calendar = Calendar.getInstance(timeZone);
+	calendar.setTime(date);
+	LocalDateTime check = LocalDateTime.fromCalendarFields(calendar);
+	if (check.isBefore(this)) {
+	    // DST gap
+	    // move forward in units of one minute until equal/after
+	    while (check.isBefore(this)) {
+		calendar.setTimeInMillis(calendar.getTimeInMillis() + 60000);
+		check = LocalDateTime.fromCalendarFields(calendar);
+	    }
+	    // move back in units of one second until date wrong
+	    while (check.isBefore(this) == false) {
+		calendar.setTimeInMillis(calendar.getTimeInMillis() - 1000);
+		check = LocalDateTime.fromCalendarFields(calendar);
+	    }
+	    calendar.setTimeInMillis(calendar.getTimeInMillis() + 1000);
+	} else if (check.equals(this)) {
+	    // check for DST overlap
+	    final Calendar earlier = Calendar.getInstance(timeZone);
+	    earlier.setTimeInMillis(calendar.getTimeInMillis() - timeZone.getDSTSavings());
+	    check = LocalDateTime.fromCalendarFields(earlier);
+	    if (check.equals(this)) {
+		calendar = earlier;
+	    }
+	}
+	return calendar.getTime();
     }
 
     //-----------------------------------------------------------------------

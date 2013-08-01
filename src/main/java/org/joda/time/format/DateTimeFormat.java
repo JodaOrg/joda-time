@@ -20,6 +20,7 @@ import java.io.Writer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -142,11 +143,23 @@ public class DateTimeFormat {
     static final int TIME = 1;
     /** Type constant for DATETIME. */
     static final int DATETIME = 2;
+    
+    private static final int PATTERN_CACHE_SIZE = 500;
 
     /** Maps patterns to formatters, patterns don't vary by locale. */
-    private static final Map<String, DateTimeFormatter> cPatternedCache = new HashMap<String, DateTimeFormatter>(7);
+    // Use a simple LRU Cache
+    private static final Map<String, DateTimeFormatter> PATTERN_CACHE = new LinkedHashMap<String, DateTimeFormatter>(7){
+        /** Introduced in 2.3 */
+		private static final long serialVersionUID = 23L;
+
+		@Override
+    	protected boolean removeEldestEntry(final Map.Entry<String,DateTimeFormatter> eldest) {
+    		return size() > PATTERN_CACHE_SIZE;
+    	};
+    };
+    
     /** Maps patterns to formatters, patterns don't vary by locale. */
-    private static final DateTimeFormatter[] cStyleCache = new DateTimeFormatter[25];
+    private static final DateTimeFormatter[] STYLE_CACHE = new DateTimeFormatter[25];
 
     //-----------------------------------------------------------------------
     /**
@@ -670,19 +683,19 @@ public class DateTimeFormat {
      * @throws IllegalArgumentException if the pattern is invalid
      * @see #appendPatternTo
      */
-    private static DateTimeFormatter createFormatterForPattern(String pattern) {
+    private static DateTimeFormatter createFormatterForPattern(final String pattern) {
         if (pattern == null || pattern.length() == 0) {
             throw new IllegalArgumentException("Invalid pattern specification");
         }
         DateTimeFormatter formatter = null;
-        synchronized (cPatternedCache) {
-            formatter = cPatternedCache.get(pattern);
+        synchronized (PATTERN_CACHE) {
+            formatter = PATTERN_CACHE.get(pattern);
             if (formatter == null) {
-                DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
+                final DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
                 parsePatternTo(builder, pattern);
                 formatter = builder.toFormatter();
 
-                cPatternedCache.put(pattern, formatter);
+                PATTERN_CACHE.put(pattern, formatter);
             }
         }
         return formatter;
@@ -716,25 +729,39 @@ public class DateTimeFormat {
      * @param timeStyle  the time style
      * @return the formatter
      */
-    private static DateTimeFormatter createFormatterForStyleIndex(int dateStyle, int timeStyle) {
-        int index = ((dateStyle << 2) + dateStyle) + timeStyle;
-        DateTimeFormatter f = null;
-        synchronized (cStyleCache) {
-            f = cStyleCache[index];
-            if (f == null) {
-                int type = DATETIME;
-                if (dateStyle == NONE) {
-                    type = TIME;
-                } else if (timeStyle == NONE) {
-                    type = DATE;
-                }
-                StyleFormatter llf = new StyleFormatter(
-                        dateStyle, timeStyle, type);
-                f = new DateTimeFormatter(llf, llf);
-                cStyleCache[index] = f;
-            }
+	private static DateTimeFormatter createFormatterForStyleIndex(final int dateStyle, final int timeStyle) {
+		final int index = ((dateStyle << 2) + dateStyle) + timeStyle;
+		// Should never happen but do a double check...
+		if (index >= STYLE_CACHE.length) {
+			return createDateTimeFormatter(dateStyle, timeStyle);
+		}
+		DateTimeFormatter f = null;
+		synchronized (STYLE_CACHE) {
+			f = STYLE_CACHE[index];
+			if (f == null) {
+				f = createDateTimeFormatter(dateStyle, timeStyle);
+				STYLE_CACHE[index] = f;
+			}
+		}
+		return f;
+	}
+    
+    /**
+     * Creates a formatter for the specified style.
+     * @param dateStyle  the date style
+     * @param timeStyle  the time style
+     * @return the formatter
+     */
+    private static DateTimeFormatter createDateTimeFormatter(final int dateStyle, final int timeStyle){
+    	int type = DATETIME;
+        if (dateStyle == NONE) {
+            type = TIME;
+        } else if (timeStyle == NONE) {
+            type = DATE;
         }
-        return f;
+        final StyleFormatter llf = new StyleFormatter(
+                dateStyle, timeStyle, type);
+        return new DateTimeFormatter(llf, llf);
     }
 
     /**

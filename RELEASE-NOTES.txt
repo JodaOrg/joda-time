@@ -32,6 +32,9 @@ Enhancements since 2.2
 - Maximum size for pattern cache [#49]
   Sets a maximum size for the cache to avoid memory issues
 
+- Add LocalDateTime.toDate(TimeZone) [#48]
+  Provides an alternate way to create a java.util.Date that avoids some synchronization
+
 
 Compatibility with 2.2
 ----------------------

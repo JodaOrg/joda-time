@@ -788,7 +788,6 @@ public final class LocalDateTime
         Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom,
                         getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
         date.setTime(date.getTime() + getMillisOfSecond());
-
         return correctDstTransition(date, TimeZone.getDefault());
     }
 
@@ -811,19 +810,17 @@ public final class LocalDateTime
      * characteristics.
      *
      * @return a Date initialised with this date-time, never null
-     * @since 2.0
+     * @since 2.3
      */
     public Date toDate(final TimeZone timeZone) {
-	final Calendar calendar = Calendar.getInstance(timeZone);
-	calendar.clear();
-	calendar.set(getYear(), getMonthOfYear() - 1, getDayOfMonth(),
-		getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
-	Date date = calendar.getTime();
-	date.setTime(date.getTime() + getMillisOfSecond());
-
-	return correctDstTransition(date, timeZone);
+        final Calendar calendar = Calendar.getInstance(timeZone);
+        calendar.clear();
+        calendar.set(getYear(), getMonthOfYear() - 1, getDayOfMonth(),
+                    getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+        Date date = calendar.getTime();
+        date.setTime(date.getTime() + getMillisOfSecond());
+        return correctDstTransition(date, timeZone);
     }
-
 
     /**
      * Correct <code>date</code> in case of DST overlap.
@@ -841,32 +838,32 @@ public final class LocalDateTime
      * @see #toDate()
      */
     private Date correctDstTransition(Date date, final TimeZone timeZone) {
-	Calendar calendar = Calendar.getInstance(timeZone);
-	calendar.setTime(date);
-	LocalDateTime check = LocalDateTime.fromCalendarFields(calendar);
-	if (check.isBefore(this)) {
-	    // DST gap
-	    // move forward in units of one minute until equal/after
-	    while (check.isBefore(this)) {
-		calendar.setTimeInMillis(calendar.getTimeInMillis() + 60000);
-		check = LocalDateTime.fromCalendarFields(calendar);
-	    }
-	    // move back in units of one second until date wrong
-	    while (check.isBefore(this) == false) {
-		calendar.setTimeInMillis(calendar.getTimeInMillis() - 1000);
-		check = LocalDateTime.fromCalendarFields(calendar);
-	    }
-	    calendar.setTimeInMillis(calendar.getTimeInMillis() + 1000);
-	} else if (check.equals(this)) {
-	    // check for DST overlap
-	    final Calendar earlier = Calendar.getInstance(timeZone);
-	    earlier.setTimeInMillis(calendar.getTimeInMillis() - timeZone.getDSTSavings());
-	    check = LocalDateTime.fromCalendarFields(earlier);
-	    if (check.equals(this)) {
-		calendar = earlier;
-	    }
-	}
-	return calendar.getTime();
+        Calendar calendar = Calendar.getInstance(timeZone);
+        calendar.setTime(date);
+        LocalDateTime check = LocalDateTime.fromCalendarFields(calendar);
+        if (check.isBefore(this)) {
+            // DST gap
+            // move forward in units of one minute until equal/after
+            while (check.isBefore(this)) {
+                calendar.setTimeInMillis(calendar.getTimeInMillis() + 60000);
+                check = LocalDateTime.fromCalendarFields(calendar);
+            }
+            // move back in units of one second until date wrong
+            while (check.isBefore(this) == false) {
+                calendar.setTimeInMillis(calendar.getTimeInMillis() - 1000);
+                check = LocalDateTime.fromCalendarFields(calendar);
+            }
+            calendar.setTimeInMillis(calendar.getTimeInMillis() + 1000);
+        } else if (check.equals(this)) {
+            // check for DST overlap
+            final Calendar earlier = Calendar.getInstance(timeZone);
+            earlier.setTimeInMillis(calendar.getTimeInMillis() - timeZone.getDSTSavings());
+            check = LocalDateTime.fromCalendarFields(earlier);
+            if (check.equals(this)) {
+                calendar = earlier;
+            }
+        }
+        return calendar.getTime();
     }
 
     //-----------------------------------------------------------------------

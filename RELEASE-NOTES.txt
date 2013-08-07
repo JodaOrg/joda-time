@@ -29,6 +29,9 @@ Enhancements since 2.2
   This will aid weird cases where deserialization or similar avoids the caches
   It will make no difference to most users
 
+- Maximum size for pattern cache [#49]
+  Sets a maximum size for the cache to avoid memory issues
+
 
 Compatibility with 2.2
 ----------------------

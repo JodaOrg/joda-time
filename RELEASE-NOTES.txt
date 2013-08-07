@@ -96,6 +96,8 @@ Bug fixes since 2.2
   Previously, the wrong year could be obtained at the start or end of the year in non UTC zones
   Now obtains the year from the ReadWritableInstant using the chronology of the ReadWritableInstant
 
+- Better thread-safety in ISODateTimeFormat [#45]
+
 
 Scala
 --------

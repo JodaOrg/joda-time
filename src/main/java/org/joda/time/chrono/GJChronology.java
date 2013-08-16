@@ -27,6 +27,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
 import org.joda.time.IllegalFieldValueException;
 import org.joda.time.Instant;
+import org.joda.time.LocalDate;
 import org.joda.time.ReadableInstant;
 import org.joda.time.ReadablePartial;
 import org.joda.time.field.BaseDateTimeField;
@@ -192,6 +193,10 @@ public final class GJChronology extends AssembledChronology {
             cutoverInstant = DEFAULT_CUTOVER;
         } else {
             cutoverInstant = gregorianCutover.toInstant();
+            LocalDate cutoverDate = new LocalDate(cutoverInstant.getMillis(), GregorianChronology.getInstance(zone));
+            if (cutoverDate.getYear() <= 0) {
+                throw new IllegalArgumentException("Cutover too early. Must be on or after 0001-01-01.");
+            }
         }
 
         GJChronology chrono;
@@ -975,6 +980,17 @@ public final class GJChronology extends AssembledChronology {
                 if (instant < iCutover) {
                     // Only adjust if gap fully crossed.
                     if (instant + iGapDuration < iCutover) {
+                        if (iConvertByWeekyear) {
+                            int wyear = iGregorianChronology.weekyear().get(instant);
+                            if (wyear <= 0) {
+                                instant = iGregorianChronology.weekyear().add(instant, -1);
+                            }
+                        } else {
+                            int year = iGregorianChronology.year().get(instant);
+                            if (year <= 0) {
+                                instant = iGregorianChronology.year().add(instant, -1);
+                            }
+                        }
                         instant = gregorianToJulian(instant);
                     }
                 }
@@ -983,6 +999,7 @@ public final class GJChronology extends AssembledChronology {
                 if (instant >= iCutover) {
                     // Only adjust if gap fully crossed.
                     if (instant - iGapDuration >= iCutover) {
+                        // no special handling for year zero as cutover always after year zero
                         instant = julianToGregorian(instant);
                     }
                 }
@@ -996,6 +1013,17 @@ public final class GJChronology extends AssembledChronology {
                 if (instant < iCutover) {
                     // Only adjust if gap fully crossed.
                     if (instant + iGapDuration < iCutover) {
+                        if (iConvertByWeekyear) {
+                            int wyear = iGregorianChronology.weekyear().get(instant);
+                            if (wyear <= 0) {
+                                instant = iGregorianChronology.weekyear().add(instant, -1);
+                            }
+                        } else {
+                            int year = iGregorianChronology.year().get(instant);
+                            if (year <= 0) {
+                                instant = iGregorianChronology.year().add(instant, -1);
+                            }
+                        }
                         instant = gregorianToJulian(instant);
                     }
                 }
@@ -1004,6 +1032,7 @@ public final class GJChronology extends AssembledChronology {
                 if (instant >= iCutover) {
                     // Only adjust if gap fully crossed.
                     if (instant - iGapDuration >= iCutover) {
+                        // no special handling for year zero as cutover always after year zero
                         instant = julianToGregorian(instant);
                     }
                 }

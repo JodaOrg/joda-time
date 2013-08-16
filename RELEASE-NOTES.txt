@@ -55,6 +55,10 @@ Semantic compatible - Yes, except
  - BasicChronology now defines an equals method
    This which would affect you if you subclassed it (unlikely)
 
+ - GJChronology now has a minimum cutover instant of 0001-01-01 (Gregorian)
+   Its unlikely you have it set earlier than this
+   If you did your code was broken anyway
+
 
 Deprecations since 2.2
 ----------------------
@@ -97,6 +101,12 @@ Bug fixes since 2.2
   Now obtains the year from the ReadWritableInstant using the chronology of the ReadWritableInstant
 
 - Better thread-safety in ISODateTimeFormat [#45]
+
+- Fix GJChronology.plus/minus across cutover and year zero [#28]
+  When subtracting a number of years from a date in the GJChronology there are two considerations
+  The cutover date might be crossed, and year zero might be crossed (there is no year zero in GJ)
+  Previously, each were handled separately, but not together. Now it is fixed
+  As part of this change, the minimum cutover instant was set to 0001-01-01 (Gregorian)
 
 
 Scala

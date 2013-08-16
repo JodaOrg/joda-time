@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -441,6 +441,7 @@ public final class LimitChronology extends AssembledChronology {
     }
 
     private class LimitDateTimeField extends DecoratedDateTimeField {
+        @SuppressWarnings("unused")
         private static final long serialVersionUID = -2435306746995699312L;
 
         private final DurationField iDurationField;

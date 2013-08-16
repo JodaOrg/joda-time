@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ import org.joda.time.DurationField;
  */
 public class DividedDateTimeField extends DecoratedDateTimeField {
 
+    @SuppressWarnings("unused")
     private static final long serialVersionUID = 8318475124230605365L;
 
     // Shared with RemainderDateTimeField.

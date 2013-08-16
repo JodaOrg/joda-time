@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2010 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -819,6 +819,7 @@ public class DateTimeZoneBuilder {
             iToYear = toYear;
         }
 
+        @SuppressWarnings("unused")
         public int getFromYear() {
             return iFromYear;
         }
@@ -827,6 +828,7 @@ public class DateTimeZoneBuilder {
             return iToYear;
         }
 
+        @SuppressWarnings("unused")
         public OfYear getOfYear() {
             return iRecurrence.getOfYear();
         }
@@ -977,6 +979,7 @@ public class DateTimeZoneBuilder {
             iUpperOfYear = rs.iUpperOfYear;
         }
 
+        @SuppressWarnings("unused")
         public int getStandardOffset() {
             return iStandardOffset;
         }

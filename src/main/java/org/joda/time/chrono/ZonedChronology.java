@@ -369,6 +369,7 @@ public final class ZonedChronology extends AssembledChronology {
      * versa on output.
      */
     static final class ZonedDateTimeField extends BaseDateTimeField {
+        @SuppressWarnings("unused")
         private static final long serialVersionUID = -3968986277775529794L;
 
         final DateTimeField iField;

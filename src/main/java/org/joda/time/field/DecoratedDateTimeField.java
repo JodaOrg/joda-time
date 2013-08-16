@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -39,6 +39,7 @@ import org.joda.time.DurationField;
 public abstract class DecoratedDateTimeField extends BaseDateTimeField {
 
     /** Serialization version */
+    @SuppressWarnings("unused")
     private static final long serialVersionUID = 203115783733757597L;
 
     /** The DateTimeField being wrapped */

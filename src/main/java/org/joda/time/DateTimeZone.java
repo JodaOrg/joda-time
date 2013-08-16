@@ -630,6 +630,7 @@ public abstract class DateTimeZone implements Serializable {
         // Can't use a real chronology if called during class
         // initialization. Offset parser doesn't need it anyhow.
         Chronology chrono = new BaseChronology() {
+            private static final long serialVersionUID = -3128740902654445468L;
             public DateTimeZone getZone() {
                 return null;
             }

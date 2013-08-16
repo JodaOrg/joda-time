@@ -753,6 +753,7 @@ abstract class BasicChronology extends AssembledChronology {
     }
 
     private static class HalfdayField extends PreciseDateTimeField {
+        @SuppressWarnings("unused")
         private static final long serialVersionUID = 581601443656929254L;
 
         HalfdayField() {

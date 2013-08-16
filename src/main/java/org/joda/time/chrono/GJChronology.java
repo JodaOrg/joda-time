@@ -606,6 +606,7 @@ public final class GJChronology extends AssembledChronology {
      * assumes that calls to add and addWrapField are unaffected by the cutover.
      */
     private class CutoverField extends BaseDateTimeField {
+        @SuppressWarnings("unused")
         private static final long serialVersionUID = 3528501219481026402L;
 
         final DateTimeField iJulianField;
@@ -938,6 +939,7 @@ public final class GJChronology extends AssembledChronology {
      * field requires specific knowledge of how the GJ fields are implemented.
      */
     private final class ImpreciseCutoverField extends CutoverField {
+        @SuppressWarnings("unused")
         private static final long serialVersionUID = 3410248757173576441L;
 
         /**

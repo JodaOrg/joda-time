@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -191,6 +191,7 @@ public class ZoneInfoProvider implements Provider {
      * @return the input stream
      * @throws IOException if an error occurs
      */
+    @SuppressWarnings("resource")
     private InputStream openResource(String name) throws IOException {
         InputStream in;
         if (iFileDir != null) {

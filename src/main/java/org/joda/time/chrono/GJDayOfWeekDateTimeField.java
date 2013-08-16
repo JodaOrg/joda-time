@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ import org.joda.time.field.PreciseDurationDateTimeField;
 final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
     
     /** Serialization version */
+    @SuppressWarnings("unused")
     private static final long serialVersionUID = -3857947176719041436L;
 
     private final BasicChronology iChronology;

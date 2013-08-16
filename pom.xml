@@ -358,6 +358,8 @@
         <version>2.3</version>
         <configuration>
           <comparisonVersion>2.2</comparisonVersion>
+          <minSeverity>info</minSeverity>
+          <logResults>true</logResults>
         </configuration>
       </plugin>
     </plugins>

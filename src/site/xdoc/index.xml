@@ -54,7 +54,7 @@ public boolean isJoinedInLastThreeMonths(<a href="apidocs/org/joda/time/DateTime
   return last3Months.contains(datetimeJoined);
 }
 -->
-Version 2.2 was released on 2013-03-08 -
+Version 2.3 was released on 2013-08-16 -
 <a href="download.html">Download now</a>
 </p>
 </section>
@@ -140,14 +140,14 @@ Various documentation is available:
 
 <section name="Releases">
 <p>
-<a href="download.html">Release 2.2</a>
+<a href="download.html">Release 2.3</a>
 is the current latest release.
 This release is an evolution of the 1.x codebase, not a major rewrite.
 It is considered stable and worthy of the 2.x tag.
 </p>
 <p>
-Version 2.2 is a bugfix release compatible with version 2.1.
-See the <a href="upgradeto220.html">upgrade notes</a> for full details.
+Version 2.3 is a bugfix release compatible with version 2.2.
+See the <a href="upgradeto230.html">upgrade notes</a> for full details.
 </p>
 <p>
 Version 2.x is almost completely source and binary compatible with version 1.x.
@@ -161,7 +161,7 @@ The main public API will remain backwards compatible for both source and binary 
 The version number will change to 3.0 to indicate a significant change in compatibility.
 </p>
 <p>
-Available in <a href="http://search.maven.org/#artifactdetails|joda-time|joda-time|2.2|jar">Maven Central</a>.
+Available in <a href="http://search.maven.org/#artifactdetails|joda-time|joda-time|2.3|jar">Maven Central</a>.
 </p>
 
 <p>

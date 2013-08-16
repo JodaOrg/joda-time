@@ -3,19 +3,19 @@
   <publishDate position="navigation-bottom" format="yyyy-MM-dd"/>
   <bannerLeft>
     <name>Joda.org</name>
-    <href>http://joda.sourceforge.net/</href>
+    <href>http://www.joda.org/</href>
   </bannerLeft>
   <bannerRight>
     <name>Joda-Time</name>
-    <href>http://joda-time.sourceforge.net/</href>
+    <href>http://www.joda.org/joda-time/</href>
   </bannerRight>
 
   <body>
     <links>
-      <item name="Joda-Time" href="/index.html"/>
-      <item name="JSP tags" href="/contrib/jsptags/index.html"/>
-      <item name="Hibernate" href="/contrib/hibernate/index.html"/>
-      <item name="I18N" href="/contrib/i18n/index.html"/>
+      <item name="Joda-Time" href="index.html"/>
+      <item name="JSP tags" href="http://www.joda.org/joda-time-jsptags/"/>
+      <item name="Hibernate" href="http://www.joda.org/joda-time-hibernate/"/>
+      <item name="I18N" href="http://www.joda.org/joda-time-i18n/"/>
     </links>
 
     <menu name="Joda Time">
@@ -26,7 +26,7 @@
       <item name="Related projects" href="related.html"/>
       <item name="Javadoc" href="apidocs/index.html"/>
       <item name="License" href="license.html"/>
-      <item name="Download" href="https://sourceforge.net/projects/joda-time/files/joda-time/"/>
+      <item name="Download" href="download.html"/>
     </menu>
 
     <menu name="Key concepts">
@@ -51,18 +51,18 @@
     </menu>
 
     <menu name="Development">
-      <item name="GitHub (Source code)" href="https://github.com/JodaOrg/joda-time"/>
-      <item name="Sourceforge" href="http://sourceforge.net/projects/joda-time/"/>
+      <item name="GitHub" href="https://github.com/JodaOrg/joda-time"/>
       <item name="Test results" href="surefire-report.html"/>
       <item name="Mailing lists" href="mail-lists.html"/>
+      <item name="Sourceforge" href="http://sourceforge.net/projects/joda-time/"/>
     </menu>
 
     <menu name="Joda">
-      <item name="Joda home" href="http://joda.sourceforge.net"/>
-      <item name="Beans" href="http://joda-beans.sourceforge.net/index.html"/>
-      <item name="Convert" href="http://joda-convert.sourceforge.net/index.html"/>
-      <item name="Money" href="http://joda-money.sourceforge.net/index.html"/>
-      <item name="Primitives" href="http://joda-primitives.sourceforge.net/index.html"/>
+      <item name="Joda home" href="http://www.joda.org"/>
+      <item name="Beans" href="http://www.joda.org/joda-beans/"/>
+      <item name="Convert" href="http://www.joda.org/joda-convert/"/>
+      <item name="Money" href="http://www.joda.org/joda-money/"/>
+      <item name="Primitives" href="http://www.joda.org/joda-primitives/"/>
     </menu>
 
     <menu ref="reports"/>
@@ -73,7 +73,9 @@
   </body>
 
   <poweredBy>
-    <logo name="Sourceforge" href="http://sourceforge.net/projects/joda-time/"
-        img="http://sourceforge.net/sflogo.php?group_id=274452&amp;type=2" width="125" height="37" />
+    <logo name="Maven" href="http://maven.apache.org/"
+          img="http://maven.apache.org/images/logos/maven-feather.png"/>
+    <logo name="GitHub" href="https://github.com/JodaOrg/joda-time"
+          img="http://www.joda.org/images/github.png"/>
   </poweredBy>
 </project>

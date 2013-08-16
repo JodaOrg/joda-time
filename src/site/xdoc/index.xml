@@ -55,7 +55,7 @@ public boolean isJoinedInLastThreeMonths(<a href="apidocs/org/joda/time/DateTime
 }
 -->
 Version 2.2 was released on 2013-03-08 -
-<a href="https://sourceforge.net/projects/joda-time/files/joda-time/2.2/">Download now</a>
+<a href="download.html">Download now</a>
 </p>
 </section>
 
@@ -122,24 +122,25 @@ Joda-Time is licenced under the business friendly <a href="license.html">Apache 
 </p>
 </section>
 
+
 <section name="Documentation">
 <p>
 Various documentation is available:
 <ul>
 <li>Two user guides - <a href="quickstart.html">quick</a> and <a href="userguide.html">full</a></li>
 <li>The key concepts and chronology documents in the left navigation area</li>
-<li>The javadoc for the <a href="apidocs/index.html">current release</a></li>
-<li>The javadoc for the <a href="apidocs/index.html">latest source code</a></li>
-<li>A <a href="faq.html">FAQ</a> list</li>
+<li>The <a href="apidocs/index.html">Javadoc</a></li>
 <li>Information on <a href="installation.html">downloading and installing</a> Joda-Time</li>
+<li>The <a href="faq.html">FAQ</a> list</li>
 <li>The <a href="https://github.com/JodaOrg/joda-time">GitHub</a> source repository</li>
 </ul>
 </p>
 </section>
 
+
 <section name="Releases">
 <p>
-<a href="https://sourceforge.net/projects/joda-time/files/joda-time/2.2/">Release 2.2</a>
+<a href="download.html">Release 2.2</a>
 is the current latest release.
 This release is an evolution of the 1.x codebase, not a major rewrite.
 It is considered stable and worthy of the 2.x tag.
@@ -159,6 +160,9 @@ We will support the 2.x product line using standard Java mechanisms.
 The main public API will remain backwards compatible for both source and binary in the 2.x stream.
 The version number will change to 3.0 to indicate a significant change in compatibility.
 </p>
+<p>
+Available in <a href="http://search.maven.org/#artifactdetails|joda-time|joda-time|2.2|jar">Maven Central</a>.
+</p>
 
 <p>
 <a href="https://sourceforge.net/projects/joda-time/files/joda-time/1.6.2/">Release 1.6.2</a>
@@ -170,14 +174,19 @@ releases in the v1.x product line.
 
 </section>
 
+
 <section name="Support">
 <p>
 Support on bugs, library usage or enhancement requests is available on a best efforts basis.
-The best approach is to use <a href="https://github.com/JodaOrg/joda-time/issues/">GitHub issues</a> and Pull Requests.
 </p>
 <p>
-Alternative approaches include the joda-interest <a href="mail-lists.html">mailing list</a> (subscription required)
-and the joda-time <a href="http://sourceforge.net/projects/joda-time/forums/forum/337835">forum</a>.
+To suggest enhancements or contribute, please <a href="https://github.com/JodaOrg/joda-time">fork the source code</a> on GitHub.
+Alternatively, use GitHub <a href="https://github.com/JodaOrg/joda-time/issues">issues</a>.
+</p>
+<p>
+The older mechanisms of the joda-interest <a href="mail-lists.html">mailing list</a>
+and the joda-time <a href="http://sourceforge.net/projects/joda-time/forums/forum/337835">forums</a>
+do still exist, but are deprecated.
 </p>
 <p>
 <br />

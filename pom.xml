@@ -11,7 +11,7 @@
   <name>Joda-Time</name>
   <version>2.3-SNAPSHOT</version>
   <description>Date and time library to replace JDK date handling</description>
-  <url>http://joda-time.sourceforge.net</url>
+  <url>http://www.joda.org/joda-time/</url>
 
   <!-- ==================================================================== -->
   <issueManagement>
@@ -323,6 +323,36 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <configuration>
+          <skipDeploy>true</skipDeploy>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.github.github</groupId>
+        <artifactId>site-maven-plugin</artifactId>
+        <version>0.8</version>
+        <executions>
+          <execution>
+            <id>github-site</id>
+            <goals>
+              <goal>site</goal>
+            </goals>
+            <phase>site-deploy</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <message>Create website for ${project.artifactId} v${project.version}</message>
+          <path>${project.artifactId}</path>
+          <merge>true</merge>
+          <server>github</server>
+          <repositoryOwner>JodaOrg</repositoryOwner>
+          <repositoryName>jodaorg.github.io</repositoryName>
+          <branch>refs/heads/master</branch>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>clirr-maven-plugin</artifactId>
         <version>2.3</version>
@@ -568,11 +598,6 @@
       <url>http://oss.sonatype.org/content/repositories/joda-snapshots</url>
       <layout>default</layout>
     </snapshotRepository>
-    <site>
-      <id>sf-web-joda-time</id>
-      <name>Sourceforge Site</name>
-      <url>scpexe://shell.sourceforge.net/home/project-web/joda-time/htdocs</url>
-    </site>
     <downloadUrl>http://oss.sonatype.org/content/repositories/joda-releases</downloadUrl>
   </distributionManagement>
 

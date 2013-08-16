@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN" "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+
+<module name="Checker">
+  <property name="severity" value="warning"/>
+  <module name="TreeWalker">
+    <property name="tabWidth" value="4"/>
+    <module name="FileContentsHolder"/>
+    <module name="ConstantName">
+      <property name="format" value="^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$|^[a-z][a-zA-Z0-9]*$"/>
+    </module>
+    <module name="AvoidStarImport">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="IllegalImport"/>
+    <module name="IllegalInstantiation">
+      <property name="classes" value="Boolean"/>
+    </module>
+    <module name="JavadocType">
+      <property name="scope" value="protected"/>
+    </module>
+    <module name="JavadocMethod">
+      <property name="scope" value="protected"/>
+      <property name="allowUndeclaredRTE" value="true"/>
+      <property name="allowMissingThrowsTags" value="true"/>
+      <property name="allowMissingJavadoc" value="true"/>
+      <property name="allowMissingPropertyJavadoc" value="true"/>
+      <property name="logLoadErrors" value="true"/>
+      <property name="suppressLoadErrors" value="true"/>
+    </module>
+    <module name="JavadocVariable">
+      <property name="scope" value="protected"/>
+    </module>
+    <module name="LineLength">
+      <property name="ignorePattern" value="^ *\* *[^ ]+$"/>
+      <property name="max" value="200"/>
+      <property name="tabWidth" value="2"/>
+    </module>
+    <module name="LocalFinalVariableName"/>
+    <module name="LocalVariableName"/>
+    <module name="MemberName">
+      <property name="format" value="^[a-z][a-zA-Z0-9$]*$"/>
+    </module>
+    <module name="MethodLength">
+      <property name="max" value="300"/>
+    </module>
+    <module name="MethodName"/>
+    <module name="ModifierOrder">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="NeedBraces">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="NoWhitespaceAfter"/>
+    <module name="NoWhitespaceBefore">
+      <property name="allowLineBreaks" value="true"/>
+      <property name="tokens" value="SEMI,DOT,POST_DEC,POST_INC"/>
+    </module>
+    <module name="OperatorWrap">
+      <property name="option" value="eol"/>
+      <property name="tokens" value="ASSIGN, DIV_ASSIGN, PLUS_ASSIGN, MINUS_ASSIGN, STAR_ASSIGN, MOD_ASSIGN, SR_ASSIGN, BSR_ASSIGN, SL_ASSIGN, BXOR_ASSIGN, BOR_ASSIGN, BAND_ASSIGN"/>
+    </module>
+    <module name="PackageName"/>
+    <module name="ParameterName"/>
+    <module name="ParameterNumber">
+      <property name="max" value="20"/>
+    </module>
+    <module name="ParenPad"/>
+    <module name="RedundantImport"/>
+    <module name="RedundantModifier"/>
+    <module name="RightCurly">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="StaticVariableName">
+      <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+    </module>
+    <module name="TypeName"/>
+    <module name="UpperEll">
+      <property name="severity" value="error"/>
+    </module>
+    <module name="MissingDeprecated"/>
+    <module name="MissingOverride"/>
+    <module name="PackageAnnotation"/>
+    <module name="CovariantEquals"/>
+    <module name="ExplicitInitialization"/>
+    <module name="FallThrough"/>
+    <module name="StringLiteralEquality"/>
+    <module name="GenericWhitespace"/>
+    <module name="FinalClass"/>
+    <module name="MutableException"/>
+    <module name="ArrayTypeStyle">
+      <property name="severity" value="error"/>
+    </module>
+  </module>
+  <!-- Header inlined due to m2e -->
+  <module name="RegexpHeader">
+    <property name="header" value="^/\*[*]?\n^ \*  Copyright 200[0-9]([-](20[01][0-9]))? Stephen Colebourne"/>
+    <property name="fileExtensions" value="java"/>
+  </module>
+  <module name="SuppressionCommentFilter">
+    <property name="offCommentFormat" value="CSOFF"/>
+    <property name="onCommentFormat" value="CSON"/>
+  </module>
+  <module name="FileTabCharacter">
+    <property name="eachLine" value="true"/>
+    <property name="severity" value="error"/>
+  </module>
+  <module name="NewlineAtEndOfFile"/>
+  <module name="SuppressWithNearbyCommentFilter">
+    <property name="commentFormat" value="CSIGNORE"/>
+    <property name="checkFormat" value=".*"/>
+    <property name="checkC" value="false"/>
+  </module>
+</module>

@@ -187,9 +187,8 @@
         </includes>
       </resource>
       <resource>
-        <directory>${project.basedir}/src/main/resources</directory>
+        <directory>${project.basedir}/src/main/java</directory>
         <includes>
-          <include>org/joda/time/tz/data/**</include>
           <include>**/*.properties</include>
         </includes>
       </resource>

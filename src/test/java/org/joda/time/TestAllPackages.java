@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2011 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -23,11 +23,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * Entry point for all tests in Joda Time.
- * 
- * @version $Revision$ $Date$
- * 
- * @author Stephen Colebourne
+ * Entry point for all tests in Joda-Time.
  */
 public class TestAllPackages extends TestCase {
 

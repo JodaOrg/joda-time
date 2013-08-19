@@ -10,7 +10,7 @@
 
  <body>
 
-<section name="Joda Time - Java date and time API">
+<section name="Joda-Time - Java date and time API">
 <p>
 Joda-Time provides a quality replacement for the Java <em>date</em>
 and <em>time</em> classes. The design allows for multiple <em>calendar</em>
@@ -60,7 +60,7 @@ Version 2.3 was released on 2013-08-16 -
 </section>
 
 
-<section name="Why Joda Time?">
+<section name="Why Joda-Time?">
 <p>
 Joda-Time has been created to radically change date and time handling in Java.
 The JDK classes Date and Calendar are very badly designed, have had numerous bugs

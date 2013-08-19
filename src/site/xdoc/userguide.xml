@@ -12,7 +12,7 @@
 
 <section name="Introduction">
 <p>
-Joda Time is like an iceberg, 9/10ths of it is invisible to user-code.
+Joda-Time is like an iceberg, 9/10ths of it is invisible to user-code.
 Many, perhaps most, applications will never need to see what's below the surface.
 This document provides an introduction to the Joda-Time API for the
 average user, not for the would-be API developer.
@@ -101,7 +101,7 @@ more advanced topics.
 
 <section name="Architecture Overview">
 <p>
-The major building blocks of joda time are introduced below. These are the concepts
+The major building blocks of Joda-Time are introduced below. These are the concepts
 of <em>instant</em>, <em>interval</em>, <em>duration</em>, <em>period</em>,
 <em>chronology</em> and <em>timezones</em>. We then say a few words about the role
 of interfaces in the library design, which is a little different than the norm. We
@@ -821,7 +821,7 @@ today, in particular the ISO8601. These must also be supported by most datetime
 applications.
 </p>
 <p>
-Joda time supports these different requirements through a flexible architecture.
+Joda-Time supports these different requirements through a flexible architecture.
 We will now describe the various elements of this architecture.
 </p>
 
@@ -889,7 +889,7 @@ Formatters are immutable, so the original is not altered by the
 <subsection name="Freaky Formatters">
 <p>
 Finally, if you have a format that is not easily represented by a pattern string,
-Joda Time architecture exposes a builder class that can be used to build a custom
+Joda-Time architecture exposes a builder class that can be used to build a custom
 formatter which is programatically defined. Thus if you wanted a formatter to
 print and parse dates of the form "22-Jan-65", you could do the following:
 <source>
@@ -912,7 +912,7 @@ the interpretation of a two digit year is ambiguous, the
 range of the two digits, by specifying the mid point of the range. In this example
 the range will be (1956 - 50) = 1906, to (1956 + 49) = 2005. Thus 04 will be 2004
 but 07 will be 1907. This kind of conversion is not possible with ordinary format
-strings, highlighting the power of the Joda time formatting architecture.
+strings, highlighting the power of the Joda-Time formatting architecture.
 </p>
 </subsection>
 

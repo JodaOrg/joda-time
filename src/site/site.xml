@@ -18,7 +18,7 @@
       <item name="I18N" href="http://www.joda.org/joda-time-i18n/"/>
     </links>
 
-    <menu name="Joda Time">
+    <menu name="Joda-Time">
       <item name="Overview" href="index.html"/>
       <item name="Quick start guide" href="quickstart.html"/>
       <item name="User guide" href="userguide.html"/>
@@ -52,8 +52,8 @@
 
     <menu name="Development">
       <item name="GitHub" href="https://github.com/JodaOrg/joda-time"/>
+      <item name="Bugs/Issues" href="https://github.com/JodaOrg/joda-time/issues"/>
       <item name="Test results" href="surefire-report.html"/>
-      <item name="Mailing lists" href="mail-lists.html"/>
       <item name="Sourceforge" href="http://sourceforge.net/projects/joda-time/"/>
     </menu>
 

@@ -68,7 +68,7 @@ Hopefully this FAQ has explained what the error means allowing you to work out w
 
 
 <a name="rulesoutofdate" />
-<subsection name="Are the time-zone rules are out of date?">
+<subsection name="Are the time-zone rules out of date?">
 <p>
 Joda-Time releases only occur infrequently.
 But time-zone changes happen all the time.

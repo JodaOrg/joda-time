@@ -175,16 +175,6 @@ public class ZoneInfoProvider implements Provider {
     }
 
     /**
-     * Called if an exception is thrown from getZone while loading zone data.
-     * 
-     * @param ex  the exception
-     */
-    protected void uncaughtException(Exception ex) {
-        Thread t = Thread.currentThread();
-        t.getThreadGroup().uncaughtException(t, ex);
-    }
-
-    /**
      * Opens a resource from file or classpath.
      * 
      * @param name  the name to open
@@ -229,7 +219,7 @@ public class ZoneInfoProvider implements Provider {
             iZoneInfoMap.put(id, new SoftReference<DateTimeZone>(tz));
             return tz;
         } catch (IOException ex) {
-            uncaughtException(ex);
+            ex.printStackTrace();
             iZoneInfoMap.remove(id);
             return null;
         } finally {

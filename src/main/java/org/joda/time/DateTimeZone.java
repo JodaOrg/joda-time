@@ -477,8 +477,7 @@ public abstract class DateTimeZone implements Serializable {
                 try {
                     provider = (Provider) Class.forName(providerClass).newInstance();
                 } catch (Exception ex) {
-                    Thread thread = Thread.currentThread();
-                    thread.getThreadGroup().uncaughtException(thread, ex);
+                    ex.printStackTrace();
                 }
             }
         } catch (SecurityException ex) {
@@ -489,8 +488,7 @@ public abstract class DateTimeZone implements Serializable {
             try {
                 provider = new ZoneInfoProvider("org/joda/time/tz/data");
             } catch (Exception ex) {
-                Thread thread = Thread.currentThread();
-                thread.getThreadGroup().uncaughtException(thread, ex);
+                ex.printStackTrace();
             }
         }
 
@@ -561,8 +559,7 @@ public abstract class DateTimeZone implements Serializable {
                 try {
                     nameProvider = (NameProvider) Class.forName(providerClass).newInstance();
                 } catch (Exception ex) {
-                    Thread thread = Thread.currentThread();
-                    thread.getThreadGroup().uncaughtException(thread, ex);
+                    ex.printStackTrace();
                 }
             }
         } catch (SecurityException ex) {

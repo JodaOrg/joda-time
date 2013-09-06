@@ -1465,7 +1465,7 @@ public final class DateTime
      * @return the new datetime minus the increased millis
      * @since 1.1
      */
-    public DateTime minusMillis(int millis) {
+    public DateTime minusMillis(long millis) {
         if (millis == 0) {
             return this;
         }

@@ -42,6 +42,7 @@ Deprecations since 2.3
 
 Bug fixes since 2.3
 -------------------
+- Better Javadoc for parsing of numbers in format patterns [#60]
 
 
 Scala

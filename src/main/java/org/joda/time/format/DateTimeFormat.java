@@ -95,8 +95,9 @@ import org.joda.time.ReadablePartial;
  * the full form is used; otherwise a short or abbreviated form is used if
  * available.
  * <p>
- * <strong>Number</strong>: The minimum number of digits. Shorter numbers
- * are zero-padded to this amount.
+ * <strong>Number</strong>: The minimum number of digits.
+ * Shorter numbers are zero-padded to this amount.
+ * When parsing, any number of digits are accepted.
  * <p>
  * <strong>Year</strong>: Numeric presentation for year and weekyear fields
  * are handled specially. For example, if the count of 'y' is 2, the year

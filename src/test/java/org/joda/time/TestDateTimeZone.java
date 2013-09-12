@@ -458,23 +458,19 @@ public class TestDateTimeZone extends TestCase {
             DateTimeZone.setProvider(null);
             assertEquals(ZoneInfoProvider.class, DateTimeZone.getProvider().getClass());
         }
-        
-        PrintStream syserr = System.err;
+    }
+
+    public void testProvider_badClassName() {
         try {
             System.setProperty("org.joda.time.DateTimeZone.Provider", "xxx");
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            System.setErr(new PrintStream(baos));
-            
             DateTimeZone.setProvider(null);
             
+        } catch (RuntimeException ex) {
+            // expected
             assertEquals(ZoneInfoProvider.class, DateTimeZone.getProvider().getClass());
-            String str = new String(baos.toByteArray());
-            assertTrue(str.indexOf("java.lang.ClassNotFoundException") >= 0);
         } finally {
-            System.setErr(syserr);
             System.getProperties().remove("org.joda.time.DateTimeZone.Provider");
             DateTimeZone.setProvider(null);
-            assertEquals(ZoneInfoProvider.class, DateTimeZone.getProvider().getClass());
         }
     }
     
@@ -572,26 +568,22 @@ public class TestDateTimeZone extends TestCase {
             DateTimeZone.setNameProvider(null);
             assertEquals(DefaultNameProvider.class, DateTimeZone.getNameProvider().getClass());
         }
-        
-        PrintStream syserr = System.err;
+    }
+
+    public void testNameProvider_badClassName() {
         try {
             System.setProperty("org.joda.time.DateTimeZone.NameProvider", "xxx");
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            System.setErr(new PrintStream(baos));
+            DateTimeZone.setProvider(null);
             
-            DateTimeZone.setNameProvider(null);
-            
+        } catch (RuntimeException ex) {
+            // expected
             assertEquals(DefaultNameProvider.class, DateTimeZone.getNameProvider().getClass());
-            String str = new String(baos.toByteArray());
-            assertTrue(str.indexOf("java.lang.ClassNotFoundException") >= 0);
         } finally {
-            System.setErr(syserr);
             System.getProperties().remove("org.joda.time.DateTimeZone.NameProvider");
-            DateTimeZone.setNameProvider(null);
-            assertEquals(DefaultNameProvider.class, DateTimeZone.getNameProvider().getClass());
+            DateTimeZone.setProvider(null);
         }
-    }        
-    
+    }
+
     public void testNameProviderSecurity() {
         if (OLD_JDK) {
             return;

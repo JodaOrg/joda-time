@@ -44,6 +44,9 @@ Bug fixes since 2.3
 -------------------
 - Better Javadoc for parsing of numbers in format patterns [#60]
 
+- Remove uncaughtException calls [#59]
+  Previously the code called ThreadGroup.uncaughtException() which was invalid
+
 
 Scala
 --------

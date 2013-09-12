@@ -125,9 +125,8 @@ public class ZoneInfoProvider implements Provider {
 
     //-----------------------------------------------------------------------
     /**
-     * If an error is thrown while loading zone data, uncaughtException is
-     * called to log the error and null is returned for this and all future
-     * requests.
+     * If an error is thrown while loading zone data, the exception is logged
+     * to system error and null is returned for this and all future requests.
      * 
      * @param id  the id to load
      * @return the loaded zone
@@ -180,8 +179,7 @@ public class ZoneInfoProvider implements Provider {
      * @param ex  the exception
      */
     protected void uncaughtException(Exception ex) {
-        Thread t = Thread.currentThread();
-        t.getThreadGroup().uncaughtException(t, ex);
+        ex.printStackTrace();
     }
 
     /**

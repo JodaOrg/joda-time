@@ -22,9 +22,9 @@ import java.util.Set;
 import org.joda.time.DateTimeFieldType;
 
 /**
- * Factory that creates instances of DateTimeFormatter for the ISO8601 standard.
+ * Factory that creates instances of DateTimeFormatter based on the ISO8601 standard.
  * <p>
- * Datetime formatting is performed by the {@link DateTimeFormatter} class.
+ * Date-time formatting is performed by the {@link DateTimeFormatter} class.
  * Three classes provide factory methods to create formatters, and this is one.
  * The others are {@link DateTimeFormat} and {@link DateTimeFormatterBuilder}.
  * <p>
@@ -39,6 +39,10 @@ import org.joda.time.DateTimeFieldType;
  * DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
  * String str = fmt.print(dt);
  * </pre>
+ * <p>
+ * Note that these formatters mostly follow the ISO-8601 standard for printing.
+ * For parsing, the formatters are more lenient and allow formats that are not
+ * in strict compliance with the standard.
  * <p>
  * It is important to understand that these formatters are not linked to
  * the <code>ISOChronology</code>. These formatters may be used with any

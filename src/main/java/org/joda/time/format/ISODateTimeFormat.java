@@ -40,7 +40,7 @@ import org.joda.time.DateTimeFieldType;
  * String str = fmt.print(dt);
  * </pre>
  * <p>
- * Note that these formatters mostly follow the ISO-8601 standard for printing.
+ * Note that these formatters mostly follow the ISO8601 standard for printing.
  * For parsing, the formatters are more lenient and allow formats that are not
  * in strict compliance with the standard.
  * <p>

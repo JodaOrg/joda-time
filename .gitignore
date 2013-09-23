@@ -15,3 +15,4 @@
 /test-output/
 src/tz-data/
 *TempTest*
+/src/main/resources/org/joda/time/tz/data/

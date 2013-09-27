@@ -38,7 +38,11 @@ public class DateTimeUtils {
     /** The singleton instance of the system millisecond provider. */
     private static final SystemMillisProvider SYSTEM_MILLIS_PROVIDER = new SystemMillisProvider();
     /** The millisecond provider currently in use. */
+    
     private static volatile MillisProvider cMillisProvider = SYSTEM_MILLIS_PROVIDER;
+    
+    private static ThreadLocal<MillisProvider> threadLocalMillisProvider = new InheritableThreadLocal<MillisProvider>();
+    
     /** The millisecond provider currently in use. */
     private static volatile Map<String, DateTimeZone> cZoneNames;
     static {
@@ -83,7 +87,13 @@ public class DateTimeUtils {
      * @return the current time in milliseconds from 1970-01-01T00:00:00Z
      */
     public static final long currentTimeMillis() {
-        return cMillisProvider.getMillis();
+    	
+    	MillisProvider millisProvider = threadLocalMillisProvider.get();
+    	if (millisProvider == null) {
+    		millisProvider = cMillisProvider;
+    	}
+    	
+    	return millisProvider.getMillis();
     }
 
     /**
@@ -578,5 +588,25 @@ public class DateTimeUtils {
             return System.currentTimeMillis() + iMillis;
         }
     }
+
+    /**
+     * Sets thread-local {@link MillisProvider} which, in case of presence, is used in front of default or statically set {@link MillisProvider}.  
+     * 
+     */
+	public static void setThreadLocalMillisProvider(MillisProvider millisProvider) {
+		if (millisProvider == null) {
+			throw new IllegalArgumentException("Cannot set null as a MillisProvider");
+		}
+		 threadLocalMillisProvider.set(millisProvider);
+	}
+
+	/**
+	 * Removes thread-local {@link MillisProvider}.
+	 */
+	public static void removeThreadLocalMillisProvider() {
+		threadLocalMillisProvider.remove();
+	}
+	
+	
 
 }

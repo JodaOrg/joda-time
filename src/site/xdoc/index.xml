@@ -130,7 +130,7 @@ Various documentation is available:
 <li>Two user guides - <a href="quickstart.html">quick</a> and <a href="userguide.html">full</a></li>
 <li>The key concepts and chronology documents in the left navigation area</li>
 <li>The <a href="apidocs/index.html">Javadoc</a></li>
-<li>Information on <a href="installation.html">downloading and installing</a> Joda-Time</li>
+<li>Information on <a href="installation.html">downloading and installing</a> Joda-Time including release notes</li>
 <li>The <a href="faq.html">FAQ</a> list</li>
 <li>The <a href="https://github.com/JodaOrg/joda-time">GitHub</a> source repository</li>
 </ul>

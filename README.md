@@ -42,8 +42,7 @@ Various documentation is available:
 * Two user guides - [quick](http://www.joda.org/joda-time/quickstart.html) and [full](http://www.joda.org/joda-time/userguide.html)
 * The [Javadoc](http://www.joda.org/joda-time/apidocs/index.html)
 * The [FAQ](http://www.joda.org/joda-time/faq.html) list
-* The change notes for the [releases](http://www.joda.org/joda-time/changes-report.html)
-* Information on [downloading and installing](http://www.joda.org/joda-time/installation.html) Joda-Time
+* Information on [downloading and installing](http://www.joda.org/joda-time/installation.html) Joda-Time including release notes
 
 
 ### Releases

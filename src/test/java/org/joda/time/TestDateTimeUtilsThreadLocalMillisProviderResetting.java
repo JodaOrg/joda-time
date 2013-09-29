@@ -10,7 +10,7 @@ import org.joda.time.DateTimeUtils.MillisProvider;
 
 public class TestDateTimeUtilsThreadLocalMillisProviderResetting extends TestCase {
 
-	private static final MillisProvider staticMillisProvider = new FixedMillisProvider(888);
+	private static final MillisProvider staticMillisProvider = new FixedMillisProvider(999);
 
 	private static final MillisProvider threadLocalMillisProvider = new FixedMillisProvider(888);
 

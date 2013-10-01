@@ -705,6 +705,29 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testNegated_long1() {
+        Duration test = new Duration(246L);
+        Duration result = test.negated();
+        assertEquals(-246L, result.getMillis());
+    }
+
+    public void testNegated_long2() {
+        Duration test = new Duration(-246L);
+        Duration result = test.negated();
+        assertEquals(246L, result.getMillis());
+    }
+
+    public void testNegated_long3() {
+        Duration test = new Duration(Long.MIN_VALUE);
+        try {
+            test.negated();
+            fail();
+        } catch(ArithmeticException e) {
+            // expected
+        }
+    }
+
+    //-----------------------------------------------------------------------
     public void testWithDurationAdded_RD_int1() {
         Duration test = new Duration(123L);
         Duration result = test.withDurationAdded(new Duration(8000L), 1);

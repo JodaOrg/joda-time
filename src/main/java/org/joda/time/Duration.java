@@ -484,4 +484,11 @@ public final class Duration
         return new Duration(FieldUtils.safeDivide(getMillis(), divisor));
     }
 
+    public Duration negated()
+    {
+        if(getMillis() == Long.MIN_VALUE)
+            throw new ArithmeticException("Negation of this duration would overflow");
+        return new Duration(-getMillis());
+    }
+
 }

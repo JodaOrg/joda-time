@@ -470,11 +470,18 @@ public final class Duration
         return withDurationAdded(amount.getMillis(), -1);
     }
 
-    public Duration multipliedBy(long factor)
+    public Duration multipliedBy(long multiplicant)
     {
-        if(factor == 1)
+        if(multiplicant == 1)
             return this;
-        return new Duration(FieldUtils.safeMultiply(getMillis(), factor));
+        return new Duration(FieldUtils.safeMultiply(getMillis(), multiplicant));
+    }
+
+    public Duration dividedBy(long divisor)
+    {
+        if(divisor == 1)
+            return this;
+        return new Duration(FieldUtils.safeDivide(getMillis(), divisor));
     }
 
 }

@@ -679,15 +679,28 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testMul_long1() {
+    public void testMultipliedBy_long1() {
         Duration test = new Duration(123L);
         Duration result = test.multipliedBy(2L);
         assertEquals(246L, result.getMillis());
     }
 
-    public void testMul_long2() {
+    public void testMultipliedBy_long2() {
         Duration test = new Duration(123L);
         Duration result = test.multipliedBy(1L);
+        assertSame(test, result);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testDividedBy_long1() {
+        Duration test = new Duration(246L);
+        Duration result = test.dividedBy(2L);
+        assertEquals(123L, result.getMillis());
+    }
+
+    public void testDividedBy_long2() {
+        Duration test = new Duration(123L);
+        Duration result = test.dividedBy(1L);
         assertSame(test, result);
     }
 

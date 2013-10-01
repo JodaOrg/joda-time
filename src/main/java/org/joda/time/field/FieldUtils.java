@@ -327,4 +327,11 @@ public class FieldUtils {
         return object1.equals(object2);
     }
 
+    public static long safeDivide(long dividend, long divisor)
+    {
+        if(dividend == Long.MIN_VALUE && divisor == -1L)
+            throw new ArithmeticException("Multiplication overflows a long: " + dividend + " / " + divisor);
+        return dividend / divisor;
+    }
+
 }

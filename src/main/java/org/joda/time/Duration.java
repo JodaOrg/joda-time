@@ -470,13 +470,33 @@ public final class Duration
         return withDurationAdded(amount.getMillis(), -1);
     }
 
-    public Duration multipliedBy(long multiplicant)
+    /**
+     * Returns a new duration with this length multiplied by the 
+     * specified multiplicand.
+     * This instance is immutable and is not altered.
+     * <p>
+     * If the multiplicand is one, this instance is returned.
+     * 
+     * @param multiplicand  the multiplicand to multiply this one by
+     * @return the new duration instance
+     */
+    public Duration multipliedBy(long multiplicand)
     {
-        if(multiplicant == 1)
+        if(multiplicand == 1)
             return this;
-        return new Duration(FieldUtils.safeMultiply(getMillis(), multiplicant));
+        return new Duration(FieldUtils.safeMultiply(getMillis(), multiplicand));
     }
 
+    /**
+     * Returns a new duration with this length divided by the 
+     * specified divisor.
+     * This instance is immutable and is not altered.
+     * <p>
+     * If the divisor is one, this instance is returned.
+     * 
+     * @param divisor  the divisor to divide this one by
+     * @return the new duration instance
+     */
     public Duration dividedBy(long divisor)
     {
         if(divisor == 1)
@@ -484,6 +504,12 @@ public final class Duration
         return new Duration(FieldUtils.safeDivide(getMillis(), divisor));
     }
 
+    /**
+     * Returns a new duration with this length negated.
+     * This instance is immutable and is not altered.
+     * 
+     * @return the new duration instance
+     */
     public Duration negated()
     {
         if(getMillis() == Long.MIN_VALUE)

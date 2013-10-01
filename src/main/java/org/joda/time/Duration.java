@@ -470,4 +470,11 @@ public final class Duration
         return withDurationAdded(amount.getMillis(), -1);
     }
 
+    public Duration multipliedBy(long factor)
+    {
+        if(factor == 1)
+            return this;
+        return new Duration(FieldUtils.safeMultiply(getMillis(), factor));
+    }
+
 }

@@ -81,7 +81,7 @@ public class CachedDateTimeZone extends DateTimeZone {
 
     private final DateTimeZone iZone;
 
-    private final Info[] iInfoCache = new Info[cInfoCacheMask + 1];
+    private final transient Info[] iInfoCache = new Info[cInfoCacheMask + 1];
 
     private CachedDateTimeZone(DateTimeZone zone) {
         super(zone.getID());

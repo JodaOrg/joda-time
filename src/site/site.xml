@@ -36,6 +36,7 @@
       <item name="Duration" href="key_duration.html"/>
       <item name="Period" href="key_period.html"/>
       <item name="Chronology" href="key_chronology.html"/>
+      <item name="Formatting" href="key_format.html"/>
       <item name="Time zone update" href="tz_update.html"/>
     </menu>
 

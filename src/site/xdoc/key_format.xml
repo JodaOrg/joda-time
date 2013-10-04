@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - Formatting</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="Formatting">
+<p>
+Joda-Time provides a comprehensive formatting system.
+There are two layers:
+</p>
+<ul>
+<li>High level - pre-packaged constant formatters</li>
+<li>Mid level - pattern-based, like <code>SimpleDateFormat</code></li>
+<li>Low level - builder</li>
+</ul>
+</section>
+
+<section name="Constant and Localized formatting">
+<p>
+The class <code><a href="apidocs/org/joda/time/format/ISODateTimeFormat.html">ISODateTimeFormat</a></code>
+contains a large number of pre-defined formatters based on the ISO-8601
+specification (although not all are fully compatible).
+These handle many common cases.
+</p>
+<p>
+The class <code><a href="apidocs/org/joda/time/format/DateTimeFormat.html">DateTimeFormat</a></code>
+contains an additional set of pre-defined formatters based on <code>Locale</code>.
+These "style-based" formatters handle the case where the application needs to
+format a date-time in a manner appropriate to a particular global location.
+</p>
+</section>
+
+<section name="Pattern-based formatting">
+<p>
+The class <code><a href="apidocs/org/joda/time/format/DateTimeFormat.html">DateTimeFormat</a></code>
+provides a single method <code>forPattern(String)</code> that supports formatting by pattern.
+These "pattern-based" formatters provide a similar approach to that of <code>SimpleDateFormat</code>.
+</p>
+<p>
+For example:
+</p>
+<source>
+LocalDate date = LocalDate.now();
+DateTimeFormatter fmt = DateTimeFormat.forPattern("d MMMM, yyyy");
+String str = date.toString(fmt);
+// might output "6 October, 2013"
+</source>
+<p>
+The <a href="apidocs/org/joda/time/format/DateTimeFormat.html">pattern letters</a> are:
+</p>
+<source>
+Symbol  Meaning                      Presentation  Examples
+------  -------                      ------------  -------
+ G       era                          text          AD
+ C       century of era (>=0)         number        20
+ Y       year of era (>=0)            year          1996
+
+ x       weekyear                     year          1996
+ w       week of weekyear             number        27
+ e       day of week                  number        2
+ E       day of week                  text          Tuesday; Tue
+
+ y       year                         year          1996
+ D       day of year                  number        189
+ M       month of year                month         July; Jul; 07
+ d       day of month                 number        10
+
+ a       halfday of day               text          PM
+ K       hour of halfday (0~11)       number        0
+ h       clockhour of halfday (1~12)  number        12
+
+ H       hour of day (0~23)           number        0
+ k       clockhour of day (1~24)      number        24
+ m       minute of hour               number        30
+ s       second of minute             number        55
+ S       fraction of second           number        978
+
+ z       time zone                    text          Pacific Standard Time; PST
+ Z       time zone offset/id          zone          -0800; -08:00; America/Los_Angeles
+
+ '       escape for text              delimiter
+ ''      single quote                 literal       '
+</source>
+<p>
+The count of pattern letters determine the format.
+</p>
+<p>
+Text: If the number of pattern letters is 4 or more, the full form is used;
+otherwise a short or abbreviated form is used if available.
+Thus, "EEEE" might output "Monday" whereas "E" might output "Mon" (the short form of Monday).
+</p>
+<p>
+Number: The minimum number of digits. Shorter numbers are zero-padded to this amount.
+Thus, "HH" might output "09" whereas "H" might output "9" (for the hour-of-day of 9 in the morning).
+</p>
+<p>
+Year: Numeric presentation for year and weekyear fields are handled specially.
+For example, if the count of 'y' is 2, the year will be displayed as the zero-based
+year of the century, which is two digits.
+</p>
+<p>
+Month: 3 or over, use text, otherwise use number.
+Thus, "MM" might output "03" whereas "MMM" might output "Mar" (the short form of March)
+and "MMMM" might output "March".
+</p>
+<p>
+Zone: 'Z' outputs offset without a colon, 'ZZ' outputs the offset with a colon, 'ZZZ' or more outputs the zone id.
+</p>
+<p>
+Zone names: Time zone names ('z') cannot be parsed.
+</p>
+<p>
+Any characters in the pattern that are not in the ranges of ['a'..'z'] and ['A'..'Z']
+will be treated as quoted text. For instance, characters like ':', '.', ' ', '#' and '?'
+will appear in the resulting time text even they are not embraced within single quotes. 
+</p>
+</section>
+
+<section name="Builder">
+<p>
+All formatting is ultimately built using 
+<code><a href="apidocs/org/joda/time/format/DateTimeFormatterBuilder.html">DateTimeFormatterBuilder</a></code>.
+The builder allows a format pattern to be built up step by step, consisting of
+literal, text, numeric, pattern and localized elements in any order.
+Some facilities are only available via the builder.
+</p>
+<p>
+For example, this will build a formatter consisting of the month and year:
+</p>
+<source>
+DateTimeFormatter monthAndYear = new DateTimeFormatterBuilder()
+     .appendMonthOfYearText()
+     .appendLiteral(' ')
+     .appendYear(4, 4)
+     .toFormatter();
+</source>
+<p>
+<br />
+</p>
+</section>
+
+</body>
+</document>

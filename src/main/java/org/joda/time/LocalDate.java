@@ -110,7 +110,7 @@ public final class LocalDate
     /** The chronology to use in UTC. */
     private final Chronology iChronology;
     /** The cached hash code. */
-    private transient volatile int iHash;
+    private transient int iHash;
 
     //-----------------------------------------------------------------------
     /**

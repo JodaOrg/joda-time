@@ -289,10 +289,20 @@ public class TestFieldUtils extends TestCase {
         assertEquals(0L, FieldUtils.safeDivide(1L, 3L));
         assertEquals(3L, FieldUtils.safeDivide(3L, 1L));
         
+        assertEquals(1L, FieldUtils.safeDivide(5L, 3L));
+        assertEquals(-1L, FieldUtils.safeDivide(5L, -3L));
+        assertEquals(-1L, FieldUtils.safeDivide(-5L, 3L));
+        assertEquals(1L, FieldUtils.safeDivide(-5L, -3L));
+        
         assertEquals(2L, FieldUtils.safeDivide(6L, 3L));
         assertEquals(-2L, FieldUtils.safeDivide(6L, -3L));
         assertEquals(-2L, FieldUtils.safeDivide(-6L, 3L));
         assertEquals(2L, FieldUtils.safeDivide(-6L, -3L));
+        
+        assertEquals(2L, FieldUtils.safeDivide(7L, 3L));
+        assertEquals(-2L, FieldUtils.safeDivide(7L, -3L));
+        assertEquals(-2L, FieldUtils.safeDivide(-7L, 3L));
+        assertEquals(2L, FieldUtils.safeDivide(-7L, -3L));
         
         assertEquals(Long.MAX_VALUE, FieldUtils.safeDivide(Long.MAX_VALUE, 1L));
         assertEquals(Long.MIN_VALUE, FieldUtils.safeDivide(Long.MIN_VALUE, 1L));
@@ -310,5 +320,5 @@ public class TestFieldUtils extends TestCase {
         } catch (ArithmeticException e) {
         }
     }
-}
 
+}

@@ -18,6 +18,9 @@ of restrictions. If the license causes you problems please contact the mailing l
 
 Enhancements since 2.3
 ----------------------
+- Duration.multipliedBy(), .dividedBy(), .negated()
+  Additional methods on Duration
+
 - LocalDate.hashCode()
   Remove unnecessary volatile on instance variable [#68]
   LocalDate hash code meets criteria of the racy single-check idiom

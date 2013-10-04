@@ -175,7 +175,7 @@ public class FieldUtils {
         }
         return total;
     }
-    
+
     /**
      * Divides the dividend by the divisor throwing an exception if 
      * overflow occurs or the divisor is zero.
@@ -185,10 +185,10 @@ public class FieldUtils {
      * @return the new total
      * @throws ArithmeticException if the operation overflows or the divisor is zero
      */
-    public static long safeDivide(long dividend, long divisor)
-    {
-        if(dividend == Long.MIN_VALUE && divisor == -1L)
+    public static long safeDivide(long dividend, long divisor) {
+        if (dividend == Long.MIN_VALUE && divisor == -1L) {
             throw new ArithmeticException("Multiplication overflows a long: " + dividend + " / " + divisor);
+        }
         return dividend / divisor;
     }
 

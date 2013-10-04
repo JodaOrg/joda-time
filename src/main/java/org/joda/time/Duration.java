@@ -480,10 +480,10 @@ public final class Duration
      * @param multiplicand  the multiplicand to multiply this one by
      * @return the new duration instance
      */
-    public Duration multipliedBy(long multiplicand)
-    {
-        if(multiplicand == 1)
+    public Duration multipliedBy(long multiplicand) {
+        if (multiplicand == 1) {
             return this;
+        }
         return new Duration(FieldUtils.safeMultiply(getMillis(), multiplicand));
     }
 
@@ -497,10 +497,10 @@ public final class Duration
      * @param divisor  the divisor to divide this one by
      * @return the new duration instance
      */
-    public Duration dividedBy(long divisor)
-    {
-        if(divisor == 1)
+    public Duration dividedBy(long divisor) {
+        if (divisor == 1) {
             return this;
+        }
         return new Duration(FieldUtils.safeDivide(getMillis(), divisor));
     }
 
@@ -510,10 +510,10 @@ public final class Duration
      * 
      * @return the new duration instance
      */
-    public Duration negated()
-    {
-        if(getMillis() == Long.MIN_VALUE)
+    public Duration negated() {
+        if (getMillis() == Long.MIN_VALUE) {
             throw new ArithmeticException("Negation of this duration would overflow");
+        }
         return new Duration(-getMillis());
     }
 

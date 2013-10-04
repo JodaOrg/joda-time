@@ -28,7 +28,9 @@ import org.joda.time.chrono.ISOChronology;
 /**
  * DateTimeUtils provide public utility methods for the date-time library.
  * <p>
- * DateTimeUtils is thread-safe although shared static variables are used.
+ * DateTimeUtils uses shared static variables which are declared as volatile
+ * for thread-safety. These can be changed during the lifetime of the application
+ * however doing so is generally a bad idea.
  *
  * @author Stephen Colebourne
  * @since 1.0

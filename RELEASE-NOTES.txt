@@ -47,6 +47,8 @@ Bug fixes since 2.3
 - Remove uncaughtException calls [#59]
   Previously the code called ThreadGroup.uncaughtException() which was invalid
 
+- Better Javadoc for thread saefty of DateTimeUtils [#67]
+
 
 Scala
 --------

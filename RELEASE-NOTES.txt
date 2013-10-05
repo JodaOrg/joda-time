@@ -55,6 +55,8 @@ Bug fixes since 2.3
 
 - Better Javadoc for thread saefty of DateTimeUtils [#67]
 
+- Better Javadoc for DateTimeComparator [#73]
+
 
 Scala
 --------

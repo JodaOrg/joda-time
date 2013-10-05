@@ -75,6 +75,10 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
     /**
      * Returns a DateTimeComparator with a lower limit only. Fields of a
      * magnitude less than the lower limit are excluded from comparisons.
+     * <p>
+     * The time-zone is considered when using this comparator.
+     * The input millis are truncated using the time-zone of that input value.
+     * Thus, two inputs with different time-zones will typically not be equal
      *
      * @param lowerLimit  inclusive lower limit for fields to be compared, null means no limit
      * @return a comparator over all fields above the lower limit
@@ -89,6 +93,10 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
      * Fields of a magnitude greater than or equal to the upper limit are also
      * excluded from comparisons. Either limit may be specified as null, which
      * indicates an unbounded limit.
+     * <p>
+     * The time-zone is considered when using this comparator unless both limits are null.
+     * The input millis are rounded/truncated using the time-zone of that input value.
+     * Thus, two inputs with different time-zones will typically not be equal
      *
      * @param lowerLimit  inclusive lower limit for fields to be compared, null means no limit
      * @param upperLimit  exclusive upper limit for fields to be compared, null means no limit
@@ -110,6 +118,11 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
     /**
      * Returns a comparator that only considers date fields.
      * Time of day is ignored.
+     * <p>
+     * The time-zone is considered when using this comparator.
+     * The input millis are rounded down to the start of the day
+     * in the time-zone of that input value. Thus, two inputs with
+     * different time-zones will typically not be equal
      * 
      * @return a comparator over all date fields
      */
@@ -120,6 +133,11 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
     /**
      * Returns a comparator that only considers time fields.
      * Date is ignored.
+     * <p>
+     * The time-zone is considered when using this comparator.
+     * The input millis are truncated to be within the day
+     * in the time-zone of that input value. Thus, two inputs with
+     * different time-zones will typically not be equal
      * 
      * @return a comparator over all time fields
      */

@@ -9,7 +9,7 @@ Supporting classes include time zone, duration, format and parsing.
 
 As a flavour of Joda-Time, here's some example code:
 
-```
+```java
 public boolean isAfterPayDay(DateTime datetime) {
   if (datetime.getMonthOfYear() == 2) {   // February is month 2!!
     return datetime.getDayOfMonth() > 26;

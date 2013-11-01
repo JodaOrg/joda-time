@@ -63,7 +63,7 @@ public class TimeZoneTable {
                     "</tr>");
 
         ZoneData canonical = null;
-        List aliases = new ArrayList();
+        List<ZoneData> aliases = new ArrayList<ZoneData>();
 
         for (int i=0; i<zones.length; i++) {
             ZoneData zone = zones[i];

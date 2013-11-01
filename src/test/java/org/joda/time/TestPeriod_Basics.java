@@ -217,6 +217,7 @@ public class TestPeriod_Basics extends TestCase {
     }
     
     class MockPeriod extends BasePeriod {
+        private static final long serialVersionUID = 1L;
         public MockPeriod(long value) {
             super(value, null, null);
         }
@@ -1514,6 +1515,48 @@ public class TestPeriod_Basics extends TestCase {
         Period result = test.normalizedStandard(PeriodType.yearMonthDayTime());
         assertEquals(new Period(1, 15, 0, 36, 27, 0, 0, 0), test);
         assertEquals(new Period(2, 3, 0, 37, 3, 0, 0, 0, PeriodType.yearMonthDayTime()), result);
+    }
+
+    public void testNormalizedStandard_periodType_months1() {
+        Period test = new Period(1, 15, 0, 0, 0, 0, 0, 0);
+        Period result = test.normalizedStandard(PeriodType.months());
+        assertEquals(new Period(1, 15, 0, 0, 0, 0, 0, 0), test);
+        assertEquals(new Period(0, 27, 0, 0, 0, 0, 0, 0, PeriodType.months()), result);
+    }
+
+    public void testNormalizedStandard_periodType_months2() {
+        Period test = new Period(-2, 15, 0, 0, 0, 0, 0, 0);
+        Period result = test.normalizedStandard(PeriodType.months());
+        assertEquals(new Period(-2, 15, 0, 0, 0, 0, 0, 0), test);
+        assertEquals(new Period(0, -9, 0, 0, 0, 0, 0, 0, PeriodType.months()), result);
+    }
+
+    public void testNormalizedStandard_periodType_months3() {
+        Period test = new Period(0, 4, 0, 0, 0, 0, 0, 0);
+        Period result = test.normalizedStandard(PeriodType.months());
+        assertEquals(new Period(0, 4, 0, 0, 0, 0, 0, 0), test);
+        assertEquals(new Period(0, 4, 0, 0, 0, 0, 0, 0, PeriodType.months()), result);
+    }
+
+    public void testNormalizedStandard_periodType_years() {
+        Period test = new Period(1, 15, 0, 0, 0, 0, 0, 0);
+        try {
+            test.normalizedStandard(PeriodType.years());
+            fail();
+        } catch (UnsupportedOperationException ex) {
+            // expected
+        }
+    }
+
+    public void testNormalizedStandard_periodType_monthsWeeks() {
+        PeriodType type = PeriodType.forFields(new DurationFieldType[]{
+                        DurationFieldType.months(),
+                        DurationFieldType.weeks(),
+                        DurationFieldType.days()});
+        Period test = new Period(2, 4, 6, 0, 0, 0, 0, 0);
+        Period result = test.normalizedStandard(type);
+        assertEquals(new Period(2, 4, 6, 0, 0, 0, 0, 0), test);
+        assertEquals(new Period(0, 28, 6, 0, 0, 0, 0, 0, type), result);
     }
 
 }

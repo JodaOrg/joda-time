@@ -48,6 +48,9 @@ Deprecations since 2.3
 
 Bug fixes since 2.3
 -------------------
+- Period.normalizedStandard(PeriodType) [#79]
+  Fix handling of PeriodType when either years or months missing
+
 - Better Javadoc for parsing of numbers in format patterns [#60]
 
 - Remove uncaughtException calls [#59]

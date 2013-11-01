@@ -62,6 +62,8 @@ Bug fixes since 2.3
 
 - Fix the links to the IANA time zone database [#83]
 
+- Better Javadoc for DateTimeFormatter parsing [#78]
+
 
 Scala
 --------

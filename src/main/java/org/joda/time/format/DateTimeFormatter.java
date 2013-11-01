@@ -72,6 +72,15 @@ import org.joda.time.ReadablePartial;
  * // parse using the Paris zone
  * DateTime date = formatter.withZone(DateTimeZone.forID("Europe/Paris")).parseDateTime(str);
  * </pre>
+ * <p>
+ * Parsing builds up the resultant instant by 'setting' the value of each parsed field
+ * from largest to smallest onto an initial instant, typically 1970-01-01T00:00Z.
+ * This design means that day-of-month is set before day-of-week.
+ * As such, if both the day-of-month and day-of-week are parsed, and the day-of-week
+ * is incorrect, then the day-of-week overrides the day-of-month.
+ * 
+ * This has a side effect if the input is not consistent.
+ * 
  * 
  * @author Brian S O'Neill
  * @author Stephen Colebourne

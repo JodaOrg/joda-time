@@ -1,2 +1,2 @@
-The data files in this directory were obtained from the public tz database,
-http://www.twinsun.com/tz/tz-link.htm, version 2013d.
+The data files in this directory were obtained from the public IANA time zone database,
+http://www.iana.org/time-zones, version 2013d.

@@ -45,14 +45,14 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
- * Compiles Olson ZoneInfo database files into binary files for each time zone
+ * Compiles IANA ZoneInfo database files into binary files for each time zone
  * in the database. {@link DateTimeZoneBuilder} is used to construct and encode
  * compiled data files. {@link ZoneInfoProvider} loads the encoded files and
  * converts them back into {@link DateTimeZone} objects.
  * <p>
  * Although this tool is similar to zic, the binary formats are not
- * compatible. The latest Olson database files may be obtained
- * <a href="http://www.twinsun.com/tz/tz-link.htm">here</a>.
+ * compatible. The latest IANA time zone database files may be obtained
+ * <a href="http://www.iana.org/time-zones">here</a>.
  * <p>
  * ZoneInfoCompiler is mutable and not thread-safe, although the main method
  * may be safely invoked by multiple threads.

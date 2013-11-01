@@ -333,10 +333,9 @@ DateTimeZone zoneUTC = DateTimeZone.forOffsetHours(hours);
 </source>
 </p>
 <p>
-The TimeZone implementation is based on data provided by the public
-<a href="http://www.twinsun.com/tz/tz-link.htm">tz database</a>,
-otherwise known as the Olson database.
-A full list of timezone ids can be found <a href="timezones.html">here</a>
+The time zone implementation is based on data provided by the public
+IANA <a href="http://www.iana.org/time-zones">time zone database</a>.
+A full list of time zone ids can be found <a href="timezones.html">here</a>
 </p>
 <p>
 Joda-Time provides a default time zone which is used in many operations when a

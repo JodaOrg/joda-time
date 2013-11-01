@@ -11,9 +11,9 @@
 
 <section name="Available Time Zones">
 <p>
-Time zone data is provided by the public <a href="http://www.twinsun.com/tz/tz-link.htm">tz</a>
-database, otherwise known as the Olson database. The following table shows all the time zones
-supported by Joda-Time, using version 2010k of the tz database.
+Time zone data is provided by the public IANA <a href="http://www.iana.org/time-zones">time zone database</a>.
+The following table shows all the time zones supported by Joda-Time, using version 2013d
+of the database.
 It is also possible to update to a <a href="tz_update.html">later version of the database</a>.
 This table can be rebuilt by running <code>org.joda.example.time.TimeZoneTable</code>.
 </p>

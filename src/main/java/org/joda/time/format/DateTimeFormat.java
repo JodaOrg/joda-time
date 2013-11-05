@@ -106,11 +106,10 @@ import org.joda.time.ReadablePartial;
  * <p>
  * <strong>Month</strong>: 3 or over, use text, otherwise use number.
  * <p>
- * <strong>Millis</strong>: The exact number of fractional digits. If more
- * millisecond digits are available then specified the number will be
- * truncated, if there are fewer than specified then the number will be
- * zero-padded to the right. When parsing, only the eact number of digits
- * are accepted.
+ * <strong>Millis</strong>: The exact number of fractional digits.
+ * If more millisecond digits are available then specified the number will be truncated,
+ * if there are fewer than specified then the number will be zero-padded to the right.
+ * When parsing, only the exact number of digits are accepted.
  * <p>
  * <strong>Zone</strong>: 'Z' outputs offset without a colon, 'ZZ' outputs
  * the offset with a colon, 'ZZZ' or more outputs the zone id.

@@ -80,7 +80,7 @@ import org.joda.time.ReadablePartial;
  * k       clockhour of day (1~24)      number        24
  * m       minute of hour               number        30
  * s       second of minute             number        55
- * S       fraction of second           number        978
+ * S       fraction of second           millis        978
  *
  * z       time zone                    text          Pacific Standard Time; PST
  * Z       time zone offset/id          zone          -0800; -08:00; America/Los_Angeles
@@ -105,6 +105,12 @@ import org.joda.time.ReadablePartial;
  * digits.
  * <p>
  * <strong>Month</strong>: 3 or over, use text, otherwise use number.
+ * <p>
+ * <strong>Millis</strong>: The exact number of fractional digits. If more
+ * millisecond digits are available then specified the number will be
+ * truncated, if there are fewer than specified then the number will be
+ * zero-padded to the right. When parsing, only the eact number of digits
+ * are accepted.
  * <p>
  * <strong>Zone</strong>: 'Z' outputs offset without a colon, 'ZZ' outputs
  * the offset with a colon, 'ZZZ' or more outputs the zone id.

@@ -181,7 +181,7 @@ public final class Duration
      *
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
-     * @throws ArithmeticException if the duration exceeds a 64 bit long
+     * @throws ArithmeticException if the duration exceeds a 64-bit long
      */
     public Duration(long startInstant, long endInstant) {
         super(startInstant, endInstant);
@@ -192,7 +192,7 @@ public final class Duration
      *
      * @param start  interval start, null means now
      * @param end  interval end, null means now
-     * @throws ArithmeticException if the duration exceeds a 64 bit long
+     * @throws ArithmeticException if the duration exceeds a 64-bit long
      */
     public Duration(ReadableInstant start, ReadableInstant end) {
         super(start, end);

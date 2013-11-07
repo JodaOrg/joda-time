@@ -363,7 +363,7 @@ public final class Duration
 
     //-----------------------------------------------------------------------
     /**
-     * Creates a new Duration instance with a different milisecond length.
+     * Creates a new Duration instance with a different millisecond length.
      * 
      * @param duration  the new length of the duration
      * @return the new duration instance

@@ -171,7 +171,7 @@ public class DateTimeZoneBuilder {
         // Write milliseconds either because the additional precision is
         // required or the minutes didn't fit in the field.
         
-        // Form 11 (64 bits effective precision, but write as if 70 bits)
+        // Form 11 (64-bits effective precision, but write as if 70 bits)
         out.writeByte(millis < 0 ? 0xff : 0xc0);
         out.writeLong(millis);
     }
@@ -205,7 +205,7 @@ public class DateTimeZoneBuilder {
             return w * 1000L;
 
         case 3:
-            // Form 11 (64 bits effective precision)
+            // Form 11 (64-bits effective precision)
             return in.readLong();
         }
     }

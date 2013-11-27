@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2010 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26,8 +26,9 @@ import org.joda.time.field.FieldUtils;
  * <p>
  * A duration is defined by a fixed number of milliseconds.
  * There is no concept of fields, such as days or seconds, as these fields can vary in length.
+ * <p>
  * A duration may be converted to a {@link Period} to obtain field values.
- * This conversion will typically cause a loss of precision, however.
+ * This conversion will typically cause a loss of precision.
  * <p>
  * Duration is thread-safe and immutable.
  *

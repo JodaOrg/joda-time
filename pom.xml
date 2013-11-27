@@ -90,12 +90,12 @@
       <name>Sean Geoghegan</name>
     </contributor>
     <contributor>
-      <name>Vsevolod Ivanov</name>
-      <url>https://github.com/seva-ask</url>
+      <name>haguenau</name>
+      <url>https://github.com/haguenau</url>
     </contributor>
     <contributor>
-      <name>mjunginger</name>
-      <url>https://github.com/mjunginger</url>
+      <name>Vsevolod Ivanov</name>
+      <url>https://github.com/seva-ask</url>
     </contributor>
     <contributor>
       <name>Ashish Katyal</name>
@@ -120,6 +120,10 @@
     </contributor>
     <contributor>
       <name>Kostas Maistrelis</name>
+    </contributor>
+    <contributor>
+      <name>mjunginger</name>
+      <url>https://github.com/mjunginger</url>
     </contributor>
     <contributor>
       <name>Al Major</name>

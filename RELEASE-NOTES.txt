@@ -43,6 +43,8 @@ Semantic compatible - Yes, except
 - DateTimeField duration fields have been fixed
   For example, yearOfEra() now has a range of eras() rather than null
   The DurationField instances now compare using equals() correctly
+- MutableDateTime.add(DateTimeFieldType,int), addDays(int) and friends [#77]
+  Adding zero will no longer change the offset during DST overlap in autumn/fall
 
 
 Deprecations since 2.3
@@ -66,6 +68,10 @@ Bug fixes since 2.3
 - Partial.with(DateTimeFieldType,int) [#88]
   Validation in this method was not as thorough as that in the constructor
   This allowed invalid partials to be created
+
+- MutableDateTime.add(DateTimeFieldType,int), addDays(int) and friends [#77]
+  Adding zero to a MutableDateTime used to change the offset during DST overlap in autumn/fall
+  This is now fixed to not change the offset
 
 - Better Javadoc for parsing of numbers in format patterns [#60]
 

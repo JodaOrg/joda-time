@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -32,7 +32,6 @@ public class TestMutableDateTime_Adds extends TestCase {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
-    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
@@ -173,6 +172,21 @@ public class TestMutableDateTime_Adds extends TestCase {
         assertEquals(2010, test.getYear());
     }
 
+    public void testAdd_DurationFieldType_int_dstOverlapSummer_addZero() {
+        MutableDateTime test = new MutableDateTime(2011, 10, 30, 2, 30, 0, 0, DateTimeZone.forID("Europe/Berlin"));
+        assertEquals("2011-10-30T02:30:00.000+02:00", test.toString());
+        test.add(DurationFieldType.years(), 0);
+        assertEquals("2011-10-30T02:30:00.000+02:00", test.toString());
+    }
+
+    public void testAdd_DurationFieldType_int_dstOverlapWinter_addZero() {
+        MutableDateTime test = new MutableDateTime(2011, 10, 30, 2, 30, 0, 0, DateTimeZone.forID("Europe/Berlin"));
+        test.addHours(1);
+        assertEquals("2011-10-30T02:30:00.000+01:00", test.toString());
+        test.add(DurationFieldType.years(), 0);
+        assertEquals("2011-10-30T02:30:00.000+01:00", test.toString());
+    }
+
     public void testAdd_DurationFieldType_int2() {
         MutableDateTime test = new MutableDateTime(TEST_TIME1);
         try {
@@ -198,6 +212,21 @@ public class TestMutableDateTime_Adds extends TestCase {
         assertEquals("2010-06-09T05:06:07.008+01:00", test.toString());
     }
 
+    public void testAddYears_int_dstOverlapSummer_addZero() {
+        MutableDateTime test = new MutableDateTime(2011, 10, 30, 2, 30, 0, 0, DateTimeZone.forID("Europe/Berlin"));
+        assertEquals("2011-10-30T02:30:00.000+02:00", test.toString());
+        test.addYears(0);
+        assertEquals("2011-10-30T02:30:00.000+02:00", test.toString());
+    }
+
+    public void testAddYears_int_dstOverlapWinter_addZero() {
+        MutableDateTime test = new MutableDateTime(2011, 10, 30, 2, 30, 0, 0, DateTimeZone.forID("Europe/Berlin"));
+        test.addHours(1);
+        assertEquals("2011-10-30T02:30:00.000+01:00", test.toString());
+        test.addYears(0);
+        assertEquals("2011-10-30T02:30:00.000+01:00", test.toString());
+    }
+
     //-----------------------------------------------------------------------
     public void testAddMonths_int1() {
         MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);
@@ -205,11 +234,41 @@ public class TestMutableDateTime_Adds extends TestCase {
         assertEquals("2002-12-09T05:06:07.008Z", test.toString());
     }
 
+    public void testAddMonths_int_dstOverlapSummer_addZero() {
+        MutableDateTime test = new MutableDateTime(2011, 10, 30, 2, 30, 0, 0, DateTimeZone.forID("Europe/Berlin"));
+        assertEquals("2011-10-30T02:30:00.000+02:00", test.toString());
+        test.addMonths(0);
+        assertEquals("2011-10-30T02:30:00.000+02:00", test.toString());
+    }
+
+    public void testAddMonths_int_dstOverlapWinter_addZero() {
+        MutableDateTime test = new MutableDateTime(2011, 10, 30, 2, 30, 0, 0, DateTimeZone.forID("Europe/Berlin"));
+        test.addHours(1);
+        assertEquals("2011-10-30T02:30:00.000+01:00", test.toString());
+        test.addMonths(0);
+        assertEquals("2011-10-30T02:30:00.000+01:00", test.toString());
+    }
+
     //-----------------------------------------------------------------------
     public void testAddDays_int1() {
         MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);
         test.addDays(17);
         assertEquals("2002-06-26T05:06:07.008+01:00", test.toString());
+    }
+
+    public void testAddDays_int_dstOverlapSummer_addZero() {
+        MutableDateTime test = new MutableDateTime(2011, 10, 30, 2, 30, 0, 0, DateTimeZone.forID("Europe/Berlin"));
+        assertEquals("2011-10-30T02:30:00.000+02:00", test.toString());
+        test.addDays(0);
+        assertEquals("2011-10-30T02:30:00.000+02:00", test.toString());
+    }
+
+    public void testAddDays_int_dstOverlapWinter_addZero() {
+        MutableDateTime test = new MutableDateTime(2011, 10, 30, 2, 30, 0, 0, DateTimeZone.forID("Europe/Berlin"));
+        test.addHours(1);
+        assertEquals("2011-10-30T02:30:00.000+01:00", test.toString());
+        test.addDays(0);
+        assertEquals("2011-10-30T02:30:00.000+01:00", test.toString());
     }
 
     //-----------------------------------------------------------------------
@@ -226,11 +285,41 @@ public class TestMutableDateTime_Adds extends TestCase {
         assertEquals("2002-01-13T05:06:07.008Z", test.toString());
     }
 
+    public void testAddWeeks_int_dstOverlapSummer_addZero() {
+        MutableDateTime test = new MutableDateTime(2011, 10, 30, 2, 30, 0, 0, DateTimeZone.forID("Europe/Berlin"));
+        assertEquals("2011-10-30T02:30:00.000+02:00", test.toString());
+        test.addWeeks(0);
+        assertEquals("2011-10-30T02:30:00.000+02:00", test.toString());
+    }
+
+    public void testAddWeeks_int_dstOverlapWinter_addZero() {
+        MutableDateTime test = new MutableDateTime(2011, 10, 30, 2, 30, 0, 0, DateTimeZone.forID("Europe/Berlin"));
+        test.addHours(1);
+        assertEquals("2011-10-30T02:30:00.000+01:00", test.toString());
+        test.addWeeks(0);
+        assertEquals("2011-10-30T02:30:00.000+01:00", test.toString());
+    }
+
     //-----------------------------------------------------------------------
     public void testAddHours_int1() {
         MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);
         test.addHours(13);
         assertEquals("2002-06-09T18:06:07.008+01:00", test.toString());
+    }
+
+    public void testAddHours_int_dstOverlapSummer_addZero() {
+        MutableDateTime test = new MutableDateTime(2011, 10, 30, 2, 30, 0, 0, DateTimeZone.forID("Europe/Berlin"));
+        assertEquals("2011-10-30T02:30:00.000+02:00", test.toString());
+        test.addHours(0);
+        assertEquals("2011-10-30T02:30:00.000+02:00", test.toString());
+    }
+
+    public void testAddHours_int_dstOverlapWinter_addZero() {
+        MutableDateTime test = new MutableDateTime(2011, 10, 30, 2, 30, 0, 0, DateTimeZone.forID("Europe/Berlin"));
+        test.addHours(1);
+        assertEquals("2011-10-30T02:30:00.000+01:00", test.toString());
+        test.addHours(0);
+        assertEquals("2011-10-30T02:30:00.000+01:00", test.toString());
     }
 
     //-----------------------------------------------------------------------
@@ -240,6 +329,21 @@ public class TestMutableDateTime_Adds extends TestCase {
         assertEquals("2002-06-09T05:19:07.008+01:00", test.toString());
     }
 
+    public void testAddMinutes_int_dstOverlapSummer_addZero() {
+        MutableDateTime test = new MutableDateTime(2011, 10, 30, 2, 30, 0, 0, DateTimeZone.forID("Europe/Berlin"));
+        assertEquals("2011-10-30T02:30:00.000+02:00", test.toString());
+        test.addMinutes(0);
+        assertEquals("2011-10-30T02:30:00.000+02:00", test.toString());
+    }
+
+    public void testAddMinutes_int_dstOverlapWinter_addZero() {
+        MutableDateTime test = new MutableDateTime(2011, 10, 30, 2, 30, 0, 0, DateTimeZone.forID("Europe/Berlin"));
+        test.addHours(1);
+        assertEquals("2011-10-30T02:30:00.000+01:00", test.toString());
+        test.addMinutes(0);
+        assertEquals("2011-10-30T02:30:00.000+01:00", test.toString());
+    }
+
     //-----------------------------------------------------------------------
     public void testAddSeconds_int1() {
         MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);
@@ -247,11 +351,41 @@ public class TestMutableDateTime_Adds extends TestCase {
         assertEquals("2002-06-09T05:06:20.008+01:00", test.toString());
     }
 
+    public void testAddSeconds_int_dstOverlapSummer_addZero() {
+        MutableDateTime test = new MutableDateTime(2011, 10, 30, 2, 30, 0, 0, DateTimeZone.forID("Europe/Berlin"));
+        assertEquals("2011-10-30T02:30:00.000+02:00", test.toString());
+        test.addSeconds(0);
+        assertEquals("2011-10-30T02:30:00.000+02:00", test.toString());
+    }
+
+    public void testAddSeconds_int_dstOverlapWinter_addZero() {
+        MutableDateTime test = new MutableDateTime(2011, 10, 30, 2, 30, 0, 0, DateTimeZone.forID("Europe/Berlin"));
+        test.addHours(1);
+        assertEquals("2011-10-30T02:30:00.000+01:00", test.toString());
+        test.addSeconds(0);
+        assertEquals("2011-10-30T02:30:00.000+01:00", test.toString());
+    }
+
     //-----------------------------------------------------------------------
     public void testAddMillis_int1() {
         MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);
         test.addMillis(13);
         assertEquals("2002-06-09T05:06:07.021+01:00", test.toString());
+    }
+
+    public void testAddMillis_int_dstOverlapSummer_addZero() {
+        MutableDateTime test = new MutableDateTime(2011, 10, 30, 2, 30, 0, 0, DateTimeZone.forID("Europe/Berlin"));
+        assertEquals("2011-10-30T02:30:00.000+02:00", test.toString());
+        test.addMillis(0);
+        assertEquals("2011-10-30T02:30:00.000+02:00", test.toString());
+    }
+
+    public void testAddMillis_int_dstOverlapWinter_addZero() {
+        MutableDateTime test = new MutableDateTime(2011, 10, 30, 2, 30, 0, 0, DateTimeZone.forID("Europe/Berlin"));
+        test.addHours(1);
+        assertEquals("2011-10-30T02:30:00.000+01:00", test.toString());
+        test.addMillis(0);
+        assertEquals("2011-10-30T02:30:00.000+01:00", test.toString());
     }
 
 }

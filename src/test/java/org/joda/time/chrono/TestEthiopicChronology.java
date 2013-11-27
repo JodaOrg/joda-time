@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -146,122 +146,127 @@ public class TestEthiopicChronology extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testDurationFields() {
-        assertEquals("eras", EthiopicChronology.getInstance().eras().getName());
-        assertEquals("centuries", EthiopicChronology.getInstance().centuries().getName());
-        assertEquals("years", EthiopicChronology.getInstance().years().getName());
-        assertEquals("weekyears", EthiopicChronology.getInstance().weekyears().getName());
-        assertEquals("months", EthiopicChronology.getInstance().months().getName());
-        assertEquals("weeks", EthiopicChronology.getInstance().weeks().getName());
-        assertEquals("days", EthiopicChronology.getInstance().days().getName());
-        assertEquals("halfdays", EthiopicChronology.getInstance().halfdays().getName());
-        assertEquals("hours", EthiopicChronology.getInstance().hours().getName());
-        assertEquals("minutes", EthiopicChronology.getInstance().minutes().getName());
-        assertEquals("seconds", EthiopicChronology.getInstance().seconds().getName());
-        assertEquals("millis", EthiopicChronology.getInstance().millis().getName());
+        final EthiopicChronology ethiopic = EthiopicChronology.getInstance();
+        assertEquals("eras", ethiopic.eras().getName());
+        assertEquals("centuries", ethiopic.centuries().getName());
+        assertEquals("years", ethiopic.years().getName());
+        assertEquals("weekyears", ethiopic.weekyears().getName());
+        assertEquals("months", ethiopic.months().getName());
+        assertEquals("weeks", ethiopic.weeks().getName());
+        assertEquals("days", ethiopic.days().getName());
+        assertEquals("halfdays", ethiopic.halfdays().getName());
+        assertEquals("hours", ethiopic.hours().getName());
+        assertEquals("minutes", ethiopic.minutes().getName());
+        assertEquals("seconds", ethiopic.seconds().getName());
+        assertEquals("millis", ethiopic.millis().getName());
         
-        assertEquals(false, EthiopicChronology.getInstance().eras().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().centuries().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().years().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().weekyears().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().months().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().weeks().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().days().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().halfdays().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().hours().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().minutes().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().seconds().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().millis().isSupported());
+        assertEquals(false, ethiopic.eras().isSupported());
+        assertEquals(true, ethiopic.centuries().isSupported());
+        assertEquals(true, ethiopic.years().isSupported());
+        assertEquals(true, ethiopic.weekyears().isSupported());
+        assertEquals(true, ethiopic.months().isSupported());
+        assertEquals(true, ethiopic.weeks().isSupported());
+        assertEquals(true, ethiopic.days().isSupported());
+        assertEquals(true, ethiopic.halfdays().isSupported());
+        assertEquals(true, ethiopic.hours().isSupported());
+        assertEquals(true, ethiopic.minutes().isSupported());
+        assertEquals(true, ethiopic.seconds().isSupported());
+        assertEquals(true, ethiopic.millis().isSupported());
         
-        assertEquals(false, EthiopicChronology.getInstance().centuries().isPrecise());
-        assertEquals(false, EthiopicChronology.getInstance().years().isPrecise());
-        assertEquals(false, EthiopicChronology.getInstance().weekyears().isPrecise());
-        assertEquals(false, EthiopicChronology.getInstance().months().isPrecise());
-        assertEquals(false, EthiopicChronology.getInstance().weeks().isPrecise());
-        assertEquals(false, EthiopicChronology.getInstance().days().isPrecise());
-        assertEquals(false, EthiopicChronology.getInstance().halfdays().isPrecise());
-        assertEquals(true, EthiopicChronology.getInstance().hours().isPrecise());
-        assertEquals(true, EthiopicChronology.getInstance().minutes().isPrecise());
-        assertEquals(true, EthiopicChronology.getInstance().seconds().isPrecise());
-        assertEquals(true, EthiopicChronology.getInstance().millis().isPrecise());
+        assertEquals(false, ethiopic.centuries().isPrecise());
+        assertEquals(false, ethiopic.years().isPrecise());
+        assertEquals(false, ethiopic.weekyears().isPrecise());
+        assertEquals(false, ethiopic.months().isPrecise());
+        assertEquals(false, ethiopic.weeks().isPrecise());
+        assertEquals(false, ethiopic.days().isPrecise());
+        assertEquals(false, ethiopic.halfdays().isPrecise());
+        assertEquals(true, ethiopic.hours().isPrecise());
+        assertEquals(true, ethiopic.minutes().isPrecise());
+        assertEquals(true, ethiopic.seconds().isPrecise());
+        assertEquals(true, ethiopic.millis().isPrecise());
         
-        assertEquals(false, EthiopicChronology.getInstanceUTC().centuries().isPrecise());
-        assertEquals(false, EthiopicChronology.getInstanceUTC().years().isPrecise());
-        assertEquals(false, EthiopicChronology.getInstanceUTC().weekyears().isPrecise());
-        assertEquals(false, EthiopicChronology.getInstanceUTC().months().isPrecise());
-        assertEquals(true, EthiopicChronology.getInstanceUTC().weeks().isPrecise());
-        assertEquals(true, EthiopicChronology.getInstanceUTC().days().isPrecise());
-        assertEquals(true, EthiopicChronology.getInstanceUTC().halfdays().isPrecise());
-        assertEquals(true, EthiopicChronology.getInstanceUTC().hours().isPrecise());
-        assertEquals(true, EthiopicChronology.getInstanceUTC().minutes().isPrecise());
-        assertEquals(true, EthiopicChronology.getInstanceUTC().seconds().isPrecise());
-        assertEquals(true, EthiopicChronology.getInstanceUTC().millis().isPrecise());
+        final EthiopicChronology ethiopicUTC = EthiopicChronology.getInstanceUTC();
+        assertEquals(false, ethiopicUTC.centuries().isPrecise());
+        assertEquals(false, ethiopicUTC.years().isPrecise());
+        assertEquals(false, ethiopicUTC.weekyears().isPrecise());
+        assertEquals(false, ethiopicUTC.months().isPrecise());
+        assertEquals(true, ethiopicUTC.weeks().isPrecise());
+        assertEquals(true, ethiopicUTC.days().isPrecise());
+        assertEquals(true, ethiopicUTC.halfdays().isPrecise());
+        assertEquals(true, ethiopicUTC.hours().isPrecise());
+        assertEquals(true, ethiopicUTC.minutes().isPrecise());
+        assertEquals(true, ethiopicUTC.seconds().isPrecise());
+        assertEquals(true, ethiopicUTC.millis().isPrecise());
         
-        DateTimeZone gmt = DateTimeZone.forID("Etc/GMT");
-        assertEquals(false, EthiopicChronology.getInstance(gmt).centuries().isPrecise());
-        assertEquals(false, EthiopicChronology.getInstance(gmt).years().isPrecise());
-        assertEquals(false, EthiopicChronology.getInstance(gmt).weekyears().isPrecise());
-        assertEquals(false, EthiopicChronology.getInstance(gmt).months().isPrecise());
-        assertEquals(true, EthiopicChronology.getInstance(gmt).weeks().isPrecise());
-        assertEquals(true, EthiopicChronology.getInstance(gmt).days().isPrecise());
-        assertEquals(true, EthiopicChronology.getInstance(gmt).halfdays().isPrecise());
-        assertEquals(true, EthiopicChronology.getInstance(gmt).hours().isPrecise());
-        assertEquals(true, EthiopicChronology.getInstance(gmt).minutes().isPrecise());
-        assertEquals(true, EthiopicChronology.getInstance(gmt).seconds().isPrecise());
-        assertEquals(true, EthiopicChronology.getInstance(gmt).millis().isPrecise());
+        final DateTimeZone gmt = DateTimeZone.forID("Etc/GMT");
+        final EthiopicChronology ethiopicGMT = EthiopicChronology.getInstance(gmt);
+        assertEquals(false, ethiopicGMT.centuries().isPrecise());
+        assertEquals(false, ethiopicGMT.years().isPrecise());
+        assertEquals(false, ethiopicGMT.weekyears().isPrecise());
+        assertEquals(false, ethiopicGMT.months().isPrecise());
+        assertEquals(true, ethiopicGMT.weeks().isPrecise());
+        assertEquals(true, ethiopicGMT.days().isPrecise());
+        assertEquals(true, ethiopicGMT.halfdays().isPrecise());
+        assertEquals(true, ethiopicGMT.hours().isPrecise());
+        assertEquals(true, ethiopicGMT.minutes().isPrecise());
+        assertEquals(true, ethiopicGMT.seconds().isPrecise());
+        assertEquals(true, ethiopicGMT.millis().isPrecise());
     }
 
     public void testDateFields() {
-        assertEquals("era", EthiopicChronology.getInstance().era().getName());
-        assertEquals("centuryOfEra", EthiopicChronology.getInstance().centuryOfEra().getName());
-        assertEquals("yearOfCentury", EthiopicChronology.getInstance().yearOfCentury().getName());
-        assertEquals("yearOfEra", EthiopicChronology.getInstance().yearOfEra().getName());
-        assertEquals("year", EthiopicChronology.getInstance().year().getName());
-        assertEquals("monthOfYear", EthiopicChronology.getInstance().monthOfYear().getName());
-        assertEquals("weekyearOfCentury", EthiopicChronology.getInstance().weekyearOfCentury().getName());
-        assertEquals("weekyear", EthiopicChronology.getInstance().weekyear().getName());
-        assertEquals("weekOfWeekyear", EthiopicChronology.getInstance().weekOfWeekyear().getName());
-        assertEquals("dayOfYear", EthiopicChronology.getInstance().dayOfYear().getName());
-        assertEquals("dayOfMonth", EthiopicChronology.getInstance().dayOfMonth().getName());
-        assertEquals("dayOfWeek", EthiopicChronology.getInstance().dayOfWeek().getName());
+        final EthiopicChronology ethiopic = EthiopicChronology.getInstance();
+        assertEquals("era", ethiopic.era().getName());
+        assertEquals("centuryOfEra", ethiopic.centuryOfEra().getName());
+        assertEquals("yearOfCentury", ethiopic.yearOfCentury().getName());
+        assertEquals("yearOfEra", ethiopic.yearOfEra().getName());
+        assertEquals("year", ethiopic.year().getName());
+        assertEquals("monthOfYear", ethiopic.monthOfYear().getName());
+        assertEquals("weekyearOfCentury", ethiopic.weekyearOfCentury().getName());
+        assertEquals("weekyear", ethiopic.weekyear().getName());
+        assertEquals("weekOfWeekyear", ethiopic.weekOfWeekyear().getName());
+        assertEquals("dayOfYear", ethiopic.dayOfYear().getName());
+        assertEquals("dayOfMonth", ethiopic.dayOfMonth().getName());
+        assertEquals("dayOfWeek", ethiopic.dayOfWeek().getName());
         
-        assertEquals(true, EthiopicChronology.getInstance().era().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().centuryOfEra().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().yearOfCentury().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().yearOfEra().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().year().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().monthOfYear().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().weekyearOfCentury().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().weekyear().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().weekOfWeekyear().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().dayOfYear().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().dayOfMonth().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().dayOfWeek().isSupported());
+        assertEquals(true, ethiopic.era().isSupported());
+        assertEquals(true, ethiopic.centuryOfEra().isSupported());
+        assertEquals(true, ethiopic.yearOfCentury().isSupported());
+        assertEquals(true, ethiopic.yearOfEra().isSupported());
+        assertEquals(true, ethiopic.year().isSupported());
+        assertEquals(true, ethiopic.monthOfYear().isSupported());
+        assertEquals(true, ethiopic.weekyearOfCentury().isSupported());
+        assertEquals(true, ethiopic.weekyear().isSupported());
+        assertEquals(true, ethiopic.weekOfWeekyear().isSupported());
+        assertEquals(true, ethiopic.dayOfYear().isSupported());
+        assertEquals(true, ethiopic.dayOfMonth().isSupported());
+        assertEquals(true, ethiopic.dayOfWeek().isSupported());
     }
 
     public void testTimeFields() {
-        assertEquals("halfdayOfDay", EthiopicChronology.getInstance().halfdayOfDay().getName());
-        assertEquals("clockhourOfHalfday", EthiopicChronology.getInstance().clockhourOfHalfday().getName());
-        assertEquals("hourOfHalfday", EthiopicChronology.getInstance().hourOfHalfday().getName());
-        assertEquals("clockhourOfDay", EthiopicChronology.getInstance().clockhourOfDay().getName());
-        assertEquals("hourOfDay", EthiopicChronology.getInstance().hourOfDay().getName());
-        assertEquals("minuteOfDay", EthiopicChronology.getInstance().minuteOfDay().getName());
-        assertEquals("minuteOfHour", EthiopicChronology.getInstance().minuteOfHour().getName());
-        assertEquals("secondOfDay", EthiopicChronology.getInstance().secondOfDay().getName());
-        assertEquals("secondOfMinute", EthiopicChronology.getInstance().secondOfMinute().getName());
-        assertEquals("millisOfDay", EthiopicChronology.getInstance().millisOfDay().getName());
-        assertEquals("millisOfSecond", EthiopicChronology.getInstance().millisOfSecond().getName());
+        final EthiopicChronology ethiopic = EthiopicChronology.getInstance();
+        assertEquals("halfdayOfDay", ethiopic.halfdayOfDay().getName());
+        assertEquals("clockhourOfHalfday", ethiopic.clockhourOfHalfday().getName());
+        assertEquals("hourOfHalfday", ethiopic.hourOfHalfday().getName());
+        assertEquals("clockhourOfDay", ethiopic.clockhourOfDay().getName());
+        assertEquals("hourOfDay", ethiopic.hourOfDay().getName());
+        assertEquals("minuteOfDay", ethiopic.minuteOfDay().getName());
+        assertEquals("minuteOfHour", ethiopic.minuteOfHour().getName());
+        assertEquals("secondOfDay", ethiopic.secondOfDay().getName());
+        assertEquals("secondOfMinute", ethiopic.secondOfMinute().getName());
+        assertEquals("millisOfDay", ethiopic.millisOfDay().getName());
+        assertEquals("millisOfSecond", ethiopic.millisOfSecond().getName());
         
-        assertEquals(true, EthiopicChronology.getInstance().halfdayOfDay().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().clockhourOfHalfday().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().hourOfHalfday().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().clockhourOfDay().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().hourOfDay().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().minuteOfDay().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().minuteOfHour().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().secondOfDay().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().secondOfMinute().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().millisOfDay().isSupported());
-        assertEquals(true, EthiopicChronology.getInstance().millisOfSecond().isSupported());
+        assertEquals(true, ethiopic.halfdayOfDay().isSupported());
+        assertEquals(true, ethiopic.clockhourOfHalfday().isSupported());
+        assertEquals(true, ethiopic.hourOfHalfday().isSupported());
+        assertEquals(true, ethiopic.clockhourOfDay().isSupported());
+        assertEquals(true, ethiopic.hourOfDay().isSupported());
+        assertEquals(true, ethiopic.minuteOfDay().isSupported());
+        assertEquals(true, ethiopic.minuteOfHour().isSupported());
+        assertEquals(true, ethiopic.secondOfDay().isSupported());
+        assertEquals(true, ethiopic.secondOfMinute().isSupported());
+        assertEquals(true, ethiopic.millisOfDay().isSupported());
+        assertEquals(true, ethiopic.millisOfSecond().isSupported());
     }
 
     //-----------------------------------------------------------------------

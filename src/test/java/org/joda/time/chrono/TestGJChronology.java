@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -39,6 +39,7 @@ import org.joda.time.YearMonthDay;
  *
  * @author Stephen Colebourne
  */
+@SuppressWarnings("deprecation")
 public class TestGJChronology extends TestCase {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
@@ -195,122 +196,127 @@ public class TestGJChronology extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testDurationFields() {
-        assertEquals("eras", GJChronology.getInstance().eras().getName());
-        assertEquals("centuries", GJChronology.getInstance().centuries().getName());
-        assertEquals("years", GJChronology.getInstance().years().getName());
-        assertEquals("weekyears", GJChronology.getInstance().weekyears().getName());
-        assertEquals("months", GJChronology.getInstance().months().getName());
-        assertEquals("weeks", GJChronology.getInstance().weeks().getName());
-        assertEquals("halfdays", GJChronology.getInstance().halfdays().getName());
-        assertEquals("days", GJChronology.getInstance().days().getName());
-        assertEquals("hours", GJChronology.getInstance().hours().getName());
-        assertEquals("minutes", GJChronology.getInstance().minutes().getName());
-        assertEquals("seconds", GJChronology.getInstance().seconds().getName());
-        assertEquals("millis", GJChronology.getInstance().millis().getName());
+        final GJChronology gj = GJChronology.getInstance();
+        assertEquals("eras", gj.eras().getName());
+        assertEquals("centuries", gj.centuries().getName());
+        assertEquals("years", gj.years().getName());
+        assertEquals("weekyears", gj.weekyears().getName());
+        assertEquals("months", gj.months().getName());
+        assertEquals("weeks", gj.weeks().getName());
+        assertEquals("halfdays", gj.halfdays().getName());
+        assertEquals("days", gj.days().getName());
+        assertEquals("hours", gj.hours().getName());
+        assertEquals("minutes", gj.minutes().getName());
+        assertEquals("seconds", gj.seconds().getName());
+        assertEquals("millis", gj.millis().getName());
         
-        assertEquals(false, GJChronology.getInstance().eras().isSupported());
-        assertEquals(true, GJChronology.getInstance().centuries().isSupported());
-        assertEquals(true, GJChronology.getInstance().years().isSupported());
-        assertEquals(true, GJChronology.getInstance().weekyears().isSupported());
-        assertEquals(true, GJChronology.getInstance().months().isSupported());
-        assertEquals(true, GJChronology.getInstance().weeks().isSupported());
-        assertEquals(true, GJChronology.getInstance().days().isSupported());
-        assertEquals(true, GJChronology.getInstance().halfdays().isSupported());
-        assertEquals(true, GJChronology.getInstance().hours().isSupported());
-        assertEquals(true, GJChronology.getInstance().minutes().isSupported());
-        assertEquals(true, GJChronology.getInstance().seconds().isSupported());
-        assertEquals(true, GJChronology.getInstance().millis().isSupported());
+        assertEquals(false, gj.eras().isSupported());
+        assertEquals(true, gj.centuries().isSupported());
+        assertEquals(true, gj.years().isSupported());
+        assertEquals(true, gj.weekyears().isSupported());
+        assertEquals(true, gj.months().isSupported());
+        assertEquals(true, gj.weeks().isSupported());
+        assertEquals(true, gj.days().isSupported());
+        assertEquals(true, gj.halfdays().isSupported());
+        assertEquals(true, gj.hours().isSupported());
+        assertEquals(true, gj.minutes().isSupported());
+        assertEquals(true, gj.seconds().isSupported());
+        assertEquals(true, gj.millis().isSupported());
         
-        assertEquals(false, GJChronology.getInstance().centuries().isPrecise());
-        assertEquals(false, GJChronology.getInstance().years().isPrecise());
-        assertEquals(false, GJChronology.getInstance().weekyears().isPrecise());
-        assertEquals(false, GJChronology.getInstance().months().isPrecise());
-        assertEquals(false, GJChronology.getInstance().weeks().isPrecise());
-        assertEquals(false, GJChronology.getInstance().days().isPrecise());
-        assertEquals(false, GJChronology.getInstance().halfdays().isPrecise());
-        assertEquals(true, GJChronology.getInstance().hours().isPrecise());
-        assertEquals(true, GJChronology.getInstance().minutes().isPrecise());
-        assertEquals(true, GJChronology.getInstance().seconds().isPrecise());
-        assertEquals(true, GJChronology.getInstance().millis().isPrecise());
+        assertEquals(false, gj.centuries().isPrecise());
+        assertEquals(false, gj.years().isPrecise());
+        assertEquals(false, gj.weekyears().isPrecise());
+        assertEquals(false, gj.months().isPrecise());
+        assertEquals(false, gj.weeks().isPrecise());
+        assertEquals(false, gj.days().isPrecise());
+        assertEquals(false, gj.halfdays().isPrecise());
+        assertEquals(true, gj.hours().isPrecise());
+        assertEquals(true, gj.minutes().isPrecise());
+        assertEquals(true, gj.seconds().isPrecise());
+        assertEquals(true, gj.millis().isPrecise());
         
-        assertEquals(false, GJChronology.getInstanceUTC().centuries().isPrecise());
-        assertEquals(false, GJChronology.getInstanceUTC().years().isPrecise());
-        assertEquals(false, GJChronology.getInstanceUTC().weekyears().isPrecise());
-        assertEquals(false, GJChronology.getInstanceUTC().months().isPrecise());
-        assertEquals(true, GJChronology.getInstanceUTC().weeks().isPrecise());
-        assertEquals(true, GJChronology.getInstanceUTC().days().isPrecise());
-        assertEquals(true, GJChronology.getInstanceUTC().halfdays().isPrecise());
-        assertEquals(true, GJChronology.getInstanceUTC().hours().isPrecise());
-        assertEquals(true, GJChronology.getInstanceUTC().minutes().isPrecise());
-        assertEquals(true, GJChronology.getInstanceUTC().seconds().isPrecise());
-        assertEquals(true, GJChronology.getInstanceUTC().millis().isPrecise());
+        final GJChronology gjUTC = GJChronology.getInstanceUTC();
+        assertEquals(false, gjUTC.centuries().isPrecise());
+        assertEquals(false, gjUTC.years().isPrecise());
+        assertEquals(false, gjUTC.weekyears().isPrecise());
+        assertEquals(false, gjUTC.months().isPrecise());
+        assertEquals(true, gjUTC.weeks().isPrecise());
+        assertEquals(true, gjUTC.days().isPrecise());
+        assertEquals(true, gjUTC.halfdays().isPrecise());
+        assertEquals(true, gjUTC.hours().isPrecise());
+        assertEquals(true, gjUTC.minutes().isPrecise());
+        assertEquals(true, gjUTC.seconds().isPrecise());
+        assertEquals(true, gjUTC.millis().isPrecise());
         
-        DateTimeZone gmt = DateTimeZone.forID("Etc/GMT");
-        assertEquals(false, GJChronology.getInstance(gmt).centuries().isPrecise());
-        assertEquals(false, GJChronology.getInstance(gmt).years().isPrecise());
-        assertEquals(false, GJChronology.getInstance(gmt).weekyears().isPrecise());
-        assertEquals(false, GJChronology.getInstance(gmt).months().isPrecise());
-        assertEquals(true, GJChronology.getInstance(gmt).weeks().isPrecise());
-        assertEquals(true, GJChronology.getInstance(gmt).days().isPrecise());
-        assertEquals(true, GJChronology.getInstance(gmt).halfdays().isPrecise());
-        assertEquals(true, GJChronology.getInstance(gmt).hours().isPrecise());
-        assertEquals(true, GJChronology.getInstance(gmt).minutes().isPrecise());
-        assertEquals(true, GJChronology.getInstance(gmt).seconds().isPrecise());
-        assertEquals(true, GJChronology.getInstance(gmt).millis().isPrecise());
+        final DateTimeZone gmt = DateTimeZone.forID("Etc/GMT");
+        final GJChronology gjGMT = GJChronology.getInstance(gmt);
+        assertEquals(false, gjGMT.centuries().isPrecise());
+        assertEquals(false, gjGMT.years().isPrecise());
+        assertEquals(false, gjGMT.weekyears().isPrecise());
+        assertEquals(false, gjGMT.months().isPrecise());
+        assertEquals(true, gjGMT.weeks().isPrecise());
+        assertEquals(true, gjGMT.days().isPrecise());
+        assertEquals(true, gjGMT.halfdays().isPrecise());
+        assertEquals(true, gjGMT.hours().isPrecise());
+        assertEquals(true, gjGMT.minutes().isPrecise());
+        assertEquals(true, gjGMT.seconds().isPrecise());
+        assertEquals(true, gjGMT.millis().isPrecise());
     }
 
     public void testDateFields() {
-        assertEquals("era", GJChronology.getInstance().era().getName());
-        assertEquals("centuryOfEra", GJChronology.getInstance().centuryOfEra().getName());
-        assertEquals("yearOfCentury", GJChronology.getInstance().yearOfCentury().getName());
-        assertEquals("yearOfEra", GJChronology.getInstance().yearOfEra().getName());
-        assertEquals("year", GJChronology.getInstance().year().getName());
-        assertEquals("monthOfYear", GJChronology.getInstance().monthOfYear().getName());
-        assertEquals("weekyearOfCentury", GJChronology.getInstance().weekyearOfCentury().getName());
-        assertEquals("weekyear", GJChronology.getInstance().weekyear().getName());
-        assertEquals("weekOfWeekyear", GJChronology.getInstance().weekOfWeekyear().getName());
-        assertEquals("dayOfYear", GJChronology.getInstance().dayOfYear().getName());
-        assertEquals("dayOfMonth", GJChronology.getInstance().dayOfMonth().getName());
-        assertEquals("dayOfWeek", GJChronology.getInstance().dayOfWeek().getName());
+        final GJChronology gj = GJChronology.getInstance();
+        assertEquals("era", gj.era().getName());
+        assertEquals("centuryOfEra", gj.centuryOfEra().getName());
+        assertEquals("yearOfCentury", gj.yearOfCentury().getName());
+        assertEquals("yearOfEra", gj.yearOfEra().getName());
+        assertEquals("year", gj.year().getName());
+        assertEquals("monthOfYear", gj.monthOfYear().getName());
+        assertEquals("weekyearOfCentury", gj.weekyearOfCentury().getName());
+        assertEquals("weekyear", gj.weekyear().getName());
+        assertEquals("weekOfWeekyear", gj.weekOfWeekyear().getName());
+        assertEquals("dayOfYear", gj.dayOfYear().getName());
+        assertEquals("dayOfMonth", gj.dayOfMonth().getName());
+        assertEquals("dayOfWeek", gj.dayOfWeek().getName());
         
-        assertEquals(true, GJChronology.getInstance().era().isSupported());
-        assertEquals(true, GJChronology.getInstance().centuryOfEra().isSupported());
-        assertEquals(true, GJChronology.getInstance().yearOfCentury().isSupported());
-        assertEquals(true, GJChronology.getInstance().yearOfEra().isSupported());
-        assertEquals(true, GJChronology.getInstance().year().isSupported());
-        assertEquals(true, GJChronology.getInstance().monthOfYear().isSupported());
-        assertEquals(true, GJChronology.getInstance().weekyearOfCentury().isSupported());
-        assertEquals(true, GJChronology.getInstance().weekyear().isSupported());
-        assertEquals(true, GJChronology.getInstance().weekOfWeekyear().isSupported());
-        assertEquals(true, GJChronology.getInstance().dayOfYear().isSupported());
-        assertEquals(true, GJChronology.getInstance().dayOfMonth().isSupported());
-        assertEquals(true, GJChronology.getInstance().dayOfWeek().isSupported());
+        assertEquals(true, gj.era().isSupported());
+        assertEquals(true, gj.centuryOfEra().isSupported());
+        assertEquals(true, gj.yearOfCentury().isSupported());
+        assertEquals(true, gj.yearOfEra().isSupported());
+        assertEquals(true, gj.year().isSupported());
+        assertEquals(true, gj.monthOfYear().isSupported());
+        assertEquals(true, gj.weekyearOfCentury().isSupported());
+        assertEquals(true, gj.weekyear().isSupported());
+        assertEquals(true, gj.weekOfWeekyear().isSupported());
+        assertEquals(true, gj.dayOfYear().isSupported());
+        assertEquals(true, gj.dayOfMonth().isSupported());
+        assertEquals(true, gj.dayOfWeek().isSupported());
     }
 
     public void testTimeFields() {
-        assertEquals("halfdayOfDay", GJChronology.getInstance().halfdayOfDay().getName());
-        assertEquals("clockhourOfHalfday", GJChronology.getInstance().clockhourOfHalfday().getName());
-        assertEquals("hourOfHalfday", GJChronology.getInstance().hourOfHalfday().getName());
-        assertEquals("clockhourOfDay", GJChronology.getInstance().clockhourOfDay().getName());
-        assertEquals("hourOfDay", GJChronology.getInstance().hourOfDay().getName());
-        assertEquals("minuteOfDay", GJChronology.getInstance().minuteOfDay().getName());
-        assertEquals("minuteOfHour", GJChronology.getInstance().minuteOfHour().getName());
-        assertEquals("secondOfDay", GJChronology.getInstance().secondOfDay().getName());
-        assertEquals("secondOfMinute", GJChronology.getInstance().secondOfMinute().getName());
-        assertEquals("millisOfDay", GJChronology.getInstance().millisOfDay().getName());
-        assertEquals("millisOfSecond", GJChronology.getInstance().millisOfSecond().getName());
+        final GJChronology gj = GJChronology.getInstance();
+        assertEquals("halfdayOfDay", gj.halfdayOfDay().getName());
+        assertEquals("clockhourOfHalfday", gj.clockhourOfHalfday().getName());
+        assertEquals("hourOfHalfday", gj.hourOfHalfday().getName());
+        assertEquals("clockhourOfDay", gj.clockhourOfDay().getName());
+        assertEquals("hourOfDay", gj.hourOfDay().getName());
+        assertEquals("minuteOfDay", gj.minuteOfDay().getName());
+        assertEquals("minuteOfHour", gj.minuteOfHour().getName());
+        assertEquals("secondOfDay", gj.secondOfDay().getName());
+        assertEquals("secondOfMinute", gj.secondOfMinute().getName());
+        assertEquals("millisOfDay", gj.millisOfDay().getName());
+        assertEquals("millisOfSecond", gj.millisOfSecond().getName());
         
-        assertEquals(true, GJChronology.getInstance().halfdayOfDay().isSupported());
-        assertEquals(true, GJChronology.getInstance().clockhourOfHalfday().isSupported());
-        assertEquals(true, GJChronology.getInstance().hourOfHalfday().isSupported());
-        assertEquals(true, GJChronology.getInstance().clockhourOfDay().isSupported());
-        assertEquals(true, GJChronology.getInstance().hourOfDay().isSupported());
-        assertEquals(true, GJChronology.getInstance().minuteOfDay().isSupported());
-        assertEquals(true, GJChronology.getInstance().minuteOfHour().isSupported());
-        assertEquals(true, GJChronology.getInstance().secondOfDay().isSupported());
-        assertEquals(true, GJChronology.getInstance().secondOfMinute().isSupported());
-        assertEquals(true, GJChronology.getInstance().millisOfDay().isSupported());
-        assertEquals(true, GJChronology.getInstance().millisOfSecond().isSupported());
+        assertEquals(true, gj.halfdayOfDay().isSupported());
+        assertEquals(true, gj.clockhourOfHalfday().isSupported());
+        assertEquals(true, gj.hourOfHalfday().isSupported());
+        assertEquals(true, gj.clockhourOfDay().isSupported());
+        assertEquals(true, gj.hourOfDay().isSupported());
+        assertEquals(true, gj.minuteOfDay().isSupported());
+        assertEquals(true, gj.minuteOfHour().isSupported());
+        assertEquals(true, gj.secondOfDay().isSupported());
+        assertEquals(true, gj.secondOfMinute().isSupported());
+        assertEquals(true, gj.millisOfDay().isSupported());
+        assertEquals(true, gj.millisOfSecond().isSupported());
     }
 
     public void testIllegalDates() {

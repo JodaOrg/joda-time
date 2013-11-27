@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -148,122 +148,127 @@ public class TestJulianChronology extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testDurationFields() {
-        assertEquals("eras", JulianChronology.getInstance().eras().getName());
-        assertEquals("centuries", JulianChronology.getInstance().centuries().getName());
-        assertEquals("years", JulianChronology.getInstance().years().getName());
-        assertEquals("weekyears", JulianChronology.getInstance().weekyears().getName());
-        assertEquals("months", JulianChronology.getInstance().months().getName());
-        assertEquals("weeks", JulianChronology.getInstance().weeks().getName());
-        assertEquals("days", JulianChronology.getInstance().days().getName());
-        assertEquals("halfdays", JulianChronology.getInstance().halfdays().getName());
-        assertEquals("hours", JulianChronology.getInstance().hours().getName());
-        assertEquals("minutes", JulianChronology.getInstance().minutes().getName());
-        assertEquals("seconds", JulianChronology.getInstance().seconds().getName());
-        assertEquals("millis", JulianChronology.getInstance().millis().getName());
+        final JulianChronology julian = JulianChronology.getInstance();
+        assertEquals("eras", julian.eras().getName());
+        assertEquals("centuries", julian.centuries().getName());
+        assertEquals("years", julian.years().getName());
+        assertEquals("weekyears", julian.weekyears().getName());
+        assertEquals("months", julian.months().getName());
+        assertEquals("weeks", julian.weeks().getName());
+        assertEquals("days", julian.days().getName());
+        assertEquals("halfdays", julian.halfdays().getName());
+        assertEquals("hours", julian.hours().getName());
+        assertEquals("minutes", julian.minutes().getName());
+        assertEquals("seconds", julian.seconds().getName());
+        assertEquals("millis", julian.millis().getName());
         
-        assertEquals(false, JulianChronology.getInstance().eras().isSupported());
-        assertEquals(true, JulianChronology.getInstance().centuries().isSupported());
-        assertEquals(true, JulianChronology.getInstance().years().isSupported());
-        assertEquals(true, JulianChronology.getInstance().weekyears().isSupported());
-        assertEquals(true, JulianChronology.getInstance().months().isSupported());
-        assertEquals(true, JulianChronology.getInstance().weeks().isSupported());
-        assertEquals(true, JulianChronology.getInstance().days().isSupported());
-        assertEquals(true, JulianChronology.getInstance().halfdays().isSupported());
-        assertEquals(true, JulianChronology.getInstance().hours().isSupported());
-        assertEquals(true, JulianChronology.getInstance().minutes().isSupported());
-        assertEquals(true, JulianChronology.getInstance().seconds().isSupported());
-        assertEquals(true, JulianChronology.getInstance().millis().isSupported());
+        assertEquals(false, julian.eras().isSupported());
+        assertEquals(true, julian.centuries().isSupported());
+        assertEquals(true, julian.years().isSupported());
+        assertEquals(true, julian.weekyears().isSupported());
+        assertEquals(true, julian.months().isSupported());
+        assertEquals(true, julian.weeks().isSupported());
+        assertEquals(true, julian.days().isSupported());
+        assertEquals(true, julian.halfdays().isSupported());
+        assertEquals(true, julian.hours().isSupported());
+        assertEquals(true, julian.minutes().isSupported());
+        assertEquals(true, julian.seconds().isSupported());
+        assertEquals(true, julian.millis().isSupported());
         
-        assertEquals(false, JulianChronology.getInstance().centuries().isPrecise());
-        assertEquals(false, JulianChronology.getInstance().years().isPrecise());
-        assertEquals(false, JulianChronology.getInstance().weekyears().isPrecise());
-        assertEquals(false, JulianChronology.getInstance().months().isPrecise());
-        assertEquals(false, JulianChronology.getInstance().weeks().isPrecise());
-        assertEquals(false, JulianChronology.getInstance().days().isPrecise());
-        assertEquals(false, JulianChronology.getInstance().halfdays().isPrecise());
-        assertEquals(true, JulianChronology.getInstance().hours().isPrecise());
-        assertEquals(true, JulianChronology.getInstance().minutes().isPrecise());
-        assertEquals(true, JulianChronology.getInstance().seconds().isPrecise());
-        assertEquals(true, JulianChronology.getInstance().millis().isPrecise());
+        assertEquals(false, julian.centuries().isPrecise());
+        assertEquals(false, julian.years().isPrecise());
+        assertEquals(false, julian.weekyears().isPrecise());
+        assertEquals(false, julian.months().isPrecise());
+        assertEquals(false, julian.weeks().isPrecise());
+        assertEquals(false, julian.days().isPrecise());
+        assertEquals(false, julian.halfdays().isPrecise());
+        assertEquals(true, julian.hours().isPrecise());
+        assertEquals(true, julian.minutes().isPrecise());
+        assertEquals(true, julian.seconds().isPrecise());
+        assertEquals(true, julian.millis().isPrecise());
         
-        assertEquals(false, JulianChronology.getInstanceUTC().centuries().isPrecise());
-        assertEquals(false, JulianChronology.getInstanceUTC().years().isPrecise());
-        assertEquals(false, JulianChronology.getInstanceUTC().weekyears().isPrecise());
-        assertEquals(false, JulianChronology.getInstanceUTC().months().isPrecise());
-        assertEquals(true, JulianChronology.getInstanceUTC().weeks().isPrecise());
-        assertEquals(true, JulianChronology.getInstanceUTC().days().isPrecise());
-        assertEquals(true, JulianChronology.getInstanceUTC().halfdays().isPrecise());
-        assertEquals(true, JulianChronology.getInstanceUTC().hours().isPrecise());
-        assertEquals(true, JulianChronology.getInstanceUTC().minutes().isPrecise());
-        assertEquals(true, JulianChronology.getInstanceUTC().seconds().isPrecise());
-        assertEquals(true, JulianChronology.getInstanceUTC().millis().isPrecise());
+        final JulianChronology julianUTC = JulianChronology.getInstanceUTC();
+        assertEquals(false, julianUTC.centuries().isPrecise());
+        assertEquals(false, julianUTC.years().isPrecise());
+        assertEquals(false, julianUTC.weekyears().isPrecise());
+        assertEquals(false, julianUTC.months().isPrecise());
+        assertEquals(true, julianUTC.weeks().isPrecise());
+        assertEquals(true, julianUTC.days().isPrecise());
+        assertEquals(true, julianUTC.halfdays().isPrecise());
+        assertEquals(true, julianUTC.hours().isPrecise());
+        assertEquals(true, julianUTC.minutes().isPrecise());
+        assertEquals(true, julianUTC.seconds().isPrecise());
+        assertEquals(true, julianUTC.millis().isPrecise());
         
-        DateTimeZone gmt = DateTimeZone.forID("Etc/GMT");
-        assertEquals(false, JulianChronology.getInstance(gmt).centuries().isPrecise());
-        assertEquals(false, JulianChronology.getInstance(gmt).years().isPrecise());
-        assertEquals(false, JulianChronology.getInstance(gmt).weekyears().isPrecise());
-        assertEquals(false, JulianChronology.getInstance(gmt).months().isPrecise());
-        assertEquals(true, JulianChronology.getInstance(gmt).weeks().isPrecise());
-        assertEquals(true, JulianChronology.getInstance(gmt).days().isPrecise());
-        assertEquals(true, JulianChronology.getInstance(gmt).halfdays().isPrecise());
-        assertEquals(true, JulianChronology.getInstance(gmt).hours().isPrecise());
-        assertEquals(true, JulianChronology.getInstance(gmt).minutes().isPrecise());
-        assertEquals(true, JulianChronology.getInstance(gmt).seconds().isPrecise());
-        assertEquals(true, JulianChronology.getInstance(gmt).millis().isPrecise());
+        final DateTimeZone gmt = DateTimeZone.forID("Etc/GMT");
+        final JulianChronology julianGMT = JulianChronology.getInstance(gmt);
+        assertEquals(false, julianGMT.centuries().isPrecise());
+        assertEquals(false, julianGMT.years().isPrecise());
+        assertEquals(false, julianGMT.weekyears().isPrecise());
+        assertEquals(false, julianGMT.months().isPrecise());
+        assertEquals(true, julianGMT.weeks().isPrecise());
+        assertEquals(true, julianGMT.days().isPrecise());
+        assertEquals(true, julianGMT.halfdays().isPrecise());
+        assertEquals(true, julianGMT.hours().isPrecise());
+        assertEquals(true, julianGMT.minutes().isPrecise());
+        assertEquals(true, julianGMT.seconds().isPrecise());
+        assertEquals(true, julianGMT.millis().isPrecise());
     }
 
     public void testDateFields() {
-        assertEquals("era", JulianChronology.getInstance().era().getName());
-        assertEquals("centuryOfEra", JulianChronology.getInstance().centuryOfEra().getName());
-        assertEquals("yearOfCentury", JulianChronology.getInstance().yearOfCentury().getName());
-        assertEquals("yearOfEra", JulianChronology.getInstance().yearOfEra().getName());
-        assertEquals("year", JulianChronology.getInstance().year().getName());
-        assertEquals("monthOfYear", JulianChronology.getInstance().monthOfYear().getName());
-        assertEquals("weekyearOfCentury", JulianChronology.getInstance().weekyearOfCentury().getName());
-        assertEquals("weekyear", JulianChronology.getInstance().weekyear().getName());
-        assertEquals("weekOfWeekyear", JulianChronology.getInstance().weekOfWeekyear().getName());
-        assertEquals("dayOfYear", JulianChronology.getInstance().dayOfYear().getName());
-        assertEquals("dayOfMonth", JulianChronology.getInstance().dayOfMonth().getName());
-        assertEquals("dayOfWeek", JulianChronology.getInstance().dayOfWeek().getName());
+        final JulianChronology julian = JulianChronology.getInstance();
+        assertEquals("era", julian.era().getName());
+        assertEquals("centuryOfEra", julian.centuryOfEra().getName());
+        assertEquals("yearOfCentury", julian.yearOfCentury().getName());
+        assertEquals("yearOfEra", julian.yearOfEra().getName());
+        assertEquals("year", julian.year().getName());
+        assertEquals("monthOfYear", julian.monthOfYear().getName());
+        assertEquals("weekyearOfCentury", julian.weekyearOfCentury().getName());
+        assertEquals("weekyear", julian.weekyear().getName());
+        assertEquals("weekOfWeekyear", julian.weekOfWeekyear().getName());
+        assertEquals("dayOfYear", julian.dayOfYear().getName());
+        assertEquals("dayOfMonth", julian.dayOfMonth().getName());
+        assertEquals("dayOfWeek", julian.dayOfWeek().getName());
         
-        assertEquals(true, JulianChronology.getInstance().era().isSupported());
-        assertEquals(true, JulianChronology.getInstance().centuryOfEra().isSupported());
-        assertEquals(true, JulianChronology.getInstance().yearOfCentury().isSupported());
-        assertEquals(true, JulianChronology.getInstance().yearOfEra().isSupported());
-        assertEquals(true, JulianChronology.getInstance().year().isSupported());
-        assertEquals(true, JulianChronology.getInstance().monthOfYear().isSupported());
-        assertEquals(true, JulianChronology.getInstance().weekyearOfCentury().isSupported());
-        assertEquals(true, JulianChronology.getInstance().weekyear().isSupported());
-        assertEquals(true, JulianChronology.getInstance().weekOfWeekyear().isSupported());
-        assertEquals(true, JulianChronology.getInstance().dayOfYear().isSupported());
-        assertEquals(true, JulianChronology.getInstance().dayOfMonth().isSupported());
-        assertEquals(true, JulianChronology.getInstance().dayOfWeek().isSupported());
+        assertEquals(true, julian.era().isSupported());
+        assertEquals(true, julian.centuryOfEra().isSupported());
+        assertEquals(true, julian.yearOfCentury().isSupported());
+        assertEquals(true, julian.yearOfEra().isSupported());
+        assertEquals(true, julian.year().isSupported());
+        assertEquals(true, julian.monthOfYear().isSupported());
+        assertEquals(true, julian.weekyearOfCentury().isSupported());
+        assertEquals(true, julian.weekyear().isSupported());
+        assertEquals(true, julian.weekOfWeekyear().isSupported());
+        assertEquals(true, julian.dayOfYear().isSupported());
+        assertEquals(true, julian.dayOfMonth().isSupported());
+        assertEquals(true, julian.dayOfWeek().isSupported());
     }
 
     public void testTimeFields() {
-        assertEquals("halfdayOfDay", JulianChronology.getInstance().halfdayOfDay().getName());
-        assertEquals("clockhourOfHalfday", JulianChronology.getInstance().clockhourOfHalfday().getName());
-        assertEquals("hourOfHalfday", JulianChronology.getInstance().hourOfHalfday().getName());
-        assertEquals("clockhourOfDay", JulianChronology.getInstance().clockhourOfDay().getName());
-        assertEquals("hourOfDay", JulianChronology.getInstance().hourOfDay().getName());
-        assertEquals("minuteOfDay", JulianChronology.getInstance().minuteOfDay().getName());
-        assertEquals("minuteOfHour", JulianChronology.getInstance().minuteOfHour().getName());
-        assertEquals("secondOfDay", JulianChronology.getInstance().secondOfDay().getName());
-        assertEquals("secondOfMinute", JulianChronology.getInstance().secondOfMinute().getName());
-        assertEquals("millisOfDay", JulianChronology.getInstance().millisOfDay().getName());
-        assertEquals("millisOfSecond", JulianChronology.getInstance().millisOfSecond().getName());
+        final JulianChronology julian = JulianChronology.getInstance();
+        assertEquals("halfdayOfDay", julian.halfdayOfDay().getName());
+        assertEquals("clockhourOfHalfday", julian.clockhourOfHalfday().getName());
+        assertEquals("hourOfHalfday", julian.hourOfHalfday().getName());
+        assertEquals("clockhourOfDay", julian.clockhourOfDay().getName());
+        assertEquals("hourOfDay", julian.hourOfDay().getName());
+        assertEquals("minuteOfDay", julian.minuteOfDay().getName());
+        assertEquals("minuteOfHour", julian.minuteOfHour().getName());
+        assertEquals("secondOfDay", julian.secondOfDay().getName());
+        assertEquals("secondOfMinute", julian.secondOfMinute().getName());
+        assertEquals("millisOfDay", julian.millisOfDay().getName());
+        assertEquals("millisOfSecond", julian.millisOfSecond().getName());
         
-        assertEquals(true, JulianChronology.getInstance().halfdayOfDay().isSupported());
-        assertEquals(true, JulianChronology.getInstance().clockhourOfHalfday().isSupported());
-        assertEquals(true, JulianChronology.getInstance().hourOfHalfday().isSupported());
-        assertEquals(true, JulianChronology.getInstance().clockhourOfDay().isSupported());
-        assertEquals(true, JulianChronology.getInstance().hourOfDay().isSupported());
-        assertEquals(true, JulianChronology.getInstance().minuteOfDay().isSupported());
-        assertEquals(true, JulianChronology.getInstance().minuteOfHour().isSupported());
-        assertEquals(true, JulianChronology.getInstance().secondOfDay().isSupported());
-        assertEquals(true, JulianChronology.getInstance().secondOfMinute().isSupported());
-        assertEquals(true, JulianChronology.getInstance().millisOfDay().isSupported());
-        assertEquals(true, JulianChronology.getInstance().millisOfSecond().isSupported());
+        assertEquals(true, julian.halfdayOfDay().isSupported());
+        assertEquals(true, julian.clockhourOfHalfday().isSupported());
+        assertEquals(true, julian.hourOfHalfday().isSupported());
+        assertEquals(true, julian.clockhourOfDay().isSupported());
+        assertEquals(true, julian.hourOfDay().isSupported());
+        assertEquals(true, julian.minuteOfDay().isSupported());
+        assertEquals(true, julian.minuteOfHour().isSupported());
+        assertEquals(true, julian.secondOfDay().isSupported());
+        assertEquals(true, julian.secondOfMinute().isSupported());
+        assertEquals(true, julian.millisOfDay().isSupported());
+        assertEquals(true, julian.millisOfSecond().isSupported());
     }
 
 }

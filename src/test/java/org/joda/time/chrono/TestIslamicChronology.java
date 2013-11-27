@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -143,122 +143,127 @@ public class TestIslamicChronology extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testDurationFields() {
-        assertEquals("eras", IslamicChronology.getInstance().eras().getName());
-        assertEquals("centuries", IslamicChronology.getInstance().centuries().getName());
-        assertEquals("years", IslamicChronology.getInstance().years().getName());
-        assertEquals("weekyears", IslamicChronology.getInstance().weekyears().getName());
-        assertEquals("months", IslamicChronology.getInstance().months().getName());
-        assertEquals("weeks", IslamicChronology.getInstance().weeks().getName());
-        assertEquals("days", IslamicChronology.getInstance().days().getName());
-        assertEquals("halfdays", IslamicChronology.getInstance().halfdays().getName());
-        assertEquals("hours", IslamicChronology.getInstance().hours().getName());
-        assertEquals("minutes", IslamicChronology.getInstance().minutes().getName());
-        assertEquals("seconds", IslamicChronology.getInstance().seconds().getName());
-        assertEquals("millis", IslamicChronology.getInstance().millis().getName());
+        final IslamicChronology islamic = IslamicChronology.getInstance();
+        assertEquals("eras", islamic.eras().getName());
+        assertEquals("centuries", islamic.centuries().getName());
+        assertEquals("years", islamic.years().getName());
+        assertEquals("weekyears", islamic.weekyears().getName());
+        assertEquals("months", islamic.months().getName());
+        assertEquals("weeks", islamic.weeks().getName());
+        assertEquals("days", islamic.days().getName());
+        assertEquals("halfdays", islamic.halfdays().getName());
+        assertEquals("hours", islamic.hours().getName());
+        assertEquals("minutes", islamic.minutes().getName());
+        assertEquals("seconds", islamic.seconds().getName());
+        assertEquals("millis", islamic.millis().getName());
         
-        assertEquals(false, IslamicChronology.getInstance().eras().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().centuries().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().years().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().weekyears().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().months().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().weeks().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().days().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().halfdays().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().hours().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().minutes().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().seconds().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().millis().isSupported());
+        assertEquals(false, islamic.eras().isSupported());
+        assertEquals(true, islamic.centuries().isSupported());
+        assertEquals(true, islamic.years().isSupported());
+        assertEquals(true, islamic.weekyears().isSupported());
+        assertEquals(true, islamic.months().isSupported());
+        assertEquals(true, islamic.weeks().isSupported());
+        assertEquals(true, islamic.days().isSupported());
+        assertEquals(true, islamic.halfdays().isSupported());
+        assertEquals(true, islamic.hours().isSupported());
+        assertEquals(true, islamic.minutes().isSupported());
+        assertEquals(true, islamic.seconds().isSupported());
+        assertEquals(true, islamic.millis().isSupported());
         
-        assertEquals(false, IslamicChronology.getInstance().centuries().isPrecise());
-        assertEquals(false, IslamicChronology.getInstance().years().isPrecise());
-        assertEquals(false, IslamicChronology.getInstance().weekyears().isPrecise());
-        assertEquals(false, IslamicChronology.getInstance().months().isPrecise());
-        assertEquals(false, IslamicChronology.getInstance().weeks().isPrecise());
-        assertEquals(false, IslamicChronology.getInstance().days().isPrecise());
-        assertEquals(false, IslamicChronology.getInstance().halfdays().isPrecise());
-        assertEquals(true, IslamicChronology.getInstance().hours().isPrecise());
-        assertEquals(true, IslamicChronology.getInstance().minutes().isPrecise());
-        assertEquals(true, IslamicChronology.getInstance().seconds().isPrecise());
-        assertEquals(true, IslamicChronology.getInstance().millis().isPrecise());
+        assertEquals(false, islamic.centuries().isPrecise());
+        assertEquals(false, islamic.years().isPrecise());
+        assertEquals(false, islamic.weekyears().isPrecise());
+        assertEquals(false, islamic.months().isPrecise());
+        assertEquals(false, islamic.weeks().isPrecise());
+        assertEquals(false, islamic.days().isPrecise());
+        assertEquals(false, islamic.halfdays().isPrecise());
+        assertEquals(true, islamic.hours().isPrecise());
+        assertEquals(true, islamic.minutes().isPrecise());
+        assertEquals(true, islamic.seconds().isPrecise());
+        assertEquals(true, islamic.millis().isPrecise());
         
-        assertEquals(false, IslamicChronology.getInstanceUTC().centuries().isPrecise());
-        assertEquals(false, IslamicChronology.getInstanceUTC().years().isPrecise());
-        assertEquals(false, IslamicChronology.getInstanceUTC().weekyears().isPrecise());
-        assertEquals(false, IslamicChronology.getInstanceUTC().months().isPrecise());
-        assertEquals(true, IslamicChronology.getInstanceUTC().weeks().isPrecise());
-        assertEquals(true, IslamicChronology.getInstanceUTC().days().isPrecise());
-        assertEquals(true, IslamicChronology.getInstanceUTC().halfdays().isPrecise());
-        assertEquals(true, IslamicChronology.getInstanceUTC().hours().isPrecise());
-        assertEquals(true, IslamicChronology.getInstanceUTC().minutes().isPrecise());
-        assertEquals(true, IslamicChronology.getInstanceUTC().seconds().isPrecise());
-        assertEquals(true, IslamicChronology.getInstanceUTC().millis().isPrecise());
+        final IslamicChronology islamicUTC = IslamicChronology.getInstanceUTC();
+        assertEquals(false, islamicUTC.centuries().isPrecise());
+        assertEquals(false, islamicUTC.years().isPrecise());
+        assertEquals(false, islamicUTC.weekyears().isPrecise());
+        assertEquals(false, islamicUTC.months().isPrecise());
+        assertEquals(true, islamicUTC.weeks().isPrecise());
+        assertEquals(true, islamicUTC.days().isPrecise());
+        assertEquals(true, islamicUTC.halfdays().isPrecise());
+        assertEquals(true, islamicUTC.hours().isPrecise());
+        assertEquals(true, islamicUTC.minutes().isPrecise());
+        assertEquals(true, islamicUTC.seconds().isPrecise());
+        assertEquals(true, islamicUTC.millis().isPrecise());
         
-        DateTimeZone gmt = DateTimeZone.forID("Etc/GMT");
-        assertEquals(false, IslamicChronology.getInstance(gmt).centuries().isPrecise());
-        assertEquals(false, IslamicChronology.getInstance(gmt).years().isPrecise());
-        assertEquals(false, IslamicChronology.getInstance(gmt).weekyears().isPrecise());
-        assertEquals(false, IslamicChronology.getInstance(gmt).months().isPrecise());
-        assertEquals(true, IslamicChronology.getInstance(gmt).weeks().isPrecise());
-        assertEquals(true, IslamicChronology.getInstance(gmt).days().isPrecise());
-        assertEquals(true, IslamicChronology.getInstance(gmt).halfdays().isPrecise());
-        assertEquals(true, IslamicChronology.getInstance(gmt).hours().isPrecise());
-        assertEquals(true, IslamicChronology.getInstance(gmt).minutes().isPrecise());
-        assertEquals(true, IslamicChronology.getInstance(gmt).seconds().isPrecise());
-        assertEquals(true, IslamicChronology.getInstance(gmt).millis().isPrecise());
+        final DateTimeZone gmt = DateTimeZone.forID("Etc/GMT");
+        final IslamicChronology islamicGMT = IslamicChronology.getInstance(gmt);
+        assertEquals(false, islamicGMT.centuries().isPrecise());
+        assertEquals(false, islamicGMT.years().isPrecise());
+        assertEquals(false, islamicGMT.weekyears().isPrecise());
+        assertEquals(false, islamicGMT.months().isPrecise());
+        assertEquals(true, islamicGMT.weeks().isPrecise());
+        assertEquals(true, islamicGMT.days().isPrecise());
+        assertEquals(true, islamicGMT.halfdays().isPrecise());
+        assertEquals(true, islamicGMT.hours().isPrecise());
+        assertEquals(true, islamicGMT.minutes().isPrecise());
+        assertEquals(true, islamicGMT.seconds().isPrecise());
+        assertEquals(true, islamicGMT.millis().isPrecise());
     }
 
     public void testDateFields() {
-        assertEquals("era", IslamicChronology.getInstance().era().getName());
-        assertEquals("centuryOfEra", IslamicChronology.getInstance().centuryOfEra().getName());
-        assertEquals("yearOfCentury", IslamicChronology.getInstance().yearOfCentury().getName());
-        assertEquals("yearOfEra", IslamicChronology.getInstance().yearOfEra().getName());
-        assertEquals("year", IslamicChronology.getInstance().year().getName());
-        assertEquals("monthOfYear", IslamicChronology.getInstance().monthOfYear().getName());
-        assertEquals("weekyearOfCentury", IslamicChronology.getInstance().weekyearOfCentury().getName());
-        assertEquals("weekyear", IslamicChronology.getInstance().weekyear().getName());
-        assertEquals("weekOfWeekyear", IslamicChronology.getInstance().weekOfWeekyear().getName());
-        assertEquals("dayOfYear", IslamicChronology.getInstance().dayOfYear().getName());
-        assertEquals("dayOfMonth", IslamicChronology.getInstance().dayOfMonth().getName());
-        assertEquals("dayOfWeek", IslamicChronology.getInstance().dayOfWeek().getName());
+        final IslamicChronology islamic = IslamicChronology.getInstance();
+        assertEquals("era", islamic.era().getName());
+        assertEquals("centuryOfEra", islamic.centuryOfEra().getName());
+        assertEquals("yearOfCentury", islamic.yearOfCentury().getName());
+        assertEquals("yearOfEra", islamic.yearOfEra().getName());
+        assertEquals("year", islamic.year().getName());
+        assertEquals("monthOfYear", islamic.monthOfYear().getName());
+        assertEquals("weekyearOfCentury", islamic.weekyearOfCentury().getName());
+        assertEquals("weekyear", islamic.weekyear().getName());
+        assertEquals("weekOfWeekyear", islamic.weekOfWeekyear().getName());
+        assertEquals("dayOfYear", islamic.dayOfYear().getName());
+        assertEquals("dayOfMonth", islamic.dayOfMonth().getName());
+        assertEquals("dayOfWeek", islamic.dayOfWeek().getName());
         
-        assertEquals(true, IslamicChronology.getInstance().era().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().centuryOfEra().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().yearOfCentury().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().yearOfEra().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().year().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().monthOfYear().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().weekyearOfCentury().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().weekyear().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().weekOfWeekyear().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().dayOfYear().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().dayOfMonth().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().dayOfWeek().isSupported());
+        assertEquals(true, islamic.era().isSupported());
+        assertEquals(true, islamic.centuryOfEra().isSupported());
+        assertEquals(true, islamic.yearOfCentury().isSupported());
+        assertEquals(true, islamic.yearOfEra().isSupported());
+        assertEquals(true, islamic.year().isSupported());
+        assertEquals(true, islamic.monthOfYear().isSupported());
+        assertEquals(true, islamic.weekyearOfCentury().isSupported());
+        assertEquals(true, islamic.weekyear().isSupported());
+        assertEquals(true, islamic.weekOfWeekyear().isSupported());
+        assertEquals(true, islamic.dayOfYear().isSupported());
+        assertEquals(true, islamic.dayOfMonth().isSupported());
+        assertEquals(true, islamic.dayOfWeek().isSupported());
     }
 
     public void testTimeFields() {
-        assertEquals("halfdayOfDay", IslamicChronology.getInstance().halfdayOfDay().getName());
-        assertEquals("clockhourOfHalfday", IslamicChronology.getInstance().clockhourOfHalfday().getName());
-        assertEquals("hourOfHalfday", IslamicChronology.getInstance().hourOfHalfday().getName());
-        assertEquals("clockhourOfDay", IslamicChronology.getInstance().clockhourOfDay().getName());
-        assertEquals("hourOfDay", IslamicChronology.getInstance().hourOfDay().getName());
-        assertEquals("minuteOfDay", IslamicChronology.getInstance().minuteOfDay().getName());
-        assertEquals("minuteOfHour", IslamicChronology.getInstance().minuteOfHour().getName());
-        assertEquals("secondOfDay", IslamicChronology.getInstance().secondOfDay().getName());
-        assertEquals("secondOfMinute", IslamicChronology.getInstance().secondOfMinute().getName());
-        assertEquals("millisOfDay", IslamicChronology.getInstance().millisOfDay().getName());
-        assertEquals("millisOfSecond", IslamicChronology.getInstance().millisOfSecond().getName());
+        final IslamicChronology islamic = IslamicChronology.getInstance();
+        assertEquals("halfdayOfDay", islamic.halfdayOfDay().getName());
+        assertEquals("clockhourOfHalfday", islamic.clockhourOfHalfday().getName());
+        assertEquals("hourOfHalfday", islamic.hourOfHalfday().getName());
+        assertEquals("clockhourOfDay", islamic.clockhourOfDay().getName());
+        assertEquals("hourOfDay", islamic.hourOfDay().getName());
+        assertEquals("minuteOfDay", islamic.minuteOfDay().getName());
+        assertEquals("minuteOfHour", islamic.minuteOfHour().getName());
+        assertEquals("secondOfDay", islamic.secondOfDay().getName());
+        assertEquals("secondOfMinute", islamic.secondOfMinute().getName());
+        assertEquals("millisOfDay", islamic.millisOfDay().getName());
+        assertEquals("millisOfSecond", islamic.millisOfSecond().getName());
         
-        assertEquals(true, IslamicChronology.getInstance().halfdayOfDay().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().clockhourOfHalfday().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().hourOfHalfday().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().clockhourOfDay().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().hourOfDay().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().minuteOfDay().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().minuteOfHour().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().secondOfDay().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().secondOfMinute().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().millisOfDay().isSupported());
-        assertEquals(true, IslamicChronology.getInstance().millisOfSecond().isSupported());
+        assertEquals(true, islamic.halfdayOfDay().isSupported());
+        assertEquals(true, islamic.clockhourOfHalfday().isSupported());
+        assertEquals(true, islamic.hourOfHalfday().isSupported());
+        assertEquals(true, islamic.clockhourOfDay().isSupported());
+        assertEquals(true, islamic.hourOfDay().isSupported());
+        assertEquals(true, islamic.minuteOfDay().isSupported());
+        assertEquals(true, islamic.minuteOfHour().isSupported());
+        assertEquals(true, islamic.secondOfDay().isSupported());
+        assertEquals(true, islamic.secondOfMinute().isSupported());
+        assertEquals(true, islamic.millisOfDay().isSupported());
+        assertEquals(true, islamic.millisOfSecond().isSupported());
     }
 
     //-----------------------------------------------------------------------

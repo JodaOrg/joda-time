@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -42,7 +42,6 @@ public class TestBuddhistChronology extends TestCase {
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
     private static final Chronology BUDDHIST_UTC = BuddhistChronology.getInstanceUTC();
-    private static final Chronology COPTIC_UTC = CopticChronology.getInstanceUTC();
     private static final Chronology JULIAN_UTC = JulianChronology.getInstanceUTC();
     private static final Chronology GJ_UTC = GJChronology.getInstanceUTC();
     private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
@@ -144,122 +143,127 @@ public class TestBuddhistChronology extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testDurationFields() {
-        assertEquals("eras", BuddhistChronology.getInstance().eras().getName());
-        assertEquals("centuries", BuddhistChronology.getInstance().centuries().getName());
-        assertEquals("years", BuddhistChronology.getInstance().years().getName());
-        assertEquals("weekyears", BuddhistChronology.getInstance().weekyears().getName());
-        assertEquals("months", BuddhistChronology.getInstance().months().getName());
-        assertEquals("weeks", BuddhistChronology.getInstance().weeks().getName());
-        assertEquals("days", BuddhistChronology.getInstance().days().getName());
+        final BuddhistChronology buddhist = BuddhistChronology.getInstance();
+        assertEquals("eras", buddhist.eras().getName());
+        assertEquals("centuries", buddhist.centuries().getName());
+        assertEquals("years", buddhist.years().getName());
+        assertEquals("weekyears", buddhist.weekyears().getName());
+        assertEquals("months", buddhist.months().getName());
+        assertEquals("weeks", buddhist.weeks().getName());
+        assertEquals("days", buddhist.days().getName());
         assertEquals("halfdays", GregorianChronology.getInstance().halfdays().getName());
-        assertEquals("hours", BuddhistChronology.getInstance().hours().getName());
-        assertEquals("minutes", BuddhistChronology.getInstance().minutes().getName());
-        assertEquals("seconds", BuddhistChronology.getInstance().seconds().getName());
-        assertEquals("millis", BuddhistChronology.getInstance().millis().getName());
+        assertEquals("hours", buddhist.hours().getName());
+        assertEquals("minutes", buddhist.minutes().getName());
+        assertEquals("seconds", buddhist.seconds().getName());
+        assertEquals("millis", buddhist.millis().getName());
         
-        assertEquals(false, BuddhistChronology.getInstance().eras().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().centuries().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().years().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().weekyears().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().months().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().weeks().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().days().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().halfdays().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().hours().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().minutes().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().seconds().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().millis().isSupported());
+        assertEquals(false, buddhist.eras().isSupported());
+        assertEquals(true, buddhist.centuries().isSupported());
+        assertEquals(true, buddhist.years().isSupported());
+        assertEquals(true, buddhist.weekyears().isSupported());
+        assertEquals(true, buddhist.months().isSupported());
+        assertEquals(true, buddhist.weeks().isSupported());
+        assertEquals(true, buddhist.days().isSupported());
+        assertEquals(true, buddhist.halfdays().isSupported());
+        assertEquals(true, buddhist.hours().isSupported());
+        assertEquals(true, buddhist.minutes().isSupported());
+        assertEquals(true, buddhist.seconds().isSupported());
+        assertEquals(true, buddhist.millis().isSupported());
         
-        assertEquals(false, BuddhistChronology.getInstance().centuries().isPrecise());
-        assertEquals(false, BuddhistChronology.getInstance().years().isPrecise());
-        assertEquals(false, BuddhistChronology.getInstance().weekyears().isPrecise());
-        assertEquals(false, BuddhistChronology.getInstance().months().isPrecise());
-        assertEquals(false, BuddhistChronology.getInstance().weeks().isPrecise());
-        assertEquals(false, BuddhistChronology.getInstance().days().isPrecise());
-        assertEquals(false, BuddhistChronology.getInstance().halfdays().isPrecise());
-        assertEquals(true, BuddhistChronology.getInstance().hours().isPrecise());
-        assertEquals(true, BuddhistChronology.getInstance().minutes().isPrecise());
-        assertEquals(true, BuddhistChronology.getInstance().seconds().isPrecise());
-        assertEquals(true, BuddhistChronology.getInstance().millis().isPrecise());
+        assertEquals(false, buddhist.centuries().isPrecise());
+        assertEquals(false, buddhist.years().isPrecise());
+        assertEquals(false, buddhist.weekyears().isPrecise());
+        assertEquals(false, buddhist.months().isPrecise());
+        assertEquals(false, buddhist.weeks().isPrecise());
+        assertEquals(false, buddhist.days().isPrecise());
+        assertEquals(false, buddhist.halfdays().isPrecise());
+        assertEquals(true, buddhist.hours().isPrecise());
+        assertEquals(true, buddhist.minutes().isPrecise());
+        assertEquals(true, buddhist.seconds().isPrecise());
+        assertEquals(true, buddhist.millis().isPrecise());
         
-        assertEquals(false, BuddhistChronology.getInstanceUTC().centuries().isPrecise());
-        assertEquals(false, BuddhistChronology.getInstanceUTC().years().isPrecise());
-        assertEquals(false, BuddhistChronology.getInstanceUTC().weekyears().isPrecise());
-        assertEquals(false, BuddhistChronology.getInstanceUTC().months().isPrecise());
-        assertEquals(true, BuddhistChronology.getInstanceUTC().weeks().isPrecise());
-        assertEquals(true, BuddhistChronology.getInstanceUTC().days().isPrecise());
-        assertEquals(true, BuddhistChronology.getInstanceUTC().halfdays().isPrecise());
-        assertEquals(true, BuddhistChronology.getInstanceUTC().hours().isPrecise());
-        assertEquals(true, BuddhistChronology.getInstanceUTC().minutes().isPrecise());
-        assertEquals(true, BuddhistChronology.getInstanceUTC().seconds().isPrecise());
-        assertEquals(true, BuddhistChronology.getInstanceUTC().millis().isPrecise());
+        final BuddhistChronology buddhistUTC = BuddhistChronology.getInstanceUTC();
+        assertEquals(false, buddhistUTC.centuries().isPrecise());
+        assertEquals(false, buddhistUTC.years().isPrecise());
+        assertEquals(false, buddhistUTC.weekyears().isPrecise());
+        assertEquals(false, buddhistUTC.months().isPrecise());
+        assertEquals(true, buddhistUTC.weeks().isPrecise());
+        assertEquals(true, buddhistUTC.days().isPrecise());
+        assertEquals(true, buddhistUTC.halfdays().isPrecise());
+        assertEquals(true, buddhistUTC.hours().isPrecise());
+        assertEquals(true, buddhistUTC.minutes().isPrecise());
+        assertEquals(true, buddhistUTC.seconds().isPrecise());
+        assertEquals(true, buddhistUTC.millis().isPrecise());
         
-        DateTimeZone gmt = DateTimeZone.forID("Etc/GMT");
-        assertEquals(false, BuddhistChronology.getInstance(gmt).centuries().isPrecise());
-        assertEquals(false, BuddhistChronology.getInstance(gmt).years().isPrecise());
-        assertEquals(false, BuddhistChronology.getInstance(gmt).weekyears().isPrecise());
-        assertEquals(false, BuddhistChronology.getInstance(gmt).months().isPrecise());
-        assertEquals(true, BuddhistChronology.getInstance(gmt).weeks().isPrecise());
-        assertEquals(true, BuddhistChronology.getInstance(gmt).days().isPrecise());
-        assertEquals(true, BuddhistChronology.getInstance(gmt).halfdays().isPrecise());
-        assertEquals(true, BuddhistChronology.getInstance(gmt).hours().isPrecise());
-        assertEquals(true, BuddhistChronology.getInstance(gmt).minutes().isPrecise());
-        assertEquals(true, BuddhistChronology.getInstance(gmt).seconds().isPrecise());
-        assertEquals(true, BuddhistChronology.getInstance(gmt).millis().isPrecise());
+        final DateTimeZone gmt = DateTimeZone.forID("Etc/GMT");
+        final BuddhistChronology buddhistGMT = BuddhistChronology.getInstance(gmt);
+        assertEquals(false, buddhistGMT.centuries().isPrecise());
+        assertEquals(false, buddhistGMT.years().isPrecise());
+        assertEquals(false, buddhistGMT.weekyears().isPrecise());
+        assertEquals(false, buddhistGMT.months().isPrecise());
+        assertEquals(true, buddhistGMT.weeks().isPrecise());
+        assertEquals(true, buddhistGMT.days().isPrecise());
+        assertEquals(true, buddhistGMT.halfdays().isPrecise());
+        assertEquals(true, buddhistGMT.hours().isPrecise());
+        assertEquals(true, buddhistGMT.minutes().isPrecise());
+        assertEquals(true, buddhistGMT.seconds().isPrecise());
+        assertEquals(true, buddhistGMT.millis().isPrecise());
     }
 
     public void testDateFields() {
-        assertEquals("era", BuddhistChronology.getInstance().era().getName());
-        assertEquals("centuryOfEra", BuddhistChronology.getInstance().centuryOfEra().getName());
-        assertEquals("yearOfCentury", BuddhistChronology.getInstance().yearOfCentury().getName());
-        assertEquals("yearOfEra", BuddhistChronology.getInstance().yearOfEra().getName());
-        assertEquals("year", BuddhistChronology.getInstance().year().getName());
-        assertEquals("monthOfYear", BuddhistChronology.getInstance().monthOfYear().getName());
-        assertEquals("weekyearOfCentury", BuddhistChronology.getInstance().weekyearOfCentury().getName());
-        assertEquals("weekyear", BuddhistChronology.getInstance().weekyear().getName());
-        assertEquals("weekOfWeekyear", BuddhistChronology.getInstance().weekOfWeekyear().getName());
-        assertEquals("dayOfYear", BuddhistChronology.getInstance().dayOfYear().getName());
-        assertEquals("dayOfMonth", BuddhistChronology.getInstance().dayOfMonth().getName());
-        assertEquals("dayOfWeek", BuddhistChronology.getInstance().dayOfWeek().getName());
+        final BuddhistChronology buddhist = BuddhistChronology.getInstance();
+        assertEquals("era", buddhist.era().getName());
+        assertEquals("centuryOfEra", buddhist.centuryOfEra().getName());
+        assertEquals("yearOfCentury", buddhist.yearOfCentury().getName());
+        assertEquals("yearOfEra", buddhist.yearOfEra().getName());
+        assertEquals("year", buddhist.year().getName());
+        assertEquals("monthOfYear", buddhist.monthOfYear().getName());
+        assertEquals("weekyearOfCentury", buddhist.weekyearOfCentury().getName());
+        assertEquals("weekyear", buddhist.weekyear().getName());
+        assertEquals("weekOfWeekyear", buddhist.weekOfWeekyear().getName());
+        assertEquals("dayOfYear", buddhist.dayOfYear().getName());
+        assertEquals("dayOfMonth", buddhist.dayOfMonth().getName());
+        assertEquals("dayOfWeek", buddhist.dayOfWeek().getName());
         
-        assertEquals(true, BuddhistChronology.getInstance().era().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().centuryOfEra().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().yearOfCentury().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().yearOfEra().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().year().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().monthOfYear().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().weekyearOfCentury().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().weekyear().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().weekOfWeekyear().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().dayOfYear().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().dayOfMonth().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().dayOfWeek().isSupported());
+        assertEquals(true, buddhist.era().isSupported());
+        assertEquals(true, buddhist.centuryOfEra().isSupported());
+        assertEquals(true, buddhist.yearOfCentury().isSupported());
+        assertEquals(true, buddhist.yearOfEra().isSupported());
+        assertEquals(true, buddhist.year().isSupported());
+        assertEquals(true, buddhist.monthOfYear().isSupported());
+        assertEquals(true, buddhist.weekyearOfCentury().isSupported());
+        assertEquals(true, buddhist.weekyear().isSupported());
+        assertEquals(true, buddhist.weekOfWeekyear().isSupported());
+        assertEquals(true, buddhist.dayOfYear().isSupported());
+        assertEquals(true, buddhist.dayOfMonth().isSupported());
+        assertEquals(true, buddhist.dayOfWeek().isSupported());
     }
 
     public void testTimeFields() {
-        assertEquals("halfdayOfDay", BuddhistChronology.getInstance().halfdayOfDay().getName());
-        assertEquals("clockhourOfHalfday", BuddhistChronology.getInstance().clockhourOfHalfday().getName());
-        assertEquals("hourOfHalfday", BuddhistChronology.getInstance().hourOfHalfday().getName());
-        assertEquals("clockhourOfDay", BuddhistChronology.getInstance().clockhourOfDay().getName());
-        assertEquals("hourOfDay", BuddhistChronology.getInstance().hourOfDay().getName());
-        assertEquals("minuteOfDay", BuddhistChronology.getInstance().minuteOfDay().getName());
-        assertEquals("minuteOfHour", BuddhistChronology.getInstance().minuteOfHour().getName());
-        assertEquals("secondOfDay", BuddhistChronology.getInstance().secondOfDay().getName());
-        assertEquals("secondOfMinute", BuddhistChronology.getInstance().secondOfMinute().getName());
-        assertEquals("millisOfDay", BuddhistChronology.getInstance().millisOfDay().getName());
-        assertEquals("millisOfSecond", BuddhistChronology.getInstance().millisOfSecond().getName());
+        final BuddhistChronology buddhist = BuddhistChronology.getInstance();
+        assertEquals("halfdayOfDay", buddhist.halfdayOfDay().getName());
+        assertEquals("clockhourOfHalfday", buddhist.clockhourOfHalfday().getName());
+        assertEquals("hourOfHalfday", buddhist.hourOfHalfday().getName());
+        assertEquals("clockhourOfDay", buddhist.clockhourOfDay().getName());
+        assertEquals("hourOfDay", buddhist.hourOfDay().getName());
+        assertEquals("minuteOfDay", buddhist.minuteOfDay().getName());
+        assertEquals("minuteOfHour", buddhist.minuteOfHour().getName());
+        assertEquals("secondOfDay", buddhist.secondOfDay().getName());
+        assertEquals("secondOfMinute", buddhist.secondOfMinute().getName());
+        assertEquals("millisOfDay", buddhist.millisOfDay().getName());
+        assertEquals("millisOfSecond", buddhist.millisOfSecond().getName());
         
-        assertEquals(true, BuddhistChronology.getInstance().halfdayOfDay().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().clockhourOfHalfday().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().hourOfHalfday().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().clockhourOfDay().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().hourOfDay().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().minuteOfDay().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().minuteOfHour().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().secondOfDay().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().secondOfMinute().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().millisOfDay().isSupported());
-        assertEquals(true, BuddhistChronology.getInstance().millisOfSecond().isSupported());
+        assertEquals(true, buddhist.halfdayOfDay().isSupported());
+        assertEquals(true, buddhist.clockhourOfHalfday().isSupported());
+        assertEquals(true, buddhist.hourOfHalfday().isSupported());
+        assertEquals(true, buddhist.clockhourOfDay().isSupported());
+        assertEquals(true, buddhist.hourOfDay().isSupported());
+        assertEquals(true, buddhist.minuteOfDay().isSupported());
+        assertEquals(true, buddhist.minuteOfHour().isSupported());
+        assertEquals(true, buddhist.secondOfDay().isSupported());
+        assertEquals(true, buddhist.secondOfMinute().isSupported());
+        assertEquals(true, buddhist.millisOfDay().isSupported());
+        assertEquals(true, buddhist.millisOfSecond().isSupported());
     }
 
     //-----------------------------------------------------------------------
@@ -342,8 +346,6 @@ public class TestBuddhistChronology extends TestCase {
         DateTimeField gjDayOfMonth = GJ_UTC.dayOfMonth();
         DateTimeField gjMonthOfYear = GJ_UTC.monthOfYear();
         DateTimeField gjYear = GJ_UTC.year();
-        DateTimeField gjYearOfEra = GJ_UTC.yearOfEra();
-        DateTimeField gjEra = GJ_UTC.era();
         while (millis < end) {
             assertEquals(gjDayOfWeek.get(millis), dayOfWeek.get(millis));
             assertEquals(gjDayOfYear.get(millis), dayOfYear.get(millis));

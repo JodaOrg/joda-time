@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -146,122 +146,127 @@ public class TestCopticChronology extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testDurationFields() {
-        assertEquals("eras", CopticChronology.getInstance().eras().getName());
-        assertEquals("centuries", CopticChronology.getInstance().centuries().getName());
-        assertEquals("years", CopticChronology.getInstance().years().getName());
-        assertEquals("weekyears", CopticChronology.getInstance().weekyears().getName());
-        assertEquals("months", CopticChronology.getInstance().months().getName());
-        assertEquals("weeks", CopticChronology.getInstance().weeks().getName());
-        assertEquals("days", CopticChronology.getInstance().days().getName());
-        assertEquals("halfdays", CopticChronology.getInstance().halfdays().getName());
-        assertEquals("hours", CopticChronology.getInstance().hours().getName());
-        assertEquals("minutes", CopticChronology.getInstance().minutes().getName());
-        assertEquals("seconds", CopticChronology.getInstance().seconds().getName());
-        assertEquals("millis", CopticChronology.getInstance().millis().getName());
+        final CopticChronology coptic = CopticChronology.getInstance();
+        assertEquals("eras", coptic.eras().getName());
+        assertEquals("centuries", coptic.centuries().getName());
+        assertEquals("years", coptic.years().getName());
+        assertEquals("weekyears", coptic.weekyears().getName());
+        assertEquals("months", coptic.months().getName());
+        assertEquals("weeks", coptic.weeks().getName());
+        assertEquals("days", coptic.days().getName());
+        assertEquals("halfdays", coptic.halfdays().getName());
+        assertEquals("hours", coptic.hours().getName());
+        assertEquals("minutes", coptic.minutes().getName());
+        assertEquals("seconds", coptic.seconds().getName());
+        assertEquals("millis", coptic.millis().getName());
         
-        assertEquals(false, CopticChronology.getInstance().eras().isSupported());
-        assertEquals(true, CopticChronology.getInstance().centuries().isSupported());
-        assertEquals(true, CopticChronology.getInstance().years().isSupported());
-        assertEquals(true, CopticChronology.getInstance().weekyears().isSupported());
-        assertEquals(true, CopticChronology.getInstance().months().isSupported());
-        assertEquals(true, CopticChronology.getInstance().weeks().isSupported());
-        assertEquals(true, CopticChronology.getInstance().days().isSupported());
-        assertEquals(true, CopticChronology.getInstance().halfdays().isSupported());
-        assertEquals(true, CopticChronology.getInstance().hours().isSupported());
-        assertEquals(true, CopticChronology.getInstance().minutes().isSupported());
-        assertEquals(true, CopticChronology.getInstance().seconds().isSupported());
-        assertEquals(true, CopticChronology.getInstance().millis().isSupported());
+        assertEquals(false, coptic.eras().isSupported());
+        assertEquals(true, coptic.centuries().isSupported());
+        assertEquals(true, coptic.years().isSupported());
+        assertEquals(true, coptic.weekyears().isSupported());
+        assertEquals(true, coptic.months().isSupported());
+        assertEquals(true, coptic.weeks().isSupported());
+        assertEquals(true, coptic.days().isSupported());
+        assertEquals(true, coptic.halfdays().isSupported());
+        assertEquals(true, coptic.hours().isSupported());
+        assertEquals(true, coptic.minutes().isSupported());
+        assertEquals(true, coptic.seconds().isSupported());
+        assertEquals(true, coptic.millis().isSupported());
         
-        assertEquals(false, CopticChronology.getInstance().centuries().isPrecise());
-        assertEquals(false, CopticChronology.getInstance().years().isPrecise());
-        assertEquals(false, CopticChronology.getInstance().weekyears().isPrecise());
-        assertEquals(false, CopticChronology.getInstance().months().isPrecise());
-        assertEquals(false, CopticChronology.getInstance().weeks().isPrecise());
-        assertEquals(false, CopticChronology.getInstance().days().isPrecise());
-        assertEquals(false, CopticChronology.getInstance().halfdays().isPrecise());
-        assertEquals(true, CopticChronology.getInstance().hours().isPrecise());
-        assertEquals(true, CopticChronology.getInstance().minutes().isPrecise());
-        assertEquals(true, CopticChronology.getInstance().seconds().isPrecise());
-        assertEquals(true, CopticChronology.getInstance().millis().isPrecise());
+        assertEquals(false, coptic.centuries().isPrecise());
+        assertEquals(false, coptic.years().isPrecise());
+        assertEquals(false, coptic.weekyears().isPrecise());
+        assertEquals(false, coptic.months().isPrecise());
+        assertEquals(false, coptic.weeks().isPrecise());
+        assertEquals(false, coptic.days().isPrecise());
+        assertEquals(false, coptic.halfdays().isPrecise());
+        assertEquals(true, coptic.hours().isPrecise());
+        assertEquals(true, coptic.minutes().isPrecise());
+        assertEquals(true, coptic.seconds().isPrecise());
+        assertEquals(true, coptic.millis().isPrecise());
         
-        assertEquals(false, CopticChronology.getInstanceUTC().centuries().isPrecise());
-        assertEquals(false, CopticChronology.getInstanceUTC().years().isPrecise());
-        assertEquals(false, CopticChronology.getInstanceUTC().weekyears().isPrecise());
-        assertEquals(false, CopticChronology.getInstanceUTC().months().isPrecise());
-        assertEquals(true, CopticChronology.getInstanceUTC().weeks().isPrecise());
-        assertEquals(true, CopticChronology.getInstanceUTC().days().isPrecise());
-        assertEquals(true, CopticChronology.getInstanceUTC().halfdays().isPrecise());
-        assertEquals(true, CopticChronology.getInstanceUTC().hours().isPrecise());
-        assertEquals(true, CopticChronology.getInstanceUTC().minutes().isPrecise());
-        assertEquals(true, CopticChronology.getInstanceUTC().seconds().isPrecise());
-        assertEquals(true, CopticChronology.getInstanceUTC().millis().isPrecise());
+        final CopticChronology copticUTC = CopticChronology.getInstanceUTC();
+        assertEquals(false, copticUTC.centuries().isPrecise());
+        assertEquals(false, copticUTC.years().isPrecise());
+        assertEquals(false, copticUTC.weekyears().isPrecise());
+        assertEquals(false, copticUTC.months().isPrecise());
+        assertEquals(true, copticUTC.weeks().isPrecise());
+        assertEquals(true, copticUTC.days().isPrecise());
+        assertEquals(true, copticUTC.halfdays().isPrecise());
+        assertEquals(true, copticUTC.hours().isPrecise());
+        assertEquals(true, copticUTC.minutes().isPrecise());
+        assertEquals(true, copticUTC.seconds().isPrecise());
+        assertEquals(true, copticUTC.millis().isPrecise());
         
-        DateTimeZone gmt = DateTimeZone.forID("Etc/GMT");
-        assertEquals(false, CopticChronology.getInstance(gmt).centuries().isPrecise());
-        assertEquals(false, CopticChronology.getInstance(gmt).years().isPrecise());
-        assertEquals(false, CopticChronology.getInstance(gmt).weekyears().isPrecise());
-        assertEquals(false, CopticChronology.getInstance(gmt).months().isPrecise());
-        assertEquals(true, CopticChronology.getInstance(gmt).weeks().isPrecise());
-        assertEquals(true, CopticChronology.getInstance(gmt).days().isPrecise());
-        assertEquals(true, CopticChronology.getInstance(gmt).halfdays().isPrecise());
-        assertEquals(true, CopticChronology.getInstance(gmt).hours().isPrecise());
-        assertEquals(true, CopticChronology.getInstance(gmt).minutes().isPrecise());
-        assertEquals(true, CopticChronology.getInstance(gmt).seconds().isPrecise());
-        assertEquals(true, CopticChronology.getInstance(gmt).millis().isPrecise());
+        final DateTimeZone gmt = DateTimeZone.forID("Etc/GMT");
+        final CopticChronology copticGMT = CopticChronology.getInstance(gmt);
+        assertEquals(false, copticGMT.centuries().isPrecise());
+        assertEquals(false, copticGMT.years().isPrecise());
+        assertEquals(false, copticGMT.weekyears().isPrecise());
+        assertEquals(false, copticGMT.months().isPrecise());
+        assertEquals(true, copticGMT.weeks().isPrecise());
+        assertEquals(true, copticGMT.days().isPrecise());
+        assertEquals(true, copticGMT.halfdays().isPrecise());
+        assertEquals(true, copticGMT.hours().isPrecise());
+        assertEquals(true, copticGMT.minutes().isPrecise());
+        assertEquals(true, copticGMT.seconds().isPrecise());
+        assertEquals(true, copticGMT.millis().isPrecise());
     }
 
     public void testDateFields() {
-        assertEquals("era", CopticChronology.getInstance().era().getName());
-        assertEquals("centuryOfEra", CopticChronology.getInstance().centuryOfEra().getName());
-        assertEquals("yearOfCentury", CopticChronology.getInstance().yearOfCentury().getName());
-        assertEquals("yearOfEra", CopticChronology.getInstance().yearOfEra().getName());
-        assertEquals("year", CopticChronology.getInstance().year().getName());
-        assertEquals("monthOfYear", CopticChronology.getInstance().monthOfYear().getName());
-        assertEquals("weekyearOfCentury", CopticChronology.getInstance().weekyearOfCentury().getName());
-        assertEquals("weekyear", CopticChronology.getInstance().weekyear().getName());
-        assertEquals("weekOfWeekyear", CopticChronology.getInstance().weekOfWeekyear().getName());
-        assertEquals("dayOfYear", CopticChronology.getInstance().dayOfYear().getName());
-        assertEquals("dayOfMonth", CopticChronology.getInstance().dayOfMonth().getName());
-        assertEquals("dayOfWeek", CopticChronology.getInstance().dayOfWeek().getName());
+        final CopticChronology coptic = CopticChronology.getInstance();
+        assertEquals("era", coptic.era().getName());
+        assertEquals("centuryOfEra", coptic.centuryOfEra().getName());
+        assertEquals("yearOfCentury", coptic.yearOfCentury().getName());
+        assertEquals("yearOfEra", coptic.yearOfEra().getName());
+        assertEquals("year", coptic.year().getName());
+        assertEquals("monthOfYear", coptic.monthOfYear().getName());
+        assertEquals("weekyearOfCentury", coptic.weekyearOfCentury().getName());
+        assertEquals("weekyear", coptic.weekyear().getName());
+        assertEquals("weekOfWeekyear", coptic.weekOfWeekyear().getName());
+        assertEquals("dayOfYear", coptic.dayOfYear().getName());
+        assertEquals("dayOfMonth", coptic.dayOfMonth().getName());
+        assertEquals("dayOfWeek", coptic.dayOfWeek().getName());
         
-        assertEquals(true, CopticChronology.getInstance().era().isSupported());
-        assertEquals(true, CopticChronology.getInstance().centuryOfEra().isSupported());
-        assertEquals(true, CopticChronology.getInstance().yearOfCentury().isSupported());
-        assertEquals(true, CopticChronology.getInstance().yearOfEra().isSupported());
-        assertEquals(true, CopticChronology.getInstance().year().isSupported());
-        assertEquals(true, CopticChronology.getInstance().monthOfYear().isSupported());
-        assertEquals(true, CopticChronology.getInstance().weekyearOfCentury().isSupported());
-        assertEquals(true, CopticChronology.getInstance().weekyear().isSupported());
-        assertEquals(true, CopticChronology.getInstance().weekOfWeekyear().isSupported());
-        assertEquals(true, CopticChronology.getInstance().dayOfYear().isSupported());
-        assertEquals(true, CopticChronology.getInstance().dayOfMonth().isSupported());
-        assertEquals(true, CopticChronology.getInstance().dayOfWeek().isSupported());
+        assertEquals(true, coptic.era().isSupported());
+        assertEquals(true, coptic.centuryOfEra().isSupported());
+        assertEquals(true, coptic.yearOfCentury().isSupported());
+        assertEquals(true, coptic.yearOfEra().isSupported());
+        assertEquals(true, coptic.year().isSupported());
+        assertEquals(true, coptic.monthOfYear().isSupported());
+        assertEquals(true, coptic.weekyearOfCentury().isSupported());
+        assertEquals(true, coptic.weekyear().isSupported());
+        assertEquals(true, coptic.weekOfWeekyear().isSupported());
+        assertEquals(true, coptic.dayOfYear().isSupported());
+        assertEquals(true, coptic.dayOfMonth().isSupported());
+        assertEquals(true, coptic.dayOfWeek().isSupported());
     }
 
     public void testTimeFields() {
-        assertEquals("halfdayOfDay", CopticChronology.getInstance().halfdayOfDay().getName());
-        assertEquals("clockhourOfHalfday", CopticChronology.getInstance().clockhourOfHalfday().getName());
-        assertEquals("hourOfHalfday", CopticChronology.getInstance().hourOfHalfday().getName());
-        assertEquals("clockhourOfDay", CopticChronology.getInstance().clockhourOfDay().getName());
-        assertEquals("hourOfDay", CopticChronology.getInstance().hourOfDay().getName());
-        assertEquals("minuteOfDay", CopticChronology.getInstance().minuteOfDay().getName());
-        assertEquals("minuteOfHour", CopticChronology.getInstance().minuteOfHour().getName());
-        assertEquals("secondOfDay", CopticChronology.getInstance().secondOfDay().getName());
-        assertEquals("secondOfMinute", CopticChronology.getInstance().secondOfMinute().getName());
-        assertEquals("millisOfDay", CopticChronology.getInstance().millisOfDay().getName());
-        assertEquals("millisOfSecond", CopticChronology.getInstance().millisOfSecond().getName());
+        final CopticChronology coptic = CopticChronology.getInstance();
+        assertEquals("halfdayOfDay", coptic.halfdayOfDay().getName());
+        assertEquals("clockhourOfHalfday", coptic.clockhourOfHalfday().getName());
+        assertEquals("hourOfHalfday", coptic.hourOfHalfday().getName());
+        assertEquals("clockhourOfDay", coptic.clockhourOfDay().getName());
+        assertEquals("hourOfDay", coptic.hourOfDay().getName());
+        assertEquals("minuteOfDay", coptic.minuteOfDay().getName());
+        assertEquals("minuteOfHour", coptic.minuteOfHour().getName());
+        assertEquals("secondOfDay", coptic.secondOfDay().getName());
+        assertEquals("secondOfMinute", coptic.secondOfMinute().getName());
+        assertEquals("millisOfDay", coptic.millisOfDay().getName());
+        assertEquals("millisOfSecond", coptic.millisOfSecond().getName());
         
-        assertEquals(true, CopticChronology.getInstance().halfdayOfDay().isSupported());
-        assertEquals(true, CopticChronology.getInstance().clockhourOfHalfday().isSupported());
-        assertEquals(true, CopticChronology.getInstance().hourOfHalfday().isSupported());
-        assertEquals(true, CopticChronology.getInstance().clockhourOfDay().isSupported());
-        assertEquals(true, CopticChronology.getInstance().hourOfDay().isSupported());
-        assertEquals(true, CopticChronology.getInstance().minuteOfDay().isSupported());
-        assertEquals(true, CopticChronology.getInstance().minuteOfHour().isSupported());
-        assertEquals(true, CopticChronology.getInstance().secondOfDay().isSupported());
-        assertEquals(true, CopticChronology.getInstance().secondOfMinute().isSupported());
-        assertEquals(true, CopticChronology.getInstance().millisOfDay().isSupported());
-        assertEquals(true, CopticChronology.getInstance().millisOfSecond().isSupported());
+        assertEquals(true, coptic.halfdayOfDay().isSupported());
+        assertEquals(true, coptic.clockhourOfHalfday().isSupported());
+        assertEquals(true, coptic.hourOfHalfday().isSupported());
+        assertEquals(true, coptic.clockhourOfDay().isSupported());
+        assertEquals(true, coptic.hourOfDay().isSupported());
+        assertEquals(true, coptic.minuteOfDay().isSupported());
+        assertEquals(true, coptic.minuteOfHour().isSupported());
+        assertEquals(true, coptic.secondOfDay().isSupported());
+        assertEquals(true, coptic.secondOfMinute().isSupported());
+        assertEquals(true, coptic.millisOfDay().isSupported());
+        assertEquals(true, coptic.millisOfSecond().isSupported());
     }
 
     //-----------------------------------------------------------------------

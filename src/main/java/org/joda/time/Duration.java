@@ -27,7 +27,7 @@ import org.joda.time.field.FieldUtils;
  * A duration is defined by a fixed number of milliseconds.
  * There is no concept of fields, such as days or seconds, as these fields can vary in length.
  * A duration may be converted to a {@link Period} to obtain field values.
- * This conversion will typically cause a loss of precision however.
+ * This conversion will typically cause a loss of precision, however.
  * <p>
  * Duration is thread-safe and immutable.
  *
@@ -70,7 +70,7 @@ public final class Duration
      * Savings changes will not have 24 hours, so use this method with care.
      * <p>
      * A Duration is a representation of an amount of time. If you want to express
-     * the concepts of 'days' you should consider using the {@link Days} class.
+     * the concept of 'days' you should consider using the {@link Days} class.
      *
      * @param days  the number of standard days in this duration
      * @return the duration, never null
@@ -93,7 +93,7 @@ public final class Duration
      * All currently supplied chronologies use this definition.
      * <p>
      * A Duration is a representation of an amount of time. If you want to express
-     * the concepts of 'hours' you should consider using the {@link Hours} class.
+     * the concept of 'hours' you should consider using the {@link Hours} class.
      *
      * @param hours  the number of standard hours in this duration
      * @return the duration, never null
@@ -116,7 +116,7 @@ public final class Duration
      * All currently supplied chronologies use this definition.
      * <p>
      * A Duration is a representation of an amount of time. If you want to express
-     * the concepts of 'minutes' you should consider using the {@link Minutes} class.
+     * the concept of 'minutes' you should consider using the {@link Minutes} class.
      *
      * @param minutes  the number of standard minutes in this duration
      * @return the duration, never null
@@ -138,7 +138,7 @@ public final class Duration
      * All currently supplied chronologies use this definition.
      * <p>
      * A Duration is a representation of an amount of time. If you want to express
-     * the concepts of 'seconds' you should consider using the {@link Seconds} class.
+     * the concept of 'seconds' you should consider using the {@link Seconds} class.
      *
      * @param seconds  the number of standard seconds in this duration
      * @return the duration, never null
@@ -181,7 +181,7 @@ public final class Duration
      *
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
-     * @throws ArithmeticException if the duration exceeds a 64 bit long
+     * @throws ArithmeticException if the duration exceeds a 64-bit long
      */
     public Duration(long startInstant, long endInstant) {
         super(startInstant, endInstant);
@@ -192,7 +192,7 @@ public final class Duration
      *
      * @param start  interval start, null means now
      * @param end  interval end, null means now
-     * @throws ArithmeticException if the duration exceeds a 64 bit long
+     * @throws ArithmeticException if the duration exceeds a 64-bit long
      */
     public Duration(ReadableInstant start, ReadableInstant end) {
         super(start, end);
@@ -363,7 +363,7 @@ public final class Duration
 
     //-----------------------------------------------------------------------
     /**
-     * Creates a new Duration instance with a different milisecond length.
+     * Creates a new Duration instance with a different millisecond length.
      * 
      * @param duration  the new length of the duration
      * @return the new duration instance

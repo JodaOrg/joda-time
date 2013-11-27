@@ -57,6 +57,9 @@ Bug fixes since 2.3
   A slew of tests were added and a variety of bugs fixed
   This affects DateTimeField.getDurationField() and DateTimeField.getRangeDurationField()
 
+- DateTimeUtils.isContiguous(ReadablePartial) [#89]
+  The isContiguous() method could throw a NullPointerException when evaluating weird partials
+
 - Period.normalizedStandard(PeriodType) [#79]
   Fix handling of PeriodType when either years or months missing
 

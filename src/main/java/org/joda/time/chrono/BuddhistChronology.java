@@ -24,11 +24,13 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
+import org.joda.time.DurationFieldType;
 import org.joda.time.field.DelegatedDateTimeField;
 import org.joda.time.field.DividedDateTimeField;
 import org.joda.time.field.OffsetDateTimeField;
 import org.joda.time.field.RemainderDateTimeField;
 import org.joda.time.field.SkipUndoDateTimeField;
+import org.joda.time.field.UnsupportedDurationField;
 
 /**
  * A chronology that matches the BuddhistCalendar class supplied by Sun.
@@ -213,6 +215,9 @@ public final class BuddhistChronology extends AssembledChronology {
 
     protected void assemble(Fields fields) {
         if (getParam() == null) {
+            // force init as used below
+            fields.eras = UnsupportedDurationField.getInstance(DurationFieldType.eras());
+            
             // julian chrono removed zero, but we need to put it back
             DateTimeField field = fields.year;
             fields.year = new OffsetDateTimeField(
@@ -221,7 +226,7 @@ public final class BuddhistChronology extends AssembledChronology {
             // one era, so yearOfEra is the same
             field = fields.yearOfEra;
             fields.yearOfEra = new DelegatedDateTimeField(
-                fields.year, DateTimeFieldType.yearOfEra());
+                fields.year, fields.eras, DateTimeFieldType.yearOfEra());
             
             // julian chrono removed zero, but we need to put it back
             field = fields.weekyear;
@@ -230,7 +235,8 @@ public final class BuddhistChronology extends AssembledChronology {
             
             field = new OffsetDateTimeField(fields.yearOfEra, 99);
             fields.centuryOfEra = new DividedDateTimeField(
-                field, DateTimeFieldType.centuryOfEra(), 100);
+                field, fields.eras, DateTimeFieldType.centuryOfEra(), 100);
+            fields.centuries = fields.centuryOfEra.getDurationField();
             
             field = new RemainderDateTimeField(
                 (DividedDateTimeField) fields.centuryOfEra);
@@ -238,7 +244,7 @@ public final class BuddhistChronology extends AssembledChronology {
                 field, DateTimeFieldType.yearOfCentury(), 1);
             
             field = new RemainderDateTimeField(
-                fields.weekyear, DateTimeFieldType.weekyearOfCentury(), 100);
+                fields.weekyear, fields.centuries, DateTimeFieldType.weekyearOfCentury(), 100);
             fields.weekyearOfCentury = new OffsetDateTimeField(
                 field, DateTimeFieldType.weekyearOfCentury(), 1);
             

@@ -240,6 +240,32 @@ public class TestEthiopicChronology extends TestCase {
         assertEquals(true, ethiopic.dayOfYear().isSupported());
         assertEquals(true, ethiopic.dayOfMonth().isSupported());
         assertEquals(true, ethiopic.dayOfWeek().isSupported());
+        
+        assertEquals(ethiopic.eras(), ethiopic.era().getDurationField());
+        assertEquals(ethiopic.centuries(), ethiopic.centuryOfEra().getDurationField());
+        assertEquals(ethiopic.years(), ethiopic.yearOfCentury().getDurationField());
+        assertEquals(ethiopic.years(), ethiopic.yearOfEra().getDurationField());
+        assertEquals(ethiopic.years(), ethiopic.year().getDurationField());
+        assertEquals(ethiopic.months(), ethiopic.monthOfYear().getDurationField());
+        assertEquals(ethiopic.weekyears(), ethiopic.weekyearOfCentury().getDurationField());
+        assertEquals(ethiopic.weekyears(), ethiopic.weekyear().getDurationField());
+        assertEquals(ethiopic.weeks(), ethiopic.weekOfWeekyear().getDurationField());
+        assertEquals(ethiopic.days(), ethiopic.dayOfYear().getDurationField());
+        assertEquals(ethiopic.days(), ethiopic.dayOfMonth().getDurationField());
+        assertEquals(ethiopic.days(), ethiopic.dayOfWeek().getDurationField());
+        
+        assertEquals(null, ethiopic.era().getRangeDurationField());
+        assertEquals(ethiopic.eras(), ethiopic.centuryOfEra().getRangeDurationField());
+        assertEquals(ethiopic.centuries(), ethiopic.yearOfCentury().getRangeDurationField());
+        assertEquals(ethiopic.eras(), ethiopic.yearOfEra().getRangeDurationField());
+        assertEquals(null, ethiopic.year().getRangeDurationField());
+        assertEquals(ethiopic.years(), ethiopic.monthOfYear().getRangeDurationField());
+        assertEquals(ethiopic.centuries(), ethiopic.weekyearOfCentury().getRangeDurationField());
+        assertEquals(null, ethiopic.weekyear().getRangeDurationField());
+        assertEquals(ethiopic.weekyears(), ethiopic.weekOfWeekyear().getRangeDurationField());
+        assertEquals(ethiopic.years(), ethiopic.dayOfYear().getRangeDurationField());
+        assertEquals(ethiopic.months(), ethiopic.dayOfMonth().getRangeDurationField());
+        assertEquals(ethiopic.weeks(), ethiopic.dayOfWeek().getRangeDurationField());
     }
 
     public void testTimeFields() {

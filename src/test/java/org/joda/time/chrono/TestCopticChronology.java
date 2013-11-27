@@ -240,6 +240,32 @@ public class TestCopticChronology extends TestCase {
         assertEquals(true, coptic.dayOfYear().isSupported());
         assertEquals(true, coptic.dayOfMonth().isSupported());
         assertEquals(true, coptic.dayOfWeek().isSupported());
+        
+        assertEquals(coptic.eras(), coptic.era().getDurationField());
+        assertEquals(coptic.centuries(), coptic.centuryOfEra().getDurationField());
+        assertEquals(coptic.years(), coptic.yearOfCentury().getDurationField());
+        assertEquals(coptic.years(), coptic.yearOfEra().getDurationField());
+        assertEquals(coptic.years(), coptic.year().getDurationField());
+        assertEquals(coptic.months(), coptic.monthOfYear().getDurationField());
+        assertEquals(coptic.weekyears(), coptic.weekyearOfCentury().getDurationField());
+        assertEquals(coptic.weekyears(), coptic.weekyear().getDurationField());
+        assertEquals(coptic.weeks(), coptic.weekOfWeekyear().getDurationField());
+        assertEquals(coptic.days(), coptic.dayOfYear().getDurationField());
+        assertEquals(coptic.days(), coptic.dayOfMonth().getDurationField());
+        assertEquals(coptic.days(), coptic.dayOfWeek().getDurationField());
+        
+        assertEquals(null, coptic.era().getRangeDurationField());
+        assertEquals(coptic.eras(), coptic.centuryOfEra().getRangeDurationField());
+        assertEquals(coptic.centuries(), coptic.yearOfCentury().getRangeDurationField());
+        assertEquals(coptic.eras(), coptic.yearOfEra().getRangeDurationField());
+        assertEquals(null, coptic.year().getRangeDurationField());
+        assertEquals(coptic.years(), coptic.monthOfYear().getRangeDurationField());
+        assertEquals(coptic.centuries(), coptic.weekyearOfCentury().getRangeDurationField());
+        assertEquals(null, coptic.weekyear().getRangeDurationField());
+        assertEquals(coptic.weekyears(), coptic.weekOfWeekyear().getRangeDurationField());
+        assertEquals(coptic.years(), coptic.dayOfYear().getRangeDurationField());
+        assertEquals(coptic.months(), coptic.dayOfMonth().getRangeDurationField());
+        assertEquals(coptic.weeks(), coptic.dayOfWeek().getRangeDurationField());
     }
 
     public void testTimeFields() {

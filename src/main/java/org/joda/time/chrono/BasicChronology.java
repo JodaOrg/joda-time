@@ -278,6 +278,7 @@ abstract class BasicChronology extends AssembledChronology {
             fields.yearOfEra, 99);
         fields.centuryOfEra = new DividedDateTimeField(
             field, DateTimeFieldType.centuryOfEra(), 100);
+        fields.centuries = fields.centuryOfEra.getDurationField();
         
         field = new RemainderDateTimeField(
             (DividedDateTimeField) fields.centuryOfEra);
@@ -293,15 +294,13 @@ abstract class BasicChronology extends AssembledChronology {
         fields.weekOfWeekyear = new BasicWeekOfWeekyearDateTimeField(this, fields.weeks);
         
         field = new RemainderDateTimeField(
-            fields.weekyear, DateTimeFieldType.weekyearOfCentury(), 100);
+            fields.weekyear, fields.centuries, DateTimeFieldType.weekyearOfCentury(), 100);
         fields.weekyearOfCentury = new OffsetDateTimeField(
             field, DateTimeFieldType.weekyearOfCentury(), 1);
         
         // The remaining (imprecise) durations are available from the newly
         // created datetime fields.
-
         fields.years = fields.year.getDurationField();
-        fields.centuries = fields.centuryOfEra.getDurationField();
         fields.months = fields.monthOfYear.getDurationField();
         fields.weekyears = fields.weekyear.getDurationField();
     }

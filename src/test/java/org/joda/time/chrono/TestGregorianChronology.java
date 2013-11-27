@@ -246,6 +246,32 @@ public class TestGregorianChronology extends TestCase {
         assertEquals(true, greg.dayOfYear().isSupported());
         assertEquals(true, greg.dayOfMonth().isSupported());
         assertEquals(true, greg.dayOfWeek().isSupported());
+        
+        assertEquals(greg.eras(), greg.era().getDurationField());
+        assertEquals(greg.centuries(), greg.centuryOfEra().getDurationField());
+        assertEquals(greg.years(), greg.yearOfCentury().getDurationField());
+        assertEquals(greg.years(), greg.yearOfEra().getDurationField());
+        assertEquals(greg.years(), greg.year().getDurationField());
+        assertEquals(greg.months(), greg.monthOfYear().getDurationField());
+        assertEquals(greg.weekyears(), greg.weekyearOfCentury().getDurationField());
+        assertEquals(greg.weekyears(), greg.weekyear().getDurationField());
+        assertEquals(greg.weeks(), greg.weekOfWeekyear().getDurationField());
+        assertEquals(greg.days(), greg.dayOfYear().getDurationField());
+        assertEquals(greg.days(), greg.dayOfMonth().getDurationField());
+        assertEquals(greg.days(), greg.dayOfWeek().getDurationField());
+        
+        assertEquals(null, greg.era().getRangeDurationField());
+        assertEquals(greg.eras(), greg.centuryOfEra().getRangeDurationField());
+        assertEquals(greg.centuries(), greg.yearOfCentury().getRangeDurationField());
+        assertEquals(greg.eras(), greg.yearOfEra().getRangeDurationField());
+        assertEquals(null, greg.year().getRangeDurationField());
+        assertEquals(greg.years(), greg.monthOfYear().getRangeDurationField());
+        assertEquals(greg.centuries(), greg.weekyearOfCentury().getRangeDurationField());
+        assertEquals(null, greg.weekyear().getRangeDurationField());
+        assertEquals(greg.weekyears(), greg.weekOfWeekyear().getRangeDurationField());
+        assertEquals(greg.years(), greg.dayOfYear().getRangeDurationField());
+        assertEquals(greg.months(), greg.dayOfMonth().getRangeDurationField());
+        assertEquals(greg.weeks(), greg.dayOfWeek().getRangeDurationField());
     }
 
     public void testTimeFields() {

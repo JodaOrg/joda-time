@@ -242,6 +242,32 @@ public class TestJulianChronology extends TestCase {
         assertEquals(true, julian.dayOfYear().isSupported());
         assertEquals(true, julian.dayOfMonth().isSupported());
         assertEquals(true, julian.dayOfWeek().isSupported());
+        
+        assertEquals(julian.eras(), julian.era().getDurationField());
+        assertEquals(julian.centuries(), julian.centuryOfEra().getDurationField());
+        assertEquals(julian.years(), julian.yearOfCentury().getDurationField());
+        assertEquals(julian.years(), julian.yearOfEra().getDurationField());
+        assertEquals(julian.years(), julian.year().getDurationField());
+        assertEquals(julian.months(), julian.monthOfYear().getDurationField());
+        assertEquals(julian.weekyears(), julian.weekyearOfCentury().getDurationField());
+        assertEquals(julian.weekyears(), julian.weekyear().getDurationField());
+        assertEquals(julian.weeks(), julian.weekOfWeekyear().getDurationField());
+        assertEquals(julian.days(), julian.dayOfYear().getDurationField());
+        assertEquals(julian.days(), julian.dayOfMonth().getDurationField());
+        assertEquals(julian.days(), julian.dayOfWeek().getDurationField());
+        
+        assertEquals(null, julian.era().getRangeDurationField());
+        assertEquals(julian.eras(), julian.centuryOfEra().getRangeDurationField());
+        assertEquals(julian.centuries(), julian.yearOfCentury().getRangeDurationField());
+        assertEquals(julian.eras(), julian.yearOfEra().getRangeDurationField());
+        assertEquals(null, julian.year().getRangeDurationField());
+        assertEquals(julian.years(), julian.monthOfYear().getRangeDurationField());
+        assertEquals(julian.centuries(), julian.weekyearOfCentury().getRangeDurationField());
+        assertEquals(null, julian.weekyear().getRangeDurationField());
+        assertEquals(julian.weekyears(), julian.weekOfWeekyear().getRangeDurationField());
+        assertEquals(julian.years(), julian.dayOfYear().getRangeDurationField());
+        assertEquals(julian.months(), julian.dayOfMonth().getRangeDurationField());
+        assertEquals(julian.weeks(), julian.dayOfWeek().getRangeDurationField());
     }
 
     public void testTimeFields() {

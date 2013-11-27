@@ -290,6 +290,32 @@ public class TestGJChronology extends TestCase {
         assertEquals(true, gj.dayOfYear().isSupported());
         assertEquals(true, gj.dayOfMonth().isSupported());
         assertEquals(true, gj.dayOfWeek().isSupported());
+        
+        assertEquals(gj.eras(), gj.era().getDurationField());
+        assertEquals(gj.centuries(), gj.centuryOfEra().getDurationField());
+        assertEquals(gj.years(), gj.yearOfCentury().getDurationField());
+        assertEquals(gj.years(), gj.yearOfEra().getDurationField());
+        assertEquals(gj.years(), gj.year().getDurationField());
+        assertEquals(gj.months(), gj.monthOfYear().getDurationField());
+        assertEquals(gj.weekyears(), gj.weekyearOfCentury().getDurationField());
+        assertEquals(gj.weekyears(), gj.weekyear().getDurationField());
+        assertEquals(gj.weeks(), gj.weekOfWeekyear().getDurationField());
+        assertEquals(gj.days(), gj.dayOfYear().getDurationField());
+        assertEquals(gj.days(), gj.dayOfMonth().getDurationField());
+        assertEquals(gj.days(), gj.dayOfWeek().getDurationField());
+        
+        assertEquals(null, gj.era().getRangeDurationField());
+        assertEquals(gj.eras(), gj.centuryOfEra().getRangeDurationField());
+        assertEquals(gj.centuries(), gj.yearOfCentury().getRangeDurationField());
+        assertEquals(gj.eras(), gj.yearOfEra().getRangeDurationField());
+        assertEquals(null, gj.year().getRangeDurationField());
+        assertEquals(gj.years(), gj.monthOfYear().getRangeDurationField());
+        assertEquals(gj.centuries(), gj.weekyearOfCentury().getRangeDurationField());
+        assertEquals(null, gj.weekyear().getRangeDurationField());
+        assertEquals(gj.weekyears(), gj.weekOfWeekyear().getRangeDurationField());
+        assertEquals(gj.years(), gj.dayOfYear().getRangeDurationField());
+        assertEquals(gj.months(), gj.dayOfMonth().getRangeDurationField());
+        assertEquals(gj.weeks(), gj.dayOfWeek().getRangeDurationField());
     }
 
     public void testTimeFields() {

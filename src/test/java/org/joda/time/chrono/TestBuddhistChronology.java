@@ -237,6 +237,32 @@ public class TestBuddhistChronology extends TestCase {
         assertEquals(true, buddhist.dayOfYear().isSupported());
         assertEquals(true, buddhist.dayOfMonth().isSupported());
         assertEquals(true, buddhist.dayOfWeek().isSupported());
+        
+        assertEquals(buddhist.eras(), buddhist.era().getDurationField());
+        assertEquals(buddhist.centuries(), buddhist.centuryOfEra().getDurationField());
+        assertEquals(buddhist.years(), buddhist.yearOfCentury().getDurationField());
+        assertEquals(buddhist.years(), buddhist.yearOfEra().getDurationField());
+        assertEquals(buddhist.years(), buddhist.year().getDurationField());
+        assertEquals(buddhist.months(), buddhist.monthOfYear().getDurationField());
+        assertEquals(buddhist.weekyears(), buddhist.weekyearOfCentury().getDurationField());
+        assertEquals(buddhist.weekyears(), buddhist.weekyear().getDurationField());
+        assertEquals(buddhist.weeks(), buddhist.weekOfWeekyear().getDurationField());
+        assertEquals(buddhist.days(), buddhist.dayOfYear().getDurationField());
+        assertEquals(buddhist.days(), buddhist.dayOfMonth().getDurationField());
+        assertEquals(buddhist.days(), buddhist.dayOfWeek().getDurationField());
+        
+        assertEquals(null, buddhist.era().getRangeDurationField());
+        assertEquals(buddhist.eras(), buddhist.centuryOfEra().getRangeDurationField());
+        assertEquals(buddhist.centuries(), buddhist.yearOfCentury().getRangeDurationField());
+        assertEquals(buddhist.eras(), buddhist.yearOfEra().getRangeDurationField());
+        assertEquals(null, buddhist.year().getRangeDurationField());
+        assertEquals(buddhist.years(), buddhist.monthOfYear().getRangeDurationField());
+        assertEquals(buddhist.centuries(), buddhist.weekyearOfCentury().getRangeDurationField());
+        assertEquals(null, buddhist.weekyear().getRangeDurationField());
+        assertEquals(buddhist.weekyears(), buddhist.weekOfWeekyear().getRangeDurationField());
+        assertEquals(buddhist.years(), buddhist.dayOfYear().getRangeDurationField());
+        assertEquals(buddhist.months(), buddhist.dayOfMonth().getRangeDurationField());
+        assertEquals(buddhist.weeks(), buddhist.dayOfWeek().getRangeDurationField());
     }
 
     public void testTimeFields() {

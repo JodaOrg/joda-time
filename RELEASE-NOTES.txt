@@ -39,7 +39,10 @@ Serialization compatible - Yes
 Data compatible - Yes, except
  - DateTimeZone data updated to version 2013d
 
-Semantic compatible - Yes
+Semantic compatible - Yes, except
+- DateTimeField duration fields have been fixed
+  For example, yearOfEra() now has a range of eras() rather than null
+  The DurationField instances now compare using equals() correctly
 
 
 Deprecations since 2.3
@@ -48,6 +51,12 @@ Deprecations since 2.3
 
 Bug fixes since 2.3
 -------------------
+- DateTimeField.getDurationField() / DateTimeField.getRangeDurationField() [#92]
+  Previously some of the complex cases were wrong, notably around centuries and eras
+  For example, yearOfEra() returned a range of null when it should be eras()
+  A slew of tests were added and a variety of bugs fixed
+  This affects DateTimeField.getDurationField() and DateTimeField.getRangeDurationField()
+
 - Period.normalizedStandard(PeriodType) [#79]
   Fix handling of PeriodType when either years or months missing
 

@@ -360,6 +360,23 @@ public final class ZonedChronology extends AssembledChronology {
         private long addOffset(long instant) {
             return iZone.convertUTCToLocal(instant);
         }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            } else if (obj instanceof ZonedDurationField) {
+                ZonedDurationField other = (ZonedDurationField) obj;
+                return iField.equals(other.iField) &&
+                       iZone.equals(other.iZone);
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return iField.hashCode() ^ iZone.hashCode();
+        }
     }
 
     /**
@@ -594,6 +611,25 @@ public final class ZonedChronology extends AssembledChronology {
                 throw new ArithmeticException("Adding time zone offset caused overflow");
             }
             return offset;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            } else if (obj instanceof ZonedDateTimeField) {
+                ZonedDateTimeField other = (ZonedDateTimeField) obj;
+                return iField.equals(other.iField) &&
+                       iZone.equals(other.iZone) &&
+                       iDurationField.equals(other.iDurationField) &&
+                       iRangeDurationField.equals(other.iRangeDurationField);
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return iField.hashCode() ^ iZone.hashCode();
         }
     }
 

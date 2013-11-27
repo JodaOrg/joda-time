@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -38,9 +38,11 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
     /** Serialization version */
     private static final long serialVersionUID = -4730164440214502503L;
 
-    /** The DateTimeField being wrapped */
+    /** The DateTimeField being wrapped. */
     private final DateTimeField iField;
-    /** The override field type */
+    /** The range duration. */
+    private final DurationField iRangeDurationField;
+    /** The override field type. */
     private final DateTimeFieldType iType;
 
     /**
@@ -59,11 +61,23 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
      * @param type  the field type override
      */
     public DelegatedDateTimeField(DateTimeField field, DateTimeFieldType type) {
+        this(field, null, type);
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param field  the field being decorated
+     * @param rangeField  the range field, null to derive
+     * @param type  the field type override
+     */
+    public DelegatedDateTimeField(DateTimeField field, DurationField rangeField, DateTimeFieldType type) {
         super();
         if (field == null) {
             throw new IllegalArgumentException("The field must not be null");
         }
         iField = field;
+        iRangeDurationField = rangeField;
         iType = (type == null ? field.getType() : type);
     }
 
@@ -193,6 +207,9 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
     }
 
     public DurationField getRangeDurationField() {
+        if (iRangeDurationField != null) {
+            return iRangeDurationField;
+        }
         return iField.getRangeDurationField();
     }
 

@@ -237,6 +237,32 @@ public class TestIslamicChronology extends TestCase {
         assertEquals(true, islamic.dayOfYear().isSupported());
         assertEquals(true, islamic.dayOfMonth().isSupported());
         assertEquals(true, islamic.dayOfWeek().isSupported());
+        
+        assertEquals(islamic.eras(), islamic.era().getDurationField());
+        assertEquals(islamic.centuries(), islamic.centuryOfEra().getDurationField());
+        assertEquals(islamic.years(), islamic.yearOfCentury().getDurationField());
+        assertEquals(islamic.years(), islamic.yearOfEra().getDurationField());
+        assertEquals(islamic.years(), islamic.year().getDurationField());
+        assertEquals(islamic.months(), islamic.monthOfYear().getDurationField());
+        assertEquals(islamic.weekyears(), islamic.weekyearOfCentury().getDurationField());
+        assertEquals(islamic.weekyears(), islamic.weekyear().getDurationField());
+        assertEquals(islamic.weeks(), islamic.weekOfWeekyear().getDurationField());
+        assertEquals(islamic.days(), islamic.dayOfYear().getDurationField());
+        assertEquals(islamic.days(), islamic.dayOfMonth().getDurationField());
+        assertEquals(islamic.days(), islamic.dayOfWeek().getDurationField());
+        
+        assertEquals(null, islamic.era().getRangeDurationField());
+        assertEquals(islamic.eras(), islamic.centuryOfEra().getRangeDurationField());
+        assertEquals(islamic.centuries(), islamic.yearOfCentury().getRangeDurationField());
+        assertEquals(islamic.eras(), islamic.yearOfEra().getRangeDurationField());
+        assertEquals(null, islamic.year().getRangeDurationField());
+        assertEquals(islamic.years(), islamic.monthOfYear().getRangeDurationField());
+        assertEquals(islamic.centuries(), islamic.weekyearOfCentury().getRangeDurationField());
+        assertEquals(null, islamic.weekyear().getRangeDurationField());
+        assertEquals(islamic.weekyears(), islamic.weekOfWeekyear().getRangeDurationField());
+        assertEquals(islamic.years(), islamic.dayOfYear().getRangeDurationField());
+        assertEquals(islamic.months(), islamic.dayOfMonth().getRangeDurationField());
+        assertEquals(islamic.weeks(), islamic.dayOfWeek().getRangeDurationField());
     }
 
     public void testTimeFields() {

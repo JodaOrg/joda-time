@@ -141,7 +141,7 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals("2004", test.yearOfEra().getAsShortText());
         assertEquals("2004", test.yearOfEra().getAsShortText(Locale.FRENCH));
         assertEquals(test.getChronology().years(), test.yearOfEra().getDurationField());
-        assertEquals(null, test.yearOfEra().getRangeDurationField());
+        assertEquals(test.getChronology().eras(), test.yearOfEra().getRangeDurationField());
         assertEquals(9, test.yearOfEra().getMaximumTextLength(null));
         assertEquals(9, test.yearOfEra().getMaximumShortTextLength(null));
     }
@@ -160,7 +160,7 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals("20", test.centuryOfEra().getAsShortText());
         assertEquals("20", test.centuryOfEra().getAsShortText(Locale.FRENCH));
         assertEquals(test.getChronology().centuries(), test.centuryOfEra().getDurationField());
-        assertEquals(null, test.centuryOfEra().getRangeDurationField());
+        assertEquals(test.getChronology().eras(), test.centuryOfEra().getRangeDurationField());
         assertEquals(7, test.centuryOfEra().getMaximumTextLength(null));
         assertEquals(7, test.centuryOfEra().getMaximumShortTextLength(null));
     }

@@ -250,6 +250,32 @@ public class TestISOChronology extends TestCase {
         assertEquals(true, iso.dayOfYear().isSupported());
         assertEquals(true, iso.dayOfMonth().isSupported());
         assertEquals(true, iso.dayOfWeek().isSupported());
+        
+        assertEquals(iso.eras(), iso.era().getDurationField());
+        assertEquals(iso.centuries(), iso.centuryOfEra().getDurationField());
+        assertEquals(iso.years(), iso.yearOfCentury().getDurationField());
+        assertEquals(iso.years(), iso.yearOfEra().getDurationField());
+        assertEquals(iso.years(), iso.year().getDurationField());
+        assertEquals(iso.months(), iso.monthOfYear().getDurationField());
+        assertEquals(iso.weekyears(), iso.weekyearOfCentury().getDurationField());
+        assertEquals(iso.weekyears(), iso.weekyear().getDurationField());
+        assertEquals(iso.weeks(), iso.weekOfWeekyear().getDurationField());
+        assertEquals(iso.days(), iso.dayOfYear().getDurationField());
+        assertEquals(iso.days(), iso.dayOfMonth().getDurationField());
+        assertEquals(iso.days(), iso.dayOfWeek().getDurationField());
+        
+        assertEquals(null, iso.era().getRangeDurationField());
+        assertEquals(iso.eras(), iso.centuryOfEra().getRangeDurationField());
+        assertEquals(iso.centuries(), iso.yearOfCentury().getRangeDurationField());
+        assertEquals(iso.eras(), iso.yearOfEra().getRangeDurationField());
+        assertEquals(null, iso.year().getRangeDurationField());
+        assertEquals(iso.years(), iso.monthOfYear().getRangeDurationField());
+        assertEquals(iso.centuries(), iso.weekyearOfCentury().getRangeDurationField());
+        assertEquals(null, iso.weekyear().getRangeDurationField());
+        assertEquals(iso.weekyears(), iso.weekOfWeekyear().getRangeDurationField());
+        assertEquals(iso.years(), iso.dayOfYear().getRangeDurationField());
+        assertEquals(iso.months(), iso.dayOfMonth().getRangeDurationField());
+        assertEquals(iso.weeks(), iso.dayOfWeek().getRangeDurationField());
     }
 
     public void testTimeFields() {

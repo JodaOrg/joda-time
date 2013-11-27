@@ -40,6 +40,7 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
     // Shared with RemainderDateTimeField.
     final int iDivisor;
     final DurationField iDurationField;
+    final DurationField iRangeDurationField;
 
     private final int iMin;
     private final int iMax;
@@ -54,12 +55,24 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
      */
     public DividedDateTimeField(DateTimeField field,
                                 DateTimeFieldType type, int divisor) {
+        this(field, field.getRangeDurationField(), type, divisor);
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param field  the field to wrap, like "year()".
+     * @param rangeField  the range field, null to derive
+     * @param type  the field type this field will actually use
+     * @param divisor  divisor, such as 100 years in a century
+     * @throws IllegalArgumentException if divisor is less than two
+     */
+    public DividedDateTimeField(DateTimeField field, DurationField rangeField,
+                                DateTimeFieldType type, int divisor) {
         super(field, type);
-                
         if (divisor < 2) {
             throw new IllegalArgumentException("The divisor must be at least 2");
         }
-
         DurationField unitField = field.getDurationField();
         if (unitField == null) {
             iDurationField = null;
@@ -67,15 +80,12 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
             iDurationField = new ScaledDurationField(
                 unitField, type.getDurationType(), divisor);
         }
-
+        iRangeDurationField = rangeField;
         iDivisor = divisor;
-
         int i = field.getMinimumValue();
         int min = (i >= 0) ? i / divisor : ((i + 1) / divisor - 1);
-
         int j = field.getMaximumValue();
         int max = (j >= 0) ? j / divisor : ((j + 1) / divisor - 1);
-
         iMin = min;
         iMax = max;
     }
@@ -88,19 +98,37 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
      * @param type  the field type this field will actually use
      */
     public DividedDateTimeField(RemainderDateTimeField remainderField, DateTimeFieldType type) {
+        this(remainderField, null, type);
+    }
+
+    /**
+     * Construct a DividedDateTimeField that compliments the given
+     * RemainderDateTimeField.
+     *
+     * @param remainderField  complimentary remainder field, like "yearOfCentury()".
+     * @param rangeField  the range field, null to derive
+     * @param type  the field type this field will actually use
+     */
+    public DividedDateTimeField(RemainderDateTimeField remainderField, DurationField rangeField, DateTimeFieldType type) {
         super(remainderField.getWrappedField(), type);
         int divisor = iDivisor = remainderField.iDivisor;
         iDurationField = remainderField.iRangeField;
-
+        iRangeDurationField = rangeField;
         DateTimeField field = getWrappedField();
         int i = field.getMinimumValue();
         int min = (i >= 0) ? i / divisor : ((i + 1) / divisor - 1);
-
         int j = field.getMaximumValue();
         int max = (j >= 0) ? j / divisor : ((j + 1) / divisor - 1);
-
         iMin = min;
         iMax = max;
+    }
+
+    @Override
+    public DurationField getRangeDurationField() {
+        if (iRangeDurationField != null) {
+            return iRangeDurationField;
+        }
+        return super.getRangeDurationField();
     }
 
     /**

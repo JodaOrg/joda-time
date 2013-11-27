@@ -170,12 +170,12 @@ public final class ISOChronology extends AssembledChronology {
             // Use zero based century and year of century.
             fields.centuryOfEra = new DividedDateTimeField(
                 ISOYearOfEraDateTimeField.INSTANCE, DateTimeFieldType.centuryOfEra(), 100);
+            fields.centuries = fields.centuryOfEra.getDurationField();
+            
             fields.yearOfCentury = new RemainderDateTimeField(
                 (DividedDateTimeField) fields.centuryOfEra, DateTimeFieldType.yearOfCentury());
             fields.weekyearOfCentury = new RemainderDateTimeField(
-                (DividedDateTimeField) fields.centuryOfEra, DateTimeFieldType.weekyearOfCentury());
-
-            fields.centuries = fields.centuryOfEra.getDurationField();
+                (DividedDateTimeField) fields.centuryOfEra, fields.weekyears, DateTimeFieldType.weekyearOfCentury());
         }
     }
 

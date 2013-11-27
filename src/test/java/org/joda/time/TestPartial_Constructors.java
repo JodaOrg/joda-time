@@ -345,6 +345,15 @@ public class TestPartial_Constructors extends TestCase {
         } catch (IllegalArgumentException ex) {
             assertMessageContains(ex, "must not", "duplicate");
         }
+        
+        types = new DateTimeFieldType[] {
+            DateTimeFieldType.dayOfMonth(), DateTimeFieldType.clockhourOfDay(), DateTimeFieldType.hourOfDay() };
+        try {
+            new Partial(types, values);
+            fail();
+        } catch (IllegalArgumentException ex) {
+            assertMessageContains(ex, "must not", "duplicate");
+        }
     }
 
     /**

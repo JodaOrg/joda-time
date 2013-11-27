@@ -357,6 +357,15 @@ public class TestPartial_Basics extends TestCase {
         check(test, 10, 20);
     }
 
+    public void testWith3() {
+        Partial test = createHourMinPartial();
+        try {
+            test.with(DateTimeFieldType.clockhourOfDay(), 6);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        check(test, 10, 20);
+    }
+
     public void testWith3a() {
         Partial test = createHourMinPartial();
         Partial result = test.with(DateTimeFieldType.secondOfMinute(), 15);

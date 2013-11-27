@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -459,8 +459,9 @@ public final class Partial
             newValues[i] = value;
             System.arraycopy(iTypes, i, newTypes, i + 1, newTypes.length - i - 1);
             System.arraycopy(iValues, i, newValues, i + 1, newValues.length - i - 1);
-            
-            Partial newPartial = new Partial(iChronology, newTypes, newValues);
+            // use public constructor to ensure full validation
+            // this isn't overly efficient, but is safe
+            Partial newPartial = new Partial(newTypes, newValues, iChronology);
             iChronology.validate(newPartial, newValues);
             return newPartial;
         }

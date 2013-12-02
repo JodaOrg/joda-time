@@ -53,7 +53,7 @@ Deprecations since 2.3
 
 Bug fixes since 2.3
 -------------------
-- DateTimeField.getDurationField() / DateTimeField.getRangeDurationField() [#92]
+- DateTimeField.getDurationField() / DateTimeField.getRangeDurationField() [#92,#93]
   Previously some of the complex cases were wrong, notably around centuries and eras
   For example, yearOfEra() returned a range of null when it should be eras()
   A slew of tests were added and a variety of bugs fixed

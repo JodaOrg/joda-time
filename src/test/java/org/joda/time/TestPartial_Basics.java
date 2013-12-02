@@ -448,6 +448,30 @@ public class TestPartial_Basics extends TestCase {
         assertSame(test, result);
     }
 
+    public void testWith_baseHasNoRange() {
+        Partial test = new Partial(DateTimeFieldType.year(), 1);
+        Partial result = test.with(DateTimeFieldType.hourOfDay(), 10);
+        assertEquals(2, result.size());
+        assertEquals(0, result.indexOf(DateTimeFieldType.year()));
+        assertEquals(1, result.indexOf(DateTimeFieldType.hourOfDay()));
+    }
+
+    public void testWith_argHasNoRange() {
+        Partial test = new Partial(DateTimeFieldType.hourOfDay(), 1);
+        Partial result = test.with(DateTimeFieldType.year(), 10);
+        assertEquals(2, result.size());
+        assertEquals(0, result.indexOf(DateTimeFieldType.year()));
+        assertEquals(1, result.indexOf(DateTimeFieldType.hourOfDay()));
+    }
+
+    public void testWith_baseAndArgHaveNoRange() {
+        Partial test = new Partial(DateTimeFieldType.year(), 1);
+        Partial result = test.with(DateTimeFieldType.era(), 1);
+        assertEquals(2, result.size());
+        assertEquals(0, result.indexOf(DateTimeFieldType.era()));
+        assertEquals(1, result.indexOf(DateTimeFieldType.year()));
+    }
+
     //-----------------------------------------------------------------------
     public void testWithout1() {
         Partial test = createHourMinPartial();

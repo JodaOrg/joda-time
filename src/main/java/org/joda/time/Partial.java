@@ -215,13 +215,14 @@ public final class Partial
             DurationField loopUnitField = loopType.getDurationType().getField(iChronology);
             if (i > 0) {
                 int compare = lastUnitField.compareTo(loopUnitField);
-                if (compare < 0 || (compare != 0 && loopUnitField.isSupported() == false)) {
+                if (compare < 0) {
                     throw new IllegalArgumentException("Types array must be in order largest-smallest: " +
                             types[i - 1].getName() + " < " + loopType.getName());
                 } else if (compare == 0) {
                     if (types[i - 1].getRangeDurationType() == null) {
                         if (loopType.getRangeDurationType() == null) {
-                            throw new IllegalArgumentException("Types array must not contain duplicate: " + loopType.getName());
+                            throw new IllegalArgumentException("Types array must not contain duplicate: " +
+                                            types[i - 1].getName() + " and " + loopType.getName());
                         }
                     } else {
                         if (loopType.getRangeDurationType() == null) {
@@ -235,7 +236,8 @@ public final class Partial
                                     types[i - 1].getName() + " < " + loopType.getName());
                         }
                         if (lastRangeField.compareTo(loopRangeField) == 0) {
-                            throw new IllegalArgumentException("Types array must not contain duplicate: " + loopType.getName());
+                            throw new IllegalArgumentException("Types array must not contain duplicate: " +
+                                            types[i - 1].getName() + " and " + loopType.getName());
                         }
                     }
                 }
@@ -444,6 +446,9 @@ public final class Partial
                         if (compare > 0) {
                             break;
                         } else if (compare == 0) {
+                            if (fieldType.getRangeDurationType() == null) {
+                                break;
+                            }
                             DurationField rangeField = fieldType.getRangeDurationType().getField(iChronology);
                             DurationField loopRangeField = loopType.getRangeDurationType().getField(iChronology);
                             if (rangeField.compareTo(loopRangeField) > 0) {

@@ -214,11 +214,20 @@ public final class Partial
             DateTimeFieldType loopType = types[i];
             DurationField loopUnitField = loopType.getDurationType().getField(iChronology);
             if (i > 0) {
+                if (loopUnitField.isSupported() == false) {
+                    if (lastUnitField.isSupported()) {
+                        throw new IllegalArgumentException("Types array must be in order largest-smallest: " +
+                                        types[i - 1].getName() + " < " + loopType.getName());
+                    } else {
+                        throw new IllegalArgumentException("Types array must not contain duplicate unsupported: " +
+                                        types[i - 1].getName() + " and " + loopType.getName());
+                    }
+                }
                 int compare = lastUnitField.compareTo(loopUnitField);
                 if (compare < 0) {
                     throw new IllegalArgumentException("Types array must be in order largest-smallest: " +
                             types[i - 1].getName() + " < " + loopType.getName());
-                } else if (compare == 0) {
+                } else if (compare == 0 && lastUnitField.equals(loopUnitField)) {
                     if (types[i - 1].getRangeDurationType() == null) {
                         if (loopType.getRangeDurationType() == null) {
                             throw new IllegalArgumentException("Types array must not contain duplicate: " +

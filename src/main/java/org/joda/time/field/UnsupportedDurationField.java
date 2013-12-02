@@ -224,9 +224,6 @@ public final class UnsupportedDurationField extends DurationField implements Ser
      * @return zero always
      */
     public int compareTo(DurationField durationField) {
-        if (durationField.isSupported()) {
-            return 1;
-        }
         return 0;
     }
 

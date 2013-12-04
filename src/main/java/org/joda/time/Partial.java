@@ -458,6 +458,9 @@ public final class Partial
                             if (fieldType.getRangeDurationType() == null) {
                                 break;
                             }
+                            if (loopType.getRangeDurationType() == null) {
+                                continue;
+                            }
                             DurationField rangeField = fieldType.getRangeDurationType().getField(iChronology);
                             DurationField loopRangeField = loopType.getRangeDurationType().getField(iChronology);
                             if (rangeField.compareTo(loopRangeField) > 0) {

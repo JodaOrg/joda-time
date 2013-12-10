@@ -18,6 +18,7 @@ package org.joda.time;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -76,8 +77,12 @@ public final class Partial
     private final Chronology iChronology;
     /** The set of field types. */
     private final DateTimeFieldType[] iTypes;
+    /** The canonically ordered set of field types */
+    private final DateTimeFieldType[] iOrderedTypes;
     /** The values of each field in this partial. */
     private final int[] iValues;
+    /** The values of each canonically ordered field in this partial */
+    private final int[] iOrderedValues;
     /** The formatter to use, [0] may miss some fields, [1] doesn't miss any fields. */
     private transient DateTimeFormatter[] iFormatter;
 
@@ -123,7 +128,9 @@ public final class Partial
         super();
         iChronology = DateTimeUtils.getChronology(chrono).withUTC();
         iTypes = new DateTimeFieldType[0];
+        iOrderedTypes = new DateTimeFieldType[0];
         iValues = new int[0];
+        iOrderedValues = new int[0];
     }
 
     /**
@@ -157,7 +164,9 @@ public final class Partial
             throw new IllegalArgumentException("The field type must not be null");
         }
         iTypes = new DateTimeFieldType[] {type};
+        iOrderedTypes = new DateTimeFieldType[] {type};
         iValues = new int[] {value};
+        iOrderedValues = new int[] {value};
         chronology.validate(this, iValues);
     }
 
@@ -201,7 +210,9 @@ public final class Partial
         }
         if (types.length == 0) {
             iTypes = types;
+            iOrderedTypes = types;
             iValues = values;
+            iOrderedValues = values;
             return;
         }
         for (int i = 0; i < types.length; i++) {
@@ -253,10 +264,14 @@ public final class Partial
             }
             lastUnitField = loopUnitField;
         }
-        
+
         iTypes = (DateTimeFieldType[]) types.clone();
         chronology.validate(this, values);
         iValues = (int[]) values.clone();
+
+        iOrderedTypes = new DateTimeFieldType[iTypes.length];
+        iOrderedValues = new int[iValues.length];
+        sortOrderedTypesAndValues();
     }
 
     /**
@@ -277,6 +292,9 @@ public final class Partial
             iTypes[i] = partial.getFieldType(i);
             iValues[i] = partial.getValue(i);
         }
+        iOrderedTypes = new DateTimeFieldType[iTypes.length];
+        iOrderedValues = new int[iValues.length];
+        sortOrderedTypesAndValues();
     }
 
     /**
@@ -292,6 +310,8 @@ public final class Partial
         iChronology = partial.iChronology;
         iTypes = partial.iTypes;
         iValues = values;
+        iOrderedTypes = (DateTimeFieldType[]) iTypes.clone();
+        iOrderedValues = (int[]) iValues.clone();
     }
 
     /**
@@ -308,6 +328,8 @@ public final class Partial
         iChronology = chronology;
         iTypes = types;
         iValues = values;
+        iOrderedTypes = (DateTimeFieldType[]) iTypes.clone();
+        iOrderedValues = (int[]) iValues.clone();
     }
 
     //-----------------------------------------------------------------------
@@ -356,6 +378,18 @@ public final class Partial
     }
 
     /**
+     * Gets the field type at the specified index in the canonical ordering.
+     *
+     * @param index  the index to retrieve
+     * @return the field at the specified index
+     * @throws IndexOutOfBoundsException if the index is invalid
+     * @see Partial#getFieldType(int)
+     */
+    public DateTimeFieldType getOrderedFieldType(int index) {
+        return iOrderedTypes[index];
+    }
+
+    /**
      * Gets an array of the field type of each of the fields that
      * this partial supports.
      * <p>
@@ -377,6 +411,18 @@ public final class Partial
      */
     public int getValue(int index) {
         return iValues[index];
+    }
+
+    /**
+     * Gets the value at the specified index in the canonical ordering.
+     *
+     * @param index  the index to retrieve
+     * @return the value of the field at the specified index
+     * @throws IndexOutOfBoundsException if the index is invalid
+     * @see Partial#getValue(int)
+     */
+    public int getOrderedValue(int index) {
+        return iOrderedValues[index];
     }
 
     /**
@@ -821,6 +867,27 @@ public final class Partial
         return DateTimeFormat.forPattern(pattern).withLocale(locale).print(this);
     }
 
+    private void sortOrderedTypesAndValues() {
+        // Create an array of indexes, 0-based, in ascending order
+        Integer[] indexes = new Integer[iTypes.length];
+        for (int i=0; i<indexes.length; i++) {
+            indexes[i] = i;
+        }
+
+        // Sort the indexes by the types' duration, range duration, name. The fields should already be in duration
+        // order, but there may be fields of the same duration which differ only by their range duration or their name,
+        // which we put into a canonical order here.
+        Arrays.sort(indexes, new DateTimeFieldTypeArrayIndexComparator(iTypes, iChronology));
+
+        // Order types and values (in sync with each other) by the sorted indexes
+        int i = 0;
+        for (Integer index : indexes) {
+            iOrderedTypes[i] = iTypes[index];
+            iOrderedValues[i] = iValues[index];
+            i++;
+        }
+    }
+
     //-----------------------------------------------------------------------
     /**
      * The property class for <code>Partial</code>.
@@ -1009,6 +1076,53 @@ public final class Partial
          */
         public Partial withMinimumValue() {
             return setCopy(getMinimumValue());
+        }
+    }
+
+    /**
+     * Comparator to sort the indexes of an array of DateTimeFieldType, rather than the array itself, so that the sorted
+     * array of indexes can then be used to simultaneously re-order two arrays which must be kept in sync.
+     */
+    private static class DateTimeFieldTypeArrayIndexComparator implements Comparator<Integer> {
+        private final DateTimeFieldType[] types;
+        private final Chronology chronology;
+
+        DateTimeFieldTypeArrayIndexComparator(DateTimeFieldType[] types, Chronology chronology) {
+            this.types = types;
+            this.chronology = chronology;
+        }
+
+        public int compare(Integer firstIndex, Integer secondIndex) {
+            DateTimeFieldType firstFieldType = types[firstIndex];
+            DateTimeFieldType secondFieldType = types[secondIndex];
+
+            // Sort on duration field first
+            DurationField firstDurationField = firstFieldType.getDurationType().getField(chronology);
+            DurationField secondDurationField = secondFieldType.getDurationType().getField(chronology);
+            int durationFieldComparison = firstDurationField.compareTo(secondDurationField);
+            if (durationFieldComparison != 0) {
+                return -durationFieldComparison;
+            }
+
+            // If duration field equal, sort on range duration field
+            DurationFieldType firstRangeDurationFieldType = firstFieldType.getRangeDurationType();
+            DurationFieldType secondRangeDurationFieldType = secondFieldType.getRangeDurationType();
+            if (firstRangeDurationFieldType != null && secondRangeDurationFieldType != null) {
+                DurationField firstRangeDurationField = firstRangeDurationFieldType.getField(chronology);
+                DurationField secondRangeDurationField = secondRangeDurationFieldType.getField(chronology);
+                int durationRangeFieldComparison = firstRangeDurationField.compareTo(secondRangeDurationField);
+                if (durationRangeFieldComparison != 0) {
+                    return -durationFieldComparison;
+                }
+            } else if (secondRangeDurationFieldType != null) {
+                // DurationFieldTypes with ranges are sorted after those without
+                return -1;
+            }
+            // else cannot exist: types with equal durations must be ordered with the null range duration first if
+            // either type has a null duration
+
+            // If duration and range duration equal, sort on field name
+            return firstFieldType.getName().compareTo(secondFieldType.getName());
         }
     }
 

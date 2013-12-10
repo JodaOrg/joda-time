@@ -41,6 +41,12 @@ public class MockPartial implements ReadablePartial {
     public int getValue(int index) {
         return getValues()[index];
     }
+    public DateTimeFieldType getOrderedFieldType(int index) {
+        return getFieldType(index);
+    }
+    public int getOrderedValue(int index) {
+        return getValue(index);
+    }
     public int get(DateTimeFieldType field) {
         return 0;
     }

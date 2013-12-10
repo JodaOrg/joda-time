@@ -80,6 +80,17 @@ public abstract class AbstractPartial
     }
 
     /**
+     * Gets the field type at the specified index in the canonical ordering.
+     *
+     * @param index  the index to retrieve
+     * @return the field type
+     * @see AbstractPartial#getFieldType(int)
+     */
+    public DateTimeFieldType getOrderedFieldType(int index) {
+        return getFieldType(index);
+    }
+
+    /**
      * Gets an array of the field types that this partial supports.
      * <p>
      * The fields are returned largest to smallest, for example Hour, Minute, Second.
@@ -134,6 +145,17 @@ public abstract class AbstractPartial
             result[i] = getValue(i);
         }
         return result;
+    }
+
+    /**
+     * Gets the value at the specified index in the canonical ordering.
+     *
+     * @param index  the index to retrieve
+     * @return the value of the field at the specified index
+     * @see AbstractPartial#getValue(int)
+     */
+    public int getOrderedValue(int index) {
+        return getValue(index);
     }
 
     //-----------------------------------------------------------------------
@@ -263,7 +285,7 @@ public abstract class AbstractPartial
             return false;
         }
         for (int i = 0, isize = size(); i < isize; i++) {
-            if (getValue(i) != other.getValue(i) || getFieldType(i) != other.getFieldType(i)) {
+            if (getOrderedValue(i) != other.getOrderedValue(i) || getOrderedFieldType(i) != other.getOrderedFieldType(i)) {
                 return false;
             }
         }
@@ -315,16 +337,16 @@ public abstract class AbstractPartial
             throw new ClassCastException("ReadablePartial objects must have matching field types");
         }
         for (int i = 0, isize = size(); i < isize; i++) {
-            if (getFieldType(i) != other.getFieldType(i)) {
+            if (getOrderedFieldType(i) != other.getOrderedFieldType(i)) {
                 throw new ClassCastException("ReadablePartial objects must have matching field types");
             }
         }
         // fields are ordered largest first
         for (int i = 0, isize = size(); i < isize; i++) {
-            if (getValue(i) > other.getValue(i)) {
+            if (getOrderedValue(i) > other.getOrderedValue(i)) {
                 return 1;
             }
-            if (getValue(i) < other.getValue(i)) {
+            if (getOrderedValue(i) < other.getOrderedValue(i)) {
                 return -1;
             }
         }

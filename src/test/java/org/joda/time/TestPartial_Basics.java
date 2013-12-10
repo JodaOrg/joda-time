@@ -244,6 +244,20 @@ public class TestPartial_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testCompareToForFieldsWithDifferentDurationsThatCompareAsZeroWithOneNullDurationRange() {
+        Partial partial1 = new Partial(
+                new DateTimeFieldType[] {DateTimeFieldType.yearOfCentury(), DateTimeFieldType.weekyear()},
+                new int [] { 0, 0 }
+        );
+        Partial partial2 = new Partial(
+                new DateTimeFieldType[] {DateTimeFieldType.weekyear(), DateTimeFieldType.yearOfCentury()},
+                new int [] { 0, 0 }
+        );
+        assertEquals(0, partial1.compareTo(partial2));
+        assertEquals(0, partial2.compareTo(partial1));
+    }
+
+    //-----------------------------------------------------------------------
     public void testIsEqual_TOD() {
         Partial test1 = createHourMinPartial();
         Partial test1a = createHourMinPartial();
@@ -260,13 +274,27 @@ public class TestPartial_Basics extends TestCase {
         assertEquals(false, test1.isEqual(test3));
         assertEquals(false, test3.isEqual(test1));
         assertEquals(true, test3.isEqual(test2));
-        
+
         try {
             createHourMinPartial().isEqual(null);
             fail();
         } catch (IllegalArgumentException ex) {}
     }
-    
+
+    //-----------------------------------------------------------------------
+    public void testEqualsForFieldsWithDifferentDurationsThatCompareAsZeroWithOneNullDurationRange() {
+        Partial partial1 = new Partial(
+                new DateTimeFieldType[] {DateTimeFieldType.yearOfCentury(), DateTimeFieldType.weekyear()},
+                new int [] { 0, 0 }
+        );
+        Partial partial2 = new Partial(
+                new DateTimeFieldType[] {DateTimeFieldType.weekyear(), DateTimeFieldType.yearOfCentury()},
+                new int [] { 0, 0 }
+        );
+        assertEquals(true, partial1.equals(partial2));
+        assertEquals(true, partial2.equals(partial1));
+    }
+
     //-----------------------------------------------------------------------
     public void testIsBefore_TOD() {
         Partial test1 = createHourMinPartial();

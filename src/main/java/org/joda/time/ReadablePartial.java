@@ -59,6 +59,7 @@ public interface ReadablePartial extends Comparable<ReadablePartial> {
      * @param index  the index to retrieve
      * @return the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
+     * @see ReadablePartial#getOrderedFieldType(int)
      */
     DateTimeField getField(int index);
 
@@ -68,8 +69,29 @@ public interface ReadablePartial extends Comparable<ReadablePartial> {
      * @param index  the index to retrieve
      * @return the value of the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
+     * @see ReadablePartial#getOrderedValue(int)
      */
     int getValue(int index);
+
+    /**
+     * Gets the field type at the specified index in the canonical ordering.
+     *
+     * @param index  the index to retrieve
+     * @return the field at the specified index
+     * @throws IndexOutOfBoundsException if the index is invalid
+     * @see ReadablePartial#getFieldType(int)
+     */
+    DateTimeFieldType getOrderedFieldType(int index);
+
+    /**
+     * Gets the value at the specified index in the canonical ordering.
+     *
+     * @param index  the index to retrieve
+     * @return the value of the field at the specified index
+     * @throws IndexOutOfBoundsException if the index is invalid
+     * @see ReadablePartial#getValue(int)
+     */
+    int getOrderedValue(int index);
 
     /**
      * Gets the chronology of the partial which is never null.

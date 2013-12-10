@@ -159,7 +159,7 @@ public class DateTimeFormat {
         @Override
         protected boolean removeEldestEntry(final Map.Entry<String, DateTimeFormatter> eldest) {
             return size() > PATTERN_CACHE_SIZE;
-        };
+        }
     };
 
     /** Maps patterns to formatters, patterns don't vary by locale. */

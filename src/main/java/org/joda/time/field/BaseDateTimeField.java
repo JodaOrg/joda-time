@@ -22,6 +22,7 @@ import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.IllegalFieldValueException;
 import org.joda.time.ReadablePartial;
+import org.joda.time.util.CharSequenceUtil;
 
 /**
  * BaseDateTimeField provides the common behaviour for DateTimeField
@@ -614,7 +615,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * @return the updated milliseconds
      * @throws IllegalArgumentException if the text value is invalid
      */
-    public long set(long instant, String text, Locale locale) {
+    public long set(long instant, CharSequence text, Locale locale) {
         int value = convertText(text, locale);
         return set(instant, value);
     }
@@ -631,7 +632,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * @return the updated milliseconds
      * @throws IllegalArgumentException if the text value is invalid
      */
-    public final long set(long instant, String text) {
+    public final long set(long instant, CharSequence text) {
         return set(instant, text, null);
     }
 
@@ -663,11 +664,11 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * @return the value extracted from the text
      * @throws IllegalArgumentException if the text is invalid
      */
-    protected int convertText(String text, Locale locale) {
+    protected int convertText(CharSequence text, Locale locale) {
         try {
-            return Integer.parseInt(text);
+            return CharSequenceUtil.parseInt(text);
         } catch (NumberFormatException ex) {
-            throw new IllegalFieldValueException(getType(), text);
+            throw new IllegalFieldValueException(getType(), text.toString());
         }
     }
 

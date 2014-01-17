@@ -129,7 +129,7 @@ public final class DateTime
      * @since 2.0
      */
     @FromString
-    public static DateTime parse(String str) {
+    public static DateTime parse(CharSequence str) {
         return parse(str, ISODateTimeFormat.dateTimeParser().withOffsetParsed());
     }
 
@@ -140,7 +140,7 @@ public final class DateTime
      * @param formatter  the formatter to use, not null
      * @since 2.0
      */
-    public static DateTime parse(String str, DateTimeFormatter formatter) {
+    public static DateTime parse(CharSequence str, DateTimeFormatter formatter) {
         return formatter.parseDateTime(str);
     }
 

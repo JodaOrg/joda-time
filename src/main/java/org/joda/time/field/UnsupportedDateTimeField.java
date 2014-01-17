@@ -311,7 +311,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      *
      * @throws UnsupportedOperationException
      */
-    public long set(long instant, String text, Locale locale) {
+    public long set(long instant, CharSequence text, Locale locale) {
         throw unsupported();
     }
 
@@ -320,7 +320,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      *
      * @throws UnsupportedOperationException
      */
-    public long set(long instant, String text) {
+    public long set(long instant, CharSequence text) {
         throw unsupported();
     }
 

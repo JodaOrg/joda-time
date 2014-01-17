@@ -106,7 +106,6 @@ public class DateTimeFormatter {
     /** The default year for parsing month/day without year. */
     private final int iDefaultYear;
 
-    //TODO: optimization test
     private DateTimeParserBucket parseBucket;
     
     

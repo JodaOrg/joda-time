@@ -130,12 +130,8 @@ public class DateTimeParserBucket {
 
     public void update(long instantLocal,Chronology chrono) {
         iMillis = instantLocal;
-        //iChrono = chrono;
-        //TODO:try enable 
-        //iSavedFields = new SavedField[8];
         iSavedFieldsCount=0;
         iSavedFieldsShared=false;
-        //iSavedState=null;
     }
     
     private void prefillSavedFields(){

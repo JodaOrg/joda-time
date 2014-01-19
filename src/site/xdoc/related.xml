@@ -28,7 +28,7 @@ Support for working and non-working days, plus how to calculate and resolve holi
 Provides classes to handle calculation of holidays.</li>
 <li><a href="http://code.google.com/p/google-rfc-2445/">Recurrance (RFC 2445)</a>
 Support for the RFC2445 recurrence specification, as found in iCal.</li>
-<li><a href="http://www.datanucleus.org/plugins/store.types.jodatime.html">DataNucleus support</a>
+<li><a href="https://github.com/datanucleus/datanucleus-jodatime">DataNucleus support</a>
 A library providing persistence via the DataNucleus platform.</li>
 <li><a href="http://blog.bdoughan.com/2011/05/jaxb-and-joda-time-dates-and-times.html">JAXB</a>
 Notes on Joda-Time and JAXB.</li>

@@ -73,6 +73,10 @@ Bug fixes since 2.3
   Adding zero to a MutableDateTime used to change the offset during DST overlap in autumn/fall
   This is now fixed to not change the offset
 
+- DateTime/MutableDateTime constructors taking millis now validate [#100]
+  Previously, new DateTime(Long.MAX_VALUE) would be accepted, now it will be rejected
+  This ensures that the maximum/minimum year are respected
+
 - Better Javadoc for parsing of numbers in format patterns [#60]
 
 - Remove uncaughtException calls [#59]

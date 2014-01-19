@@ -229,6 +229,36 @@ public class TestDateTime_Constructors extends TestCase {
     }
 
     /**
+     * Test constructor (long)
+     */
+    public void testConstructor_long_max() throws Throwable {
+        DateTime dt = new DateTime(292278993, 12, 31, 23, 59, 59, 999);
+        DateTime test = new DateTime(dt.getMillis());
+        assertEquals(dt, test);
+        try {
+            new DateTime(dt.getMillis() + 1);
+            fail();
+        } catch (IllegalFieldValueException ex) {
+            // expected
+        }
+    }
+
+    /**
+     * Test constructor (long)
+     */
+    public void testConstructor_long_min() throws Throwable {
+        DateTime dt = new DateTime(-292275054, 1, 1, 0, 0);
+        DateTime test = new DateTime(dt.getMillis());
+        assertEquals(dt, test);
+        try {
+            new DateTime(dt.getMillis() - 1);
+            fail();
+        } catch (IllegalFieldValueException ex) {
+            // expected
+        }
+    }
+
+    /**
      * Test constructor (long, DateTimeZone)
      */
     public void testConstructor_long1_DateTimeZone() throws Throwable {

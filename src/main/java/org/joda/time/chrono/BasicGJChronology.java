@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2014 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -76,6 +76,11 @@ abstract class BasicGJChronology extends BasicChronology {
     }
 
     //-----------------------------------------------------------------------
+    @Override
+    boolean isLeapDay(long instant) {
+        return dayOfMonth().get(instant) == 29 && monthOfYear().isLeap(instant);
+    }
+
     int getMonthOfYear(long millis, int year) {
         // Perform a binary search to get the month. To make it go even faster,
         // compare using ints instead of longs. The number of milliseconds per

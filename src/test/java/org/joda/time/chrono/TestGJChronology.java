@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2013 Stephen Colebourne
+ *  Copyright 2001-2014 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import java.util.TimeZone;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.Chronology;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
@@ -539,6 +540,24 @@ public class TestGJChronology extends TestCase {
         } catch (IllegalFieldValueException ex) {
             // good
         }
+    }
+
+    public void testLeap_28feb() {
+        Chronology chrono = GJChronology.getInstance();
+        DateTime dt = new DateTime(2012, 2, 28, 0, 0, chrono);
+        assertEquals(true, dt.year().isLeap());
+        assertEquals(true, dt.monthOfYear().isLeap());
+        assertEquals(false, dt.dayOfMonth().isLeap());
+        assertEquals(false, dt.dayOfYear().isLeap());
+    }
+
+    public void testLeap_29feb() {
+        Chronology chrono = GJChronology.getInstance();
+        DateTime dt = new DateTime(2012, 2, 29, 0, 0, chrono);
+        assertEquals(true, dt.year().isLeap());
+        assertEquals(true, dt.monthOfYear().isLeap());
+        assertEquals(true, dt.dayOfMonth().isLeap());
+        assertEquals(true, dt.dayOfYear().isLeap());
     }
 
 }

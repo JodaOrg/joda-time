@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2013 Stephen Colebourne
+ *  Copyright 2001-2014 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -92,6 +92,11 @@ final class BasicDayOfYearDateTimeField extends PreciseDurationDateTimeField {
     protected int getMaximumValueForSet(long instant, int value) {
         int maxLessOne = iChronology.getDaysInYearMax() - 1;
         return (value > maxLessOne || value < 1) ? getMaximumValue(instant) : maxLessOne;
+    }
+
+    @Override
+    public boolean isLeap(long instant) {
+        return iChronology.isLeapDay(instant);
     }
 
     /**

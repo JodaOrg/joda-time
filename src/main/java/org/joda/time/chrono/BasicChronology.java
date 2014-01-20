@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2013 Stephen Colebourne
+ *  Copyright 2001-2014 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -630,6 +630,16 @@ abstract class BasicChronology extends AssembledChronology {
      * @return true if leap
      */
     abstract boolean isLeapYear(int year);
+
+    /**
+     * Is the specified instant a leap day?
+     * 
+     * @param instant  the instant to test
+     * @return true if leap, default is false
+     */
+    boolean isLeapDay(long instant) {
+        return false;
+    }
 
     /**
      * Gets the number of days in the specified month and year.

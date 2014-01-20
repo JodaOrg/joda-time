@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2013 Stephen Colebourne
+ *  Copyright 2001-2014 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -23,13 +23,13 @@ import junit.framework.TestSuite;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
+import org.joda.time.DateTime.Property;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
-import org.joda.time.DateTime.Property;
 
 /**
  * This class is a Junit unit test for CopticChronology.
@@ -574,6 +574,24 @@ public class TestCopticChronology extends TestCase {
         assertEquals(dt12.getMillis(), fld.add(dt11.getMillis(), 1L));
         assertEquals(dt13.getMillis(), fld.add(dt11.getMillis(), 2L));
         assertEquals(dt01.getMillis(), fld.add(dt11.getMillis(), 3L));
+    }
+
+    public void testLeap_5_13() {
+        Chronology chrono = CopticChronology.getInstance();
+        DateTime dt = new DateTime(3, 13, 5, 0, 0, chrono);
+        assertEquals(true, dt.year().isLeap());
+        assertEquals(true, dt.monthOfYear().isLeap());
+        assertEquals(false, dt.dayOfMonth().isLeap());
+        assertEquals(false, dt.dayOfYear().isLeap());
+    }
+
+    public void testLeap_6_13() {
+        Chronology chrono = CopticChronology.getInstance();
+        DateTime dt = new DateTime(3, 13, 6, 0, 0, chrono);
+        assertEquals(true, dt.year().isLeap());
+        assertEquals(true, dt.monthOfYear().isLeap());
+        assertEquals(true, dt.dayOfMonth().isLeap());
+        assertEquals(true, dt.dayOfYear().isLeap());
     }
 
 }

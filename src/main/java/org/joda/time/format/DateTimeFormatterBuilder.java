@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2011 Stephen Colebourne
+ *  Copyright 2001-2014 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,17 +15,14 @@
  */
 package org.joda.time.format;
 
-import java.util.concurrent.ConcurrentHashMap;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeConstants;
@@ -34,8 +31,8 @@ import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.MutableDateTime;
-import org.joda.time.ReadablePartial;
 import org.joda.time.MutableDateTime.Property;
+import org.joda.time.ReadablePartial;
 import org.joda.time.field.MillisDurationField;
 import org.joda.time.field.PreciseDateTimeField;
 
@@ -1829,7 +1826,7 @@ public class DateTimeFormatterBuilder {
             Locale locale = bucket.getLocale();
             // handle languages which might have non ASCII A-Z or punctuation
             // bug 1788282
-            Set<String> validValues = null;
+            Map<String, Boolean> validValues = null;
             int maxLength = 0;
             Map<DateTimeFieldType, Object[]> innerMap = cParseCache.get(locale);
             if (innerMap == null) {
@@ -1838,7 +1835,7 @@ public class DateTimeFormatterBuilder {
             }
             Object[] array = innerMap.get(iFieldType);
             if (array == null) {
-                validValues = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>(32));
+                validValues = new ConcurrentHashMap<String, Boolean>(32);  // use map as no concurrent Set
                 MutableDateTime dt = new MutableDateTime(0L, DateTimeZone.UTC);
                 Property property = dt.property(iFieldType);
                 int min = property.getMinimumValueOverall();
@@ -1849,32 +1846,32 @@ public class DateTimeFormatterBuilder {
                 maxLength = property.getMaximumTextLength(locale);
                 for (int i = min; i <= max; i++) {
                     property.set(i);
-                    validValues.add(property.getAsShortText(locale));
-                    validValues.add(property.getAsShortText(locale).toLowerCase(locale));
-                    validValues.add(property.getAsShortText(locale).toUpperCase(locale));
-                    validValues.add(property.getAsText(locale));
-                    validValues.add(property.getAsText(locale).toLowerCase(locale));
-                    validValues.add(property.getAsText(locale).toUpperCase(locale));
+                    validValues.put(property.getAsShortText(locale), Boolean.TRUE);
+                    validValues.put(property.getAsShortText(locale).toLowerCase(locale), Boolean.TRUE);
+                    validValues.put(property.getAsShortText(locale).toUpperCase(locale), Boolean.TRUE);
+                    validValues.put(property.getAsText(locale), Boolean.TRUE);
+                    validValues.put(property.getAsText(locale).toLowerCase(locale), Boolean.TRUE);
+                    validValues.put(property.getAsText(locale).toUpperCase(locale), Boolean.TRUE);
                 }
                 if ("en".equals(locale.getLanguage()) && iFieldType == DateTimeFieldType.era()) {
                     // hack to support for parsing "BCE" and "CE" if the language is English
-                    validValues.add("BCE");
-                    validValues.add("bce");
-                    validValues.add("CE");
-                    validValues.add("ce");
+                    validValues.put("BCE", Boolean.TRUE);
+                    validValues.put("bce", Boolean.TRUE);
+                    validValues.put("CE", Boolean.TRUE);
+                    validValues.put("ce", Boolean.TRUE);
                     maxLength = 3;
                 }
                 array = new Object[] {validValues, Integer.valueOf(maxLength)};
                 innerMap.put(iFieldType, array);
             } else {
-                validValues = (Set<String>) array[0];
+                validValues = (Map<String, Boolean>) array[0];
                 maxLength = ((Integer) array[1]).intValue();
             }
             // match the longest string first using our knowledge of the max length
             int limit = Math.min(text.length(), position + maxLength);
             for (int i = limit; i > position; i--) {
                 String match = text.substring(position, i);
-                if (validValues.contains(match)) {
+                if (validValues.containsKey(match)) {
                     bucket.saveField(iFieldType, match, locale);
                     return i;
                 }

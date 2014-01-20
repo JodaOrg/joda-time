@@ -84,6 +84,8 @@ Bug fixes since 2.3
   Apparently some Android implementations throw ClassCastException when comparing different types
   Thats dumb and wrong but the change to handle it is harmless
 
+- Better concurrency in parsing [#101]
+
 - Better Javadoc for parsing of numbers in format patterns [#60]
 
 - Remove uncaughtException calls [#59]

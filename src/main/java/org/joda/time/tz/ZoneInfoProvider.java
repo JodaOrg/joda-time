@@ -141,11 +141,6 @@ public class ZoneInfoProvider implements Provider {
             return null;
         }
 
-        if (id.equals(obj)) {
-            // Load zone data for the first time.
-            return loadZoneData(id);
-        }
-
         if (obj instanceof SoftReference<?>) {
             @SuppressWarnings("unchecked")
             SoftReference<DateTimeZone> ref = (SoftReference<DateTimeZone>) obj;
@@ -154,6 +149,9 @@ public class ZoneInfoProvider implements Provider {
                 return tz;
             }
             // Reference cleared; load data again.
+            return loadZoneData(id);
+        } else if (id.equals(obj)) {
+            // Load zone data for the first time.
             return loadZoneData(id);
         }
 

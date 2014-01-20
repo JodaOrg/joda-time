@@ -186,11 +186,11 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
         return iField.set(instant, value);
     }
 
-    public long set(long instant, String text, Locale locale) {
+    public long set(long instant, CharSequence text, Locale locale) {
         return iField.set(instant, text, locale);
     }
 
-    public long set(long instant, String text) {
+    public long set(long instant, CharSequence text) {
         return iField.set(instant, text);
     }
 

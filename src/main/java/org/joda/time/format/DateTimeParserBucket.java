@@ -56,8 +56,8 @@ import org.joda.time.IllegalInstantException;
 public class DateTimeParserBucket {
 
     /** The chronology to use for parsing. */
-    private final Chronology iChrono;
-    private final long iMillis;
+    private Chronology iChrono;
+    private long iMillis;
     
     /** The parsed zone, initialised to formatter zone. */
     private DateTimeZone iZone;
@@ -125,8 +125,19 @@ public class DateTimeParserBucket {
         iLocale = (locale == null ? Locale.getDefault() : locale);
         iPivotYear = pivotYear;
         iDefaultYear = defaultYear;
+        prefillSavedFields();
     }
 
+    public void update(long instantLocal,Chronology chrono) {
+        iMillis = instantLocal;
+        iSavedFieldsCount=0;
+        iSavedFieldsShared=false;
+    }
+    
+    private void prefillSavedFields(){
+        for(int i=0;i<iSavedFields.length;i++) iSavedFields[i]=new SavedField();
+    }
+    
     //-----------------------------------------------------------------------
     /**
      * Gets the chronology of the bucket, which will be a local (UTC) chronology.
@@ -234,7 +245,7 @@ public class DateTimeParserBucket {
      * @param value  the value
      */
     public void saveField(DateTimeField field, int value) {
-        saveField(new SavedField(field, value));
+        saveField(getFreeSlot().update(field, value));
     }
     
     /**
@@ -244,7 +255,7 @@ public class DateTimeParserBucket {
      * @param value  the value
      */
     public void saveField(DateTimeFieldType fieldType, int value) {
-        saveField(new SavedField(fieldType.getField(iChrono), value));
+        saveField(getFreeSlot().update(fieldType.getField(iChrono), value));
     }
     
     /**
@@ -254,26 +265,27 @@ public class DateTimeParserBucket {
      * @param text  the text value
      * @param locale  the locale to use
      */
-    public void saveField(DateTimeFieldType fieldType, String text, Locale locale) {
-        saveField(new SavedField(fieldType.getField(iChrono), text, locale));
+    public void saveField(DateTimeFieldType fieldType, CharSequence text, Locale locale) {
+        saveField(getFreeSlot().update(fieldType.getField(iChrono), text, locale));
+    }
+    
+    private final SavedField getFreeSlot(){
+    	if (iSavedFieldsCount>=iSavedFields.length || iSavedFieldsShared){
+    		int savedFieldsCount = iSavedFieldsCount;
+    		SavedField[] savedFields = iSavedFields;
+    		SavedField[] newArray = new SavedField
+                    [savedFieldsCount == savedFields.length ? savedFieldsCount * 2 : savedFields.length];
+                System.arraycopy(savedFields, 0, newArray, 0, savedFieldsCount);
+                iSavedFields = savedFields = newArray;
+                iSavedFieldsShared = false;
+                for(int i=savedFieldsCount;i<iSavedFields.length;i++) iSavedFields[i]=new SavedField();
+    	}
+    	return iSavedFields[iSavedFieldsCount];
     }
     
     private void saveField(SavedField field) {
-        SavedField[] savedFields = iSavedFields;
-        int savedFieldsCount = iSavedFieldsCount;
-        
-        if (savedFieldsCount == savedFields.length || iSavedFieldsShared) {
-            // Expand capacity or merely copy if saved fields are shared.
-            SavedField[] newArray = new SavedField
-                [savedFieldsCount == savedFields.length ? savedFieldsCount * 2 : savedFields.length];
-            System.arraycopy(savedFields, 0, newArray, 0, savedFieldsCount);
-            iSavedFields = savedFields = newArray;
-            iSavedFieldsShared = false;
-        }
-        
         iSavedState = null;
-        savedFields[savedFieldsCount] = field;
-        iSavedFieldsCount = savedFieldsCount + 1;
+        iSavedFields[iSavedFieldsCount++] = field;
     }
     
     /**
@@ -286,6 +298,8 @@ public class DateTimeParserBucket {
     public Object saveState() {
         if (iSavedState == null) {
             iSavedState = new SavedState();
+        }else{
+        	((SavedState)iSavedState).updateState();
         }
         return iSavedState;
     }
@@ -341,7 +355,7 @@ public class DateTimeParserBucket {
      * @throws IllegalArgumentException if any field is out of range
      * @since 1.3
      */
-    public long computeMillis(boolean resetFields, String text) {
+    public long computeMillis(boolean resetFields, CharSequence text) {
         SavedField[] savedFields = iSavedFields;
         int count = iSavedFieldsCount;
         if (iSavedFieldsShared) {
@@ -427,12 +441,19 @@ public class DateTimeParserBucket {
     }
 
     class SavedState {
-        final DateTimeZone iZone;
-        final Integer iOffset;
-        final SavedField[] iSavedFields;
-        final int iSavedFieldsCount;
+         DateTimeZone iZone;
+         Integer iOffset;
+         SavedField[] iSavedFields;
+         int iSavedFieldsCount;
         
         SavedState() {
+            this.iZone = DateTimeParserBucket.this.iZone;
+            this.iOffset = DateTimeParserBucket.this.iOffset;
+            this.iSavedFields = DateTimeParserBucket.this.iSavedFields;
+            this.iSavedFieldsCount = DateTimeParserBucket.this.iSavedFieldsCount;
+        }
+        
+        void updateState() {
             this.iZone = DateTimeParserBucket.this.iZone;
             this.iOffset = DateTimeParserBucket.this.iOffset;
             this.iSavedFields = DateTimeParserBucket.this.iSavedFields;
@@ -459,11 +480,14 @@ public class DateTimeParserBucket {
     }
     
     static class SavedField implements Comparable<SavedField> {
-        final DateTimeField iField;
-        final int iValue;
-        final String iText;
-        final Locale iLocale;
+         DateTimeField iField;
+         int iValue;
+         CharSequence iText;
+         Locale iLocale;
         
+        SavedField(){
+        }
+         
         SavedField(DateTimeField field, int value) {
             iField = field;
             iValue = value;
@@ -471,11 +495,27 @@ public class DateTimeParserBucket {
             iLocale = null;
         }
         
-        SavedField(DateTimeField field, String text, Locale locale) {
+        SavedField(DateTimeField field, CharSequence text, Locale locale) {
             iField = field;
             iValue = 0;
             iText = text;
             iLocale = locale;
+        }
+        
+        SavedField update(DateTimeField field, int value) {
+        	 iField = field;
+             iValue = value;
+             iText = null;
+             iLocale = null;
+             return this;
+        }
+        
+        SavedField update(DateTimeField field, CharSequence text, Locale locale) {
+            iField = field;
+            iValue = 0;
+            iText = text;
+            iLocale = locale;
+            return this;
         }
         
         long set(long millis, boolean reset) {

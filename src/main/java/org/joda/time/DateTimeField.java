@@ -413,7 +413,7 @@ public abstract class DateTimeField {
      * @return the updated milliseconds
      * @throws IllegalArgumentException if the text value is invalid
      */
-    public abstract long set(long instant, String text, Locale locale);
+    public abstract long set(long instant, CharSequence text, Locale locale);
 
     /**
      * Sets a value in the milliseconds supplied from a human-readable, text value.
@@ -428,7 +428,7 @@ public abstract class DateTimeField {
      * @return the updated milliseconds
      * @throws IllegalArgumentException if the text value is invalid
      */
-    public abstract long set(long instant, String text);
+    public abstract long set(long instant, CharSequence text);
 
     /**
      * Sets a value in the milliseconds supplied from a human-readable, text value.

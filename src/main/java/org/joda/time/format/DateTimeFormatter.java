@@ -106,6 +106,9 @@ public class DateTimeFormatter {
     /** The default year for parsing month/day without year. */
     private final int iDefaultYear;
 
+    private DateTimeParserBucket parseBucket;
+    
+    
     /**
      * Creates a new formatter, however you will normally use the factory
      * or the builder.
@@ -717,8 +720,16 @@ public class DateTimeFormatter {
         long instantLocal = instantMillis + chrono.getZone().getOffset(instantMillis);
         chrono = selectChronology(chrono);
         
-        DateTimeParserBucket bucket = new DateTimeParserBucket(
+        if(parseBucket==null){
+        
+        	parseBucket = new DateTimeParserBucket(
             instantLocal, chrono, iLocale, iPivotYear, defaultYear);
+        }else{
+        	parseBucket.update(instantLocal,chrono);
+        }
+        DateTimeParserBucket bucket=parseBucket;
+        
+        
         int newPos = parser.parseInto(bucket, text, position);
         instant.setMillis(bucket.computeMillis(false, text));
         if (iOffsetParsed && bucket.getOffsetInteger() != null) {
@@ -747,11 +758,18 @@ public class DateTimeFormatter {
      * @throws UnsupportedOperationException if parsing is not supported
      * @throws IllegalArgumentException if the text to parse is invalid
      */
-    public long parseMillis(String text) {
+    public long parseMillis(CharSequence text) {
         DateTimeParser parser = requireParser();
         
         Chronology chrono = selectChronology(iChrono);
-        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear, iDefaultYear);
+        
+        if(parseBucket==null){
+        	parseBucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear, iDefaultYear);
+        }else{
+        	parseBucket.update(0,chrono);
+        }
+        DateTimeParserBucket bucket=parseBucket;
+        
         int newPos = parser.parseInto(bucket, text, 0);
         if (newPos >= 0) {
             if (newPos >= text.length()) {
@@ -760,7 +778,7 @@ public class DateTimeFormatter {
         } else {
             newPos = ~newPos;
         }
-        throw new IllegalArgumentException(FormatUtils.createErrorMessage(text, newPos));
+        throw new IllegalArgumentException(FormatUtils.createErrorMessage(text.toString(), newPos));
     }
 
     /**
@@ -777,7 +795,7 @@ public class DateTimeFormatter {
      * @throws IllegalArgumentException if the text to parse is invalid
      * @since 2.0
      */
-    public LocalDate parseLocalDate(String text) {
+    public LocalDate parseLocalDate(CharSequence text) {
         return parseLocalDateTime(text).toLocalDate();
     }
 
@@ -795,7 +813,7 @@ public class DateTimeFormatter {
      * @throws IllegalArgumentException if the text to parse is invalid
      * @since 2.0
      */
-    public LocalTime parseLocalTime(String text) {
+    public LocalTime parseLocalTime(CharSequence text) {
         return parseLocalDateTime(text).toLocalTime();
     }
 
@@ -813,11 +831,18 @@ public class DateTimeFormatter {
      * @throws IllegalArgumentException if the text to parse is invalid
      * @since 2.0
      */
-    public LocalDateTime parseLocalDateTime(String text) {
+    public LocalDateTime parseLocalDateTime(CharSequence text) {
         DateTimeParser parser = requireParser();
         
         Chronology chrono = selectChronology(null).withUTC();  // always use UTC, avoiding DST gaps
-        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear, iDefaultYear);
+        
+        if(parseBucket==null){
+        	parseBucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear, iDefaultYear);
+        }else{
+        	parseBucket.update(0,chrono);
+        }
+        DateTimeParserBucket bucket=parseBucket;
+        
         int newPos = parser.parseInto(bucket, text, 0);
         if (newPos >= 0) {
             if (newPos >= text.length()) {
@@ -834,7 +859,7 @@ public class DateTimeFormatter {
         } else {
             newPos = ~newPos;
         }
-        throw new IllegalArgumentException(FormatUtils.createErrorMessage(text, newPos));
+        throw new IllegalArgumentException(FormatUtils.createErrorMessage(text.toString(), newPos));
     }
 
     /**
@@ -854,11 +879,20 @@ public class DateTimeFormatter {
      * @throws UnsupportedOperationException if parsing is not supported
      * @throws IllegalArgumentException if the text to parse is invalid
      */
-    public DateTime parseDateTime(String text) {
+    public DateTime parseDateTime(CharSequence text) {
         DateTimeParser parser = requireParser();
         
         Chronology chrono = selectChronology(null);
-        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear, iDefaultYear);
+        
+        if(parseBucket==null){
+        	parseBucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear, iDefaultYear);
+        }else{
+        	parseBucket.update(0,chrono);
+        }
+        
+        DateTimeParserBucket bucket=parseBucket;
+        
+        
         int newPos = parser.parseInto(bucket, text, 0);
         if (newPos >= 0) {
             if (newPos >= text.length()) {
@@ -879,7 +913,7 @@ public class DateTimeFormatter {
         } else {
             newPos = ~newPos;
         }
-        throw new IllegalArgumentException(FormatUtils.createErrorMessage(text, newPos));
+        throw new IllegalArgumentException(FormatUtils.createErrorMessage(text.toString(), newPos));
     }
 
     /**
@@ -899,11 +933,18 @@ public class DateTimeFormatter {
      * @throws UnsupportedOperationException if parsing is not supported
      * @throws IllegalArgumentException if the text to parse is invalid
      */
-    public MutableDateTime parseMutableDateTime(String text) {
+    public MutableDateTime parseMutableDateTime(CharSequence text) {
         DateTimeParser parser = requireParser();
         
         Chronology chrono = selectChronology(null);
-        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear, iDefaultYear);
+        
+        if(parseBucket==null){
+        	parseBucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear, iDefaultYear);
+        }else{
+        	parseBucket.update(0, chrono);
+        }
+        DateTimeParserBucket bucket=parseBucket;
+        
         int newPos = parser.parseInto(bucket, text, 0);
         if (newPos >= 0) {
             if (newPos >= text.length()) {
@@ -924,7 +965,7 @@ public class DateTimeFormatter {
         } else {
             newPos = ~newPos;
         }
-        throw new IllegalArgumentException(FormatUtils.createErrorMessage(text, newPos));
+        throw new IllegalArgumentException(FormatUtils.createErrorMessage(text.toString(), newPos));
     }
 
     /**

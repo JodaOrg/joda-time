@@ -59,6 +59,6 @@ public interface DateTimeParser {
      *  apply complement operator (~) to get position of failure
      * @throws IllegalArgumentException if any field is out of range
      */
-    int parseInto(DateTimeParserBucket bucket, String text, int position);
+    int parseInto(DateTimeParserBucket bucket, CharSequence text, int position);
 
 }

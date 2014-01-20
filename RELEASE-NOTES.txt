@@ -77,6 +77,10 @@ Bug fixes since 2.3
   Previously, new DateTime(Long.MAX_VALUE) would be accepted, now it will be rejected
   This ensures that the maximum/minimum year are respected
 
+- Handle broken Android implementations better [#103]
+  Apparently some Android implementations throw ClassCastException when comparing different types
+  Thats dumb and wrong but the change to handle it is harmless
+
 - Better Javadoc for parsing of numbers in format patterns [#60]
 
 - Remove uncaughtException calls [#59]

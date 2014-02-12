@@ -250,7 +250,7 @@ public class DateTimeFormatter {
      * Returns a new formatter that will use the specified chronology in
      * preference to that of the printed object, or ISO on a parse.
      * <p>
-     * When printing, this chronolgy will be used in preference to the chronology
+     * When printing, this chronology will be used in preference to the chronology
      * from the datetime that would otherwise be used.
      * <p>
      * When parsing, this chronology will be set on the parsed datetime.
@@ -491,7 +491,9 @@ public class DateTimeFormatter {
      * @since 2.0
      */
     public void printTo(Appendable appendable, ReadableInstant instant) throws IOException {
-        appendable.append(print(instant));
+        long millis = DateTimeUtils.getInstantMillis(instant);
+        Chronology chrono = DateTimeUtils.getInstantChronology(instant);
+        printTo(appendable, millis, chrono);
     }
 
     //-----------------------------------------------------------------------
@@ -526,7 +528,7 @@ public class DateTimeFormatter {
      * @since 2.0
      */
     public void printTo(Appendable appendable, long instant) throws IOException {
-        appendable.append(print(instant));
+        printTo(appendable, instant, null);
     }
 
     //-----------------------------------------------------------------------
@@ -575,37 +577,49 @@ public class DateTimeFormatter {
      * @since 2.0
      */
     public void printTo(Appendable appendable, ReadablePartial partial) throws IOException {
-        appendable.append(print(partial));
+        DateTimePrinter printer = requirePrinter();
+        if (partial == null) {
+            throw new IllegalArgumentException("The partial must not be null");
+        }
+        printer.printTo(appendable, partial, iLocale);
     }
 
     //-----------------------------------------------------------------------
     /**
      * Prints a ReadableInstant to a String.
      * <p>
-     * This method will use the override zone and the override chronololgy if
+     * This method will use the override zone and the override chronology if
      * they are set. Otherwise it will use the chronology and zone of the instant.
      *
      * @param instant  instant to format, null means now
      * @return the printed result
      */
     public String print(ReadableInstant instant) {
-        StringBuffer buf = new StringBuffer(requirePrinter().estimatePrintedLength());
-        printTo(buf, instant);
+        StringBuilder buf = new StringBuilder(requirePrinter().estimatePrintedLength());
+        try {
+            printTo(buf, instant);
+        } catch (IOException e) {
+            // StringBuilder does not throw IOException
+        }
         return buf.toString();
     }
 
     /**
      * Prints a millisecond instant to a String.
      * <p>
-     * This method will use the override zone and the override chronololgy if
+     * This method will use the override zone and the override chronology if
      * they are set. Otherwise it will use the ISO chronology and default zone.
      *
      * @param instant  millis since 1970-01-01T00:00:00Z
      * @return the printed result
      */
     public String print(long instant) {
-        StringBuffer buf = new StringBuffer(requirePrinter().estimatePrintedLength());
-        printTo(buf, instant);
+        StringBuilder buf = new StringBuilder(requirePrinter().estimatePrintedLength());
+        try {
+            printTo(buf, instant);
+        } catch (IOException e) {
+            // StringBuilder does not throw IOException
+        }
         return buf.toString();
     }
 
@@ -619,29 +633,24 @@ public class DateTimeFormatter {
      * @return the printed result
      */
     public String print(ReadablePartial partial) {
-        StringBuffer buf = new StringBuffer(requirePrinter().estimatePrintedLength());
-        printTo(buf, partial);
-        return buf.toString();
+        StringBuilder builder = new StringBuilder(requirePrinter().estimatePrintedLength());
+        try {
+            printTo(builder, partial);
+        } catch (IOException e) {
+            // StringBuilder does not throw IOException
+        }
+        return builder.toString();
     }
 
     private void printTo(StringBuffer buf, long instant, Chronology chrono) {
-        DateTimePrinter printer = requirePrinter();
-        chrono = selectChronology(chrono);
-        // Shift instant into local time (UTC) to avoid excessive offset
-        // calculations when printing multiple fields in a composite printer.
-        DateTimeZone zone = chrono.getZone();
-        int offset = zone.getOffset(instant);
-        long adjustedInstant = instant + offset;
-        if ((instant ^ adjustedInstant) < 0 && (instant ^ offset) >= 0) {
-            // Time zone offset overflow, so revert to UTC.
-            zone = DateTimeZone.UTC;
-            offset = 0;
-            adjustedInstant = instant;
+        try {
+            printTo((Appendable)buf, instant, chrono);
+        } catch (IOException e) {
+            // StringBuffer does not throw IOException
         }
-        printer.printTo(buf, adjustedInstant, chrono.withUTC(), offset, zone, iLocale);
     }
 
-    private void printTo(Writer buf, long instant, Chronology chrono) throws IOException {
+    private void printTo(Writer out, long instant, Chronology chrono) throws IOException {
         DateTimePrinter printer = requirePrinter();
         chrono = selectChronology(chrono);
         // Shift instant into local time (UTC) to avoid excessive offset
@@ -655,7 +664,24 @@ public class DateTimeFormatter {
             offset = 0;
             adjustedInstant = instant;
         }
-        printer.printTo(buf, adjustedInstant, chrono.withUTC(), offset, zone, iLocale);
+        printer.printTo(out, adjustedInstant, chrono.withUTC(), offset, zone, iLocale);
+    }
+
+    private void printTo(Appendable appendable, long instant, Chronology chrono) throws IOException {
+        DateTimePrinter printer = requirePrinter();
+        chrono = selectChronology(chrono);
+        // Shift instant into local time (UTC) to avoid excessive offset
+        // calculations when printing multiple fields in a composite printer.
+        DateTimeZone zone = chrono.getZone();
+        int offset = zone.getOffset(instant);
+        long adjustedInstant = instant + offset;
+        if ((instant ^ adjustedInstant) < 0 && (instant ^ offset) >= 0) {
+            // Time zone offset overflow, so revert to UTC.
+            zone = DateTimeZone.UTC;
+            offset = 0;
+            adjustedInstant = instant;
+        }
+        printer.printTo(appendable, adjustedInstant, chrono.withUTC(), offset, zone, iLocale);
     }
 
     /**

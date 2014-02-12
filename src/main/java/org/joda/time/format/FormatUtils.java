@@ -44,37 +44,56 @@ public class FormatUtils {
      *
      * @param buf receives integer converted to a string
      * @param value value to convert to a string
-     * @param size minumum amount of digits to append
+     * @param size minimum amount of digits to append
      */
     public static void appendPaddedInteger(StringBuffer buf, int value, int size) {
+        try {
+            appendPaddedInteger((Appendable)buf, value, size);
+        } catch (IOException e) {
+            // StringBuffer does not throw IOException
+        }
+    }
+
+    /**
+     * Converts an integer to a string, prepended with a variable amount of '0'
+     * pad characters, and appends it to the given appendable.
+     *
+     * <p>This method is optimized for converting small values to strings.
+     *
+     * @param appenadble receives integer converted to a string
+     * @param value value to convert to a string
+     * @param size minimum amount of digits to append
+     * @since 2.4
+     */
+    public static void appendPaddedInteger(Appendable appenadble, int value, int size) throws IOException {
         if (value < 0) {
-            buf.append('-');
+            appenadble.append('-');
             if (value != Integer.MIN_VALUE) {
                 value = -value;
             } else {
                 for (; size > 10; size--) {
-                    buf.append('0');
+                    appenadble.append('0');
                 }
-                buf.append("" + -(long)Integer.MIN_VALUE);
+                appenadble.append("" + -(long)Integer.MIN_VALUE);
                 return;
             }
         }
         if (value < 10) {
             for (; size > 1; size--) {
-                buf.append('0');
+                appenadble.append('0');
             }
-            buf.append((char)(value + '0'));
+            appenadble.append((char)(value + '0'));
         } else if (value < 100) {
             for (; size > 2; size--) {
-                buf.append('0');
+                appenadble.append('0');
             }
             // Calculate value div/mod by 10 without using two expensive
             // division operations. (2 ^ 27) / 10 = 13421772. Add one to
             // value to correct rounding error.
             int d = ((value + 1) * 13421772) >> 27;
-            buf.append((char) (d + '0'));
+            appenadble.append((char) (d + '0'));
             // Append remainder by calculating (value - d * 10).
-            buf.append((char) (value - (d << 3) - (d << 1) + '0'));
+            appenadble.append((char) (value - (d << 3) - (d << 1) + '0'));
         } else {
             int digits;
             if (value < 1000) {
@@ -85,9 +104,27 @@ public class FormatUtils {
                 digits = (int)(Math.log(value) / LOG_10) + 1;
             }
             for (; size > digits; size--) {
-                buf.append('0');
+                appenadble.append('0');
             }
-            buf.append(Integer.toString(value));
+            appenadble.append(Integer.toString(value));
+        }
+    }
+    
+    /**
+     * Converts an integer to a string, prepended with a variable amount of '0'
+     * pad characters, and appends it to the given buffer.
+     *
+     * <p>This method is optimized for converting small values to strings.
+     *
+     * @param buf receives integer converted to a string
+     * @param value value to convert to a string
+     * @param size minimum amount of digits to append
+     */
+    public static void appendPaddedInteger(StringBuffer buf, long value, int size) {
+        try {
+            appendPaddedInteger((Appendable)buf, value, size);
+        } catch (IOException e) {
+            // StringBuffer does not throw IOException
         }
     }
 
@@ -97,34 +134,35 @@ public class FormatUtils {
      *
      * <p>This method is optimized for converting small values to strings.
      *
-     * @param buf receives integer converted to a string
+     * @param appendable receives integer converted to a string
      * @param value value to convert to a string
-     * @param size minumum amount of digits to append
+     * @param size minimum amount of digits to append
+     * @since 2.4
      */
-    public static void appendPaddedInteger(StringBuffer buf, long value, int size) {
+    public static void appendPaddedInteger(Appendable appendable, long value, int size) throws IOException {
         int intValue = (int)value;
         if (intValue == value) {
-            appendPaddedInteger(buf, intValue, size);
+            appendPaddedInteger(appendable, intValue, size);
         } else if (size <= 19) {
-            buf.append(Long.toString(value));
+            appendable.append(Long.toString(value));
         } else {
             if (value < 0) {
-                buf.append('-');
+                appendable.append('-');
                 if (value != Long.MIN_VALUE) {
                     value = -value;
                 } else {
                     for (; size > 19; size--) {
-                        buf.append('0');
+                        appendable.append('0');
                     }
-                    buf.append("9223372036854775808");
+                    appendable.append("9223372036854775808");
                     return;
                 }
             }
             int digits = (int)(Math.log(value) / LOG_10) + 1;
             for (; size > digits; size--) {
-                buf.append('0');
+                appendable.append('0');
             }
-            buf.append(Long.toString(value));
+            appendable.append(Long.toString(value));
         }
     }
 
@@ -136,7 +174,7 @@ public class FormatUtils {
      *
      * @param out receives integer converted to a string
      * @param value value to convert to a string
-     * @param size minumum amount of digits to append
+     * @param size minimum amount of digits to append
      */
     public static void writePaddedInteger(Writer out, int value, int size)
         throws IOException
@@ -193,7 +231,7 @@ public class FormatUtils {
      *
      * @param out receives integer converted to a string
      * @param value value to convert to a string
-     * @param size minumum amount of digits to append
+     * @param size minimum amount of digits to append
      */
     public static void writePaddedInteger(Writer out, long value, int size)
         throws IOException
@@ -233,27 +271,44 @@ public class FormatUtils {
      * @param value value to convert to a string
      */
     public static void appendUnpaddedInteger(StringBuffer buf, int value) {
+        try {
+            appendUnpaddedInteger((Appendable) buf, value);
+        } catch (IOException e) {
+            // StringBuffer do not throw IOException
+        }
+    }
+
+    /**
+     * Converts an integer to a string, and appends it to the given appendable.
+     *
+     * <p>This method is optimized for converting small values to strings.
+     *
+     * @param appendable receives integer converted to a string
+     * @param value value to convert to a string
+     * @since 2.4
+     */
+    public static void appendUnpaddedInteger(Appendable appendable, int value) throws IOException {
         if (value < 0) {
-            buf.append('-');
+            appendable.append('-');
             if (value != Integer.MIN_VALUE) {
                 value = -value;
             } else {
-                buf.append("" + -(long)Integer.MIN_VALUE);
+                appendable.append("" + -(long)Integer.MIN_VALUE);
                 return;
             }
         }
         if (value < 10) {
-            buf.append((char)(value + '0'));
+            appendable.append((char)(value + '0'));
         } else if (value < 100) {
             // Calculate value div/mod by 10 without using two expensive
             // division operations. (2 ^ 27) / 10 = 13421772. Add one to
             // value to correct rounding error.
             int d = ((value + 1) * 13421772) >> 27;
-            buf.append((char) (d + '0'));
+            appendable.append((char) (d + '0'));
             // Append remainder by calculating (value - d * 10).
-            buf.append((char) (value - (d << 3) - (d << 1) + '0'));
+            appendable.append((char) (value - (d << 3) - (d << 1) + '0'));
         } else {
-            buf.append(Integer.toString(value));
+            appendable.append(Integer.toString(value));
         }
     }
 
@@ -266,11 +321,27 @@ public class FormatUtils {
      * @param value value to convert to a string
      */
     public static void appendUnpaddedInteger(StringBuffer buf, long value) {
+        try {
+            appendUnpaddedInteger((Appendable) buf, value);
+        } catch (IOException e) {
+            // StringBuffer do not throw IOException
+        }
+    }
+
+    /**
+     * Converts an integer to a string, and appends it to the given appendable.
+     *
+     * <p>This method is optimized for converting small values to strings.
+     *
+     * @param appendable receives integer converted to a string
+     * @param value value to convert to a string
+     */
+    public static void appendUnpaddedInteger(Appendable appendable, long value) throws IOException {
         int intValue = (int)value;
         if (intValue == value) {
-            appendUnpaddedInteger(buf, intValue);
+            appendUnpaddedInteger(appendable, intValue);
         } else {
-            buf.append(Long.toString(value));
+            appendable.append(Long.toString(value));
         }
     }
 

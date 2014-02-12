@@ -825,6 +825,13 @@ public class DateTimeFormat {
             p.printTo(out, instant, chrono, displayOffset, displayZone, locale);
         }
 
+        public void printTo(
+                Appendable appenadble, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
+            DateTimePrinter p = getFormatter(locale).getPrinter();
+            p.printTo(appenadble, instant, chrono, displayOffset, displayZone, locale);
+        }
+
         public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
             DateTimePrinter p = getFormatter(locale).getPrinter();
             p.printTo(buf, partial, locale);
@@ -835,6 +842,10 @@ public class DateTimeFormat {
             p.printTo(out, partial, locale);
         }
 
+        public void printTo(Appendable appendable, ReadablePartial partial, Locale locale) throws IOException {
+            DateTimePrinter p = getFormatter(locale).getPrinter();
+            p.printTo(appendable, partial, locale);
+        }
         public int estimateParsedLength() {
             return 40;  // guess
         }

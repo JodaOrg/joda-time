@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2013 Stephen Colebourne
+ *  Copyright 2001-2014 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -90,7 +90,7 @@ import org.joda.time.ReadablePartial;
 public class DateTimeFormatter {
 
     /** The internal printer used to output the datetime. */
-    private final DateTimePrinter iPrinter;
+    private final InternalPrinter iPrinter;
     /** The internal parser used to output the datetime. */
     private final DateTimeParser iParser;
     /** The locale to use for printing and parsing. */
@@ -115,6 +115,18 @@ public class DateTimeFormatter {
      */
     public DateTimeFormatter(
             DateTimePrinter printer, DateTimeParser parser) {
+        this(DateTimePrinterInternalPrinter.of(printer), parser);
+    }
+
+    /**
+     * Creates a new formatter, however you will normally use the factory
+     * or the builder.
+     * 
+     * @param printer  the internal printer, null if cannot print
+     * @param parser  the internal parser, null if cannot parse
+     */
+    DateTimeFormatter(
+            InternalPrinter printer, DateTimeParser parser) {
         super();
         iPrinter = printer;
         iParser = parser;
@@ -130,7 +142,7 @@ public class DateTimeFormatter {
      * Constructor.
      */
     private DateTimeFormatter(
-            DateTimePrinter printer, DateTimeParser parser,
+            InternalPrinter printer, DateTimeParser parser,
             Locale locale, boolean offsetParsed,
             Chronology chrono, DateTimeZone zone,
             Integer pivotYear, int defaultYear) {
@@ -161,6 +173,15 @@ public class DateTimeFormatter {
      * @return the internal printer; is null if printing not supported
      */
     public DateTimePrinter getPrinter() {
+        return InternalPrinterDateTimePrinter.of(iPrinter);
+    }
+
+    /**
+     * Gets the internal printer object that performs the real printing work.
+     * 
+     * @return the internal printer; is null if printing not supported
+     */
+    InternalPrinter getPrinter0() {
         return iPrinter;
     }
 
@@ -466,9 +487,11 @@ public class DateTimeFormatter {
      * @param instant  instant to format, null means now
      */
     public void printTo(StringBuffer buf, ReadableInstant instant) {
-        long millis = DateTimeUtils.getInstantMillis(instant);
-        Chronology chrono = DateTimeUtils.getInstantChronology(instant);
-        printTo(buf, millis, chrono);
+        try {
+            printTo((Appendable) buf, instant);
+        } catch (IOException ex) {
+            // StringBuffer does not throw IOException
+        }
     }
 
     /**
@@ -478,9 +501,7 @@ public class DateTimeFormatter {
      * @param instant  instant to format, null means now
      */
     public void printTo(Writer out, ReadableInstant instant) throws IOException {
-        long millis = DateTimeUtils.getInstantMillis(instant);
-        Chronology chrono = DateTimeUtils.getInstantChronology(instant);
-        printTo(out, millis, chrono);
+        printTo((Appendable) out, instant);
     }
 
     /**
@@ -505,7 +526,11 @@ public class DateTimeFormatter {
      * @param instant  millis since 1970-01-01T00:00:00Z
      */
     public void printTo(StringBuffer buf, long instant) {
-        printTo(buf, instant, null);
+        try {
+            printTo((Appendable) buf, instant);
+        } catch (IOException ex) {
+            // StringBuffer does not throw IOException
+        }
     }
 
     /**
@@ -516,7 +541,7 @@ public class DateTimeFormatter {
      * @param instant  millis since 1970-01-01T00:00:00Z
      */
     public void printTo(Writer out, long instant) throws IOException {
-        printTo(out, instant, null);
+        printTo((Appendable) out, instant);
     }
 
     /**
@@ -542,11 +567,11 @@ public class DateTimeFormatter {
      * @param partial  partial to format
      */
     public void printTo(StringBuffer buf, ReadablePartial partial) {
-        DateTimePrinter printer = requirePrinter();
-        if (partial == null) {
-            throw new IllegalArgumentException("The partial must not be null");
+        try {
+            printTo((Appendable) buf, partial);
+        } catch (IOException ex) {
+            // StringBuffer does not throw IOException
         }
-        printer.printTo(buf, partial, iLocale);
     }
 
     /**
@@ -559,11 +584,7 @@ public class DateTimeFormatter {
      * @param partial  partial to format
      */
     public void printTo(Writer out, ReadablePartial partial) throws IOException {
-        DateTimePrinter printer = requirePrinter();
-        if (partial == null) {
-            throw new IllegalArgumentException("The partial must not be null");
-        }
-        printer.printTo(out, partial, iLocale);
+        printTo((Appendable) out, partial);
     }
 
     /**
@@ -577,7 +598,7 @@ public class DateTimeFormatter {
      * @since 2.0
      */
     public void printTo(Appendable appendable, ReadablePartial partial) throws IOException {
-        DateTimePrinter printer = requirePrinter();
+        InternalPrinter printer = requirePrinter();
         if (partial == null) {
             throw new IllegalArgumentException("The partial must not be null");
         }
@@ -597,8 +618,8 @@ public class DateTimeFormatter {
     public String print(ReadableInstant instant) {
         StringBuilder buf = new StringBuilder(requirePrinter().estimatePrintedLength());
         try {
-            printTo(buf, instant);
-        } catch (IOException e) {
+            printTo((Appendable) buf, instant);
+        } catch (IOException ex) {
             // StringBuilder does not throw IOException
         }
         return buf.toString();
@@ -616,8 +637,8 @@ public class DateTimeFormatter {
     public String print(long instant) {
         StringBuilder buf = new StringBuilder(requirePrinter().estimatePrintedLength());
         try {
-            printTo(buf, instant);
-        } catch (IOException e) {
+            printTo((Appendable) buf, instant);
+        } catch (IOException ex) {
             // StringBuilder does not throw IOException
         }
         return buf.toString();
@@ -633,42 +654,17 @@ public class DateTimeFormatter {
      * @return the printed result
      */
     public String print(ReadablePartial partial) {
-        StringBuilder builder = new StringBuilder(requirePrinter().estimatePrintedLength());
+        StringBuilder buf = new StringBuilder(requirePrinter().estimatePrintedLength());
         try {
-            printTo(builder, partial);
-        } catch (IOException e) {
+            printTo((Appendable) buf, partial);
+        } catch (IOException ex) {
             // StringBuilder does not throw IOException
         }
-        return builder.toString();
-    }
-
-    private void printTo(StringBuffer buf, long instant, Chronology chrono) {
-        try {
-            printTo((Appendable)buf, instant, chrono);
-        } catch (IOException e) {
-            // StringBuffer does not throw IOException
-        }
-    }
-
-    private void printTo(Writer out, long instant, Chronology chrono) throws IOException {
-        DateTimePrinter printer = requirePrinter();
-        chrono = selectChronology(chrono);
-        // Shift instant into local time (UTC) to avoid excessive offset
-        // calculations when printing multiple fields in a composite printer.
-        DateTimeZone zone = chrono.getZone();
-        int offset = zone.getOffset(instant);
-        long adjustedInstant = instant + offset;
-        if ((instant ^ adjustedInstant) < 0 && (instant ^ offset) >= 0) {
-            // Time zone offset overflow, so revert to UTC.
-            zone = DateTimeZone.UTC;
-            offset = 0;
-            adjustedInstant = instant;
-        }
-        printer.printTo(out, adjustedInstant, chrono.withUTC(), offset, zone, iLocale);
+        return buf.toString();
     }
 
     private void printTo(Appendable appendable, long instant, Chronology chrono) throws IOException {
-        DateTimePrinter printer = requirePrinter();
+        InternalPrinter printer = requirePrinter();
         chrono = selectChronology(chrono);
         // Shift instant into local time (UTC) to avoid excessive offset
         // calculations when printing multiple fields in a composite printer.
@@ -689,8 +685,8 @@ public class DateTimeFormatter {
      * 
      * @throws UnsupportedOperationException if printing is not supported
      */
-    private DateTimePrinter requirePrinter() {
-        DateTimePrinter printer = iPrinter;
+    private InternalPrinter requirePrinter() {
+        InternalPrinter printer = iPrinter;
         if (printer == null) {
             throw new UnsupportedOperationException("Printing not supported");
         }

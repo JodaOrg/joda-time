@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2014 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -109,7 +109,7 @@ public class FormatUtils {
             appenadble.append(Integer.toString(value));
         }
     }
-    
+
     /**
      * Converts an integer to a string, prepended with a variable amount of '0'
      * pad characters, and appends it to the given buffer.

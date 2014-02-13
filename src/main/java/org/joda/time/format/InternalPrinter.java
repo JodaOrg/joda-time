@@ -16,7 +16,6 @@
 package org.joda.time.format;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.util.Locale;
 
 import org.joda.time.Chronology;
@@ -26,22 +25,12 @@ import org.joda.time.ReadablePartial;
 /**
  * Internal interface for creating textual representations of datetimes.
  * <p>
- * Application users will rarely use this class directly. Instead, you
- * will use one of the factory classes to create a {@link DateTimeFormatter}.
- * <p>
- * The factory classes are:<br />
- * - {@link DateTimeFormatterBuilder}<br />
- * - {@link DateTimeFormat}<br />
- * - {@link ISODateTimeFormat}<br />
+ * This has been separated from {@link DateTimePrinter} to avoid code duplication.
  *
- * @author Brian S O'Neill
  * @author Stephen Colebourne
- * @see DateTimeFormatterBuilder
- * @see DateTimeFormat
- * @see ISODateTimeFormat
- * @since 1.0
+ * @since 2.4
  */
-public interface DateTimePrinter {
+interface InternalPrinter {
 
     /**
      * Returns the expected maximum number of characters produced.
@@ -56,7 +45,7 @@ public interface DateTimePrinter {
      * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
      * using the given Chronology.
      *
-     * @param buf  formatted instant is appended to this buffer, not null
+     * @param appendable  formatted instant is appended to, not null
      * @param instant  millis since 1970-01-01T00:00:00Z
      * @param chrono  the chronology to use, not null
      * @param displayOffset  if a time zone offset is printed, force it to use
@@ -64,41 +53,16 @@ public interface DateTimePrinter {
      * @param displayZone  the time zone to use, null means local time
      * @param locale  the locale to use, null means default locale
      */
-    void printTo(StringBuffer buf, long instant, Chronology chrono,
-                 int displayOffset, DateTimeZone displayZone, Locale locale);
-
-    /**
-     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
-     * using the given Chronology.
-     *
-     * @param out  formatted instant is written out, not null
-     * @param instant  millis since 1970-01-01T00:00:00Z
-     * @param chrono  the chronology to use, not null
-     * @param displayOffset  if a time zone offset is printed, force it to use
-     * this millisecond value
-     * @param displayZone  the time zone to use, null means local time
-     * @param locale  the locale to use, null means default locale
-     */
-    void printTo(Writer out, long instant, Chronology chrono,
+    void printTo(Appendable appendable, long instant, Chronology chrono,
                  int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException;
 
-    //-----------------------------------------------------------------------
     /**
      * Prints a ReadablePartial.
      *
-     * @param buf  formatted partial is appended to this buffer, not null
+     * @param appendable  formatted instant is appended to, not null
      * @param partial  partial to format, not null
      * @param locale  the locale to use, null means default locale
      */
-    void printTo(StringBuffer buf, ReadablePartial partial, Locale locale);
-
-    /**
-     * Prints a ReadablePartial.
-     *
-     * @param out  formatted partial is written out, not null
-     * @param partial  partial to format, not null
-     * @param locale  the locale to use, null means default locale
-     */
-    void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException;
+    void printTo(Appendable appendable, ReadablePartial partial, Locale locale) throws IOException;
 
 }

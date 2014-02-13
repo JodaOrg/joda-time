@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2011 Stephen Colebourne
+ *  Copyright 2001-2014 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -348,7 +348,7 @@ public class TestDateTimeFormatter extends TestCase {
             fail();
         } catch (UnsupportedOperationException ex) {}
         
-        f2 = new DateTimeFormatter(null, f.getParser());
+        f2 = new DateTimeFormatter((InternalPrinter) null, f.getParser());
         assertEquals(null, f2.getPrinter());
         assertEquals(f.getParser(), f2.getParser());
         assertEquals(false, f2.isPrinter());

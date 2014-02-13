@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2013 Stephen Colebourne
+ *  Copyright 2001-2014 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 package org.joda.time.format;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -231,7 +230,7 @@ public class DateTimeFormat {
             locale = Locale.getDefault();
         }
         // Not pretty, but it works.
-        return ((StyleFormatter) formatter.getPrinter()).getPattern(locale);
+        return ((StyleFormatter) formatter.getPrinter0()).getPattern(locale);
     }
 
     //-----------------------------------------------------------------------
@@ -792,7 +791,7 @@ public class DateTimeFormat {
 
     //-----------------------------------------------------------------------
     static class StyleFormatter
-            implements DateTimePrinter, DateTimeParser {
+            implements InternalPrinter, DateTimeParser {
 
         private static final Map<String, DateTimeFormatter> cCache = new HashMap<String, DateTimeFormatter>();  // manual sync
         
@@ -812,40 +811,17 @@ public class DateTimeFormat {
         }
 
         public void printTo(
-                StringBuffer buf, long instant, Chronology chrono,
-                int displayOffset, DateTimeZone displayZone, Locale locale) {
-            DateTimePrinter p = getFormatter(locale).getPrinter();
-            p.printTo(buf, instant, chrono, displayOffset, displayZone, locale);
-        }
-
-        public void printTo(
-                Writer out, long instant, Chronology chrono,
-                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
-            DateTimePrinter p = getFormatter(locale).getPrinter();
-            p.printTo(out, instant, chrono, displayOffset, displayZone, locale);
-        }
-
-        public void printTo(
                 Appendable appenadble, long instant, Chronology chrono,
                 int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
-            DateTimePrinter p = getFormatter(locale).getPrinter();
+            InternalPrinter p = getFormatter(locale).getPrinter0();
             p.printTo(appenadble, instant, chrono, displayOffset, displayZone, locale);
         }
 
-        public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
-            DateTimePrinter p = getFormatter(locale).getPrinter();
-            p.printTo(buf, partial, locale);
-        }
-
-        public void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException {
-            DateTimePrinter p = getFormatter(locale).getPrinter();
-            p.printTo(out, partial, locale);
-        }
-
         public void printTo(Appendable appendable, ReadablePartial partial, Locale locale) throws IOException {
-            DateTimePrinter p = getFormatter(locale).getPrinter();
+            InternalPrinter p = getFormatter(locale).getPrinter0();
             p.printTo(appendable, partial, locale);
         }
+
         public int estimateParsedLength() {
             return 40;  // guess
         }

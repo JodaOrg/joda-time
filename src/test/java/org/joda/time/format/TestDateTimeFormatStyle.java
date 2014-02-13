@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2014 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -365,6 +365,11 @@ public class TestDateTimeFormatStyle extends TestCase {
         assertEquals(expect, f.withLocale(US).print(dt));
         expect = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.FULL, FRANCE).format(dt.toDate());
         assertEquals(expect, f.withLocale(FRANCE).print(dt));
+    }
+
+    public void test_patternForStyle() throws Exception {
+        String format = DateTimeFormat.patternForStyle("MF", UK);
+        assertNotNull(format);
     }
 
 }

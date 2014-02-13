@@ -1190,6 +1190,12 @@ public class DateTimeFormatterBuilder {
         }
     }
 
+    static void appendUnknownString(Appendable appendable, int len) throws IOException {
+        for (int i = len; --i >= 0;) {
+            appendable.append('\ufffd');
+        }
+    }
+
     static void printUnknownString(Writer out, int len) throws IOException {
         for (int i = len; --i >= 0;) {
             out.write('\ufffd');
@@ -1223,12 +1229,22 @@ public class DateTimeFormatterBuilder {
             out.write(iValue);
         }
 
+        public void printTo(
+                Appendable appendable, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
+            appendable.append(iValue);
+        }
+
         public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
             buf.append(iValue);
         }
 
         public void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException {
             out.write(iValue);
+        }
+
+        public void printTo(Appendable appendable, ReadablePartial partial, Locale locale) throws IOException {
+            appendable.append(iValue);
         }
 
         public int estimateParsedLength() {
@@ -1286,12 +1302,22 @@ public class DateTimeFormatterBuilder {
             out.write(iValue);
         }
 
+        public void printTo(
+                Appendable appendable, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
+            appendable.append(iValue);
+        }
+
         public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
             buf.append(iValue);
         }
 
         public void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException {
             out.write(iValue);
+        }
+
+        public void printTo(Appendable appendable, ReadablePartial partial, Locale locale) throws IOException {
+            appendable.append(iValue);
         }
 
         public int estimateParsedLength() {
@@ -1408,10 +1434,9 @@ public class DateTimeFormatterBuilder {
                 StringBuffer buf, long instant, Chronology chrono,
                 int displayOffset, DateTimeZone displayZone, Locale locale) {
             try {
-                DateTimeField field = iFieldType.getField(chrono);
-                FormatUtils.appendUnpaddedInteger(buf, field.get(instant));
-            } catch (RuntimeException e) {
-                buf.append('\ufffd');
+                printTo((Appendable)buf, instant, chrono, displayOffset, displayZone, locale);
+            } catch (IOException e) {
+                // StringBuffer does not throw IOException
             }
         }
 
@@ -1426,15 +1451,22 @@ public class DateTimeFormatterBuilder {
             }
         }
 
+        public void printTo(
+                Appendable appendable, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
+            try {
+                DateTimeField field = iFieldType.getField(chrono);
+                FormatUtils.appendUnpaddedInteger(appendable, field.get(instant));
+            } catch (RuntimeException e) {
+                appendable.append('\ufffd');
+            }
+        }
+
         public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
-            if (partial.isSupported(iFieldType)) {
-                try {
-                    FormatUtils.appendUnpaddedInteger(buf, partial.get(iFieldType));
-                } catch (RuntimeException e) {
-                    buf.append('\ufffd');
-                }
-            } else {
-                buf.append('\ufffd');
+            try {
+                printTo((Appendable)buf, partial, locale);
+            } catch (IOException e) {
+                // StringBuffer does not throw IOException
             }
         }
 
@@ -1447,6 +1479,18 @@ public class DateTimeFormatterBuilder {
                 }
             } else {
                 out.write('\ufffd');
+            }
+        }
+
+        public void printTo(Appendable appendable, ReadablePartial partial, Locale locale) throws IOException {
+            if (partial.isSupported(iFieldType)) {
+                try {
+                    FormatUtils.appendUnpaddedInteger(appendable, partial.get(iFieldType));
+                } catch (RuntimeException e) {
+                    appendable.append('\ufffd');
+                }
+            } else {
+                appendable.append('\ufffd');
             }
         }
     }
@@ -1471,10 +1515,9 @@ public class DateTimeFormatterBuilder {
                 StringBuffer buf, long instant, Chronology chrono,
                 int displayOffset, DateTimeZone displayZone, Locale locale) {
             try {
-                DateTimeField field = iFieldType.getField(chrono);
-                FormatUtils.appendPaddedInteger(buf, field.get(instant), iMinPrintedDigits);
-            } catch (RuntimeException e) {
-                appendUnknownString(buf, iMinPrintedDigits);
+                printTo((Appendable)buf, instant, chrono, displayOffset, displayZone, locale);
+            } catch (IOException e) {
+                // StringBuffer does not throw IOException
             }
         }
 
@@ -1489,15 +1532,22 @@ public class DateTimeFormatterBuilder {
             }
         }
 
+        public void printTo(
+                Appendable appendable, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
+            try {
+                DateTimeField field = iFieldType.getField(chrono);
+                FormatUtils.appendPaddedInteger(appendable, field.get(instant), iMinPrintedDigits);
+            } catch (RuntimeException e) {
+                appendUnknownString(appendable, iMinPrintedDigits);
+            }
+        }
+
         public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
-            if (partial.isSupported(iFieldType)) {
-                try {
-                    FormatUtils.appendPaddedInteger(buf, partial.get(iFieldType), iMinPrintedDigits);
-                } catch (RuntimeException e) {
-                    appendUnknownString(buf, iMinPrintedDigits);
-                }
-            } else {
-                appendUnknownString(buf, iMinPrintedDigits);
+            try {
+                printTo((Appendable)buf, partial, locale);
+            } catch (IOException e) {
+                // StringBuffer does not throw IOException
             }
         }
 
@@ -1510,6 +1560,18 @@ public class DateTimeFormatterBuilder {
                 }
             } else {
                 printUnknownString(out, iMinPrintedDigits);
+            }
+        }
+
+        public void printTo(Appendable appendable, ReadablePartial partial, Locale locale) throws IOException {
+            if (partial.isSupported(iFieldType)) {
+                try {
+                    FormatUtils.appendPaddedInteger(appendable, partial.get(iFieldType), iMinPrintedDigits);
+                } catch (RuntimeException e) {
+                    appendUnknownString(appendable, iMinPrintedDigits);
+                }
+            } else {
+                appendUnknownString(appendable, iMinPrintedDigits);
             }
         }
     }
@@ -1694,6 +1756,18 @@ public class DateTimeFormatterBuilder {
             }
         }
 
+        public void printTo(
+                Appendable appendable, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
+            int year = getTwoDigitYear(instant, chrono);
+            if (year < 0) {
+                appendable.append('\ufffd');
+                appendable.append('\ufffd');
+            } else {
+                FormatUtils.appendPaddedInteger(appendable, year, 2);
+            }
+        }
+
         private int getTwoDigitYear(long instant, Chronology chrono) {
             try {
                 int year = iType.getField(chrono).get(instant);
@@ -1723,6 +1797,16 @@ public class DateTimeFormatterBuilder {
                 out.write('\ufffd');
             } else {
                 FormatUtils.writePaddedInteger(out, year, 2);
+            }
+        }
+
+        public void printTo(Appendable appendable, ReadablePartial partial, Locale locale) throws IOException {
+            int year = getTwoDigitYear(partial);
+            if (year < 0) {
+                appendable.append('\ufffd');
+                appendable.append('\ufffd');
+            } else {
+                FormatUtils.appendPaddedInteger(appendable, year, 2);
             }
         }
 
@@ -1779,6 +1863,16 @@ public class DateTimeFormatterBuilder {
             }
         }
 
+        public void printTo(
+                Appendable appendable, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
+            try {
+                appendable.append(print(instant, chrono, locale));
+            } catch (RuntimeException e) {
+                appendable.append('\ufffd');
+            }
+        }
+
         public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
             try {
                 buf.append(print(partial, locale));
@@ -1792,6 +1886,14 @@ public class DateTimeFormatterBuilder {
                 out.write(print(partial, locale));
             } catch (RuntimeException e) {
                 out.write('\ufffd');
+            }
+        }
+
+        public void printTo(Appendable appendable, ReadablePartial partial, Locale locale) throws IOException {
+            try {
+                appendable.append(print(partial, locale));
+            } catch (RuntimeException e) {
+                appendable.append('\ufffd');
             }
         }
 
@@ -1909,7 +2011,7 @@ public class DateTimeFormatterBuilder {
             try {
                 printTo(buf, null, instant, chrono);
             } catch (IOException e) {
-                // Not gonna happen.
+                // StringBuffer does not throw IOException
             }
         }
 
@@ -1919,6 +2021,12 @@ public class DateTimeFormatterBuilder {
             printTo(null, out, instant, chrono);
         }
 
+        public void printTo(
+                Appendable appendable, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
+            printTo(appendable, null, instant, chrono);
+        }
+
         public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
             // removed check whether field is supported, as input field is typically
             // secondOfDay which is unsupported by TimeOfDay
@@ -1926,7 +2034,7 @@ public class DateTimeFormatterBuilder {
             try {
                 printTo(buf, null, millis, partial.getChronology());
             } catch (IOException e) {
-                // Not gonna happen.
+                // StringBuffer does not throw IOException
             }
         }
 
@@ -1937,7 +2045,14 @@ public class DateTimeFormatterBuilder {
             printTo(null, out, millis, partial.getChronology());
         }
 
-        protected void printTo(StringBuffer buf, Writer out, long instant, Chronology chrono)
+        public void printTo(Appendable appendable, ReadablePartial partial, Locale locale) throws IOException {
+            // removed check whether field is supported, as input field is typically
+            // secondOfDay which is unsupported by TimeOfDay
+            long millis = partial.getChronology().set(partial, 0L);
+            printTo(appendable, null , millis, partial.getChronology());
+        }
+
+        protected void printTo(Appendable appendable, Writer out, long instant, Chronology chrono)
             throws IOException
         {
             DateTimeField field = iFieldType.getField(chrono);
@@ -1947,8 +2062,8 @@ public class DateTimeFormatterBuilder {
             try {
                 fraction = field.remainder(instant);
             } catch (RuntimeException e) {
-                if (buf != null) {
-                    appendUnknownString(buf, minDigits);
+                if (appendable != null) {
+                    appendUnknownString(appendable, minDigits);
                 } else {
                     printUnknownString(out, minDigits);
                 }
@@ -1956,9 +2071,9 @@ public class DateTimeFormatterBuilder {
             }
 
             if (fraction == 0) {
-                if (buf != null) {
+                if (appendable != null) {
                     while (--minDigits >= 0) {
-                        buf.append('0');
+                        appendable.append('0');
                     }
                 } else {
                     while (--minDigits >= 0) {
@@ -1982,8 +2097,8 @@ public class DateTimeFormatterBuilder {
             int length = str.length();
             int digits = maxDigits;
             while (length < digits) {
-                if (buf != null) {
-                    buf.append('0');
+                if (appendable != null) {
+                    appendable.append('0');
                 } else {
                     out.write('0');
                 }
@@ -2001,9 +2116,9 @@ public class DateTimeFormatterBuilder {
                     length--;
                 }
                 if (length < str.length()) {
-                    if (buf != null) {
+                    if (appendable != null) {
                         for (int i=0; i<length; i++) {
-                            buf.append(str.charAt(i));
+                            appendable.append(str.charAt(i));
                         }
                     } else {
                         for (int i=0; i<length; i++) {
@@ -2014,8 +2129,8 @@ public class DateTimeFormatterBuilder {
                 }
             }
 
-            if (buf != null) {
-                buf.append(str);
+            if (appendable != null) {
+                appendable.append(str);
             } else {
                 out.write(str);
             }
@@ -2140,10 +2255,79 @@ public class DateTimeFormatterBuilder {
             }
             return est;
         }
-        
+
         public void printTo(
                 StringBuffer buf, long instant, Chronology chrono,
                 int displayOffset, DateTimeZone displayZone, Locale locale) {
+            try {
+                printTo((Appendable) buf, instant, chrono, displayOffset, displayZone, locale);
+            } catch (IOException e) {
+                // StringBuffer does not throw IOException
+            }
+        }
+
+        public void printTo(
+                Writer out, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
+            if (displayZone == null) {
+                return;  // no zone
+            }
+            if (displayOffset == 0 && iZeroOffsetPrintText != null) {
+                out.write(iZeroOffsetPrintText);
+                return;
+            }
+            if (displayOffset >= 0) {
+                out.write('+');
+            } else {
+                out.write('-');
+                displayOffset = -displayOffset;
+            }
+
+            int hours = displayOffset / DateTimeConstants.MILLIS_PER_HOUR;
+            FormatUtils.writePaddedInteger(out, hours, 2);
+            if (iMaxFields == 1) {
+                return;
+            }
+            displayOffset -= hours * (int)DateTimeConstants.MILLIS_PER_HOUR;
+            if (displayOffset == 0 && iMinFields == 1) {
+                return;
+            }
+
+            int minutes = displayOffset / DateTimeConstants.MILLIS_PER_MINUTE;
+            if (iShowSeparators) {
+                out.write(':');
+            }
+            FormatUtils.writePaddedInteger(out, minutes, 2);
+            if (iMaxFields == 2) {
+                return;
+            }
+            displayOffset -= minutes * DateTimeConstants.MILLIS_PER_MINUTE;
+            if (displayOffset == 0 && iMinFields == 2) {
+                return;
+            }
+
+            int seconds = displayOffset / DateTimeConstants.MILLIS_PER_SECOND;
+            if (iShowSeparators) {
+                out.write(':');
+            }
+            FormatUtils.writePaddedInteger(out, seconds, 2);
+            if (iMaxFields == 3) {
+                return;
+            }
+            displayOffset -= seconds * DateTimeConstants.MILLIS_PER_SECOND;
+            if (displayOffset == 0 && iMinFields == 3) {
+                return;
+            }
+
+            if (iShowSeparators) {
+                out.write('.');
+            }
+            FormatUtils.writePaddedInteger(out, displayOffset, 3);
+        }
+
+        public void printTo(
+                Appendable buf, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
             if (displayZone == null) {
                 return;  // no zone
             }
@@ -2199,71 +2383,16 @@ public class DateTimeFormatterBuilder {
             }
             FormatUtils.appendPaddedInteger(buf, displayOffset, 3);
         }
-        
-        public void printTo(
-                Writer out, long instant, Chronology chrono,
-                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
-            if (displayZone == null) {
-                return;  // no zone
-            }
-            if (displayOffset == 0 && iZeroOffsetPrintText != null) {
-                out.write(iZeroOffsetPrintText);
-                return;
-            }
-            if (displayOffset >= 0) {
-                out.write('+');
-            } else {
-                out.write('-');
-                displayOffset = -displayOffset;
-            }
-
-            int hours = displayOffset / DateTimeConstants.MILLIS_PER_HOUR;
-            FormatUtils.writePaddedInteger(out, hours, 2);
-            if (iMaxFields == 1) {
-                return;
-            }
-            displayOffset -= hours * (int)DateTimeConstants.MILLIS_PER_HOUR;
-            if (displayOffset == 0 && iMinFields <= 1) {
-                return;
-            }
-
-            int minutes = displayOffset / DateTimeConstants.MILLIS_PER_MINUTE;
-            if (iShowSeparators) {
-                out.write(':');
-            }
-            FormatUtils.writePaddedInteger(out, minutes, 2);
-            if (iMaxFields == 2) {
-                return;
-            }
-            displayOffset -= minutes * DateTimeConstants.MILLIS_PER_MINUTE;
-            if (displayOffset == 0 && iMinFields <= 2) {
-                return;
-            }
-
-            int seconds = displayOffset / DateTimeConstants.MILLIS_PER_SECOND;
-            if (iShowSeparators) {
-                out.write(':');
-            }
-            FormatUtils.writePaddedInteger(out, seconds, 2);
-            if (iMaxFields == 3) {
-                return;
-            }
-            displayOffset -= seconds * DateTimeConstants.MILLIS_PER_SECOND;
-            if (displayOffset == 0 && iMinFields <= 3) {
-                return;
-            }
-
-            if (iShowSeparators) {
-                out.write('.');
-            }
-            FormatUtils.writePaddedInteger(out, displayOffset, 3);
-        }
 
         public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
             // no zone info
         }
 
         public void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException {
+            // no zone info
+        }
+
+        public void printTo(Appendable appendable, ReadablePartial partial, Locale locale) throws IOException {
             // no zone info
         }
 
@@ -2492,6 +2621,12 @@ public class DateTimeFormatterBuilder {
             out.write(print(instant - displayOffset, displayZone, locale));
         }
 
+        public void printTo(
+                Appendable appendable, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
+            appendable.append(print(instant - displayOffset, displayZone, locale));
+        }
+
         private String print(long instant, DateTimeZone displayZone, Locale locale) {
             if (displayZone == null) {
                 return "";  // no zone
@@ -2510,6 +2645,10 @@ public class DateTimeFormatterBuilder {
         }
 
         public void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException {
+            // no zone info
+        }
+
+        public void printTo(Appendable appendable, ReadablePartial partial, Locale locale) throws IOException {
             // no zone info
         }
 
@@ -2568,11 +2707,21 @@ public class DateTimeFormatterBuilder {
             out.write(displayZone != null ? displayZone.getID() : "");
         }
 
+        public void printTo(
+                Appendable appendable, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
+            appendable.append(displayZone != null ? displayZone.getID() : "");
+        }
+
         public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
             // no zone info
         }
 
         public void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException {
+            // no zone info
+        }
+
+        public void printTo(Appendable appendable, ReadablePartial partial, Locale locale) throws IOException {
             // no zone info
         }
 
@@ -2689,6 +2838,25 @@ public class DateTimeFormatterBuilder {
             }
         }
 
+        public void printTo(
+                Appendable appendable, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
+            DateTimePrinter[] elements = iPrinters;
+            if (elements == null) {
+                throw new UnsupportedOperationException();
+            }
+
+            if (locale == null) {
+                // Guard against default locale changing concurrently.
+                locale = Locale.getDefault();
+            }
+
+            int len = elements.length;
+            for (int i = 0; i < len; i++) {
+                elements[i].printTo(appendable, instant, chrono, displayOffset, displayZone, locale);
+            }
+        }
+
         public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
             DateTimePrinter[] elements = iPrinters;
             if (elements == null) {
@@ -2720,6 +2888,23 @@ public class DateTimeFormatterBuilder {
             int len = elements.length;
             for (int i=0; i<len; i++) {
                 elements[i].printTo(out, partial, locale);
+            }
+        }
+
+        public void printTo(Appendable appendable, ReadablePartial partial, Locale locale) throws IOException {
+            DateTimePrinter[] elements = iPrinters;
+            if (elements == null) {
+                throw new UnsupportedOperationException();
+            }
+
+            if (locale == null) {
+                // Guard against default locale changing concurrently.
+                locale = Locale.getDefault();
+            }
+
+            int len = elements.length;
+            for (int i=0; i<len; i++) {
+                elements[i].printTo(appendable, partial, locale);
             }
         }
 

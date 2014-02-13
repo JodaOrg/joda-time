@@ -2223,7 +2223,7 @@ public class DateTimeFormatterBuilder {
                 return;
             }
             displayOffset -= hours * (int)DateTimeConstants.MILLIS_PER_HOUR;
-            if (displayOffset == 0 && iMinFields == 1) {
+            if (displayOffset == 0 && iMinFields <= 1) {
                 return;
             }
 
@@ -2236,7 +2236,7 @@ public class DateTimeFormatterBuilder {
                 return;
             }
             displayOffset -= minutes * DateTimeConstants.MILLIS_PER_MINUTE;
-            if (displayOffset == 0 && iMinFields == 2) {
+            if (displayOffset == 0 && iMinFields <= 2) {
                 return;
             }
 
@@ -2249,7 +2249,7 @@ public class DateTimeFormatterBuilder {
                 return;
             }
             displayOffset -= seconds * DateTimeConstants.MILLIS_PER_SECOND;
-            if (displayOffset == 0 && iMinFields == 3) {
+            if (displayOffset == 0 && iMinFields <= 3) {
                 return;
             }
 

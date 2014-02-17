@@ -15,10 +15,8 @@
  */
 package org.joda.time.chrono;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeField;
@@ -106,7 +104,7 @@ public final class GJChronology extends AssembledChronology {
     static final Instant DEFAULT_CUTOVER = new Instant(-12219292800000L);
 
     /** Cache of zone to chronology list */
-    private static final Map<DateTimeZone, ArrayList<GJChronology>> cCache = new HashMap<DateTimeZone, ArrayList<GJChronology>>();
+    private static final ConcurrentHashMap<GJCacheKey, GJChronology> cCache = new ConcurrentHashMap<GJCacheKey, GJChronology>();
 
     /**
      * Factory method returns instances of the default GJ cutover
@@ -182,7 +180,7 @@ public final class GJChronology extends AssembledChronology {
      * @param gregorianCutover  the cutover to use, null means default
      * @param minDaysInFirstWeek  minimum number of days in first week of the year; default is 4
      */
-    public static synchronized GJChronology getInstance(
+    public static GJChronology getInstance(
             DateTimeZone zone,
             ReadableInstant gregorianCutover,
             int minDaysInFirstWeek) {
@@ -199,22 +197,9 @@ public final class GJChronology extends AssembledChronology {
             }
         }
 
-        GJChronology chrono;
-        synchronized (cCache) {
-            ArrayList<GJChronology> chronos = cCache.get(zone);
-            if (chronos == null) {
-                chronos = new ArrayList<GJChronology>(2);
-                cCache.put(zone, chronos);
-            } else {
-                for (int i = chronos.size(); --i >= 0;) {
-                    chrono = chronos.get(i);
-                    if (minDaysInFirstWeek == chrono.getMinimumDaysInFirstWeek() &&
-                        cutoverInstant.equals(chrono.getGregorianCutover())) {
-                        
-                        return chrono;
-                    }
-                }
-            }
+        GJCacheKey cacheKey = new GJCacheKey(zone, cutoverInstant, minDaysInFirstWeek);
+        GJChronology chrono = cCache.get(cacheKey);
+        if (chrono == null) {
             if (zone == DateTimeZone.UTC) {
                 chrono = new GJChronology
                     (JulianChronology.getInstance(zone, minDaysInFirstWeek),
@@ -228,7 +213,10 @@ public final class GJChronology extends AssembledChronology {
                      chrono.iGregorianChronology,
                      chrono.iCutoverInstant);
             }
-            chronos.add(chrono);
+            GJChronology oldChrono = cCache.putIfAbsent(cacheKey, chrono);
+            if (oldChrono != null) {
+                chrono = oldChrono;
+            }
         }
         return chrono;
     }

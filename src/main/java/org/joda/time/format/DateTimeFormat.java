@@ -738,12 +738,14 @@ public class DateTimeFormat {
         if (index >= STYLE_CACHE.length) {
             return createDateTimeFormatter(dateStyle, timeStyle);
         }
-        DateTimeFormatter f = null;
-        synchronized (STYLE_CACHE) {
-            f = STYLE_CACHE[index];
-            if (f == null) {
-                f = createDateTimeFormatter(dateStyle, timeStyle);
-                STYLE_CACHE[index] = f;
+        DateTimeFormatter f = STYLE_CACHE[index];
+        if (f == null) {
+            synchronized (STYLE_CACHE) {
+                f = STYLE_CACHE[index];
+                if (f == null) {
+                    f = createDateTimeFormatter(dateStyle, timeStyle);
+                    STYLE_CACHE[index] = f;
+                }
             }
         }
         return f;

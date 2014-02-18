@@ -18,10 +18,8 @@ package org.joda.time.format;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Locale;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
@@ -152,14 +150,8 @@ public class DateTimeFormat {
     /** Maximum size of the pattern cache. */
     private static final int PATTERN_CACHE_SIZE = 500;
 
-    /** Maps patterns to formatters via LRU, patterns don't vary by locale. */
-    private static final Map<String, DateTimeFormatter> PATTERN_CACHE = new LinkedHashMap<String, DateTimeFormatter>(7) {
-        private static final long serialVersionUID = 23L;
-        @Override
-        protected boolean removeEldestEntry(final Map.Entry<String, DateTimeFormatter> eldest) {
-            return size() > PATTERN_CACHE_SIZE;
-        }
-    };
+    /** Maps patterns to formatters, patterns don't vary by locale. Size capped at PATTERN_CACHE_SIZE*/
+    private static final ConcurrentHashMap<String, DateTimeFormatter> PATTERN_CACHE = new ConcurrentHashMap<String, DateTimeFormatter>();
 
     /** Maps patterns to formatters, patterns don't vary by locale. */
     private static final DateTimeFormatter[] STYLE_CACHE = new DateTimeFormatter[25];
@@ -690,15 +682,18 @@ public class DateTimeFormat {
         if (pattern == null || pattern.length() == 0) {
             throw new IllegalArgumentException("Invalid pattern specification");
         }
-        DateTimeFormatter formatter = null;
-        synchronized (PATTERN_CACHE) {
-            formatter = PATTERN_CACHE.get(pattern);
+        DateTimeFormatter formatter = PATTERN_CACHE.get(pattern);
             if (formatter == null) {
                 DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
                 parsePatternTo(builder, pattern);
                 formatter = builder.toFormatter();
-
-                PATTERN_CACHE.put(pattern, formatter);
+            if (PATTERN_CACHE.size() < PATTERN_CACHE_SIZE) {
+                // the size check is not locked against concurrent access,
+                // but is accepted to be slightly off in contention scenarios.
+                DateTimeFormatter oldFormatter = PATTERN_CACHE.putIfAbsent(pattern, formatter);
+                if (oldFormatter != null) {
+                    formatter = oldFormatter;
+                }
             }
         }
         return formatter;
@@ -795,7 +790,7 @@ public class DateTimeFormat {
     static class StyleFormatter
             implements InternalPrinter, DateTimeParser {
 
-        private static final Map<String, DateTimeFormatter> cCache = new HashMap<String, DateTimeFormatter>();  // manual sync
+        private static final ConcurrentHashMap<String, DateTimeFormatter> cCache = new ConcurrentHashMap<String, DateTimeFormatter>();
         
         private final int iDateStyle;
         private final int iTimeStyle;
@@ -837,12 +832,12 @@ public class DateTimeFormat {
             locale = (locale == null ? Locale.getDefault() : locale);
             String key = Integer.toString(iType + (iDateStyle << 4) + (iTimeStyle << 8)) + locale.toString();
             DateTimeFormatter f = null;
-            synchronized (cCache) {
                 f = cCache.get(key);
                 if (f == null) {
-                    String pattern = getPattern(locale);
-                    f = DateTimeFormat.forPattern(pattern);
-                    cCache.put(key, f);
+                f = DateTimeFormat.forPattern(getPattern(locale));
+                DateTimeFormatter oldFormatter = cCache.putIfAbsent(key, f);
+                if (oldFormatter != null) {
+                    f = oldFormatter;
                 }
             }
             return f;

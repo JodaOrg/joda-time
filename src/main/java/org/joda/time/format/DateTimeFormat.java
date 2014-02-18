@@ -683,10 +683,10 @@ public class DateTimeFormat {
             throw new IllegalArgumentException("Invalid pattern specification");
         }
         DateTimeFormatter formatter = PATTERN_CACHE.get(pattern);
-            if (formatter == null) {
-                DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
-                parsePatternTo(builder, pattern);
-                formatter = builder.toFormatter();
+        if (formatter == null) {
+            DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
+            parsePatternTo(builder, pattern);
+            formatter = builder.toFormatter();
             if (PATTERN_CACHE.size() < PATTERN_CACHE_SIZE) {
                 // the size check is not locked against concurrent access,
                 // but is accepted to be slightly off in contention scenarios.
@@ -790,7 +790,7 @@ public class DateTimeFormat {
     static class StyleFormatter
             implements InternalPrinter, DateTimeParser {
 
-        private static final ConcurrentHashMap<String, DateTimeFormatter> cCache = new ConcurrentHashMap<String, DateTimeFormatter>();
+        private static final ConcurrentHashMap<StyleFormatterCacheKey, DateTimeFormatter> cCache = new ConcurrentHashMap<StyleFormatterCacheKey, DateTimeFormatter>();
         
         private final int iDateStyle;
         private final int iTimeStyle;
@@ -830,10 +830,9 @@ public class DateTimeFormat {
 
         private DateTimeFormatter getFormatter(Locale locale) {
             locale = (locale == null ? Locale.getDefault() : locale);
-            String key = Integer.toString(iType + (iDateStyle << 4) + (iTimeStyle << 8)) + locale.toString();
-            DateTimeFormatter f = null;
-                f = cCache.get(key);
-                if (f == null) {
+            StyleFormatterCacheKey key = new StyleFormatterCacheKey(iType, iDateStyle, iTimeStyle, locale);
+            DateTimeFormatter f = cCache.get(key);
+            if (f == null) {
                 f = DateTimeFormat.forPattern(getPattern(locale));
                 DateTimeFormatter oldFormatter = cCache.putIfAbsent(key, f);
                 if (oldFormatter != null) {
@@ -863,4 +862,49 @@ public class DateTimeFormat {
         }
     }
 
+    static class StyleFormatterCacheKey {
+        private final int combinedTypeAndStyle;
+        private final Locale locale;
+
+        public StyleFormatterCacheKey(int iType, int iDateStyle,
+                int iTimeStyle, Locale locale) {
+            this.locale = locale;
+            // keeping old key generation logic of shifting type and style
+            this.combinedTypeAndStyle = iType + (iDateStyle << 4) + (iTimeStyle << 8);
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + combinedTypeAndStyle;
+            result = prime * result + ((locale == null) ? 0 : locale.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null) {
+                return false;
+            }
+            if (!(obj instanceof StyleFormatterCacheKey)) {
+                return false;
+            }
+            StyleFormatterCacheKey other = (StyleFormatterCacheKey) obj;
+            if (combinedTypeAndStyle != other.combinedTypeAndStyle) {
+                return false;
+            }
+            if (locale == null) {
+                if (other.locale != null) {
+                    return false;
+                }
+            } else if (!locale.equals(other.locale)) {
+                return false;
+            }
+            return true;
+        }
+    }
 }

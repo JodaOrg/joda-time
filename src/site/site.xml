@@ -55,12 +55,12 @@
       <item name="GitHub" href="https://github.com/JodaOrg/joda-time"/>
       <item name="Bugs/Issues" href="https://github.com/JodaOrg/joda-time/issues"/>
       <item name="Test results" href="surefire-report.html"/>
-      <item name="Sourceforge" href="http://sourceforge.net/projects/joda-time/"/>
     </menu>
 
     <menu name="Joda">
       <item name="Joda home" href="http://www.joda.org"/>
       <item name="Beans" href="http://www.joda.org/joda-beans/"/>
+      <item name="Collect" href="http://www.joda.org/joda-collect/"/>
       <item name="Convert" href="http://www.joda.org/joda-convert/"/>
       <item name="Money" href="http://www.joda.org/joda-money/"/>
       <item name="Primitives" href="http://www.joda.org/joda-primitives/"/>

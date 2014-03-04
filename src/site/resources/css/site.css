@@ -57,8 +57,6 @@ p, ul {
 #bannerLeft, #bannerRight {
   font-size: 30px;
   color:black;
-  background-color:white;
-  border: 1px solid #999;
   padding: 0px 5px;
 }
 #banner a:hover {

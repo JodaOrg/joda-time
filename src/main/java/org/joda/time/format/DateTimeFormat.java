@@ -18,10 +18,8 @@ package org.joda.time.format;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Locale;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
@@ -152,14 +150,8 @@ public class DateTimeFormat {
     /** Maximum size of the pattern cache. */
     private static final int PATTERN_CACHE_SIZE = 500;
 
-    /** Maps patterns to formatters via LRU, patterns don't vary by locale. */
-    private static final Map<String, DateTimeFormatter> PATTERN_CACHE = new LinkedHashMap<String, DateTimeFormatter>(7) {
-        private static final long serialVersionUID = 23L;
-        @Override
-        protected boolean removeEldestEntry(final Map.Entry<String, DateTimeFormatter> eldest) {
-            return size() > PATTERN_CACHE_SIZE;
-        }
-    };
+    /** Maps patterns to formatters, patterns don't vary by locale. Size capped at PATTERN_CACHE_SIZE*/
+    private static final ConcurrentHashMap<String, DateTimeFormatter> PATTERN_CACHE = new ConcurrentHashMap<String, DateTimeFormatter>();
 
     /** Maps patterns to formatters, patterns don't vary by locale. */
     private static final DateTimeFormatter[] STYLE_CACHE = new DateTimeFormatter[25];
@@ -690,15 +682,18 @@ public class DateTimeFormat {
         if (pattern == null || pattern.length() == 0) {
             throw new IllegalArgumentException("Invalid pattern specification");
         }
-        DateTimeFormatter formatter = null;
-        synchronized (PATTERN_CACHE) {
-            formatter = PATTERN_CACHE.get(pattern);
-            if (formatter == null) {
-                DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
-                parsePatternTo(builder, pattern);
-                formatter = builder.toFormatter();
-
-                PATTERN_CACHE.put(pattern, formatter);
+        DateTimeFormatter formatter = PATTERN_CACHE.get(pattern);
+        if (formatter == null) {
+            DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
+            parsePatternTo(builder, pattern);
+            formatter = builder.toFormatter();
+            if (PATTERN_CACHE.size() < PATTERN_CACHE_SIZE) {
+                // the size check is not locked against concurrent access,
+                // but is accepted to be slightly off in contention scenarios.
+                DateTimeFormatter oldFormatter = PATTERN_CACHE.putIfAbsent(pattern, formatter);
+                if (oldFormatter != null) {
+                    formatter = oldFormatter;
+                }
             }
         }
         return formatter;
@@ -738,12 +733,14 @@ public class DateTimeFormat {
         if (index >= STYLE_CACHE.length) {
             return createDateTimeFormatter(dateStyle, timeStyle);
         }
-        DateTimeFormatter f = null;
-        synchronized (STYLE_CACHE) {
-            f = STYLE_CACHE[index];
-            if (f == null) {
-                f = createDateTimeFormatter(dateStyle, timeStyle);
-                STYLE_CACHE[index] = f;
+        DateTimeFormatter f = STYLE_CACHE[index];
+        if (f == null) {
+            synchronized (STYLE_CACHE) {
+                f = STYLE_CACHE[index];
+                if (f == null) {
+                    f = createDateTimeFormatter(dateStyle, timeStyle);
+                    STYLE_CACHE[index] = f;
+                }
             }
         }
         return f;
@@ -793,7 +790,7 @@ public class DateTimeFormat {
     static class StyleFormatter
             implements InternalPrinter, DateTimeParser {
 
-        private static final Map<String, DateTimeFormatter> cCache = new HashMap<String, DateTimeFormatter>();  // manual sync
+        private static final ConcurrentHashMap<StyleFormatterCacheKey, DateTimeFormatter> cCache = new ConcurrentHashMap<StyleFormatterCacheKey, DateTimeFormatter>();
         
         private final int iDateStyle;
         private final int iTimeStyle;
@@ -833,14 +830,13 @@ public class DateTimeFormat {
 
         private DateTimeFormatter getFormatter(Locale locale) {
             locale = (locale == null ? Locale.getDefault() : locale);
-            String key = Integer.toString(iType + (iDateStyle << 4) + (iTimeStyle << 8)) + locale.toString();
-            DateTimeFormatter f = null;
-            synchronized (cCache) {
-                f = cCache.get(key);
-                if (f == null) {
-                    String pattern = getPattern(locale);
-                    f = DateTimeFormat.forPattern(pattern);
-                    cCache.put(key, f);
+            StyleFormatterCacheKey key = new StyleFormatterCacheKey(iType, iDateStyle, iTimeStyle, locale);
+            DateTimeFormatter f = cCache.get(key);
+            if (f == null) {
+                f = DateTimeFormat.forPattern(getPattern(locale));
+                DateTimeFormatter oldFormatter = cCache.putIfAbsent(key, f);
+                if (oldFormatter != null) {
+                    f = oldFormatter;
                 }
             }
             return f;
@@ -866,4 +862,49 @@ public class DateTimeFormat {
         }
     }
 
+    static class StyleFormatterCacheKey {
+        private final int combinedTypeAndStyle;
+        private final Locale locale;
+
+        public StyleFormatterCacheKey(int iType, int iDateStyle,
+                int iTimeStyle, Locale locale) {
+            this.locale = locale;
+            // keeping old key generation logic of shifting type and style
+            this.combinedTypeAndStyle = iType + (iDateStyle << 4) + (iTimeStyle << 8);
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + combinedTypeAndStyle;
+            result = prime * result + ((locale == null) ? 0 : locale.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null) {
+                return false;
+            }
+            if (!(obj instanceof StyleFormatterCacheKey)) {
+                return false;
+            }
+            StyleFormatterCacheKey other = (StyleFormatterCacheKey) obj;
+            if (combinedTypeAndStyle != other.combinedTypeAndStyle) {
+                return false;
+            }
+            if (locale == null) {
+                if (other.locale != null) {
+                    return false;
+                }
+            } else if (!locale.equals(other.locale)) {
+                return false;
+            }
+            return true;
+        }
+    }
 }

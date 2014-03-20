@@ -29,7 +29,10 @@ Enhancements since 2.3
   Ensure that Appendable can be used efficiently in printing [#120, #121, #122]
   No API change
 
-- Increased performance of chrnology lookup [#126]
+- Increased performance of chronology lookup [#126]
+  No API change
+
+- Increased performance of formatter lookup [#127,#129]
   No API change
 
 

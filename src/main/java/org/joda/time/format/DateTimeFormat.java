@@ -20,6 +20,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReferenceArray;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
@@ -149,12 +150,10 @@ public class DateTimeFormat {
 
     /** Maximum size of the pattern cache. */
     private static final int PATTERN_CACHE_SIZE = 500;
-
     /** Maps patterns to formatters, patterns don't vary by locale. Size capped at PATTERN_CACHE_SIZE*/
     private static final ConcurrentHashMap<String, DateTimeFormatter> PATTERN_CACHE = new ConcurrentHashMap<String, DateTimeFormatter>();
-
     /** Maps patterns to formatters, patterns don't vary by locale. */
-    private static final DateTimeFormatter[] STYLE_CACHE = new DateTimeFormatter[25];
+    private static final AtomicReferenceArray<DateTimeFormatter> STYLE_CACHE = new AtomicReferenceArray<DateTimeFormatter>(25);
 
     //-----------------------------------------------------------------------
     /**
@@ -728,26 +727,24 @@ public class DateTimeFormat {
      * @return the formatter
      */
     private static DateTimeFormatter createFormatterForStyleIndex(int dateStyle, int timeStyle) {
-        int index = ((dateStyle << 2) + dateStyle) + timeStyle;
+        int index = ((dateStyle << 2) + dateStyle) + timeStyle;  // (dateStyle * 5 + timeStyle);
         // Should never happen but do a double check...
-        if (index >= STYLE_CACHE.length) {
+        if (index >= STYLE_CACHE.length()) {
             return createDateTimeFormatter(dateStyle, timeStyle);
         }
-        DateTimeFormatter f = STYLE_CACHE[index];
+        DateTimeFormatter f = STYLE_CACHE.get(index);
         if (f == null) {
-            synchronized (STYLE_CACHE) {
-                f = STYLE_CACHE[index];
-                if (f == null) {
-                    f = createDateTimeFormatter(dateStyle, timeStyle);
-                    STYLE_CACHE[index] = f;
-                }
+            f = createDateTimeFormatter(dateStyle, timeStyle);
+            if (STYLE_CACHE.compareAndSet(index, null, f) == false) {
+                f = STYLE_CACHE.get(index);
             }
         }
         return f;
     }
-    
+
     /**
      * Creates a formatter for the specified style.
+     * 
      * @param dateStyle  the date style
      * @param timeStyle  the time style
      * @return the formatter

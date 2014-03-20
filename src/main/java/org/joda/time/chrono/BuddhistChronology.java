@@ -15,8 +15,7 @@
  */
 package org.joda.time.chrono;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
@@ -70,7 +69,7 @@ public final class BuddhistChronology extends AssembledChronology {
     private static final int BUDDHIST_OFFSET = 543;
 
     /** Cache of zone to chronology */
-    private static final Map<DateTimeZone, BuddhistChronology> cCache = new HashMap<DateTimeZone, BuddhistChronology>();
+    private static final ConcurrentHashMap<DateTimeZone, BuddhistChronology> cCache = new ConcurrentHashMap<DateTimeZone, BuddhistChronology>();
 
     /** UTC instance of the chronology */
     private static final BuddhistChronology INSTANCE_UTC = getInstance(DateTimeZone.UTC);
@@ -102,20 +101,20 @@ public final class BuddhistChronology extends AssembledChronology {
      *
      * @param zone  the time zone to use, null is default
      */
-    public static synchronized BuddhistChronology getInstance(DateTimeZone zone) {
+    public static BuddhistChronology getInstance(DateTimeZone zone) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
-        BuddhistChronology chrono;
-        synchronized (cCache) {
-            chrono = cCache.get(zone);
-            if (chrono == null) {
-                // First create without a lower limit.
-                chrono = new BuddhistChronology(GJChronology.getInstance(zone, null), null);
-                // Impose lower limit and make another BuddhistChronology.
-                DateTime lowerLimit = new DateTime(1, 1, 1, 0, 0, 0, 0, chrono);
-                chrono = new BuddhistChronology(LimitChronology.getInstance(chrono, lowerLimit, null), "");
-                cCache.put(zone, chrono);
+        BuddhistChronology chrono = cCache.get(zone);
+        if (chrono == null) {
+            // First create without a lower limit.
+            chrono = new BuddhistChronology(GJChronology.getInstance(zone, null), null);
+            // Impose lower limit and make another BuddhistChronology.
+            DateTime lowerLimit = new DateTime(1, 1, 1, 0, 0, 0, 0, chrono);
+            chrono = new BuddhistChronology(LimitChronology.getInstance(chrono, lowerLimit, null), "");
+            BuddhistChronology oldChrono = cCache.putIfAbsent(zone, chrono);
+            if (oldChrono != null) {
+                chrono = oldChrono;
             }
         }
         return chrono;

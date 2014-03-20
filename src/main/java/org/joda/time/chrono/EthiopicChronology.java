@@ -15,8 +15,7 @@
  */
 package org.joda.time.chrono;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
@@ -69,7 +68,7 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
     private static final int MAX_YEAR = 292272984;
 
     /** Cache of zone to chronology arrays */
-    private static final Map<DateTimeZone, EthiopicChronology[]> cCache = new HashMap<DateTimeZone, EthiopicChronology[]>();
+    private static final ConcurrentHashMap<DateTimeZone, EthiopicChronology[]> cCache = new ConcurrentHashMap<DateTimeZone, EthiopicChronology[]>();
 
     /** Singleton instance of a UTC EthiopicChronology */
     private static final EthiopicChronology INSTANCE_UTC;
@@ -120,33 +119,40 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
             zone = DateTimeZone.getDefault();
         }
         EthiopicChronology chrono;
-        synchronized (cCache) {
-            EthiopicChronology[] chronos = cCache.get(zone);
-            if (chronos == null) {
-                chronos = new EthiopicChronology[7];
-                cCache.put(zone, chronos);
+        EthiopicChronology[] chronos = cCache.get(zone);
+        if (chronos == null) {
+            chronos = new EthiopicChronology[7];
+            EthiopicChronology[] oldChronos = cCache.putIfAbsent(zone, chronos);
+            if (oldChronos != null) {
+                chronos = oldChronos;
             }
-            try {
+        }
+        try {
+            chrono = chronos[minDaysInFirstWeek - 1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new IllegalArgumentException
+                ("Invalid min days in first week: " + minDaysInFirstWeek);
+        }
+
+        if (chrono == null) {
+            synchronized (chronos) {
                 chrono = chronos[minDaysInFirstWeek - 1];
-            } catch (ArrayIndexOutOfBoundsException e) {
-                throw new IllegalArgumentException
-                    ("Invalid min days in first week: " + minDaysInFirstWeek);
-            }
-            if (chrono == null) {
-                if (zone == DateTimeZone.UTC) {
-                    // First create without a lower limit.
-                    chrono = new EthiopicChronology(null, null, minDaysInFirstWeek);
-                    // Impose lower limit and make another EthiopicChronology.
-                    DateTime lowerLimit = new DateTime(1, 1, 1, 0, 0, 0, 0, chrono);
-                    chrono = new EthiopicChronology
-                        (LimitChronology.getInstance(chrono, lowerLimit, null),
-                         null, minDaysInFirstWeek);
-                } else {
-                    chrono = getInstance(DateTimeZone.UTC, minDaysInFirstWeek);
-                    chrono = new EthiopicChronology
-                        (ZonedChronology.getInstance(chrono, zone), null, minDaysInFirstWeek);
+                if (chrono == null) {
+                    if (zone == DateTimeZone.UTC) {
+                        // First create without a lower limit.
+                        chrono = new EthiopicChronology(null, null, minDaysInFirstWeek);
+                        // Impose lower limit and make another EthiopicChronology.
+                        DateTime lowerLimit = new DateTime(1, 1, 1, 0, 0, 0, 0, chrono);
+                        chrono = new EthiopicChronology
+                            (LimitChronology.getInstance(chrono, lowerLimit, null),
+                             null, minDaysInFirstWeek);
+                    } else {
+                        chrono = getInstance(DateTimeZone.UTC, minDaysInFirstWeek);
+                        chrono = new EthiopicChronology
+                            (ZonedChronology.getInstance(chrono, zone), null, minDaysInFirstWeek);
+                    }
+                    chronos[minDaysInFirstWeek - 1] = chrono;
                 }
-                chronos[minDaysInFirstWeek - 1] = chrono;
             }
         }
         return chrono;

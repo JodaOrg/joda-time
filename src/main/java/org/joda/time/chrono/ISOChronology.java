@@ -19,8 +19,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeFieldType;
@@ -60,7 +59,7 @@ public final class ISOChronology extends AssembledChronology {
     private static final ISOChronology[] cFastCache;
 
     /** Cache of zone to chronology */
-    private static final Map<DateTimeZone, ISOChronology> cCache = new HashMap<DateTimeZone, ISOChronology>();
+    private static final ConcurrentHashMap<DateTimeZone, ISOChronology> cCache = new ConcurrentHashMap<DateTimeZone, ISOChronology>();
     static {
         cFastCache = new ISOChronology[FAST_CACHE_SIZE];
         INSTANCE_UTC = new ISOChronology(GregorianChronology.getInstanceUTC());
@@ -101,11 +100,12 @@ public final class ISOChronology extends AssembledChronology {
         if (chrono != null && chrono.getZone() == zone) {
             return chrono;
         }
-        synchronized (cCache) {
-            chrono = cCache.get(zone);
-            if (chrono == null) {
-                chrono = new ISOChronology(ZonedChronology.getInstance(INSTANCE_UTC, zone));
-                cCache.put(zone, chrono);
+        chrono = cCache.get(zone);
+        if (chrono == null) {
+            chrono = new ISOChronology(ZonedChronology.getInstance(INSTANCE_UTC, zone));
+            ISOChronology oldChrono = cCache.putIfAbsent(zone, chrono);
+            if (oldChrono != null) {
+                chrono = oldChrono;
             }
         }
         cFastCache[index] = chrono;

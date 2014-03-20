@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2013 Stephen Colebourne
+ *  Copyright 2001-2014 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -331,6 +331,9 @@ public abstract class DateTimeZone implements Serializable {
             return getDefault();
         }
         final String id = zone.getID();
+        if (id == null) {
+            throw new IllegalArgumentException("The TimeZone id must not be null");
+        }
         if (id.equals("UTC")) {
             return DateTimeZone.UTC;
         }
@@ -350,7 +353,7 @@ public abstract class DateTimeZone implements Serializable {
 
         // Support GMT+/-hh:mm formats
         if (convId == null) {
-            convId = zone.getID();
+            convId = id;
             if (convId.startsWith("GMT+") || convId.startsWith("GMT-")) {
                 convId = convId.substring(3);
                 int offset = parseOffset(convId);

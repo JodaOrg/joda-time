@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2013 Stephen Colebourne
+ *  Copyright 2001-2014 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import java.security.Permissions;
 import java.security.Policy;
 import java.security.ProtectionDomain;
 import java.text.DateFormatSymbols;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -390,6 +391,41 @@ public class TestDateTimeZone extends TestCase {
         
         zone = DateTimeZone.forTimeZone(TimeZone.getTimeZone("EST"));
         assertEquals("America/New_York", zone.getID());
+    }
+
+    public void testFromTimeZoneInvalid() throws Exception {
+        TimeZone jdkZone = new TimeZone() {
+            private static final long serialVersionUID = 1L;
+            @Override
+            public String getID() {
+                return null;
+            }
+            @Override
+            public int getOffset(int era, int year, int month, int day, int dayOfWeek, int milliseconds) {
+                return 0;
+            }
+            @Override
+            public void setRawOffset(int offsetMillis) {
+            }
+            @Override
+            public int getRawOffset() {
+                return 0;
+            }
+            @Override
+            public boolean useDaylightTime() {
+                return false;
+            }
+            @Override
+            public boolean inDaylightTime(Date date) {
+                return false;
+            }
+        };
+        try {
+            DateTimeZone.forTimeZone(jdkZone);
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
     }
 
     public void testTimeZoneConversion() {

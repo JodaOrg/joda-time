@@ -103,7 +103,7 @@ public interface ReadableDuration extends Comparable<ReadableDuration> {
      * Is the length of this duration longer than the duration passed in.
      *
      * @param duration  another duration to compare to, null means zero milliseconds
-     * @return true if this duration is equal to or greater than the duration passed in
+     * @return true if this duration is greater than the duration passed in
      */
     boolean isLongerThan(ReadableDuration duration);
 
@@ -111,7 +111,7 @@ public interface ReadableDuration extends Comparable<ReadableDuration> {
      * Is the length of this duration shorter than the duration passed in.
      *
      * @param duration  another duration to compare to, null means zero milliseconds
-     * @return true if this duration is equal to or less than the duration passed in
+     * @return true if this duration is less than the duration passed in
      */
     boolean isShorterThan(ReadableDuration duration);
 

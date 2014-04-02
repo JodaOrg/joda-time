@@ -114,6 +114,8 @@ Bug fixes since 2.3
 
 - Better Javadoc for DateTimeFormat fraction of second [#62]
 
+- Fix Javadoc for ReadableDuration [#137]
+
 
 Scala
 --------

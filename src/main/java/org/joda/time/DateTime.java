@@ -123,7 +123,12 @@ public final class DateTime
     /**
      * Parses a {@code DateTime} from the specified string.
      * <p>
-     * This uses {@link ISODateTimeFormat#dateTimeParser()}.
+     * This uses {@link ISODateTimeFormat#dateTimeParser().withOffsetParsed()}.
+     * <p>
+     * Note that {@code DateTime.parse(str).equals(new
+     * DateTime(str)) == false} because the associated chronologies are
+     * not equal: The former has a FixedDateTimeZone and the latter has a
+     * CachedDateTimeZone.
      * 
      * @param str  the string to parse, not null
      * @since 2.0

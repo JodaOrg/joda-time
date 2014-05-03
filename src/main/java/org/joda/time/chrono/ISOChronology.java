@@ -46,22 +46,16 @@ import org.joda.time.field.RemainderDateTimeField;
  * @since 1.0
  */
 public final class ISOChronology extends AssembledChronology {
-    
+
     /** Serialization lock */
     private static final long serialVersionUID = -6212696554273812441L;
 
     /** Singleton instance of a UTC ISOChronology */
     private static final ISOChronology INSTANCE_UTC;
-        
-    private static final int FAST_CACHE_SIZE = 64;
-
-    /** Fast cache of zone to chronology */
-    private static final ISOChronology[] cFastCache;
 
     /** Cache of zone to chronology */
     private static final ConcurrentHashMap<DateTimeZone, ISOChronology> cCache = new ConcurrentHashMap<DateTimeZone, ISOChronology>();
     static {
-        cFastCache = new ISOChronology[FAST_CACHE_SIZE];
         INSTANCE_UTC = new ISOChronology(GregorianChronology.getInstanceUTC());
         cCache.put(DateTimeZone.UTC, INSTANCE_UTC);
     }
@@ -95,12 +89,7 @@ public final class ISOChronology extends AssembledChronology {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
-        int index = System.identityHashCode(zone) & (FAST_CACHE_SIZE - 1);
-        ISOChronology chrono = cFastCache[index];
-        if (chrono != null && chrono.getZone() == zone) {
-            return chrono;
-        }
-        chrono = cCache.get(zone);
+        ISOChronology chrono = cCache.get(zone);
         if (chrono == null) {
             chrono = new ISOChronology(ZonedChronology.getInstance(INSTANCE_UTC, zone));
             ISOChronology oldChrono = cCache.putIfAbsent(zone, chrono);
@@ -108,7 +97,6 @@ public final class ISOChronology extends AssembledChronology {
                 chrono = oldChrono;
             }
         }
-        cFastCache[index] = chrono;
         return chrono;
     }
 

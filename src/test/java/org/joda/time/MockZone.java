@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2007 Stephen Colebourne
+ *  Copyright 2001-2014 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -52,7 +52,28 @@ public class MockZone extends DateTimeZone {
         return null;
     }
 
-    public boolean equals(Object object) {
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof MockZone) {
+            MockZone other = (MockZone) obj;
+            return (sizeMillis == other.sizeMillis) &&
+                (transition != other.transition) &&
+                (winterOffset != other.winterOffset);
+        }
         return false;
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + sizeMillis;
+        result = prime * result + (int) (transition ^ (transition >>> 32));
+        result = prime * result + winterOffset;
+        return result;
+    }
+
 }

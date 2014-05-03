@@ -151,9 +151,9 @@ public class DateTimeFormat {
     /** Maximum size of the pattern cache. */
     private static final int PATTERN_CACHE_SIZE = 500;
     /** Maps patterns to formatters, patterns don't vary by locale. Size capped at PATTERN_CACHE_SIZE*/
-    private static final ConcurrentHashMap<String, DateTimeFormatter> PATTERN_CACHE = new ConcurrentHashMap<String, DateTimeFormatter>();
+    private static final ConcurrentHashMap<String, DateTimeFormatter> cPatternCache = new ConcurrentHashMap<String, DateTimeFormatter>();
     /** Maps patterns to formatters, patterns don't vary by locale. */
-    private static final AtomicReferenceArray<DateTimeFormatter> STYLE_CACHE = new AtomicReferenceArray<DateTimeFormatter>(25);
+    private static final AtomicReferenceArray<DateTimeFormatter> cStyleCache = new AtomicReferenceArray<DateTimeFormatter>(25);
 
     //-----------------------------------------------------------------------
     /**
@@ -681,15 +681,15 @@ public class DateTimeFormat {
         if (pattern == null || pattern.length() == 0) {
             throw new IllegalArgumentException("Invalid pattern specification");
         }
-        DateTimeFormatter formatter = PATTERN_CACHE.get(pattern);
+        DateTimeFormatter formatter = cPatternCache.get(pattern);
         if (formatter == null) {
             DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
             parsePatternTo(builder, pattern);
             formatter = builder.toFormatter();
-            if (PATTERN_CACHE.size() < PATTERN_CACHE_SIZE) {
+            if (cPatternCache.size() < PATTERN_CACHE_SIZE) {
                 // the size check is not locked against concurrent access,
                 // but is accepted to be slightly off in contention scenarios.
-                DateTimeFormatter oldFormatter = PATTERN_CACHE.putIfAbsent(pattern, formatter);
+                DateTimeFormatter oldFormatter = cPatternCache.putIfAbsent(pattern, formatter);
                 if (oldFormatter != null) {
                     formatter = oldFormatter;
                 }
@@ -729,14 +729,14 @@ public class DateTimeFormat {
     private static DateTimeFormatter createFormatterForStyleIndex(int dateStyle, int timeStyle) {
         int index = ((dateStyle << 2) + dateStyle) + timeStyle;  // (dateStyle * 5 + timeStyle);
         // Should never happen but do a double check...
-        if (index >= STYLE_CACHE.length()) {
+        if (index >= cStyleCache.length()) {
             return createDateTimeFormatter(dateStyle, timeStyle);
         }
-        DateTimeFormatter f = STYLE_CACHE.get(index);
+        DateTimeFormatter f = cStyleCache.get(index);
         if (f == null) {
             f = createDateTimeFormatter(dateStyle, timeStyle);
-            if (STYLE_CACHE.compareAndSet(index, null, f) == false) {
-                f = STYLE_CACHE.get(index);
+            if (cStyleCache.compareAndSet(index, null, f) == false) {
+                f = cStyleCache.get(index);
             }
         }
         return f;

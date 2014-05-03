@@ -35,6 +35,9 @@ Enhancements since 2.3
 - Increased performance of formatter lookup [#127,#129]
   No API change
 
+- Increased performance of symbols lookup [#143]
+  No API change
+
 
 Compatibility with 2.3
 ----------------------

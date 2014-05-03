@@ -16,8 +16,10 @@
 package org.joda.time.chrono;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
 
 import junit.framework.Assert;
@@ -30,8 +32,78 @@ import org.joda.time.DateTimeZone;
 public class ThreadContention {
 
     public static void main(String[] args) {
+        multiThreadGJLocale();
+        singleThreadGJLocale2();
+        singleThreadGJLocale();
         multiThreadZones();
         singleThreadZones();
+    }
+
+    //-------------------------------------------------------------------------
+    private static void multiThreadGJLocale() {
+        final CountDownLatch latch = new CountDownLatch(1);
+        final List<Locale> locales = createLocales();
+        List<Runnable> runnables = new ArrayList<Runnable>();
+        for (int i = 0; i < 100; i++) { 
+            Runnable r = new Runnable() {
+                public void run() {
+                    try {
+                        latch.await();
+                        List<Locale> shuffled = new ArrayList<Locale>(locales);
+                        Collections.shuffle(shuffled);
+                        String name = Thread.currentThread().getName();
+                        for (int j = 0; j < 100; j++) { 
+                            for (Locale locale : shuffled) {
+                                GJLocaleSymbols symbols = GJLocaleSymbols.forLocale(locale);
+                                Assert.assertEquals(GJLocaleSymbols.class, symbols.getClass());
+                            }
+                        }
+                      System.out.println("Finished: " + name);
+                        
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        System.exit(1);
+                    }
+                }
+            };
+            new Thread(r).start();
+            runnables.add(r);
+        }
+        latch.countDown();
+    }
+
+    private static void singleThreadGJLocale() {
+        List<Locale> locales = createLocales();
+        List<Locale> shuffled = new ArrayList<Locale>(locales);
+        Collections.shuffle(shuffled);
+        long start = System.nanoTime();
+        int count = 0;
+        for (int j = 0; j < 10000; j++) { 
+            for (Locale locale : shuffled) {
+                GJLocaleSymbols symbols = GJLocaleSymbols.forLocale(locale);
+                count = count + symbols.getDayOfWeekMaxShortTextLength();
+            }
+        }
+        long end = System.nanoTime();
+        System.out.println("Finished " + count + " " + (end - start) / 1000000);
+    }
+
+    private static void singleThreadGJLocale2() {
+        List<Locale> locales = createLocales();
+        List<Locale> shuffled = new ArrayList<Locale>(locales);
+        Collections.shuffle(shuffled);
+        long start = System.nanoTime();
+        int count = 0;
+        for (int j = 0; j < 1000000; j++) { 
+            GJLocaleSymbols symbols = GJLocaleSymbols.forLocale(Locale.US);
+            count = count + symbols.getDayOfWeekMaxShortTextLength() + symbols.hashCode();
+        }
+        long end = System.nanoTime();
+        System.out.println("Finished " + count + " " + (end - start) / 1000000);
+    }
+
+    private static List<Locale> createLocales() {
+        return Arrays.asList(Locale.getAvailableLocales());
     }
 
     //-------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2010 Stephen Colebourne
+ *  Copyright 2001-2014 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -417,7 +417,7 @@ public abstract class AbstractInstant implements ReadableInstant {
     /**
      * Output the date time in ISO8601 format (yyyy-MM-ddTHH:mm:ss.SSSZZ).
      * 
-     * @return ISO8601 time formatted string.
+     * @return ISO8601 time formatted string, not null
      */
     @ToString
     public String toString() {
@@ -429,7 +429,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * Uses the specified formatter to convert this partial to a String.
      *
      * @param formatter  the formatter to use, null means use <code>toString()</code>.
-     * @return the formatted string
+     * @return the formatted string, not null
      * @since 1.1
      */
     public String toString(DateTimeFormatter formatter) {

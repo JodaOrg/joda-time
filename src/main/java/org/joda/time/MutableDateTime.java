@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2013 Stephen Colebourne
+ *  Copyright 2001-2014 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ import java.io.Serializable;
 import java.util.Locale;
 
 import org.joda.convert.FromString;
-import org.joda.convert.ToString;
 import org.joda.time.base.BaseDateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.AbstractReadableInstantFieldProperty;
@@ -1237,16 +1236,6 @@ public class MutableDateTime
         } catch (CloneNotSupportedException ex) {
             throw new InternalError("Clone error");
         }
-    }
-
-    /**
-     * Output the date time in ISO8601 format (yyyy-MM-ddTHH:mm:ss.SSSZZ).
-     * 
-     * @return ISO8601 time formatted string.
-     */
-    @ToString
-    public String toString() {
-        return ISODateTimeFormat.dateTime().print(this);
     }
 
     /**

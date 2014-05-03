@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2011 Stephen Colebourne
+ *  Copyright 2001-2014 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+import org.joda.convert.ToString;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
 import org.joda.time.ReadableDateTime;
@@ -299,9 +300,25 @@ public abstract class AbstractDateTime
 
     //-----------------------------------------------------------------------
     /**
+     * Output the date time in ISO8601 format (yyyy-MM-ddTHH:mm:ss.SSSZZ).
+     * <p>
+     * Note that this method does not output the chronology or time-zone.
+     * This can be confusing, as the equals and hashCode methods use both
+     * chronology and time-zone. If two objects are not {@code equal} but have the
+     * same {@code toString} then either the chronology or time-zone differs.
+     * 
+     * @return ISO8601 time formatted string, not null
+     */
+    @ToString
+    public String toString() {
+        return super.toString();
+    }
+
+    /**
      * Output the instant using the specified format pattern.
      *
      * @param pattern  the pattern specification, null means use <code>toString</code>
+     * @return the formatted string, not null
      * @see  org.joda.time.format.DateTimeFormat
      */
     public String toString(String pattern) {
@@ -316,6 +333,7 @@ public abstract class AbstractDateTime
      *
      * @param pattern  the pattern specification, null means use <code>toString</code>
      * @param locale  Locale to use, null means default
+     * @return the formatted string, not null
      * @see  org.joda.time.format.DateTimeFormat
      */
     public String toString(String pattern, Locale locale) throws IllegalArgumentException {

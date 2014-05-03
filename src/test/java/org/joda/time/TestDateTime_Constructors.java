@@ -158,6 +158,21 @@ public class TestDateTime_Constructors extends TestCase {
         assertEquals(new DateTime(2010, 1, 2, 14, 50, ISOChronology.getInstance(LONDON)), DateTime.parse("2010-002T14:50"));
     }
 
+    public void testParse_noFormatter_vs_constructor_noOffset() throws Throwable {
+        DateTime parsed = DateTime.parse("2010-06-30T01:20");
+        DateTime constructed = new DateTime("2010-06-30T01:20");
+        assertEquals(constructed, parsed);
+        assertEquals(DateTimeZone.getDefault(), constructed.getZone());
+        assertEquals(DateTimeZone.getDefault(), parsed.getZone());
+    }
+
+    public void testParse_noFormatter_vs_constructor_correctOffset() throws Throwable {
+        DateTime parsed = DateTime.parse("2010-06-30T01:20+01:00");
+        DateTime constructed = new DateTime("2010-06-30T01:20+01:00");
+        assertEquals(DateTimeZone.getDefault(), constructed.getZone());
+        assertEquals(DateTimeZone.forOffsetHours(1), parsed.getZone());
+    }
+
     public void testParse_formatter() throws Throwable {
         DateTimeFormatter f = DateTimeFormat.forPattern("yyyy--dd MM HH").withChronology(ISOChronology.getInstance(PARIS));
         assertEquals(new DateTime(2010, 6, 30, 13, 0, ISOChronology.getInstance(PARIS)), DateTime.parse("2010--30 06 13", f));

@@ -15,6 +15,8 @@
  */
 package org.joda.time.tz;
 
+import java.io.Serializable;
+
 import org.joda.time.DateTimeZone;
 
 /**
@@ -166,8 +168,9 @@ public class CachedDateTimeZone extends DateTimeZone {
         return info;
     }
 
-    private final static class Info {
-        // For first Info in chain, iPeriodStart's lower 32 bits are clear.
+    private final static class Info implements Serializable {
+        private static final long serialVersionUID = 474899205891159056L;
+	// For first Info in chain, iPeriodStart's lower 32 bits are clear.
         public final long iPeriodStart;
         public final DateTimeZone iZoneRef;
 

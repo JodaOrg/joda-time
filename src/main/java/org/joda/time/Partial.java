@@ -164,6 +164,8 @@ public final class Partial
     /**
      * Constructs a Partial with the specified fields and values.
      * The fields must be specified in the order largest to smallest.
+     * For year and weekyear fields with equal duration, year is defined
+     * as being larger than weekyear.
      * <p>
      * The constructor uses the specified chronology.
      * 
@@ -178,6 +180,8 @@ public final class Partial
     /**
      * Constructs a Partial with the specified fields and values.
      * The fields must be specified in the order largest to smallest.
+     * For year and weekyear fields with equal duration, year is defined
+     * as being larger than weekyear.
      * <p>
      * The constructor uses the specified chronology.
      * 
@@ -227,26 +231,36 @@ public final class Partial
                 if (compare < 0) {
                     throw new IllegalArgumentException("Types array must be in order largest-smallest: " +
                             types[i - 1].getName() + " < " + loopType.getName());
-                } else if (compare == 0 && lastUnitField.equals(loopUnitField)) {
-                    if (types[i - 1].getRangeDurationType() == null) {
-                        if (loopType.getRangeDurationType() == null) {
-                            throw new IllegalArgumentException("Types array must not contain duplicate: " +
-                                            types[i - 1].getName() + " and " + loopType.getName());
+                } else if (compare == 0) {
+                    if (lastUnitField.equals(loopUnitField)) {
+                        DurationFieldType lastRangeType = types[i - 1].getRangeDurationType();
+                        DurationFieldType loopRangeType = loopType.getRangeDurationType();
+                        if (lastRangeType == null) {
+                            if (loopRangeType == null) {
+                                throw new IllegalArgumentException("Types array must not contain duplicate: " +
+                                                types[i - 1].getName() + " and " + loopType.getName());
+                            }
+                        } else {
+                            if (loopRangeType == null) {
+                                throw new IllegalArgumentException("Types array must be in order largest-smallest: " +
+                                        types[i - 1].getName() + " < " + loopType.getName());
+                            }
+                            DurationField lastRangeField = lastRangeType.getField(iChronology);
+                            DurationField loopRangeField = loopRangeType.getField(iChronology);
+                            if (lastRangeField.compareTo(loopRangeField) < 0) {
+                                throw new IllegalArgumentException("Types array must be in order largest-smallest: " +
+                                        types[i - 1].getName() + " < " + loopType.getName());
+                            }
+                            if (lastRangeField.compareTo(loopRangeField) == 0) {
+                                throw new IllegalArgumentException("Types array must not contain duplicate: " +
+                                                types[i - 1].getName() + " and " + loopType.getName());
+                            }
                         }
                     } else {
-                        if (loopType.getRangeDurationType() == null) {
-                            throw new IllegalArgumentException("Types array must be in order largest-smallest: " +
-                                    types[i - 1].getName() + " < " + loopType.getName());
-                        }
-                        DurationField lastRangeField = types[i - 1].getRangeDurationType().getField(iChronology);
-                        DurationField loopRangeField = loopType.getRangeDurationType().getField(iChronology);
-                        if (lastRangeField.compareTo(loopRangeField) < 0) {
-                            throw new IllegalArgumentException("Types array must be in order largest-smallest: " +
-                                    types[i - 1].getName() + " < " + loopType.getName());
-                        }
-                        if (lastRangeField.compareTo(loopRangeField) == 0) {
-                            throw new IllegalArgumentException("Types array must not contain duplicate: " +
-                                            types[i - 1].getName() + " and " + loopType.getName());
+                        if (lastUnitField.isSupported() && lastUnitField.getType() != DurationFieldType.YEARS_TYPE) {
+                            throw new IllegalArgumentException("Types array must be in order largest-smallest," +
+                                            " for year-based fields, years is defined as being largest: " +
+                                            types[i - 1].getName() + " < " + loopType.getName());
                         }
                     }
                 }

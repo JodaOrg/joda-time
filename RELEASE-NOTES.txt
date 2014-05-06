@@ -93,6 +93,9 @@ Bug fixes since 2.3
 - Ensure isLeap() returns correct result for day fields [#110]
   Day-of-month and day-of-year fields should report leap days
 
+- Insist that year > weekyear when creating Partial [#96,#98]
+  As these compare equal code previously allowed either order
+
 - Handle weird TimeZone implementations with null ID [#133]
   Calling DateTimeZone.forTimeZone() would break if the ID was null
 

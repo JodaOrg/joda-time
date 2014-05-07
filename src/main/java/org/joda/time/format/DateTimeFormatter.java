@@ -764,25 +764,16 @@ public class DateTimeFormatter {
      * The parse will use the ISO chronology, and the default time zone.
      * If the text contains a time zone string then that will be taken into account.
      *
-     * @param text  text to parse
+     * @param text  the text to parse, not null
      * @return parsed value expressed in milliseconds since the epoch
      * @throws UnsupportedOperationException if parsing is not supported
      * @throws IllegalArgumentException if the text to parse is invalid
      */
     public long parseMillis(String text) {
         DateTimeParser parser = requireParser();
-        
         Chronology chrono = selectChronology(iChrono);
         DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear, iDefaultYear);
-        int newPos = parser.parseInto(bucket, text, 0);
-        if (newPos >= 0) {
-            if (newPos >= text.length()) {
-                return bucket.computeMillis(true, text);
-            }
-        } else {
-            newPos = ~newPos;
-        }
-        throw new IllegalArgumentException(FormatUtils.createErrorMessage(text, newPos));
+        return bucket.doParseMillis(parser, text);
     }
 
     /**

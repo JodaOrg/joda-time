@@ -25,6 +25,11 @@ Enhancements since 2.3
   Remove unnecessary volatile on instance variable [#68]
   LocalDate hash code meets criteria of the racy single-check idiom
 
+- DateTimeParserBucket
+  Allow bucket to be re-used on a single thread [#111]
+  Potential for performance improvements due to lower garbage churn
+  Improvement only of interest to applications willing to write specialist code
+
 - Support Appendable throughout printing
   Ensure that Appendable can be used efficiently in printing [#120, #121, #122]
   No API change

@@ -35,7 +35,9 @@ public class TestDateTimeParserBucket extends TestCase {
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     private static final Chronology BUDDHIST_UTC = BuddhistChronology.getInstanceUTC();
     private static final Chronology BUDDHIST_PARIS = BuddhistChronology.getInstance(PARIS);
-    private static final Chronology ISO_0400 = ISOChronology.getInstance(DateTimeZone.forOffsetHours(4));
+    private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
+    private static final DateTimeZone ZONE_0400 = DateTimeZone.forOffsetHours(4);
+    private static final Chronology ISO_0400 = ISOChronology.getInstance(ZONE_0400);
     private static final int MILLIS_PER_HOUR = 3600000;
     private static final int MILLIS_PER_MINUTE = 60000;
     private static final int OFFSET_0400 = 4 * MILLIS_PER_HOUR;
@@ -83,6 +85,7 @@ public class TestDateTimeParserBucket extends TestCase {
         assertEquals(PARIS, test.getZone());
     }
 
+    @SuppressWarnings("deprecation")
     public void testSetPivotYear() {
         DateTimeParserBucket test = new DateTimeParserBucket(100, BUDDHIST_PARIS, LOCALE, 2010, 2001);
         assertEquals((Integer) 2010, test.getPivotYear());
@@ -241,6 +244,51 @@ public class TestDateTimeParserBucket extends TestCase {
         assertEquals(false, bucket1.restoreState(null));
         assertEquals(false, bucket1.restoreState(""));
         assertEquals(false, bucket2.restoreState(bucket1.saveState()));
+    }
+
+    //-------------------------------------------------------------------------
+    public void testReset() {
+        DateTimeParserBucket test = new DateTimeParserBucket(100, ISO_0400, LOCALE, 2000, 2000);
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(LOCALE, test.getLocale());
+        assertEquals((Integer) 2000, test.getPivotYear());
+        assertEquals(null, test.getOffsetInteger());
+        assertEquals(ZONE_0400, test.getZone());
+        
+        test.setOffset((Integer) 200);
+        test.setZone(LONDON);
+        test.saveField(DateTimeFieldType.hourOfDay(), 2);
+        assertEquals(2 * MILLIS_PER_HOUR + 100 - 200, test.computeMillis(false));
+        assertEquals((Integer) 200, test.getOffsetInteger());
+        assertEquals(LONDON, test.getZone());
+        
+        test.reset();
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(LOCALE, test.getLocale());
+        assertEquals((Integer) 2000, test.getPivotYear());
+        assertEquals(null, test.getOffsetInteger());
+        assertEquals(ZONE_0400, test.getZone());
+        assertEquals(100 - OFFSET_0400, test.computeMillis(false));
+    }
+
+    public void testParse() {
+        DateTimeParserBucket test = new DateTimeParserBucket(0, ISO_0400, LOCALE, 2000, 2000);
+        DateTimeParser parser = new DateTimeParser() {
+            public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+                bucket.saveField(DateTimeFieldType.hourOfDay(), 2);
+                bucket.saveField(DateTimeFieldType.minuteOfHour(), 6);
+                return position + 1;
+            }
+            public int estimateParsedLength() {
+                return 1;
+            }
+        };
+        long millis = test.parseMillis(parser, "A");
+        assertEquals(2 * MILLIS_PER_HOUR + 6 * MILLIS_PER_MINUTE - OFFSET_0400, millis);
+        millis = test.parseMillis(parser, "B");
+        assertEquals(2 * MILLIS_PER_HOUR + 6 * MILLIS_PER_MINUTE - OFFSET_0400, millis);
+        millis = test.parseMillis(parser, "C");
+        assertEquals(2 * MILLIS_PER_HOUR + 6 * MILLIS_PER_MINUTE - OFFSET_0400, millis);
     }
 
 }

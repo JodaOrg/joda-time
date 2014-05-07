@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2013 Stephen Colebourne
+ *  Copyright 2001-2014 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -57,18 +57,19 @@ public class DateTimeParserBucket {
 
     /** The chronology to use for parsing. */
     private final Chronology iChrono;
+    /** The initial millis. */
     private final long iMillis;
-    
+    /** The locale to use for parsing. */
+    private final Locale iLocale;
+    /** Used for parsing month/day without year. */
+    private final int iDefaultYear;
+
     /** The parsed zone, initialised to formatter zone. */
     private DateTimeZone iZone;
     /** The parsed offset. */
     private Integer iOffset;
-    /** The locale to use for parsing. */
-    private Locale iLocale;
     /** Used for parsing two-digit years. */
     private Integer iPivotYear;
-    /** Used for parsing month/day without year. */
-    private int iDefaultYear;
 
     private SavedField[] iSavedFields = new SavedField[8];
     private int iSavedFieldsCount;
@@ -113,6 +114,7 @@ public class DateTimeParserBucket {
      * @param chrono  the chronology to use
      * @param locale  the locale to use
      * @param pivotYear  the pivot year to use when parsing two-digit years
+     * @param defaultYear  the default year to use when parsing month-day
      * @since 2.0
      */
     public DateTimeParserBucket(long instantLocal, Chronology chrono,
@@ -441,6 +443,7 @@ public class DateTimeParserBucket {
         
         boolean restoreState(DateTimeParserBucket enclosing) {
             if (enclosing != DateTimeParserBucket.this) {
+                // block SavedState from a different bucket
                 return false;
             }
             enclosing.iZone = this.iZone;

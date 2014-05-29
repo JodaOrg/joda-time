@@ -432,8 +432,8 @@ public final class Interval
     /**
      * Creates a new interval with the specified duration before the end instant.
      *
-     * @param duration  the duration to add to the start to get the new end instant, null means zero
-     * @return an interval with the start from this interval and a calculated end
+     * @param duration  the duration to subtract from the end to get the new start instant, null means zero
+     * @return an interval with the end from this interval and a calculated start
      * @throws IllegalArgumentException if the duration is negative
      */
     public Interval withDurationBeforeEnd(ReadableDuration duration) {
@@ -468,8 +468,8 @@ public final class Interval
     /**
      * Creates a new interval with the specified period before the end instant.
      *
-     * @param period  the period to add to the start to get the new end instant, null means zero
-     * @return an interval with the start from this interval and a calculated end
+     * @param period the duration to subtract from the end to get the new start instant, null means zero
+     * @return an interval with the end from this interval and a calculated start
      * @throws IllegalArgumentException if the period is negative
      */
     public Interval withPeriodBeforeEnd(ReadablePeriod period) {

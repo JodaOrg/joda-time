@@ -105,9 +105,9 @@ public class DateTimeFormatterBuilder {
         if (isPrinter(f)) {
             printer = (InternalPrinter) f;
         }
-        DateTimeParser parser = null;
+        InternalParser parser = null;
         if (isParser(f)) {
-            parser = (DateTimeParser) f;
+            parser = (InternalParser) f;
         }
         if (printer != null || parser != null) {
             return new DateTimeFormatter(printer, parser);
@@ -151,7 +151,8 @@ public class DateTimeFormatterBuilder {
     public DateTimeParser toParser() {
         Object f = getFormatter();
         if (isParser(f)) {
-            return (DateTimeParser) f;
+            InternalParser ip = (InternalParser) f;
+            return InternalParserDateTimeParser.of(ip);
         }
         throw new UnsupportedOperationException("Parsing is not supported");
     }
@@ -216,7 +217,7 @@ public class DateTimeFormatterBuilder {
         if (formatter == null) {
             throw new IllegalArgumentException("No formatter supplied");
         }
-        return append0(formatter.getPrinter0(), formatter.getParser());
+        return append0(formatter.getPrinter0(), formatter.getParser0());
     }
 
     /**
@@ -254,7 +255,7 @@ public class DateTimeFormatterBuilder {
      */
     public DateTimeFormatterBuilder append(DateTimeParser parser) {
         checkParser(parser);
-        return append0(null, parser);
+        return append0(null, DateTimeParserInternalParser.of(parser));
     }
 
     /**
@@ -274,7 +275,7 @@ public class DateTimeFormatterBuilder {
     public DateTimeFormatterBuilder append(DateTimePrinter printer, DateTimeParser parser) {
         checkPrinter(printer);
         checkParser(parser);
-        return append0(DateTimePrinterInternalPrinter.of(printer), parser);
+        return append0(DateTimePrinterInternalPrinter.of(printer), DateTimeParserInternalParser.of(parser));
     }
 
     /**
@@ -312,17 +313,17 @@ public class DateTimeFormatterBuilder {
             if (parsers[0] == null) {
                 throw new IllegalArgumentException("No parser supplied");
             }
-            return append0(DateTimePrinterInternalPrinter.of(printer), parsers[0]);
+            return append0(DateTimePrinterInternalPrinter.of(printer), DateTimeParserInternalParser.of(parsers[0]));
         }
 
-        DateTimeParser[] copyOfParsers = new DateTimeParser[length];
+        InternalParser[] copyOfParsers = new InternalParser[length];
         int i;
         for (i = 0; i < length - 1; i++) {
-            if ((copyOfParsers[i] = parsers[i]) == null) {
+            if ((copyOfParsers[i] = DateTimeParserInternalParser.of(parsers[i])) == null) {
                 throw new IllegalArgumentException("Incomplete parser array");
             }
         }
-        copyOfParsers[i] = parsers[i];
+        copyOfParsers[i] = DateTimeParserInternalParser.of(parsers[i]);
 
         return append0(DateTimePrinterInternalPrinter.of(printer), new MatchingParser(copyOfParsers));
     }
@@ -342,7 +343,7 @@ public class DateTimeFormatterBuilder {
      */
     public DateTimeFormatterBuilder appendOptional(DateTimeParser parser) {
         checkParser(parser);
-        DateTimeParser[] parsers = new DateTimeParser[] {parser, null};
+        InternalParser[] parsers = new InternalParser[] {DateTimeParserInternalParser.of(parser), null};
         return append0(null, new MatchingParser(parsers));
     }
 
@@ -378,7 +379,7 @@ public class DateTimeFormatterBuilder {
     }
 
     private DateTimeFormatterBuilder append0(
-            InternalPrinter printer, DateTimeParser parser) {
+            InternalPrinter printer, InternalParser parser) {
         iFormatter = null;
         iElementPairs.add(printer);
         iElementPairs.add(parser);
@@ -1171,7 +1172,7 @@ public class DateTimeFormatterBuilder {
     }
 
     private boolean isParser(Object f) {
-        if (f instanceof DateTimeParser) {
+        if (f instanceof InternalParser) {
             if (f instanceof Composite) {
                 return ((Composite)f).isParser();
             }
@@ -1192,7 +1193,7 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class CharacterLiteral
-            implements InternalPrinter, DateTimeParser {
+            implements InternalPrinter, InternalParser {
 
         private final char iValue;
 
@@ -1219,7 +1220,7 @@ public class DateTimeFormatterBuilder {
             return 1;
         }
 
-        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
             if (position >= text.length()) {
                 return ~position;
             }
@@ -1245,7 +1246,7 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class StringLiteral
-            implements InternalPrinter, DateTimeParser {
+            implements InternalPrinter, InternalParser {
 
         private final String iValue;
 
@@ -1272,8 +1273,8 @@ public class DateTimeFormatterBuilder {
             return iValue.length();
         }
 
-        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
-            if (text.regionMatches(true, position, iValue, 0, iValue.length())) {
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
+            if (csStartsWithIgnoreCase(text, position, iValue)) {
                 return position + iValue.length();
             }
             return ~position;
@@ -1282,7 +1283,7 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static abstract class NumberFormatter
-            implements InternalPrinter, DateTimeParser {
+            implements InternalPrinter, InternalParser {
         protected final DateTimeFieldType iFieldType;
         protected final int iMaxParsedDigits;
         protected final boolean iSigned;
@@ -1299,7 +1300,7 @@ public class DateTimeFormatterBuilder {
             return iMaxParsedDigits;
         }
 
-        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
             int limit = Math.min(iMaxParsedDigits, text.length() - position);
 
             boolean negative = false;
@@ -1340,7 +1341,7 @@ public class DateTimeFormatterBuilder {
             if (length >= 9) {
                 // Since value may exceed integer limits, use stock parser
                 // which checks for this.
-                value = Integer.parseInt(text.substring(position, position += length));
+                value = Integer.parseInt(text.subSequence(position, position += length).toString());
             } else {
                 int i = position;
                 if (negative) {
@@ -1449,7 +1450,8 @@ public class DateTimeFormatterBuilder {
             super(fieldType, numDigits, signed, numDigits);
         }
 
-        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+        @Override
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
             int newPos = super.parseInto(bucket, text, position);
             if (newPos < 0) {
                 return newPos;
@@ -1476,7 +1478,7 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class TwoDigitYear
-            implements InternalPrinter, DateTimeParser {
+            implements InternalPrinter, InternalParser {
 
         /** The field to print/parse. */
         private final DateTimeFieldType iType;
@@ -1495,7 +1497,7 @@ public class DateTimeFormatterBuilder {
             return iLenientParse ? 4 : 2;
         }
 
-        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
             int limit = text.length() - position;
 
             if (!iLenientParse) {
@@ -1536,7 +1538,7 @@ public class DateTimeFormatterBuilder {
                     if (length >= 9) {
                         // Since value may exceed integer limits, use stock
                         // parser which checks for this.
-                        value = Integer.parseInt(text.substring(position, position += length));
+                        value = Integer.parseInt(text.subSequence(position, position += length).toString());
                     } else {
                         int i = position;
                         if (negative) {
@@ -1648,7 +1650,7 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class TextField
-            implements InternalPrinter, DateTimeParser {
+            implements InternalPrinter, InternalParser {
 
         private static Map<Locale, Map<DateTimeFieldType, Object[]>> cParseCache =
                     new ConcurrentHashMap<Locale, Map<DateTimeFieldType, Object[]>>();
@@ -1710,7 +1712,7 @@ public class DateTimeFormatterBuilder {
         }
 
         @SuppressWarnings("unchecked")
-        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
             Locale locale = bucket.getLocale();
             // handle languages which might have non ASCII A-Z or punctuation
             // bug 1788282
@@ -1758,7 +1760,7 @@ public class DateTimeFormatterBuilder {
             // match the longest string first using our knowledge of the max length
             int limit = Math.min(text.length(), position + maxLength);
             for (int i = limit; i > position; i--) {
-                String match = text.substring(position, i);
+                String match = text.subSequence(position, i).toString();
                 if (validValues.containsKey(match)) {
                     bucket.saveField(iFieldType, match, locale);
                     return i;
@@ -1770,7 +1772,7 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class Fraction
-            implements InternalPrinter, DateTimeParser {
+            implements InternalPrinter, InternalParser {
 
         private final DateTimeFieldType iFieldType;
         protected int iMinDigits;
@@ -1904,7 +1906,7 @@ public class DateTimeFormatterBuilder {
             return iMaxDigits;
         }
 
-        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
             DateTimeField field = iFieldType.getField(bucket.getChronology());
             
             int limit = Math.min(iMaxDigits, text.length() - position);
@@ -1946,7 +1948,7 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class TimeZoneOffset
-            implements InternalPrinter, DateTimeParser {
+            implements InternalPrinter, InternalParser {
 
         private final String iZeroOffsetPrintText;
         private final String iZeroOffsetParseText;
@@ -2051,7 +2053,7 @@ public class DateTimeFormatterBuilder {
             return estimatePrintedLength();
         }
 
-        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
             int limit = text.length() - position;
 
             zeroOffset:
@@ -2067,7 +2069,7 @@ public class DateTimeFormatterBuilder {
                     bucket.setOffset(Integer.valueOf(0));
                     return position;
                 }
-                if (text.regionMatches(true, position, iZeroOffsetParseText, 0, iZeroOffsetParseText.length())) {
+                if (csStartsWithIgnoreCase(text, position, iZeroOffsetParseText)) {
                     bucket.setOffset(Integer.valueOf(0));
                     return position + iZeroOffsetParseText.length();
                 }
@@ -2226,7 +2228,7 @@ public class DateTimeFormatterBuilder {
          * Returns actual amount of digits to parse, but no more than original
          * 'amount' parameter.
          */
-        private int digitCount(String text, int position, int amount) {
+        private int digitCount(CharSequence text, int position, int amount) {
             int limit = Math.min(text.length() - position, amount);
             amount = 0;
             for (; limit > 0; limit--) {
@@ -2242,7 +2244,7 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class TimeZoneName
-            implements InternalPrinter, DateTimeParser {
+            implements InternalPrinter, InternalParser {
 
         static final int LONG_NAME = 0;
         static final int SHORT_NAME = 1;
@@ -2287,13 +2289,12 @@ public class DateTimeFormatterBuilder {
             return (iType == SHORT_NAME ? 4 : 20);
         }
 
-        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
             Map<String, DateTimeZone> parseLookup = iParseLookup;
             parseLookup = (parseLookup != null ? parseLookup : DateTimeUtils.getDefaultTimeZoneNames());
-            String str = text.substring(position);
             String matched = null;
             for (String name : parseLookup.keySet()) {
-                if (str.startsWith(name)) {
+                if (csStartsWith(text, position, name)) {
                     if (matched == null || name.length() > matched.length()) {
                         matched = name;
                     }
@@ -2309,7 +2310,7 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static enum TimeZoneId
-            implements InternalPrinter, DateTimeParser {
+            implements InternalPrinter, InternalParser {
 
         INSTANCE;
         static final Set<String> ALL_IDS = DateTimeZone.getAvailableIDs();
@@ -2340,11 +2341,10 @@ public class DateTimeFormatterBuilder {
             return MAX_LENGTH;
         }
 
-        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
-            String str = text.substring(position);
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
             String best = null;
             for (String id : ALL_IDS) {
-                if (str.startsWith(id)) {
+                if (csStartsWith(text, position, id)) {
                     if (best == null || id.length() > best.length()) {
                         best = id;
                     }
@@ -2360,10 +2360,10 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class Composite
-            implements InternalPrinter, DateTimeParser {
+            implements InternalPrinter, InternalParser {
 
         private final InternalPrinter[] iPrinters;
-        private final DateTimeParser[] iParsers;
+        private final InternalParser[] iParsers;
 
         private final int iPrintedLengthEstimate;
         private final int iParsedLengthEstimate;
@@ -2396,10 +2396,10 @@ public class DateTimeFormatterBuilder {
                 iParsedLengthEstimate = 0;
             } else {
                 int size = parserList.size();
-                iParsers = new DateTimeParser[size];
+                iParsers = new InternalParser[size];
                 int parseEst = 0;
                 for (int i=0; i<size; i++) {
-                    DateTimeParser parser = (DateTimeParser) parserList.get(i);
+                    InternalParser parser = (InternalParser) parserList.get(i);
                     parseEst += parser.estimateParsedLength();
                     iParsers[i] = parser;
                 }
@@ -2451,8 +2451,8 @@ public class DateTimeFormatterBuilder {
             return iParsedLengthEstimate;
         }
 
-        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
-            DateTimeParser[] elements = iParsers;
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
+            InternalParser[] elements = iParsers;
             if (elements == null) {
                 throw new UnsupportedOperationException();
             }
@@ -2506,17 +2506,17 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class MatchingParser
-            implements DateTimeParser {
+            implements InternalParser {
 
-        private final DateTimeParser[] iParsers;
+        private final InternalParser[] iParsers;
         private final int iParsedLengthEstimate;
 
-        MatchingParser(DateTimeParser[] parsers) {
+        MatchingParser(InternalParser[] parsers) {
             super();
             iParsers = parsers;
             int est = 0;
             for (int i=parsers.length; --i>=0 ;) {
-                DateTimeParser parser = parsers[i];
+                InternalParser parser = parsers[i];
                 if (parser != null) {
                     int len = parser.estimateParsedLength();
                     if (len > est) {
@@ -2531,8 +2531,8 @@ public class DateTimeFormatterBuilder {
             return iParsedLengthEstimate;
         }
 
-        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
-            DateTimeParser[] parsers = iParsers;
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
+            InternalParser[] parsers = iParsers;
             int length = parsers.length;
 
             final Object originalState = bucket.saveState();
@@ -2544,7 +2544,7 @@ public class DateTimeFormatterBuilder {
             int bestInvalidPos = position;
 
             for (int i=0; i<length; i++) {
-                DateTimeParser parser = parsers[i];
+                InternalParser parser = parsers[i];
                 if (parser == null) {
                     // The empty parser wins only if nothing is better.
                     if (bestValidPos <= position) {
@@ -2587,6 +2587,38 @@ public class DateTimeFormatterBuilder {
 
             return ~bestInvalidPos;
         }
+    }
+
+    static boolean csStartsWith(CharSequence text, int position, String search) {
+        int searchLen = search.length();
+        if ((text.length() - position) < searchLen) {
+            return false;
+        }
+        for (int i = 0; i < searchLen; i++) {
+            if (text.charAt(position + i) != search.charAt(i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    static boolean csStartsWithIgnoreCase(CharSequence text, int position, String search) {
+        int searchLen = search.length();
+        if ((text.length() - position) < searchLen) {
+            return false;
+        }
+        for (int i = 0; i < searchLen; i++) {
+            char ch1 = text.charAt(position + i);
+            char ch2 = search.charAt(i);
+            if (ch1 != ch2) {
+                char u1 = Character.toUpperCase(ch1);
+                char u2 = Character.toUpperCase(ch2);
+                if (u1 != u2 && Character.toLowerCase(u1) != Character.toLowerCase(u2)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
 }

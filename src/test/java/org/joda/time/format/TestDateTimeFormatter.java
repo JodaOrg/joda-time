@@ -348,7 +348,7 @@ public class TestDateTimeFormatter extends TestCase {
             fail();
         } catch (UnsupportedOperationException ex) {}
         
-        f2 = new DateTimeFormatter((InternalPrinter) null, f.getParser());
+        f2 = new DateTimeFormatter((DateTimePrinter) null, f.getParser());
         assertEquals(null, f2.getPrinter());
         assertEquals(f.getParser(), f2.getParser());
         assertEquals(false, f2.isPrinter());

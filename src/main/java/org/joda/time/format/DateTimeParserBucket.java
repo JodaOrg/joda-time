@@ -172,11 +172,11 @@ public class DateTimeParserBucket {
      */
     public long parseMillis(DateTimeParser parser, CharSequence text) {
         reset();
-        return doParseMillis(parser, text);
+        return doParseMillis(DateTimeParserInternalParser.of(parser), text);
     }
 
-    long doParseMillis(DateTimeParser parser, CharSequence text) {
-        int newPos = parser.parseInto(this, text.toString(), 0);
+    long doParseMillis(InternalParser parser, CharSequence text) {
+        int newPos = parser.parseInto(this, text, 0);
         if (newPos >= 0) {
             if (newPos >= text.length()) {
                 return computeMillis(true, text);

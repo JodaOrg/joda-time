@@ -30,6 +30,13 @@ Enhancements since 2.3
   Potential for performance improvements due to lower garbage churn
   Improvement only of interest to applications willing to write specialist code
 
+- Support CharSequence throughout parsing
+  Ensure that CharSequence can be used in parsing [#111]
+  This can only be accessed by creating a mutable DateTimeParserBucket
+  The bucket is a low-level construct for advanced use cases
+  Potential for performance improvements due to lower garbage churn
+  No API change
+
 - Support Appendable throughout printing
   Ensure that Appendable can be used efficiently in printing [#120, #121, #122]
   No API change

@@ -92,7 +92,7 @@ public class DateTimeFormatter {
     /** The internal printer used to output the datetime. */
     private final InternalPrinter iPrinter;
     /** The internal parser used to output the datetime. */
-    private final DateTimeParser iParser;
+    private final InternalParser iParser;
     /** The locale to use for printing and parsing. */
     private final Locale iLocale;
     /** Whether the offset is parsed. */
@@ -115,7 +115,7 @@ public class DateTimeFormatter {
      */
     public DateTimeFormatter(
             DateTimePrinter printer, DateTimeParser parser) {
-        this(DateTimePrinterInternalPrinter.of(printer), parser);
+        this(DateTimePrinterInternalPrinter.of(printer), DateTimeParserInternalParser.of(parser));
     }
 
     /**
@@ -126,7 +126,7 @@ public class DateTimeFormatter {
      * @param parser  the internal parser, null if cannot parse
      */
     DateTimeFormatter(
-            InternalPrinter printer, DateTimeParser parser) {
+            InternalPrinter printer, InternalParser parser) {
         super();
         iPrinter = printer;
         iParser = parser;
@@ -142,7 +142,7 @@ public class DateTimeFormatter {
      * Constructor.
      */
     private DateTimeFormatter(
-            InternalPrinter printer, DateTimeParser parser,
+            InternalPrinter printer, InternalParser parser,
             Locale locale, boolean offsetParsed,
             Chronology chrono, DateTimeZone zone,
             Integer pivotYear, int defaultYear) {
@@ -200,6 +200,10 @@ public class DateTimeFormatter {
      * @return the internal parser; is null if parsing not supported
      */
     public DateTimeParser getParser() {
+        return InternalParserDateTimeParser.of(iParser);
+    }
+
+    InternalParser getParser0() {
         return iParser;
     }
 
@@ -728,7 +732,7 @@ public class DateTimeFormatter {
      * @throws IllegalArgumentException if any field is out of range
      */
     public int parseInto(ReadWritableInstant instant, String text, int position) {
-        DateTimeParser parser = requireParser();
+        InternalParser parser = requireParser();
         if (instant == null) {
             throw new IllegalArgumentException("Instant must not be null");
         }
@@ -770,7 +774,7 @@ public class DateTimeFormatter {
      * @throws IllegalArgumentException if the text to parse is invalid
      */
     public long parseMillis(String text) {
-        DateTimeParser parser = requireParser();
+        InternalParser parser = requireParser();
         Chronology chrono = selectChronology(iChrono);
         DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear, iDefaultYear);
         return bucket.doParseMillis(parser, text);
@@ -827,7 +831,7 @@ public class DateTimeFormatter {
      * @since 2.0
      */
     public LocalDateTime parseLocalDateTime(String text) {
-        DateTimeParser parser = requireParser();
+        InternalParser parser = requireParser();
         
         Chronology chrono = selectChronology(null).withUTC();  // always use UTC, avoiding DST gaps
         DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear, iDefaultYear);
@@ -868,7 +872,7 @@ public class DateTimeFormatter {
      * @throws IllegalArgumentException if the text to parse is invalid
      */
     public DateTime parseDateTime(String text) {
-        DateTimeParser parser = requireParser();
+        InternalParser parser = requireParser();
         
         Chronology chrono = selectChronology(null);
         DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear, iDefaultYear);
@@ -913,7 +917,7 @@ public class DateTimeFormatter {
      * @throws IllegalArgumentException if the text to parse is invalid
      */
     public MutableDateTime parseMutableDateTime(String text) {
-        DateTimeParser parser = requireParser();
+        InternalParser parser = requireParser();
         
         Chronology chrono = selectChronology(null);
         DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear, iDefaultYear);
@@ -945,8 +949,8 @@ public class DateTimeFormatter {
      * 
      * @throws UnsupportedOperationException if parsing is not supported
      */
-    private DateTimeParser requireParser() {
-        DateTimeParser parser = iParser;
+    private InternalParser requireParser() {
+        InternalParser parser = iParser;
         if (parser == null) {
             throw new UnsupportedOperationException("Parsing not supported");
         }

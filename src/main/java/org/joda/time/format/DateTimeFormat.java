@@ -785,7 +785,7 @@ public class DateTimeFormat {
 
     //-----------------------------------------------------------------------
     static class StyleFormatter
-            implements InternalPrinter, DateTimeParser {
+            implements InternalPrinter, InternalParser {
 
         private static final ConcurrentHashMap<StyleFormatterCacheKey, DateTimeFormatter> cCache = new ConcurrentHashMap<StyleFormatterCacheKey, DateTimeFormatter>();
         
@@ -820,8 +820,8 @@ public class DateTimeFormat {
             return 40;  // guess
         }
 
-        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
-            DateTimeParser p = getFormatter(bucket.getLocale()).getParser();
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
+            InternalParser p = getFormatter(bucket.getLocale()).getParser0();
             return p.parseInto(bucket, text, position);
         }
 

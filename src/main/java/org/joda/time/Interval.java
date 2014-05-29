@@ -468,7 +468,7 @@ public final class Interval
     /**
      * Creates a new interval with the specified period before the end instant.
      *
-     * @param period the duration to subtract from the end to get the new start instant, null means zero
+     * @param period the period to subtract from the end to get the new start instant, null means zero
      * @return an interval with the end from this interval and a calculated start
      * @throws IllegalArgumentException if the period is negative
      */

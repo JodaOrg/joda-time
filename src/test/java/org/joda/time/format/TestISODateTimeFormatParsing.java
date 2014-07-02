@@ -91,6 +91,8 @@ public class TestISODateTimeFormatParsing extends TestCase {
         assertParse(parser, false, "10.5");
         assertParse(parser, false, "10:20:30.040+02:00");
         assertParse(parser, false, "10.5+02:00");
+        
+        assertNoPrint(parser);
     }
 
     //-----------------------------------------------------------------------
@@ -120,6 +122,8 @@ public class TestISODateTimeFormatParsing extends TestCase {
         assertParse(parser, false, "10.5");
         assertParse(parser, false, "10:20:30.040+02:00");
         assertParse(parser, false, "10.5+02:00");
+        
+        assertNoPrint(parser);
     }
 
     //-----------------------------------------------------------------------
@@ -151,6 +155,8 @@ public class TestISODateTimeFormatParsing extends TestCase {
         assertParse(parser, false, "10.5");
         assertParse(parser, false, "10:20:30.040+02:00");
         assertParse(parser, false, "10.5+02:00");
+        
+        assertNoPrint(parser);
     }
 
     //-----------------------------------------------------------------------
@@ -183,6 +189,8 @@ public class TestISODateTimeFormatParsing extends TestCase {
         assertParse(parser, true, "10.5");
         assertParse(parser, true, "10:20:30.040+02:00");
         assertParse(parser, true, "10.5+02:00");
+        
+        assertNoPrint(parser);
     }
 
     //-----------------------------------------------------------------------
@@ -215,6 +223,8 @@ public class TestISODateTimeFormatParsing extends TestCase {
         
         assertParse(parser, true, "00:00:10.512345678");
         assertEquals(10512, parser.parseMillis("00:00:10.512345678"));
+        
+        assertNoPrint(parser);
     }
 
     //-----------------------------------------------------------------------
@@ -247,6 +257,8 @@ public class TestISODateTimeFormatParsing extends TestCase {
         assertParse(parser, true, "00:00:10.512345678");
         // result is offset by London DST in 1970-01-01
         assertEquals(10512, parser.parseMillis("00:00:10.512345678") + DateTimeZone.getDefault().getOffset(0L));
+        
+        assertNoPrint(parser);
     }
 
     //-----------------------------------------------------------------------
@@ -275,6 +287,8 @@ public class TestISODateTimeFormatParsing extends TestCase {
         assertParse(parser, false, "10.5");
         assertParse(parser, false, "10:20:30.040+02:00");
         assertParse(parser, false, "10.5+02:00");
+        
+        assertNoPrint(parser);
     }
 
     //-----------------------------------------------------------------------
@@ -303,6 +317,8 @@ public class TestISODateTimeFormatParsing extends TestCase {
         assertParse(parser, false, "10.5");
         assertParse(parser, false, "10:20:30.040+02:00");
         assertParse(parser, false, "10.5+02:00");
+        
+        assertNoPrint(parser);
     }
 
     //-----------------------------------------------------------------------
@@ -332,6 +348,8 @@ public class TestISODateTimeFormatParsing extends TestCase {
         assertParse(parser, false, "10.5");
         assertParse(parser, false, "10:20:30.040+02:00");
         assertParse(parser, false, "10.5+02:00");
+        
+        assertNoPrint(parser);
     }
 
     //-----------------------------------------------------------------------
@@ -821,6 +839,14 @@ public class TestISODateTimeFormatParsing extends TestCase {
     private void assertParse(DateTimeFormatter parser, String str, DateTime expected) {
         DateTime dt = parser.parseDateTime(str);
         assertEquals(expected, dt);
+    }
+
+    private void assertNoPrint(DateTimeFormatter parser) {
+        try {
+            parser.print(new DateTime(2012, 6, 30, 12, 0, 0));
+        } catch (UnsupportedOperationException ex) {
+            // expected
+        }
     }
 
 }

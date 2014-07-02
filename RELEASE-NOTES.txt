@@ -122,11 +122,13 @@ Bug fixes since 2.3
 - Remove uncaughtException calls [#59]
   Previously the code called ThreadGroup.uncaughtException() which was invalid
 
+- Fix Javadoc for ReadableDuration [#137]
+
+- Fix the links to the IANA time zone database [#83]
+
 - Better Javadoc for thread saefty of DateTimeUtils [#67]
 
 - Better Javadoc for DateTimeComparator [#73]
-
-- Fix the links to the IANA time zone database [#83]
 
 - Better Javadoc for DateTimeFormatter parsing [#78]
 
@@ -134,7 +136,7 @@ Bug fixes since 2.3
 
 - Better Javadoc for DateTime toString and parse [#142]
 
-- Fix Javadoc for ReadableDuration [#137]
+- Better Javadoc for formatters that only parse [#97]
 
 
 Scala

@@ -34,6 +34,7 @@ public class TestPeriod_Constructors extends TestCase {
     // (before the late 90's they were all over the place)
 
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
+    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
                      366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 
@@ -684,6 +685,38 @@ public class TestPeriod_Constructors extends TestCase {
         assertEquals(0, test.getDays());
         assertEquals(0, test.getHours());
         assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(0, test.getMillis());
+    }
+
+    public void testConstructor_RI_RI6() throws Throwable {
+        DateTimeZone zone = PARIS;
+        DateTime dt1 = new DateTime(2013, 10, 27, 2, 0, 0, zone).withLaterOffsetAtOverlap();
+        DateTime dt2 = new DateTime(2013, 10, 27, 2, 15, 0, zone).withLaterOffsetAtOverlap();
+        Period test = new Period(dt1, dt2);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(15, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(0, test.getMillis());
+    }
+
+    public void testConstructor_RI_RI7() throws Throwable {
+        DateTimeZone zone = PARIS;
+        DateTime dt1 = new DateTime(2013, 10, 27, 2, 0, 0, zone).withEarlierOffsetAtOverlap();
+        DateTime dt2 = new DateTime(2013, 10, 27, 2, 15, 0, zone).withLaterOffsetAtOverlap();
+        Period test = new Period(dt1, dt2);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals(1, test.getHours());
+        assertEquals(15, test.getMinutes());
         assertEquals(0, test.getSeconds());
         assertEquals(0, test.getMillis());
     }

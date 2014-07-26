@@ -84,6 +84,11 @@ Bug fixes since 2.3
   A slew of tests were added and a variety of bugs fixed
   This affects DateTimeField.getDurationField() and DateTimeField.getRangeDurationField()
 
+- Period construction during DST overlap [#156]
+  When creating a period, if one end is within a DST overlap and one beyond the overlap
+  then the calculated period was incorrect.
+  The calculation has been changed no ensure no extra hour is added.
+
 - DateTimeUtils.isContiguous(ReadablePartial) [#89]
   The isContiguous() method could throw a NullPointerException when evaluating weird partials
 

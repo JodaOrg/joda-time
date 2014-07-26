@@ -34,6 +34,7 @@ A library providing persistence via the DataNucleus platform.</li>
 Notes on Joda-Time and JAXB.</li>
 <li><a href="https://github.com/muuki88/joda-osgi">P2 update site</a>
 Eclipse P2 update site.</li>
+<li><a href="http://www.studytrails.com/java/jodatime/">External Study Trails user guide</a></li>
 </ul>
 <p>
 If your open source library provides a value added feature on top of Joda-Time, then let us know!

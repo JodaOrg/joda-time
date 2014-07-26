@@ -277,22 +277,23 @@ public class TestDateTimeZoneCutover extends TestCase {
     }
 
     public void test_getOffsetFromLocal_Turk() {
-        doTest_getOffsetFromLocal_Turk(-1, 23, 0, "2007-03-31T23:00:00.000-05:00");
-        doTest_getOffsetFromLocal_Turk(-1, 23, 30, "2007-03-31T23:30:00.000-05:00");
-        doTest_getOffsetFromLocal_Turk(0, 0, 0, "2007-04-01T01:00:00.000-04:00");
-        doTest_getOffsetFromLocal_Turk(0, 0, 30, "2007-04-01T01:30:00.000-04:00");
-        doTest_getOffsetFromLocal_Turk(0, 1, 0, "2007-04-01T01:00:00.000-04:00");
-        doTest_getOffsetFromLocal_Turk(0, 1, 30, "2007-04-01T01:30:00.000-04:00");
-        doTest_getOffsetFromLocal_Turk(0, 2, 0, "2007-04-01T02:00:00.000-04:00");
-        doTest_getOffsetFromLocal_Turk(0, 3, 0, "2007-04-01T03:00:00.000-04:00");
-        doTest_getOffsetFromLocal_Turk(0, 4, 0, "2007-04-01T04:00:00.000-04:00");
-        doTest_getOffsetFromLocal_Turk(0, 5, 0, "2007-04-01T05:00:00.000-04:00");
-        doTest_getOffsetFromLocal_Turk(0, 6, 0, "2007-04-01T06:00:00.000-04:00");
+        doTest_getOffsetFromLocal_Turk(-1, 23, 0, "2007-03-31T23:00:00.000-05:00", -5);
+        doTest_getOffsetFromLocal_Turk(-1, 23, 30, "2007-03-31T23:30:00.000-05:00", -5);
+        doTest_getOffsetFromLocal_Turk(0, 0, 0, "2007-04-01T01:00:00.000-04:00", -5);
+        doTest_getOffsetFromLocal_Turk(0, 0, 30, "2007-04-01T01:30:00.000-04:00", -5);
+        doTest_getOffsetFromLocal_Turk(0, 1, 0, "2007-04-01T01:00:00.000-04:00", -4);
+        doTest_getOffsetFromLocal_Turk(0, 1, 30, "2007-04-01T01:30:00.000-04:00", -4);
+        doTest_getOffsetFromLocal_Turk(0, 2, 0, "2007-04-01T02:00:00.000-04:00", -4);
+        doTest_getOffsetFromLocal_Turk(0, 3, 0, "2007-04-01T03:00:00.000-04:00", -4);
+        doTest_getOffsetFromLocal_Turk(0, 4, 0, "2007-04-01T04:00:00.000-04:00", -4);
+        doTest_getOffsetFromLocal_Turk(0, 5, 0, "2007-04-01T05:00:00.000-04:00", -4);
+        doTest_getOffsetFromLocal_Turk(0, 6, 0, "2007-04-01T06:00:00.000-04:00", -4);
     }
 
-    private void doTest_getOffsetFromLocal_Turk(int days, int hour, int min, String expected) {
+    private void doTest_getOffsetFromLocal_Turk(int days, int hour, int min, String expected, int expOffset) {
         DateTime dt = new DateTime(2007, 4, 1, hour, min, 0, 0, DateTimeZone.UTC).plusDays(days);
         int offset = MOCK_TURK.getOffsetFromLocal(dt.getMillis());
+        assertEquals(expOffset * 3600000L, offset);
         DateTime res = new DateTime(dt.getMillis() - offset, MOCK_TURK);
         assertEquals(res.toString(), expected, res.toString());
     }
@@ -495,19 +496,19 @@ public class TestDateTimeZoneCutover extends TestCase {
     }
 
     public void test_getOffsetFromLocal_NewYork_Spring() {
-        doTest_getOffsetFromLocal(3, 11, 1, 0, "2007-03-11T01:00:00.000-05:00", ZONE_NEW_YORK);
-        doTest_getOffsetFromLocal(3, 11, 1,30, "2007-03-11T01:30:00.000-05:00", ZONE_NEW_YORK);
+        doTest_getOffsetFromLocal(3, 11, 1, 0, "2007-03-11T01:00:00.000-05:00", -5, ZONE_NEW_YORK);
+        doTest_getOffsetFromLocal(3, 11, 1,30, "2007-03-11T01:30:00.000-05:00", -5, ZONE_NEW_YORK);
         
-        doTest_getOffsetFromLocal(3, 11, 2, 0, "2007-03-11T03:00:00.000-04:00", ZONE_NEW_YORK);
-        doTest_getOffsetFromLocal(3, 11, 2,30, "2007-03-11T03:30:00.000-04:00", ZONE_NEW_YORK);
+        doTest_getOffsetFromLocal(3, 11, 2, 0, "2007-03-11T03:00:00.000-04:00", -5, ZONE_NEW_YORK);
+        doTest_getOffsetFromLocal(3, 11, 2,30, "2007-03-11T03:30:00.000-04:00", -5, ZONE_NEW_YORK);
         
-        doTest_getOffsetFromLocal(3, 11, 3, 0, "2007-03-11T03:00:00.000-04:00", ZONE_NEW_YORK);
-        doTest_getOffsetFromLocal(3, 11, 3,30, "2007-03-11T03:30:00.000-04:00", ZONE_NEW_YORK);
-        doTest_getOffsetFromLocal(3, 11, 4, 0, "2007-03-11T04:00:00.000-04:00", ZONE_NEW_YORK);
-        doTest_getOffsetFromLocal(3, 11, 5, 0, "2007-03-11T05:00:00.000-04:00", ZONE_NEW_YORK);
-        doTest_getOffsetFromLocal(3, 11, 6, 0, "2007-03-11T06:00:00.000-04:00", ZONE_NEW_YORK);
-        doTest_getOffsetFromLocal(3, 11, 7, 0, "2007-03-11T07:00:00.000-04:00", ZONE_NEW_YORK);
-        doTest_getOffsetFromLocal(3, 11, 8, 0, "2007-03-11T08:00:00.000-04:00", ZONE_NEW_YORK);
+        doTest_getOffsetFromLocal(3, 11, 3, 0, "2007-03-11T03:00:00.000-04:00", -4, ZONE_NEW_YORK);
+        doTest_getOffsetFromLocal(3, 11, 3,30, "2007-03-11T03:30:00.000-04:00", -4, ZONE_NEW_YORK);
+        doTest_getOffsetFromLocal(3, 11, 4, 0, "2007-03-11T04:00:00.000-04:00", -4, ZONE_NEW_YORK);
+        doTest_getOffsetFromLocal(3, 11, 5, 0, "2007-03-11T05:00:00.000-04:00", -4, ZONE_NEW_YORK);
+        doTest_getOffsetFromLocal(3, 11, 6, 0, "2007-03-11T06:00:00.000-04:00", -4, ZONE_NEW_YORK);
+        doTest_getOffsetFromLocal(3, 11, 7, 0, "2007-03-11T07:00:00.000-04:00", -4, ZONE_NEW_YORK);
+        doTest_getOffsetFromLocal(3, 11, 8, 0, "2007-03-11T08:00:00.000-04:00", -4, ZONE_NEW_YORK);
     }
 
     public void test_DateTime_setHourAcross_NewYork_Spring() {
@@ -642,21 +643,21 @@ public class TestDateTimeZoneCutover extends TestCase {
     }
 
     public void test_getOffsetFromLocal_NewYork_Autumn() {
-        doTest_getOffsetFromLocal(11, 4, 0, 0, "2007-11-04T00:00:00.000-04:00", ZONE_NEW_YORK);
-        doTest_getOffsetFromLocal(11, 4, 0,30, "2007-11-04T00:30:00.000-04:00", ZONE_NEW_YORK);
+        doTest_getOffsetFromLocal(11, 4, 0, 0, "2007-11-04T00:00:00.000-04:00", -4, ZONE_NEW_YORK);
+        doTest_getOffsetFromLocal(11, 4, 0,30, "2007-11-04T00:30:00.000-04:00", -4, ZONE_NEW_YORK);
         
-        doTest_getOffsetFromLocal(11, 4, 1, 0, "2007-11-04T01:00:00.000-04:00", ZONE_NEW_YORK);
-        doTest_getOffsetFromLocal(11, 4, 1,30, "2007-11-04T01:30:00.000-04:00", ZONE_NEW_YORK);
+        doTest_getOffsetFromLocal(11, 4, 1, 0, "2007-11-04T01:00:00.000-04:00", -4, ZONE_NEW_YORK);
+        doTest_getOffsetFromLocal(11, 4, 1,30, "2007-11-04T01:30:00.000-04:00", -4, ZONE_NEW_YORK);
         
-        doTest_getOffsetFromLocal(11, 4, 2, 0, "2007-11-04T02:00:00.000-05:00", ZONE_NEW_YORK);
-        doTest_getOffsetFromLocal(11, 4, 2,30, "2007-11-04T02:30:00.000-05:00", ZONE_NEW_YORK);
-        doTest_getOffsetFromLocal(11, 4, 3, 0, "2007-11-04T03:00:00.000-05:00", ZONE_NEW_YORK);
-        doTest_getOffsetFromLocal(11, 4, 3,30, "2007-11-04T03:30:00.000-05:00", ZONE_NEW_YORK);
-        doTest_getOffsetFromLocal(11, 4, 4, 0, "2007-11-04T04:00:00.000-05:00", ZONE_NEW_YORK);
-        doTest_getOffsetFromLocal(11, 4, 5, 0, "2007-11-04T05:00:00.000-05:00", ZONE_NEW_YORK);
-        doTest_getOffsetFromLocal(11, 4, 6, 0, "2007-11-04T06:00:00.000-05:00", ZONE_NEW_YORK);
-        doTest_getOffsetFromLocal(11, 4, 7, 0, "2007-11-04T07:00:00.000-05:00", ZONE_NEW_YORK);
-        doTest_getOffsetFromLocal(11, 4, 8, 0, "2007-11-04T08:00:00.000-05:00", ZONE_NEW_YORK);
+        doTest_getOffsetFromLocal(11, 4, 2, 0, "2007-11-04T02:00:00.000-05:00", -5, ZONE_NEW_YORK);
+        doTest_getOffsetFromLocal(11, 4, 2,30, "2007-11-04T02:30:00.000-05:00", -5, ZONE_NEW_YORK);
+        doTest_getOffsetFromLocal(11, 4, 3, 0, "2007-11-04T03:00:00.000-05:00", -5, ZONE_NEW_YORK);
+        doTest_getOffsetFromLocal(11, 4, 3,30, "2007-11-04T03:30:00.000-05:00", -5, ZONE_NEW_YORK);
+        doTest_getOffsetFromLocal(11, 4, 4, 0, "2007-11-04T04:00:00.000-05:00", -5, ZONE_NEW_YORK);
+        doTest_getOffsetFromLocal(11, 4, 5, 0, "2007-11-04T05:00:00.000-05:00", -5, ZONE_NEW_YORK);
+        doTest_getOffsetFromLocal(11, 4, 6, 0, "2007-11-04T06:00:00.000-05:00", -5, ZONE_NEW_YORK);
+        doTest_getOffsetFromLocal(11, 4, 7, 0, "2007-11-04T07:00:00.000-05:00", -5, ZONE_NEW_YORK);
+        doTest_getOffsetFromLocal(11, 4, 8, 0, "2007-11-04T08:00:00.000-05:00", -5, ZONE_NEW_YORK);
     }
 
     public void test_DateTime_constructor_NewYork_Autumn() {
@@ -826,19 +827,19 @@ public class TestDateTimeZoneCutover extends TestCase {
     }
 
     public void test_getOffsetFromLocal_Moscow_Spring() {
-        doTest_getOffsetFromLocal(3, 25, 1, 0, "2007-03-25T01:00:00.000+03:00", ZONE_MOSCOW);
-        doTest_getOffsetFromLocal(3, 25, 1,30, "2007-03-25T01:30:00.000+03:00", ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(3, 25, 1, 0, "2007-03-25T01:00:00.000+03:00", 3, ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(3, 25, 1,30, "2007-03-25T01:30:00.000+03:00", 3, ZONE_MOSCOW);
         
-        doTest_getOffsetFromLocal(3, 25, 2, 0, "2007-03-25T03:00:00.000+04:00", ZONE_MOSCOW);
-        doTest_getOffsetFromLocal(3, 25, 2,30, "2007-03-25T03:30:00.000+04:00", ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(3, 25, 2, 0, "2007-03-25T03:00:00.000+04:00", 3, ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(3, 25, 2,30, "2007-03-25T03:30:00.000+04:00", 3, ZONE_MOSCOW);
         
-        doTest_getOffsetFromLocal(3, 25, 3, 0, "2007-03-25T03:00:00.000+04:00", ZONE_MOSCOW);
-        doTest_getOffsetFromLocal(3, 25, 3,30, "2007-03-25T03:30:00.000+04:00", ZONE_MOSCOW);
-        doTest_getOffsetFromLocal(3, 25, 4, 0, "2007-03-25T04:00:00.000+04:00", ZONE_MOSCOW);
-        doTest_getOffsetFromLocal(3, 25, 5, 0, "2007-03-25T05:00:00.000+04:00", ZONE_MOSCOW);
-        doTest_getOffsetFromLocal(3, 25, 6, 0, "2007-03-25T06:00:00.000+04:00", ZONE_MOSCOW);
-        doTest_getOffsetFromLocal(3, 25, 7, 0, "2007-03-25T07:00:00.000+04:00", ZONE_MOSCOW);
-        doTest_getOffsetFromLocal(3, 25, 8, 0, "2007-03-25T08:00:00.000+04:00", ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(3, 25, 3, 0, "2007-03-25T03:00:00.000+04:00", 4, ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(3, 25, 3,30, "2007-03-25T03:30:00.000+04:00", 4, ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(3, 25, 4, 0, "2007-03-25T04:00:00.000+04:00", 4, ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(3, 25, 5, 0, "2007-03-25T05:00:00.000+04:00", 4, ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(3, 25, 6, 0, "2007-03-25T06:00:00.000+04:00", 4, ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(3, 25, 7, 0, "2007-03-25T07:00:00.000+04:00", 4, ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(3, 25, 8, 0, "2007-03-25T08:00:00.000+04:00", 4, ZONE_MOSCOW);
     }
 
     public void test_DateTime_setHourAcross_Moscow_Spring() {
@@ -887,32 +888,32 @@ public class TestDateTimeZoneCutover extends TestCase {
     }
 
     public void test_getOffsetFromLocal_Moscow_Autumn() {
-        doTest_getOffsetFromLocal(10, 28, 0, 0, "2007-10-28T00:00:00.000+04:00", ZONE_MOSCOW);
-        doTest_getOffsetFromLocal(10, 28, 0,30, "2007-10-28T00:30:00.000+04:00", ZONE_MOSCOW);
-        doTest_getOffsetFromLocal(10, 28, 1, 0, "2007-10-28T01:00:00.000+04:00", ZONE_MOSCOW);
-        doTest_getOffsetFromLocal(10, 28, 1,30, "2007-10-28T01:30:00.000+04:00", ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 0, 0, "2007-10-28T00:00:00.000+04:00", 4, ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 0,30, "2007-10-28T00:30:00.000+04:00", 4, ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 1, 0, "2007-10-28T01:00:00.000+04:00", 4, ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 1,30, "2007-10-28T01:30:00.000+04:00", 4, ZONE_MOSCOW);
         
-        doTest_getOffsetFromLocal(10, 28, 2, 0, "2007-10-28T02:00:00.000+04:00", ZONE_MOSCOW);
-        doTest_getOffsetFromLocal(10, 28, 2,30, "2007-10-28T02:30:00.000+04:00", ZONE_MOSCOW);
-        doTest_getOffsetFromLocal(10, 28, 2,30,59,999, "2007-10-28T02:30:59.999+04:00", ZONE_MOSCOW);
-        doTest_getOffsetFromLocal(10, 28, 2,59,59,998, "2007-10-28T02:59:59.998+04:00", ZONE_MOSCOW);
-        doTest_getOffsetFromLocal(10, 28, 2,59,59,999, "2007-10-28T02:59:59.999+04:00", ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 2, 0, "2007-10-28T02:00:00.000+04:00", 4, ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 2,30, "2007-10-28T02:30:00.000+04:00", 4, ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 2,30,59,999, "2007-10-28T02:30:59.999+04:00", 4, ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 2,59,59,998, "2007-10-28T02:59:59.998+04:00", 4, ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 2,59,59,999, "2007-10-28T02:59:59.999+04:00", 4, ZONE_MOSCOW);
         
-        doTest_getOffsetFromLocal(10, 28, 3, 0, "2007-10-28T03:00:00.000+03:00", ZONE_MOSCOW);
-        doTest_getOffsetFromLocal(10, 28, 3,30, "2007-10-28T03:30:00.000+03:00", ZONE_MOSCOW);
-        doTest_getOffsetFromLocal(10, 28, 4, 0, "2007-10-28T04:00:00.000+03:00", ZONE_MOSCOW);
-        doTest_getOffsetFromLocal(10, 28, 5, 0, "2007-10-28T05:00:00.000+03:00", ZONE_MOSCOW);
-        doTest_getOffsetFromLocal(10, 28, 6, 0, "2007-10-28T06:00:00.000+03:00", ZONE_MOSCOW);
-        doTest_getOffsetFromLocal(10, 28, 7, 0, "2007-10-28T07:00:00.000+03:00", ZONE_MOSCOW);
-        doTest_getOffsetFromLocal(10, 28, 8, 0, "2007-10-28T08:00:00.000+03:00", ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 3, 0, "2007-10-28T03:00:00.000+03:00", 3, ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 3,30, "2007-10-28T03:30:00.000+03:00", 3, ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 4, 0, "2007-10-28T04:00:00.000+03:00", 3, ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 5, 0, "2007-10-28T05:00:00.000+03:00", 3, ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 6, 0, "2007-10-28T06:00:00.000+03:00", 3, ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 7, 0, "2007-10-28T07:00:00.000+03:00", 3, ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 8, 0, "2007-10-28T08:00:00.000+03:00", 3, ZONE_MOSCOW);
     }
 
     public void test_getOffsetFromLocal_Moscow_Autumn_overlap_mins() {
         for (int min = 0; min < 60; min++) {
             if (min < 10) {
-                doTest_getOffsetFromLocal(10, 28, 2, min, "2007-10-28T02:0" + min + ":00.000+04:00", ZONE_MOSCOW);
+                doTest_getOffsetFromLocal(10, 28, 2, min, "2007-10-28T02:0" + min + ":00.000+04:00", 4, ZONE_MOSCOW);
             } else {
-                doTest_getOffsetFromLocal(10, 28, 2, min, "2007-10-28T02:" + min + ":00.000+04:00", ZONE_MOSCOW);
+                doTest_getOffsetFromLocal(10, 28, 2, min, "2007-10-28T02:" + min + ":00.000+04:00", 4, ZONE_MOSCOW);
             }
         }
     }
@@ -969,43 +970,43 @@ public class TestDateTimeZoneCutover extends TestCase {
 
     public void test_getOffsetFromLocal_Guatemata_Autumn() {
         doTest_getOffsetFromLocal( 2006, 9,30,23, 0,
-                                  "2006-09-30T23:00:00.000-05:00", ZONE_GUATEMALA);
+                                  "2006-09-30T23:00:00.000-05:00", -5, ZONE_GUATEMALA);
         doTest_getOffsetFromLocal( 2006, 9,30,23,30,
-                                  "2006-09-30T23:30:00.000-05:00", ZONE_GUATEMALA);
+                                  "2006-09-30T23:30:00.000-05:00", -5, ZONE_GUATEMALA);
         
         doTest_getOffsetFromLocal( 2006, 9,30,23, 0,
-                                  "2006-09-30T23:00:00.000-05:00", ZONE_GUATEMALA);
+                                  "2006-09-30T23:00:00.000-05:00", -5, ZONE_GUATEMALA);
         doTest_getOffsetFromLocal( 2006, 9,30,23,30,
-                                  "2006-09-30T23:30:00.000-05:00", ZONE_GUATEMALA);
+                                  "2006-09-30T23:30:00.000-05:00", -5, ZONE_GUATEMALA);
         
         doTest_getOffsetFromLocal( 2006,10, 1, 0, 0,
-                                  "2006-10-01T00:00:00.000-06:00", ZONE_GUATEMALA);
+                                  "2006-10-01T00:00:00.000-06:00", -6, ZONE_GUATEMALA);
         doTest_getOffsetFromLocal( 2006,10, 1, 0,30,
-                                  "2006-10-01T00:30:00.000-06:00", ZONE_GUATEMALA);
+                                  "2006-10-01T00:30:00.000-06:00", -6, ZONE_GUATEMALA);
         doTest_getOffsetFromLocal( 2006,10, 1, 1, 0,
-                                  "2006-10-01T01:00:00.000-06:00", ZONE_GUATEMALA);
+                                  "2006-10-01T01:00:00.000-06:00", -6, ZONE_GUATEMALA);
         doTest_getOffsetFromLocal( 2006,10, 1, 1,30,
-                                  "2006-10-01T01:30:00.000-06:00", ZONE_GUATEMALA);
+                                  "2006-10-01T01:30:00.000-06:00", -6, ZONE_GUATEMALA);
         doTest_getOffsetFromLocal( 2006,10, 1, 2, 0,
-                                  "2006-10-01T02:00:00.000-06:00", ZONE_GUATEMALA);
+                                  "2006-10-01T02:00:00.000-06:00", -6, ZONE_GUATEMALA);
         doTest_getOffsetFromLocal( 2006,10, 1, 2,30,
-                                  "2006-10-01T02:30:00.000-06:00", ZONE_GUATEMALA);
+                                  "2006-10-01T02:30:00.000-06:00", -6, ZONE_GUATEMALA);
         doTest_getOffsetFromLocal( 2006,10, 1, 3, 0,
-                                  "2006-10-01T03:00:00.000-06:00", ZONE_GUATEMALA);
+                                  "2006-10-01T03:00:00.000-06:00", -6, ZONE_GUATEMALA);
         doTest_getOffsetFromLocal( 2006,10, 1, 3,30,
-                                  "2006-10-01T03:30:00.000-06:00", ZONE_GUATEMALA);
+                                  "2006-10-01T03:30:00.000-06:00", -6, ZONE_GUATEMALA);
         doTest_getOffsetFromLocal( 2006,10, 1, 4, 0,
-                                  "2006-10-01T04:00:00.000-06:00", ZONE_GUATEMALA);
+                                  "2006-10-01T04:00:00.000-06:00", -6, ZONE_GUATEMALA);
         doTest_getOffsetFromLocal( 2006,10, 1, 4,30,
-                                  "2006-10-01T04:30:00.000-06:00", ZONE_GUATEMALA);
+                                  "2006-10-01T04:30:00.000-06:00", -6, ZONE_GUATEMALA);
         doTest_getOffsetFromLocal( 2006,10, 1, 5, 0,
-                                  "2006-10-01T05:00:00.000-06:00", ZONE_GUATEMALA);
+                                  "2006-10-01T05:00:00.000-06:00", -6, ZONE_GUATEMALA);
         doTest_getOffsetFromLocal( 2006,10, 1, 5,30,
-                                  "2006-10-01T05:30:00.000-06:00", ZONE_GUATEMALA);
+                                  "2006-10-01T05:30:00.000-06:00", -6, ZONE_GUATEMALA);
         doTest_getOffsetFromLocal( 2006,10, 1, 6, 0,
-                                  "2006-10-01T06:00:00.000-06:00", ZONE_GUATEMALA);
+                                  "2006-10-01T06:00:00.000-06:00", -6, ZONE_GUATEMALA);
         doTest_getOffsetFromLocal( 2006,10, 1, 6,30,
-                                  "2006-10-01T06:30:00.000-06:00", ZONE_GUATEMALA);
+                                  "2006-10-01T06:30:00.000-06:00", -6, ZONE_GUATEMALA);
     }
 
     public void test_DateTime_plusHour_Guatemata_Autumn() {
@@ -1046,6 +1047,38 @@ public class TestDateTimeZoneCutover extends TestCase {
         assertEquals("2006-09-30T21:00:00.000-05:00", minus6.toString());
         DateTime minus7 = dt.minusHours(7);
         assertEquals("2006-09-30T20:00:00.000-05:00", minus7.toString());
+    }
+
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    /** America/Rio_Branco gap cutover from 2008-06-23T23:59-05:00 to 2008-06-24T01:00-04:00 */
+    private static long CUTOVER_RIO_BRANCO_AUTUMN = 1214283600000L; // 2008-06-24T01:00:00.000-04:00
+    private static final DateTimeZone ZONE_RIO_BRANCO = DateTimeZone.forID("America/Rio_Branco");
+
+    //-----------------------------------------------------------------------
+    public void test_RioBrancoIsCorrect_Spring() {
+        DateTime pre = new DateTime(CUTOVER_RIO_BRANCO_AUTUMN - 1L, ZONE_RIO_BRANCO);
+        assertEquals("2008-06-23T23:59:59.999-05:00", pre.toString());
+        DateTime at = new DateTime(CUTOVER_RIO_BRANCO_AUTUMN, ZONE_RIO_BRANCO);
+        assertEquals("2008-06-24T01:00:00.000-04:00", at.toString());
+        DateTime post = new DateTime(CUTOVER_RIO_BRANCO_AUTUMN + 1L, ZONE_RIO_BRANCO);
+        assertEquals("2008-06-24T01:00:00.001-04:00", post.toString());
+    }
+
+    public void test_getOffsetFromLocal_RioBranco_Spring() {
+        doTest_getOffsetFromLocal(2008, 6, 23, 23, 0, "2008-06-23T23:00:00.000-05:00", -5, ZONE_RIO_BRANCO);
+        doTest_getOffsetFromLocal(2008, 6, 23, 23, 30, "2008-06-23T23:30:00.000-05:00", -5, ZONE_RIO_BRANCO);
+        
+        doTest_getOffsetFromLocal(2008, 6, 24, 0, 0, "2008-06-24T01:00:00.000-04:00", -5, ZONE_RIO_BRANCO);
+        doTest_getOffsetFromLocal(2008, 6, 24, 0, 30, "2008-06-24T01:30:00.000-04:00", -5, ZONE_RIO_BRANCO);
+        
+        doTest_getOffsetFromLocal(2008, 6, 24, 1, 0, "2008-06-24T01:00:00.000-04:00", -4, ZONE_RIO_BRANCO);
+        doTest_getOffsetFromLocal(2008, 6, 24, 1, 30, "2008-06-24T01:30:00.000-04:00", -4, ZONE_RIO_BRANCO);
+        doTest_getOffsetFromLocal(2008, 6, 24, 2, 0, "2008-06-24T02:00:00.000-04:00", -4, ZONE_RIO_BRANCO);
+        doTest_getOffsetFromLocal(2008, 6, 24, 2, 30, "2008-06-24T02:30:00.000-04:00", -4, ZONE_RIO_BRANCO);
+        doTest_getOffsetFromLocal(2008, 6, 24, 5, 0, "2008-06-24T05:00:00.000-04:00", -4, ZONE_RIO_BRANCO);
+        doTest_getOffsetFromLocal(2008, 6, 24, 5, 30, "2008-06-24T05:30:00.000-04:00", -4, ZONE_RIO_BRANCO);
     }
 
     //-----------------------------------------------------------------------
@@ -1318,21 +1351,22 @@ public class TestDateTimeZoneCutover extends TestCase {
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
-    private void doTest_getOffsetFromLocal(int month, int day, int hour, int min, String expected, DateTimeZone zone) {
-        doTest_getOffsetFromLocal(2007, month, day, hour, min, 0, 0, expected, zone);
+    private void doTest_getOffsetFromLocal(int month, int day, int hour, int min, String expected, int expOffset, DateTimeZone zone) {
+        doTest_getOffsetFromLocal(2007, month, day, hour, min, 0, 0, expected, expOffset, zone);
     }
 
-    private void doTest_getOffsetFromLocal(int month, int day, int hour, int min, int sec, int milli, String expected, DateTimeZone zone) {
-        doTest_getOffsetFromLocal(2007, month, day, hour, min, sec, milli, expected, zone);
+    private void doTest_getOffsetFromLocal(int month, int day, int hour, int min, int sec, int milli, String expected, int expOffset, DateTimeZone zone) {
+        doTest_getOffsetFromLocal(2007, month, day, hour, min, sec, milli, expected, expOffset, zone);
     }
 
-    private void doTest_getOffsetFromLocal(int year, int month, int day, int hour, int min, String expected, DateTimeZone zone) {
-        doTest_getOffsetFromLocal(year, month, day, hour, min, 0, 0, expected, zone);
+    private void doTest_getOffsetFromLocal(int year, int month, int day, int hour, int min, String expected, int expOffset, DateTimeZone zone) {
+        doTest_getOffsetFromLocal(year, month, day, hour, min, 0, 0, expected, expOffset, zone);
     }
 
-    private void doTest_getOffsetFromLocal(int year, int month, int day, int hour, int min, int sec, int milli, String expected, DateTimeZone zone) {
+    private void doTest_getOffsetFromLocal(int year, int month, int day, int hour, int min, int sec, int milli, String expected, int expOffset, DateTimeZone zone) {
         DateTime dt = new DateTime(year, month, day, hour, min, sec, milli, DateTimeZone.UTC);
         int offset = zone.getOffsetFromLocal(dt.getMillis());
+        assertEquals(expOffset * 3600000L, offset);
         DateTime res = new DateTime(dt.getMillis() - offset, zone);
         assertEquals(res.toString(), expected, res.toString());
     }

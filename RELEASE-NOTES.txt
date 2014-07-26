@@ -84,6 +84,10 @@ Bug fixes since 2.3
   A slew of tests were added and a variety of bugs fixed
   This affects DateTimeField.getDurationField() and DateTimeField.getRangeDurationField()
 
+- Fixed another edge case in conversion from Local to UTC  [#76]
+  The DateTimeZone.getOffsetFromLocal() method was fixed to handle the last cutover
+  in DST history correctly.
+
 - Period construction during DST overlap [#156]
   When creating a period, if one end is within a DST overlap and one beyond the overlap
   then the calculated period was incorrect.

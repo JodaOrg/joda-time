@@ -137,11 +137,12 @@ public final class ZonedChronology extends AssembledChronology {
     private long localToUTC(long localInstant) {
         DateTimeZone zone = getZone();
         int offset = zone.getOffsetFromLocal(localInstant);
-        localInstant -= offset;
-        if (offset != zone.getOffset(localInstant)) {
+        long utcInstant = localInstant - offset;
+        int offsetBasedOnUtc = zone.getOffset(utcInstant);
+        if (offset != offsetBasedOnUtc) {
             throw new IllegalInstantException(localInstant, zone.getID());
         }
-        return localInstant;
+        return utcInstant;
     }
 
     protected void assemble(Fields fields) {

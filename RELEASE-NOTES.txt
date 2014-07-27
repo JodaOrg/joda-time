@@ -62,7 +62,7 @@ Source compatible - Yes
 Serialization compatible - Yes
 
 Data compatible - Yes, except
- - DateTimeZone data updated to version 2013d
+ - DateTimeZone data updated to version 2014e
 
 Semantic compatible - Yes, except
 - DateTimeField duration fields have been fixed

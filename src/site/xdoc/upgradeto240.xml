@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+ <properties>
+  <title>Java date and time API - Upgrade from 2.2 to 2.3</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+<body>
+
+<section name="Upgrade">
+<p>
+These are the release notes and advice for upgrading Joda-Time from version 2.3 to version 2.4.
+<source>
+Joda-Time version 2.4
+---------------------
+
+Joda-Time is a date and time handling library that seeks to replace the JDK
+Date and Calendar classes.
+
+This release contains enhancements, bug fixes and a time zone update.
+The release runs on JDK 5 or later.
+
+Joda-Time is licensed under the business-friendly Apache License Version 2.
+This is the same license as all of Apache, plus other open source projects such as Spring.
+The intent is to make the code available to the Java community with the minimum
+of restrictions. If the license causes you problems please contact the mailing list.
+
+**  Please also check out our related projects   **
+** http://www.joda.org/joda-time/related.html **
+
+
+Enhancements since 2.3
+----------------------
+- Duration.multipliedBy(), .dividedBy(), .negated()
+  Additional methods on Duration
+
+- LocalDate.hashCode()
+  Remove unnecessary volatile on instance variable [#68]
+  LocalDate hash code meets criteria of the racy single-check idiom
+
+- DateTimeParserBucket
+  Allow bucket to be re-used on a single thread [#111]
+  Potential for performance improvements due to lower garbage churn
+  Improvement only of interest to applications willing to write specialist code
+
+- Support CharSequence throughout parsing
+  Ensure that CharSequence can be used in parsing [#111]
+  This can only be accessed by creating a mutable DateTimeParserBucket
+  The bucket is a low-level construct for advanced use cases
+  Potential for performance improvements due to lower garbage churn
+  No API change
+
+- Support Appendable throughout printing
+  Ensure that Appendable can be used efficiently in printing [#120, #121, #122]
+  No API change
+
+- Increased performance of chronology lookup [#126,#105]
+  No API change
+
+- Increased performance of formatter lookup [#127,#129]
+  No API change
+
+- Increased performance of symbols lookup [#143]
+  No API change
+
+
+Compatibility with 2.3
+----------------------
+Build system - Yes
+
+Binary compatible - Yes
+
+Source compatible - Yes
+
+Serialization compatible - Yes
+
+Data compatible - Yes, except
+ - DateTimeZone data updated to version 2014e
+
+Semantic compatible - Yes, except
+- DateTimeField duration fields have been fixed
+  For example, yearOfEra() now has a range of eras() rather than null
+  The DurationField instances now compare using equals() correctly
+- MutableDateTime.add(DateTimeFieldType,int), addDays(int) and friends [#77]
+  Adding zero will no longer change the offset during DST overlap in autumn/fall
+
+
+Deprecations since 2.3
+----------------------
+
+
+Bug fixes since 2.3
+-------------------
+- DateTimeField.getDurationField() / DateTimeField.getRangeDurationField() [#92,#93,#95]
+  Previously some of the complex cases were wrong, notably around centuries and eras
+  For example, yearOfEra() returned a range of null when it should be eras()
+  A slew of tests were added and a variety of bugs fixed
+  This affects DateTimeField.getDurationField() and DateTimeField.getRangeDurationField()
+
+- Fixed another edge case in conversion from Local to UTC  [#76]
+  The DateTimeZone.getOffsetFromLocal() method was fixed to handle the last cutover
+  in DST history correctly.
+
+- Period construction during DST overlap [#156]
+  When creating a period, if one end is within a DST overlap and one beyond the overlap
+  then the calculated period was incorrect.
+  The calculation has been changed no ensure no extra hour is added.
+
+- DateTimeUtils.isContiguous(ReadablePartial) [#89]
+  The isContiguous() method could throw a NullPointerException when evaluating weird partials
+
+- Period.normalizedStandard(PeriodType) [#79]
+  Fix handling of PeriodType when either years or months missing
+
+- Partial.with(DateTimeFieldType,int) [#88]
+  Validation in this method was not as thorough as that in the constructor
+  This allowed invalid partials to be created
+
+- MutableDateTime.add(DateTimeFieldType,int), addDays(int) and friends [#77]
+  Adding zero to a MutableDateTime used to change the offset during DST overlap in autumn/fall
+  This is now fixed to not change the offset
+
+- DateTime/MutableDateTime constructors taking millis now validate [#100]
+  Previously, new DateTime(Long.MAX_VALUE) would be accepted, now it will be rejected
+  This ensures that the maximum/minimum year are respected
+
+- Ensure isLeap() returns correct result for day fields [#110]
+  Day-of-month and day-of-year fields should report leap days
+
+- Insist that year > weekyear when creating Partial [#96,#98]
+  As these compare equal code previously allowed either order
+
+- Handle weird TimeZone implementations with null ID [#133]
+  Calling DateTimeZone.forTimeZone() would break if the ID was null
+
+- Handle broken Android implementations better [#103]
+  Apparently some Android implementations throw ClassCastException when comparing different types
+  Thats dumb and wrong but the change to handle it is harmless
+
+- Better concurrency in parsing [#101]
+
+- Better Javadoc for parsing of numbers in format patterns [#60]
+
+- Remove uncaughtException calls [#59]
+  Previously the code called ThreadGroup.uncaughtException() which was invalid
+
+- Fix Javadoc for ReadableDuration [#137]
+
+- Fix the links to the IANA time zone database [#83]
+
+- Better Javadoc for thread saefty of DateTimeUtils [#67]
+
+- Better Javadoc for DateTimeComparator [#73]
+
+- Better Javadoc for DateTimeFormatter parsing [#78]
+
+- Better Javadoc for DateTimeFormat fraction of second [#62]
+
+- Better Javadoc for DateTime toString and parse [#142]
+
+- Better Javadoc for formatters that only parse [#97]
+
+
+Scala
+--------
+Joda-Time uses annotations from Joda-Convert.
+In the Java programming language, this dependency is optional, however in Scala it is not.
+Scala users must manually add the Joda-Convert v1.2 dependency.
+</source>
+</p>
+</section>
+
+</body>
+</document>

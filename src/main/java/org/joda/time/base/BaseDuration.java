@@ -71,7 +71,7 @@ public abstract class BaseDuration
      */
     protected BaseDuration(long startInstant, long endInstant) {
         super();
-        iMillis = FieldUtils.safeAdd(endInstant, -startInstant);
+        iMillis = FieldUtils.safeSubtract(endInstant, startInstant);
     }
 
     /**
@@ -88,7 +88,7 @@ public abstract class BaseDuration
         } else {
             long startMillis = DateTimeUtils.getInstantMillis(start);
             long endMillis = DateTimeUtils.getInstantMillis(end);
-            iMillis = FieldUtils.safeAdd(endMillis, -startMillis);
+            iMillis = FieldUtils.safeSubtract(endMillis, startMillis);
         }
     }
 

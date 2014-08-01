@@ -256,4 +256,45 @@ public class TestDuration_Constructors extends TestCase {
         assertEquals(dt2.getMillis() - dt1.getMillis(), test.getMillis());
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * Test constructor overflow
+     */
+    public void testConstructor_Overflow1() {
+        try {
+            Duration test = new Duration(-1, Long.MAX_VALUE);
+            fail();
+        } catch (ArithmeticException ex) {
+            // expected
+        }
+    }
+
+    public void testConstructor_Overflow2() {
+        try {
+            Duration test = new Duration(Long.MIN_VALUE, 1);
+            fail();
+        } catch (ArithmeticException ex) {
+            // expected
+        }
+    }
+
+    public void testConstructor_Overflow3() {
+        try {
+            Instant max= new Instant(Long.MAX_VALUE);
+            Duration test = new Duration(new Instant(-1), max);
+            fail();
+        } catch (ArithmeticException ex) {
+            // expected
+        }
+    }
+
+    public void testConstructor_Overflow4() {
+        try {
+            Instant min = new Instant(Long.MIN_VALUE);
+            Duration test = new Duration(min, new Instant(1));
+            fail();
+        } catch (ArithmeticException ex) {
+            // expected
+        }
+    }
 }

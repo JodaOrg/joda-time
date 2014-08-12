@@ -40,6 +40,8 @@ public class TestPeriodFormatterBuilder extends TestCase {
     private static final Period EMPTY_YEAR_DAY_PERIOD = new Period(0, 0, 0, 0, 0, 0, 0, 0, PeriodType.yearDayTime());
     private static final Period TIME_PERIOD = new Period(0, 0, 0, 0, 5, 6, 7, 8);
     private static final Period DATE_PERIOD = new Period(1, 2, 3, 4, 0, 0, 0, 0);
+    private static final String NULL_STRING = null;
+    private static final String[] NULL_STRING_ARRAY = null;
 
     //private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
@@ -372,10 +374,64 @@ public class TestPeriodFormatterBuilder extends TestCase {
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            builder.appendPrefix(null, null);
+            builder.appendPrefix(NULL_STRING, null);
             fail();
         } catch (IllegalArgumentException ex) {}
     }
+
+	public void testFormatPrefixRegEx1() {
+		PeriodFormatter f = builder.appendPrefix(new String[] { "^1$", "^.*$" }, new String[] { "Year:", "Years:" }).appendYears()
+				.toFormatter();
+		assertEquals("Year:1", f.print(PERIOD));
+		assertEquals(6, f.getPrinter().calculatePrintedLength(PERIOD, null));
+		assertEquals(1, f.getPrinter().countFieldsToPrint(PERIOD, Integer.MAX_VALUE, null));
+
+		Period p = new Period(0, 0, 0, 0, 0, 0, 0, 0);
+		assertEquals("Years:0", f.print(p));
+		assertEquals(7, f.getPrinter().calculatePrintedLength(p, null));
+		assertEquals(1, f.getPrinter().countFieldsToPrint(p, Integer.MAX_VALUE, null));
+	}
+
+	public void testFormatPrefixRegEx2() {
+		PeriodFormatter f = builder.appendPrefix(new String[] { "^1$", "^.*$" }, new String[] { "Hour:", "Hours:" }).appendHours()
+				.toFormatter();
+		assertEquals("Hours:5", f.print(PERIOD));
+		assertEquals(7, f.getPrinter().calculatePrintedLength(PERIOD, null));
+		assertEquals(1, f.getPrinter().countFieldsToPrint(PERIOD, Integer.MAX_VALUE, null));
+
+		Period p = new Period(0, 0, 0, 0, 0, 0, 0, 0);
+		assertEquals("Hours:0", f.print(p));
+		assertEquals(7, f.getPrinter().calculatePrintedLength(p, null));
+		assertEquals(1, f.getPrinter().countFieldsToPrint(p, Integer.MAX_VALUE, null));
+	}
+
+	public void testFormatPrefixRegEx3() {
+		try {
+			builder.appendPrefix(null, new String[0]);
+			fail();
+		} catch (IllegalArgumentException ex) {
+		}
+		try {
+			builder.appendPrefix(new String[0], null);
+			fail();
+		} catch (IllegalArgumentException ex) {
+		}
+		try {
+			builder.appendPrefix(NULL_STRING_ARRAY, null);
+			fail();
+		} catch (IllegalArgumentException ex) {
+		}
+		try {
+			builder.appendPrefix(new String[0], new String[0]);
+			fail();
+		} catch (IllegalArgumentException ex) {
+		}
+		try {
+			builder.appendPrefix(new String[1], new String[2]);
+			fail();
+		} catch (IllegalArgumentException ex) {
+		}
+	}
 
     //-----------------------------------------------------------------------
     public void testFormatSuffixSimple1() {
@@ -450,7 +506,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            builder.appendSuffix(null, null);
+            builder.appendSuffix(NULL_STRING, null);
             fail();
         } catch (IllegalArgumentException ex) {}
     }
@@ -461,6 +517,77 @@ public class TestPeriodFormatterBuilder extends TestCase {
             fail();
         } catch (IllegalStateException ex) {}
     }
+
+	public void testFormatSuffixRegEx1() {
+		PeriodFormatter f = builder.appendYears().appendSuffix(new String[] { "^1$", "^2$" }, new String[] { " year", " years" })
+				.toFormatter();
+		assertEquals("1 year", f.print(PERIOD));
+		assertEquals(6, f.getPrinter().calculatePrintedLength(PERIOD, null));
+		assertEquals(1, f.getPrinter().countFieldsToPrint(PERIOD, Integer.MAX_VALUE, null));
+		
+		Period p2 = new Period(2, 0, 0, 0, 0, 0, 0, 0);
+		assertEquals("2 years", f.print(p2));
+		assertEquals(7, f.getPrinter().calculatePrintedLength(p2, null));
+		assertEquals(1, f.getPrinter().countFieldsToPrint(p2, Integer.MAX_VALUE, null));
+		
+		Period p0 = new Period(0, 0, 0, 0, 0, 0, 0, 0);
+		assertEquals("0 years", f.print(p0));
+		assertEquals(7, f.getPrinter().calculatePrintedLength(p0, null));
+		assertEquals(1, f.getPrinter().countFieldsToPrint(p0, Integer.MAX_VALUE, null));
+	}
+
+	public void testFormatSuffixRegEx2() {
+		PeriodFormatter f = builder.appendHours().appendSuffix(new String[] { "^1$", "^2$" }, new String[] { " hour", " hours" }).toFormatter();
+		assertEquals("5 hours", f.print(PERIOD));
+		assertEquals(7, f.getPrinter().calculatePrintedLength(PERIOD, null));
+		assertEquals(1, f.getPrinter().countFieldsToPrint(PERIOD, Integer.MAX_VALUE, null));
+
+		Period p2 = new Period(0, 0, 0, 0, 2, 0, 0, 0);
+		assertEquals("2 hours", f.print(p2));
+		assertEquals(7, f.getPrinter().calculatePrintedLength(p2, null));
+		assertEquals(1, f.getPrinter().countFieldsToPrint(p2, Integer.MAX_VALUE, null));
+
+		Period p0 = new Period(0, 0, 0, 0, 0, 0, 0, 0);
+		assertEquals("0 hours", f.print(p0));
+		assertEquals(7, f.getPrinter().calculatePrintedLength(p0, null));
+		assertEquals(1, f.getPrinter().countFieldsToPrint(p0, Integer.MAX_VALUE, null));
+	}
+
+	public void testFormatSuffixRegEx3() {
+		try {
+			builder.appendSuffix(null, new String[0]);
+			fail();
+		} catch (IllegalArgumentException ex) {
+		}
+		try {
+			builder.appendSuffix(new String[0], null);
+			fail();
+		} catch (IllegalArgumentException ex) {
+		}
+		try {
+			builder.appendSuffix(NULL_STRING_ARRAY, null);
+			fail();
+		} catch (IllegalArgumentException ex) {
+		}
+		try {
+			builder.appendSuffix(new String[0], new String[0]);
+			fail();
+		} catch (IllegalArgumentException ex) {
+		}
+		try {
+			builder.appendSuffix(new String[1], new String[2]);
+			fail();
+		} catch (IllegalArgumentException ex) {
+		}
+	}
+
+	public void testFormatSuffixRegEx4() {
+		try {
+			builder.appendSuffix(new String[] { "^1$", "^.*$" }, new String[] { " hour", " hours" });
+			fail();
+		} catch (IllegalStateException ex) {
+		}
+	}
 
     //-----------------------------------------------------------------------
     public void testFormatPrefixSuffix() {

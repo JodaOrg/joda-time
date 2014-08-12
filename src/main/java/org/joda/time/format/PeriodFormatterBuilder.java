@@ -22,6 +22,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.regex.Pattern;
 
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DurationFieldType;
@@ -80,6 +83,8 @@ public class PeriodFormatterBuilder {
     private static final int SECONDS_MILLIS = 8;
     private static final int SECONDS_OPTIONAL_MILLIS = 9;
     private static final int MAX_FIELD = SECONDS_OPTIONAL_MILLIS;
+
+    private static final ConcurrentMap<String, Pattern> PATTERNS = new ConcurrentHashMap<String, Pattern>();
 
     private int iMinPrintedDigits;
     private int iPrintZeroSetting;
@@ -365,6 +370,46 @@ public class PeriodFormatterBuilder {
         }
         return appendPrefix(new PluralAffix(singularText, pluralText));
     }
+    
+	/**
+	 * Append a field prefix which applies only to the next appended field. If the
+	 * field is not printed, neither is the prefix.
+	 * <p>
+	 * The value is converted to String. During parsing, the prefix is selected based
+	 * on the match with the regular expression. The index of the first regular
+	 * expression that matches value converted to String nominates the prefix. If
+	 * none of the regular expressions match the value converted to String then the
+	 * last prefix is selected.
+	 * <p>
+	 * An example usage for English might look like this:
+	 * 
+	 * <pre>
+	 * appendPrefix(new String[] { &quot;&circ;1$&quot;, &quot;.*&quot; }, new String[] { &quot; year&quot;, &quot; years&quot; })
+	 * </pre>
+	 * 
+	 * <p>
+	 * Please note that for languages with simple mapping (singular and plural prefix
+	 * only - like the one above) the {@link #appendPrefix(String, String)} method
+	 * will produce in a slightly faster formatter and that
+	 * {@link #appendPrefix(String[], String[])} method should be only used when the
+	 * mapping between values and prefixes is more complicated than 1 -> singular
+	 * prefix, not 1 -> plural prefix.
+	 *
+	 * @param regularExpressions - an array of regular expressions, at least one
+	 *            element, length has to match the length of prefixes parameter
+	 * @param prefixes - an array of prefixes, at least one element, length has to
+	 *            match the length of regularExpressions parameter
+	 * @return this PeriodFormatterBuilder
+	 * @throws IllegalStateException if no field exists to append to
+	 * @see #appendPrefix
+	 */
+	public PeriodFormatterBuilder appendPrefix(String[] regularExpressions, String[] prefixes) {
+		if (regularExpressions == null || prefixes == null || regularExpressions.length < 1
+				|| regularExpressions.length != prefixes.length) {
+			throw new IllegalArgumentException();
+		}
+		return appendPrefix(new RegExAffix(regularExpressions, prefixes));
+	}
 
     /**
      * Append a field prefix which applies only to the next appended field. If
@@ -575,6 +620,46 @@ public class PeriodFormatterBuilder {
         }
         return appendSuffix(new PluralAffix(singularText, pluralText));
     }
+
+	/**
+	 * Append a field suffix which applies only to the last appended field. If the
+	 * field is not printed, neither is the suffix.
+	 * <p>
+	 * The value is converted to String. During parsing, the suffix is selected based
+	 * on the match with the regular expression. The index of the first regular
+	 * expression that matches value converted to String nominates the suffix. If
+	 * none of the regular expressions match the value converted to String then the
+	 * last suffix is selected.
+	 * <p>
+	 * An example usage for English might look like this:
+	 * 
+	 * <pre>
+	 * appendSuffix(new String[] { &quot;&circ;1$&quot;, &quot;.*&quot; }, new String[] { &quot; year&quot;, &quot; years&quot; })
+	 * </pre>
+	 * 
+	 * <p>
+	 * Please note that for languages with simple mapping (singular and plural suffix
+	 * only - like the one above) the {@link #appendSuffix(String, String)} method
+	 * will result in a slightly faster formatter and that
+	 * {@link #appendSuffix(String[], String[])} method should be only used when the
+	 * mapping between values and suffixes is more complicated than 1 -> singular
+	 * suffix, not 1 -> plural suffix.
+	 *
+	 * @param regularExpressions - an array of regular expressions, at least one
+	 *            element, length has to match the length of suffixes parameter
+	 * @param suffixes - an array of suffixes, at least one element, length has to
+	 *            match the length of regularExpressions parameter
+	 * @return this PeriodFormatterBuilder
+	 * @throws IllegalStateException if no field exists to append to
+	 * @see #appendPrefix
+	 */
+	public PeriodFormatterBuilder appendSuffix(String[] regularExpressions, String[] suffixes) {
+		if (regularExpressions == null || suffixes == null || regularExpressions.length < 1
+				|| regularExpressions.length != suffixes.length) {
+			throw new IllegalArgumentException();
+		}
+		return appendSuffix(new RegExAffix(regularExpressions, suffixes));
+	}
 
     /**
      * Append a field suffix which applies only to the last appended field. If
@@ -979,6 +1064,79 @@ public class PeriodFormatterBuilder {
             return ~position;
         }
     }
+
+	// -----------------------------------------------------------------------
+	/**
+	 * Implements an affix where the text varies by the amount of the field.
+	 * Different amounts are supported based on the provided parameters.
+	 */
+	static class RegExAffix implements PeriodFieldAffix {
+		private final String[] iSuffixes;
+		private final Pattern[] iPatterns;
+
+		RegExAffix(String[] regExes, String[] texts) {
+			iSuffixes = texts;
+			iPatterns = new Pattern[regExes.length];
+
+			for (int i = 0; i < regExes.length; i++) {
+				Pattern pattern = PATTERNS.get(regExes[i]);
+				if (pattern == null) {
+					pattern = Pattern.compile(regExes[i]);
+					PATTERNS.putIfAbsent(regExes[i], pattern);
+				}
+				iPatterns[i] = pattern;
+			}
+		}
+
+		private int selectSuffixIndex(int value) {
+
+			String valueString = String.valueOf(value);
+
+			for (int i = 0; i < iPatterns.length; i++) {
+				if (iPatterns[i].matcher(valueString).matches()) {
+					return i;
+				}
+			}
+			return iPatterns.length - 1;
+		}
+
+		public int calculatePrintedLength(int value) {
+			return iSuffixes[selectSuffixIndex(value)].length();
+		}
+
+		public void printTo(StringBuffer buf, int value) {
+			buf.append(iSuffixes[selectSuffixIndex(value)]);
+		}
+
+		public void printTo(Writer out, int value) throws IOException {
+			out.write(iSuffixes[selectSuffixIndex(value)]);
+		}
+
+		public int parse(String periodStr, int position) {
+
+			for (String text : iSuffixes) {
+				if (periodStr.regionMatches(true, position, text, 0, text.length())) {
+					return position + text.length();
+				}
+			}
+			return ~position;
+		}
+
+		public int scan(String periodStr, final int position) {
+
+			int sourceLength = periodStr.length();
+
+			for (int pos = position; pos < sourceLength; pos++) {
+				for (String text : iSuffixes) {
+
+					if (periodStr.regionMatches(true, pos, text, 0, text.length())) {
+						return pos;
+					}
+				}
+			}
+			return ~position;
+		}
+	}
 
     //-----------------------------------------------------------------------
     /**

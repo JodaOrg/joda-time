@@ -577,42 +577,36 @@ public class TestPeriodFormat extends TestCase {
     public void test_wordBased_fr_from_de() {
         Locale.setDefault(DE);
         Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
-        assertEquals("1 jour, 5 heures, 6 minutes, 7 secondes et 8 millisecondes", PeriodFormat
-                .wordBased(FR).print(p));
+        assertEquals("1 jour, 5 heures, 6 minutes, 7 secondes et 8 millisecondes", PeriodFormat.wordBased(FR).print(p));
     }
 
     public void test_wordBased_fr_from_nl() {
         Locale.setDefault(NL);
         Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
-        assertEquals("1 jour, 5 heures, 6 minutes, 7 secondes et 8 millisecondes", PeriodFormat
-                .wordBased(FR).print(p));
+        assertEquals("1 jour, 5 heures, 6 minutes, 7 secondes et 8 millisecondes", PeriodFormat.wordBased(FR).print(p));
     }
 
     public void test_wordBased_en_from_de() {
         Locale.setDefault(DE);
         Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
-        assertEquals("1 day, 5 hours, 6 minutes, 7 seconds and 8 milliseconds", PeriodFormat
-                .wordBased(EN).print(p));
+        assertEquals("1 day, 5 hours, 6 minutes, 7 seconds and 8 milliseconds", PeriodFormat.wordBased(EN).print(p));
     }
 
     public void test_wordBased_en_from_nl() {
         Locale.setDefault(NL);
         Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
-        assertEquals("1 day, 5 hours, 6 minutes, 7 seconds and 8 milliseconds", PeriodFormat
-                .wordBased(EN).print(p));
+        assertEquals("1 day, 5 hours, 6 minutes, 7 seconds and 8 milliseconds", PeriodFormat.wordBased(EN).print(p));
     }
 
     public void test_wordBased_en_from_pl() {
         Locale.setDefault(PL);
         Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
-        assertEquals("1 day, 5 hours, 6 minutes, 7 seconds and 8 milliseconds", PeriodFormat
-                .wordBased(EN).print(p));
+        assertEquals("1 day, 5 hours, 6 minutes, 7 seconds and 8 milliseconds", PeriodFormat.wordBased(EN).print(p));
     }
 
-    public void test_wordBased_fr_from_en() {
+    public void test_wordBased_pl_from_fr() {
         Locale.setDefault(FR);
         Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
-        assertEquals("1 dzie\u0144, 5 godzin, 6 minut, 7 sekund i 8 milisekund", PeriodFormat
-                .wordBased(PL).print(p));
+        assertEquals("1 dzie\u0144, 5 godzin, 6 minut, 7 sekund i 8 milisekund", PeriodFormat.wordBased(PL).print(p));
     }
 }

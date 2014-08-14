@@ -1075,7 +1075,7 @@ public class PeriodFormatterBuilder {
         private final Pattern[] iPatterns;
 
         RegExAffix(String[] regExes, String[] texts) {
-            iSuffixes = texts;
+            iSuffixes = texts.clone();
             iPatterns = new Pattern[regExes.length];
 
             for (int i = 0; i < regExes.length; i++) {

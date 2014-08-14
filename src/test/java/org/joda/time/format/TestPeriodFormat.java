@@ -37,7 +37,7 @@ public class TestPeriodFormat extends TestCase {
     private static final Locale NL = new Locale("nl");
     private static final Locale DA = new Locale("da");
     private static final Locale JA = new Locale("ja");
-	private static final Locale PL = new Locale("pl");
+    private static final Locale PL = new Locale("pl");
 
     private Locale originalLocale = null;
 
@@ -372,247 +372,247 @@ public class TestPeriodFormat extends TestCase {
         }
     }   
 
-	// -----------------------------------------------------------------------
-	// wordBased(new Locale("pl")
-	// -----------------------------------------------------------------------
-	public void test_wordBased_pl_formatStandard() {
-		Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
-		assertEquals("1 dzie\u0144, 5 godzin, 6 minut, 7 sekund i 8 milisekund", PeriodFormat.wordBased(PL).print(p));
-	}
+    // -----------------------------------------------------------------------
+    // wordBased(new Locale("pl")
+    // -----------------------------------------------------------------------
+    public void test_wordBased_pl_formatStandard() {
+        Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
+        assertEquals("1 dzie\u0144, 5 godzin, 6 minut, 7 sekund i 8 milisekund", PeriodFormat.wordBased(PL).print(p));
+    }
 
-	// -----------------------------------------------------------------------
-	public void test_wordBased_pl_FormatOneField() {
-		Period p = Period.days(2);
-		assertEquals("2 dni", PeriodFormat.wordBased(PL).print(p));
-	}
+    // -----------------------------------------------------------------------
+    public void test_wordBased_pl_FormatOneField() {
+        Period p = Period.days(2);
+        assertEquals("2 dni", PeriodFormat.wordBased(PL).print(p));
+    }
 
-	// -----------------------------------------------------------------------
-	public void test_wordBased_pl_formatTwoFields() {
-		Period p = Period.days(2).withHours(5);
-		assertEquals("2 dni i 5 godzin", PeriodFormat.wordBased(PL).print(p));
-	}
+    // -----------------------------------------------------------------------
+    public void test_wordBased_pl_formatTwoFields() {
+        Period p = Period.days(2).withHours(5);
+        assertEquals("2 dni i 5 godzin", PeriodFormat.wordBased(PL).print(p));
+    }
 
-	// -----------------------------------------------------------------------
-	public void test_wordBased_pl_parseOneField() {
-		Period p = Period.days(2);
-		assertEquals(p, PeriodFormat.wordBased(PL).parsePeriod("2 dni"));
-	}
+    // -----------------------------------------------------------------------
+    public void test_wordBased_pl_parseOneField() {
+        Period p = Period.days(2);
+        assertEquals(p, PeriodFormat.wordBased(PL).parsePeriod("2 dni"));
+    }
 
-	// -----------------------------------------------------------------------
-	public void test_wordBased_pl_parseTwoFields() {
-		Period p = Period.days(2).withHours(5);
-		assertEquals(p, PeriodFormat.wordBased(PL).parsePeriod("2 dni i 5 godzin"));
-	}
+    // -----------------------------------------------------------------------
+    public void test_wordBased_pl_parseTwoFields() {
+        Period p = Period.days(2).withHours(5);
+        assertEquals(p, PeriodFormat.wordBased(PL).parsePeriod("2 dni i 5 godzin"));
+    }
 
-	// -----------------------------------------------------------------------
-	public void test_wordBased_pl_checkRedundantSeparator() {
-		try {
-			PeriodFormat.wordBased(PL).parsePeriod("2 dni and 5 godzin ");
-			fail("No exception was caught");
-		} catch (Exception e) {
-			assertEquals(IllegalArgumentException.class, e.getClass());
-		}
-	}
+    // -----------------------------------------------------------------------
+    public void test_wordBased_pl_checkRedundantSeparator() {
+        try {
+            PeriodFormat.wordBased(PL).parsePeriod("2 dni and 5 godzin ");
+            fail("No exception was caught");
+        } catch (Exception e) {
+            assertEquals(IllegalArgumentException.class, e.getClass());
+        }
+    }
 
-	// -----------------------------------------------------------------------
-	public void test_wordBased_pl_cached() {
-		assertSame(PeriodFormat.wordBased(PL), PeriodFormat.wordBased(PL));
-	}
-	
-	// -----------------------------------------------------------------------
-	public void test_wordBased_pl_regEx() {
-		PeriodFormatter pf = PeriodFormat.wordBased(PL);
-		assertEquals("1 rok", pf.print(Period.years(1)));
-		assertEquals("2 lata", pf.print(Period.years(2)));
-		assertEquals("5 lat", pf.print(Period.years(5)));
-		assertEquals("12 lat", pf.print(Period.years(12)));
-		assertEquals("15 lat", pf.print(Period.years(15)));
-		assertEquals("1112 lat", pf.print(Period.years(1112)));
-		assertEquals("1115 lat", pf.print(Period.years(1115)));
-		assertEquals("2112 lat", pf.print(Period.years(2112)));
-		assertEquals("2115 lat", pf.print(Period.years(2115)));
-		assertEquals("2212 lat", pf.print(Period.years(2212)));
-		assertEquals("2215 lat", pf.print(Period.years(2215)));
-		assertEquals("22 lata", pf.print(Period.years(22)));
-		assertEquals("25 lat", pf.print(Period.years(25)));
-		assertEquals("1122 lata", pf.print(Period.years(1122)));
-		assertEquals("1125 lat", pf.print(Period.years(1125)));
-		assertEquals("2122 lata", pf.print(Period.years(2122)));
-		assertEquals("2125 lat", pf.print(Period.years(2125)));
-		assertEquals("2222 lata", pf.print(Period.years(2222)));
-		assertEquals("2225 lat", pf.print(Period.years(2225)));
-		
-		assertEquals("1 miesi\u0105c", pf.print(Period.months(1)));
-		assertEquals("2 miesi\u0105ce", pf.print(Period.months(2)));
-		assertEquals("5 miesi\u0119cy", pf.print(Period.months(5)));
-		assertEquals("12 miesi\u0119cy", pf.print(Period.months(12)));
-		assertEquals("15 miesi\u0119cy", pf.print(Period.months(15)));
-		assertEquals("1112 miesi\u0119cy", pf.print(Period.months(1112)));
-		assertEquals("1115 miesi\u0119cy", pf.print(Period.months(1115)));
-		assertEquals("2112 miesi\u0119cy", pf.print(Period.months(2112)));
-		assertEquals("2115 miesi\u0119cy", pf.print(Period.months(2115)));
-		assertEquals("2212 miesi\u0119cy", pf.print(Period.months(2212)));
-		assertEquals("2215 miesi\u0119cy", pf.print(Period.months(2215)));
-		assertEquals("22 miesi\u0105ce", pf.print(Period.months(22)));
-		assertEquals("25 miesi\u0119cy", pf.print(Period.months(25)));
-		assertEquals("1122 miesi\u0105ce", pf.print(Period.months(1122)));
-		assertEquals("1125 miesi\u0119cy", pf.print(Period.months(1125)));
-		assertEquals("2122 miesi\u0105ce", pf.print(Period.months(2122)));
-		assertEquals("2125 miesi\u0119cy", pf.print(Period.months(2125)));
-		assertEquals("2222 miesi\u0105ce", pf.print(Period.months(2222)));
-		assertEquals("2225 miesi\u0119cy", pf.print(Period.months(2225)));
+    // -----------------------------------------------------------------------
+    public void test_wordBased_pl_cached() {
+        assertSame(PeriodFormat.wordBased(PL), PeriodFormat.wordBased(PL));
+    }
+    
+    // -----------------------------------------------------------------------
+    public void test_wordBased_pl_regEx() {
+        PeriodFormatter pf = PeriodFormat.wordBased(PL);
+        assertEquals("1 rok", pf.print(Period.years(1)));
+        assertEquals("2 lata", pf.print(Period.years(2)));
+        assertEquals("5 lat", pf.print(Period.years(5)));
+        assertEquals("12 lat", pf.print(Period.years(12)));
+        assertEquals("15 lat", pf.print(Period.years(15)));
+        assertEquals("1112 lat", pf.print(Period.years(1112)));
+        assertEquals("1115 lat", pf.print(Period.years(1115)));
+        assertEquals("2112 lat", pf.print(Period.years(2112)));
+        assertEquals("2115 lat", pf.print(Period.years(2115)));
+        assertEquals("2212 lat", pf.print(Period.years(2212)));
+        assertEquals("2215 lat", pf.print(Period.years(2215)));
+        assertEquals("22 lata", pf.print(Period.years(22)));
+        assertEquals("25 lat", pf.print(Period.years(25)));
+        assertEquals("1122 lata", pf.print(Period.years(1122)));
+        assertEquals("1125 lat", pf.print(Period.years(1125)));
+        assertEquals("2122 lata", pf.print(Period.years(2122)));
+        assertEquals("2125 lat", pf.print(Period.years(2125)));
+        assertEquals("2222 lata", pf.print(Period.years(2222)));
+        assertEquals("2225 lat", pf.print(Period.years(2225)));
+        
+        assertEquals("1 miesi\u0105c", pf.print(Period.months(1)));
+        assertEquals("2 miesi\u0105ce", pf.print(Period.months(2)));
+        assertEquals("5 miesi\u0119cy", pf.print(Period.months(5)));
+        assertEquals("12 miesi\u0119cy", pf.print(Period.months(12)));
+        assertEquals("15 miesi\u0119cy", pf.print(Period.months(15)));
+        assertEquals("1112 miesi\u0119cy", pf.print(Period.months(1112)));
+        assertEquals("1115 miesi\u0119cy", pf.print(Period.months(1115)));
+        assertEquals("2112 miesi\u0119cy", pf.print(Period.months(2112)));
+        assertEquals("2115 miesi\u0119cy", pf.print(Period.months(2115)));
+        assertEquals("2212 miesi\u0119cy", pf.print(Period.months(2212)));
+        assertEquals("2215 miesi\u0119cy", pf.print(Period.months(2215)));
+        assertEquals("22 miesi\u0105ce", pf.print(Period.months(22)));
+        assertEquals("25 miesi\u0119cy", pf.print(Period.months(25)));
+        assertEquals("1122 miesi\u0105ce", pf.print(Period.months(1122)));
+        assertEquals("1125 miesi\u0119cy", pf.print(Period.months(1125)));
+        assertEquals("2122 miesi\u0105ce", pf.print(Period.months(2122)));
+        assertEquals("2125 miesi\u0119cy", pf.print(Period.months(2125)));
+        assertEquals("2222 miesi\u0105ce", pf.print(Period.months(2222)));
+        assertEquals("2225 miesi\u0119cy", pf.print(Period.months(2225)));
 
-		assertEquals("1 tydzie\u0144", pf.print(Period.weeks(1)));
-		assertEquals("2 tygodnie", pf.print(Period.weeks(2)));
-		assertEquals("5 tygodni", pf.print(Period.weeks(5)));
-		assertEquals("12 tygodni", pf.print(Period.weeks(12)));
-		assertEquals("15 tygodni", pf.print(Period.weeks(15)));
-		assertEquals("1112 tygodni", pf.print(Period.weeks(1112)));
-		assertEquals("1115 tygodni", pf.print(Period.weeks(1115)));
-		assertEquals("2112 tygodni", pf.print(Period.weeks(2112)));
-		assertEquals("2115 tygodni", pf.print(Period.weeks(2115)));
-		assertEquals("2212 tygodni", pf.print(Period.weeks(2212)));
-		assertEquals("2215 tygodni", pf.print(Period.weeks(2215)));
-		assertEquals("22 tygodnie", pf.print(Period.weeks(22)));
-		assertEquals("25 tygodni", pf.print(Period.weeks(25)));
-		assertEquals("1122 tygodnie", pf.print(Period.weeks(1122)));
-		assertEquals("1125 tygodni", pf.print(Period.weeks(1125)));
-		assertEquals("2122 tygodnie", pf.print(Period.weeks(2122)));
-		assertEquals("2125 tygodni", pf.print(Period.weeks(2125)));
-		assertEquals("2222 tygodnie", pf.print(Period.weeks(2222)));
-		assertEquals("2225 tygodni", pf.print(Period.weeks(2225)));
+        assertEquals("1 tydzie\u0144", pf.print(Period.weeks(1)));
+        assertEquals("2 tygodnie", pf.print(Period.weeks(2)));
+        assertEquals("5 tygodni", pf.print(Period.weeks(5)));
+        assertEquals("12 tygodni", pf.print(Period.weeks(12)));
+        assertEquals("15 tygodni", pf.print(Period.weeks(15)));
+        assertEquals("1112 tygodni", pf.print(Period.weeks(1112)));
+        assertEquals("1115 tygodni", pf.print(Period.weeks(1115)));
+        assertEquals("2112 tygodni", pf.print(Period.weeks(2112)));
+        assertEquals("2115 tygodni", pf.print(Period.weeks(2115)));
+        assertEquals("2212 tygodni", pf.print(Period.weeks(2212)));
+        assertEquals("2215 tygodni", pf.print(Period.weeks(2215)));
+        assertEquals("22 tygodnie", pf.print(Period.weeks(22)));
+        assertEquals("25 tygodni", pf.print(Period.weeks(25)));
+        assertEquals("1122 tygodnie", pf.print(Period.weeks(1122)));
+        assertEquals("1125 tygodni", pf.print(Period.weeks(1125)));
+        assertEquals("2122 tygodnie", pf.print(Period.weeks(2122)));
+        assertEquals("2125 tygodni", pf.print(Period.weeks(2125)));
+        assertEquals("2222 tygodnie", pf.print(Period.weeks(2222)));
+        assertEquals("2225 tygodni", pf.print(Period.weeks(2225)));
 
-		assertEquals("1 dzie\u0144", pf.print(Period.days(1)));
-		assertEquals("2 dni", pf.print(Period.days(2)));
-		assertEquals("5 dni", pf.print(Period.days(5)));
-		assertEquals("12 dni", pf.print(Period.days(12)));
-		assertEquals("15 dni", pf.print(Period.days(15)));
-		assertEquals("22 dni", pf.print(Period.days(22)));
-		assertEquals("25 dni", pf.print(Period.days(25)));
+        assertEquals("1 dzie\u0144", pf.print(Period.days(1)));
+        assertEquals("2 dni", pf.print(Period.days(2)));
+        assertEquals("5 dni", pf.print(Period.days(5)));
+        assertEquals("12 dni", pf.print(Period.days(12)));
+        assertEquals("15 dni", pf.print(Period.days(15)));
+        assertEquals("22 dni", pf.print(Period.days(22)));
+        assertEquals("25 dni", pf.print(Period.days(25)));
 
-		assertEquals("1 godzina", pf.print(Period.hours(1)));
-		assertEquals("2 godziny", pf.print(Period.hours(2)));
-		assertEquals("5 godzin", pf.print(Period.hours(5)));
-		assertEquals("12 godzin", pf.print(Period.hours(12)));
-		assertEquals("15 godzin", pf.print(Period.hours(15)));
-		assertEquals("1112 godzin", pf.print(Period.hours(1112)));
-		assertEquals("1115 godzin", pf.print(Period.hours(1115)));
-		assertEquals("2112 godzin", pf.print(Period.hours(2112)));
-		assertEquals("2115 godzin", pf.print(Period.hours(2115)));
-		assertEquals("2212 godzin", pf.print(Period.hours(2212)));
-		assertEquals("2215 godzin", pf.print(Period.hours(2215)));
-		assertEquals("22 godziny", pf.print(Period.hours(22)));
-		assertEquals("25 godzin", pf.print(Period.hours(25)));
-		assertEquals("1122 godziny", pf.print(Period.hours(1122)));
-		assertEquals("1125 godzin", pf.print(Period.hours(1125)));
-		assertEquals("2122 godziny", pf.print(Period.hours(2122)));
-		assertEquals("2125 godzin", pf.print(Period.hours(2125)));
-		assertEquals("2222 godziny", pf.print(Period.hours(2222)));
-		assertEquals("2225 godzin", pf.print(Period.hours(2225)));
+        assertEquals("1 godzina", pf.print(Period.hours(1)));
+        assertEquals("2 godziny", pf.print(Period.hours(2)));
+        assertEquals("5 godzin", pf.print(Period.hours(5)));
+        assertEquals("12 godzin", pf.print(Period.hours(12)));
+        assertEquals("15 godzin", pf.print(Period.hours(15)));
+        assertEquals("1112 godzin", pf.print(Period.hours(1112)));
+        assertEquals("1115 godzin", pf.print(Period.hours(1115)));
+        assertEquals("2112 godzin", pf.print(Period.hours(2112)));
+        assertEquals("2115 godzin", pf.print(Period.hours(2115)));
+        assertEquals("2212 godzin", pf.print(Period.hours(2212)));
+        assertEquals("2215 godzin", pf.print(Period.hours(2215)));
+        assertEquals("22 godziny", pf.print(Period.hours(22)));
+        assertEquals("25 godzin", pf.print(Period.hours(25)));
+        assertEquals("1122 godziny", pf.print(Period.hours(1122)));
+        assertEquals("1125 godzin", pf.print(Period.hours(1125)));
+        assertEquals("2122 godziny", pf.print(Period.hours(2122)));
+        assertEquals("2125 godzin", pf.print(Period.hours(2125)));
+        assertEquals("2222 godziny", pf.print(Period.hours(2222)));
+        assertEquals("2225 godzin", pf.print(Period.hours(2225)));
 
-		assertEquals("1 minuta", pf.print(Period.minutes(1)));
-		assertEquals("2 minuty", pf.print(Period.minutes(2)));
-		assertEquals("5 minut", pf.print(Period.minutes(5)));
-		assertEquals("12 minut", pf.print(Period.minutes(12)));
-		assertEquals("15 minut", pf.print(Period.minutes(15)));
-		assertEquals("1112 minut", pf.print(Period.minutes(1112)));
-		assertEquals("1115 minut", pf.print(Period.minutes(1115)));
-		assertEquals("2112 minut", pf.print(Period.minutes(2112)));
-		assertEquals("2115 minut", pf.print(Period.minutes(2115)));
-		assertEquals("2212 minut", pf.print(Period.minutes(2212)));
-		assertEquals("2215 minut", pf.print(Period.minutes(2215)));
-		assertEquals("22 minuty", pf.print(Period.minutes(22)));
-		assertEquals("25 minut", pf.print(Period.minutes(25)));
-		assertEquals("1122 minuty", pf.print(Period.minutes(1122)));
-		assertEquals("1125 minut", pf.print(Period.minutes(1125)));
-		assertEquals("2122 minuty", pf.print(Period.minutes(2122)));
-		assertEquals("2125 minut", pf.print(Period.minutes(2125)));
-		assertEquals("2222 minuty", pf.print(Period.minutes(2222)));
-		assertEquals("2225 minut", pf.print(Period.minutes(2225)));
+        assertEquals("1 minuta", pf.print(Period.minutes(1)));
+        assertEquals("2 minuty", pf.print(Period.minutes(2)));
+        assertEquals("5 minut", pf.print(Period.minutes(5)));
+        assertEquals("12 minut", pf.print(Period.minutes(12)));
+        assertEquals("15 minut", pf.print(Period.minutes(15)));
+        assertEquals("1112 minut", pf.print(Period.minutes(1112)));
+        assertEquals("1115 minut", pf.print(Period.minutes(1115)));
+        assertEquals("2112 minut", pf.print(Period.minutes(2112)));
+        assertEquals("2115 minut", pf.print(Period.minutes(2115)));
+        assertEquals("2212 minut", pf.print(Period.minutes(2212)));
+        assertEquals("2215 minut", pf.print(Period.minutes(2215)));
+        assertEquals("22 minuty", pf.print(Period.minutes(22)));
+        assertEquals("25 minut", pf.print(Period.minutes(25)));
+        assertEquals("1122 minuty", pf.print(Period.minutes(1122)));
+        assertEquals("1125 minut", pf.print(Period.minutes(1125)));
+        assertEquals("2122 minuty", pf.print(Period.minutes(2122)));
+        assertEquals("2125 minut", pf.print(Period.minutes(2125)));
+        assertEquals("2222 minuty", pf.print(Period.minutes(2222)));
+        assertEquals("2225 minut", pf.print(Period.minutes(2225)));
 
-		assertEquals("1 sekunda", pf.print(Period.seconds(1)));
-		assertEquals("2 sekundy", pf.print(Period.seconds(2)));
-		assertEquals("5 sekund", pf.print(Period.seconds(5)));
-		assertEquals("12 sekund", pf.print(Period.seconds(12)));
-		assertEquals("15 sekund", pf.print(Period.seconds(15)));
-		assertEquals("1112 sekund", pf.print(Period.seconds(1112)));
-		assertEquals("1115 sekund", pf.print(Period.seconds(1115)));
-		assertEquals("2112 sekund", pf.print(Period.seconds(2112)));
-		assertEquals("2115 sekund", pf.print(Period.seconds(2115)));
-		assertEquals("2212 sekund", pf.print(Period.seconds(2212)));
-		assertEquals("2215 sekund", pf.print(Period.seconds(2215)));
-		assertEquals("22 sekundy", pf.print(Period.seconds(22)));
-		assertEquals("25 sekund", pf.print(Period.seconds(25)));
-		assertEquals("1122 sekundy", pf.print(Period.seconds(1122)));
-		assertEquals("1125 sekund", pf.print(Period.seconds(1125)));
-		assertEquals("2122 sekundy", pf.print(Period.seconds(2122)));
-		assertEquals("2125 sekund", pf.print(Period.seconds(2125)));
-		assertEquals("2222 sekundy", pf.print(Period.seconds(2222)));
-		assertEquals("2225 sekund", pf.print(Period.seconds(2225)));
+        assertEquals("1 sekunda", pf.print(Period.seconds(1)));
+        assertEquals("2 sekundy", pf.print(Period.seconds(2)));
+        assertEquals("5 sekund", pf.print(Period.seconds(5)));
+        assertEquals("12 sekund", pf.print(Period.seconds(12)));
+        assertEquals("15 sekund", pf.print(Period.seconds(15)));
+        assertEquals("1112 sekund", pf.print(Period.seconds(1112)));
+        assertEquals("1115 sekund", pf.print(Period.seconds(1115)));
+        assertEquals("2112 sekund", pf.print(Period.seconds(2112)));
+        assertEquals("2115 sekund", pf.print(Period.seconds(2115)));
+        assertEquals("2212 sekund", pf.print(Period.seconds(2212)));
+        assertEquals("2215 sekund", pf.print(Period.seconds(2215)));
+        assertEquals("22 sekundy", pf.print(Period.seconds(22)));
+        assertEquals("25 sekund", pf.print(Period.seconds(25)));
+        assertEquals("1122 sekundy", pf.print(Period.seconds(1122)));
+        assertEquals("1125 sekund", pf.print(Period.seconds(1125)));
+        assertEquals("2122 sekundy", pf.print(Period.seconds(2122)));
+        assertEquals("2125 sekund", pf.print(Period.seconds(2125)));
+        assertEquals("2222 sekundy", pf.print(Period.seconds(2222)));
+        assertEquals("2225 sekund", pf.print(Period.seconds(2225)));
 
-		assertEquals("1 milisekunda", pf.print(Period.millis(1)));
-		assertEquals("2 milisekundy", pf.print(Period.millis(2)));
-		assertEquals("5 milisekund", pf.print(Period.millis(5)));
-		assertEquals("12 milisekund", pf.print(Period.millis(12)));
-		assertEquals("15 milisekund", pf.print(Period.millis(15)));
-		assertEquals("1112 milisekund", pf.print(Period.millis(1112)));
-		assertEquals("1115 milisekund", pf.print(Period.millis(1115)));
-		assertEquals("2112 milisekund", pf.print(Period.millis(2112)));
-		assertEquals("2115 milisekund", pf.print(Period.millis(2115)));
-		assertEquals("2212 milisekund", pf.print(Period.millis(2212)));
-		assertEquals("2215 milisekund", pf.print(Period.millis(2215)));
-		assertEquals("22 milisekundy", pf.print(Period.millis(22)));
-		assertEquals("25 milisekund", pf.print(Period.millis(25)));
-		assertEquals("1122 milisekundy", pf.print(Period.millis(1122)));
-		assertEquals("1125 milisekund", pf.print(Period.millis(1125)));
-		assertEquals("2122 milisekundy", pf.print(Period.millis(2122)));
-		assertEquals("2125 milisekund", pf.print(Period.millis(2125)));
-		assertEquals("2222 milisekundy", pf.print(Period.millis(2222)));
-		assertEquals("2225 milisekund", pf.print(Period.millis(2225)));
-	}
+        assertEquals("1 milisekunda", pf.print(Period.millis(1)));
+        assertEquals("2 milisekundy", pf.print(Period.millis(2)));
+        assertEquals("5 milisekund", pf.print(Period.millis(5)));
+        assertEquals("12 milisekund", pf.print(Period.millis(12)));
+        assertEquals("15 milisekund", pf.print(Period.millis(15)));
+        assertEquals("1112 milisekund", pf.print(Period.millis(1112)));
+        assertEquals("1115 milisekund", pf.print(Period.millis(1115)));
+        assertEquals("2112 milisekund", pf.print(Period.millis(2112)));
+        assertEquals("2115 milisekund", pf.print(Period.millis(2115)));
+        assertEquals("2212 milisekund", pf.print(Period.millis(2212)));
+        assertEquals("2215 milisekund", pf.print(Period.millis(2215)));
+        assertEquals("22 milisekundy", pf.print(Period.millis(22)));
+        assertEquals("25 milisekund", pf.print(Period.millis(25)));
+        assertEquals("1122 milisekundy", pf.print(Period.millis(1122)));
+        assertEquals("1125 milisekund", pf.print(Period.millis(1125)));
+        assertEquals("2122 milisekundy", pf.print(Period.millis(2122)));
+        assertEquals("2125 milisekund", pf.print(Period.millis(2125)));
+        assertEquals("2222 milisekundy", pf.print(Period.millis(2222)));
+        assertEquals("2225 milisekund", pf.print(Period.millis(2225)));
+    }
     
     //-----------------------------------------------------------------------
     // Cross check languages
     //-----------------------------------------------------------------------
-	public void test_wordBased_fr_from_de() {
-		Locale.setDefault(DE);
-		Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
-		assertEquals("1 jour, 5 heures, 6 minutes, 7 secondes et 8 millisecondes", PeriodFormat
-				.wordBased(FR).print(p));
-	}
+    public void test_wordBased_fr_from_de() {
+        Locale.setDefault(DE);
+        Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
+        assertEquals("1 jour, 5 heures, 6 minutes, 7 secondes et 8 millisecondes", PeriodFormat
+                .wordBased(FR).print(p));
+    }
 
-	public void test_wordBased_fr_from_nl() {
-		Locale.setDefault(NL);
-		Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
-		assertEquals("1 jour, 5 heures, 6 minutes, 7 secondes et 8 millisecondes", PeriodFormat
-				.wordBased(FR).print(p));
-	}
+    public void test_wordBased_fr_from_nl() {
+        Locale.setDefault(NL);
+        Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
+        assertEquals("1 jour, 5 heures, 6 minutes, 7 secondes et 8 millisecondes", PeriodFormat
+                .wordBased(FR).print(p));
+    }
 
-	public void test_wordBased_en_from_de() {
-		Locale.setDefault(DE);
-		Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
-		assertEquals("1 day, 5 hours, 6 minutes, 7 seconds and 8 milliseconds", PeriodFormat
-				.wordBased(EN).print(p));
-	}
+    public void test_wordBased_en_from_de() {
+        Locale.setDefault(DE);
+        Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
+        assertEquals("1 day, 5 hours, 6 minutes, 7 seconds and 8 milliseconds", PeriodFormat
+                .wordBased(EN).print(p));
+    }
 
-	public void test_wordBased_en_from_nl() {
-		Locale.setDefault(NL);
-		Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
-		assertEquals("1 day, 5 hours, 6 minutes, 7 seconds and 8 milliseconds", PeriodFormat
-				.wordBased(EN).print(p));
-	}
+    public void test_wordBased_en_from_nl() {
+        Locale.setDefault(NL);
+        Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
+        assertEquals("1 day, 5 hours, 6 minutes, 7 seconds and 8 milliseconds", PeriodFormat
+                .wordBased(EN).print(p));
+    }
 
-	public void test_wordBased_en_from_pl() {
-		Locale.setDefault(PL);
-		Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
-		assertEquals("1 day, 5 hours, 6 minutes, 7 seconds and 8 milliseconds", PeriodFormat
-				.wordBased(EN).print(p));
-	}
+    public void test_wordBased_en_from_pl() {
+        Locale.setDefault(PL);
+        Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
+        assertEquals("1 day, 5 hours, 6 minutes, 7 seconds and 8 milliseconds", PeriodFormat
+                .wordBased(EN).print(p));
+    }
 
-	public void test_wordBased_fr_from_en() {
-		Locale.setDefault(FR);
-		Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
-		assertEquals("1 dzie\u0144, 5 godzin, 6 minut, 7 sekund i 8 milisekund", PeriodFormat
-				.wordBased(PL).print(p));
-	}
+    public void test_wordBased_fr_from_en() {
+        Locale.setDefault(FR);
+        Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
+        assertEquals("1 dzie\u0144, 5 godzin, 6 minut, 7 sekund i 8 milisekund", PeriodFormat
+                .wordBased(PL).print(p));
+    }
 }

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2014 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -372,8 +372,8 @@ public class PeriodFormatterBuilder {
     }
     
     /**
-     * Append a field prefix which applies only to the next appended field. If the
-     * field is not printed, neither is the prefix.
+     * Append a field prefix which applies only to the next appended field.
+     * If the field is not printed, neither is the prefix.
      * <p>
      * The value is converted to String. During parsing, the prefix is selected based
      * on the match with the regular expression. The index of the first regular
@@ -392,20 +392,21 @@ public class PeriodFormatterBuilder {
      * only - like the one above) the {@link #appendPrefix(String, String)} method
      * will produce in a slightly faster formatter and that
      * {@link #appendPrefix(String[], String[])} method should be only used when the
-     * mapping between values and prefixes is more complicated than 1 -> singular
-     * prefix, not 1 -> plural prefix.
+     * mapping between values and prefixes is more complicated than the difference between
+     * singular and plural.
      *
-     * @param regularExpressions - an array of regular expressions, at least one
-     *            element, length has to match the length of prefixes parameter
-     * @param prefixes - an array of prefixes, at least one element, length has to
-     *            match the length of regularExpressions parameter
+     * @param regularExpressions  an array of regular expressions, at least one
+     *  element, length has to match the length of prefixes parameter
+     * @param prefixes  an array of prefixes, at least one element, length has to
+     *  match the length of regularExpressions parameter
      * @return this PeriodFormatterBuilder
      * @throws IllegalStateException if no field exists to append to
      * @see #appendPrefix
+     * @since 2.5
      */
     public PeriodFormatterBuilder appendPrefix(String[] regularExpressions, String[] prefixes) {
-        if (regularExpressions == null || prefixes == null || regularExpressions.length < 1
-                || regularExpressions.length != prefixes.length) {
+        if (regularExpressions == null || prefixes == null ||
+                regularExpressions.length < 1 || regularExpressions.length != prefixes.length) {
             throw new IllegalArgumentException();
         }
         return appendPrefix(new RegExAffix(regularExpressions, prefixes));
@@ -622,8 +623,8 @@ public class PeriodFormatterBuilder {
     }
 
     /**
-     * Append a field suffix which applies only to the last appended field. If the
-     * field is not printed, neither is the suffix.
+     * Append a field suffix which applies only to the last appended field.
+     * If the field is not printed, neither is the suffix.
      * <p>
      * The value is converted to String. During parsing, the suffix is selected based
      * on the match with the regular expression. The index of the first regular
@@ -642,20 +643,21 @@ public class PeriodFormatterBuilder {
      * only - like the one above) the {@link #appendSuffix(String, String)} method
      * will result in a slightly faster formatter and that
      * {@link #appendSuffix(String[], String[])} method should be only used when the
-     * mapping between values and suffixes is more complicated than 1 -> singular
-     * suffix, not 1 -> plural suffix.
+     * mapping between values and prefixes is more complicated than the difference between
+     * singular and plural.
      *
-     * @param regularExpressions - an array of regular expressions, at least one
-     *            element, length has to match the length of suffixes parameter
-     * @param suffixes - an array of suffixes, at least one element, length has to
-     *            match the length of regularExpressions parameter
+     * @param regularExpressions  an array of regular expressions, at least one
+     *  element, length has to match the length of suffixes parameter
+     * @param suffixes  an array of suffixes, at least one element, length has to
+     *  match the length of regularExpressions parameter
      * @return this PeriodFormatterBuilder
      * @throws IllegalStateException if no field exists to append to
      * @see #appendPrefix
+     * @since 2.5
      */
     public PeriodFormatterBuilder appendSuffix(String[] regularExpressions, String[] suffixes) {
-        if (regularExpressions == null || suffixes == null || regularExpressions.length < 1
-                || regularExpressions.length != suffixes.length) {
+        if (regularExpressions == null || suffixes == null ||
+                regularExpressions.length < 1 || regularExpressions.length != suffixes.length) {
             throw new IllegalArgumentException();
         }
         return appendSuffix(new RegExAffix(regularExpressions, suffixes));
@@ -1089,9 +1091,7 @@ public class PeriodFormatterBuilder {
         }
 
         private int selectSuffixIndex(int value) {
-
             String valueString = String.valueOf(value);
-
             for (int i = 0; i < iPatterns.length; i++) {
                 if (iPatterns[i].matcher(valueString).matches()) {
                     return i;
@@ -1113,7 +1113,6 @@ public class PeriodFormatterBuilder {
         }
 
         public int parse(String periodStr, int position) {
-
             for (String text : iSuffixes) {
                 if (periodStr.regionMatches(true, position, text, 0, text.length())) {
                     return position + text.length();
@@ -1123,9 +1122,7 @@ public class PeriodFormatterBuilder {
         }
 
         public int scan(String periodStr, final int position) {
-
             int sourceLength = periodStr.length();
-
             for (int pos = position; pos < sourceLength; pos++) {
                 for (String text : iSuffixes) {
 

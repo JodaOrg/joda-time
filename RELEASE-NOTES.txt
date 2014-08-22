@@ -18,9 +18,11 @@ of restrictions. If the license causes you problems please contact the mailing l
 
 Enhancements since 2.4
 ----------------------
+- Add regex based Period formatting [#166]
+  Regex based formatting allows for languages with more complex rules, such as Polish
 
 
-Compatibility with 2.3
+Compatibility with 2.4
 ----------------------
 Build system - Yes
 
@@ -36,11 +38,11 @@ Data compatible - Yes, except
 Semantic compatible - Yes
 
 
-Deprecations since 2.3
+Deprecations since 2.4
 ----------------------
 
 
-Bug fixes since 2.3
+Bug fixes since 2.4
 -------------------
 - Additional overflow check for Duration constructor [#159]
   Handle MIN/MAX value better.

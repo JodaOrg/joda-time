@@ -339,6 +339,12 @@ public class TestPeriodFormatterBuilder extends TestCase {
             fail();
         } catch (IllegalArgumentException ex) {}
     }
+    
+    public void testPluralAffixParseOrder() {
+        PeriodFormatter f = new PeriodFormatterBuilder().appendDays().appendSuffix("day", "days").toFormatter();
+        String twoDays = Period.days(2).toString(f);
+        f.parsePeriod(twoDays);
+    }
 
     public void testFormatPrefixPlural1() {
         PeriodFormatter f = builder.appendPrefix("Year:", "Years:").appendYears().toFormatter();
@@ -377,6 +383,13 @@ public class TestPeriodFormatterBuilder extends TestCase {
             builder.appendPrefix(NULL_STRING, null);
             fail();
         } catch (IllegalArgumentException ex) {}
+    }
+    
+    public void testRegExAffixParseOrder() {
+        PeriodFormatter f = new PeriodFormatterBuilder().appendDays()
+                .appendSuffix(new String[]{"^1$","[0-9]*"}, new String[]{"day", "days"}).toFormatter();
+        String twoDays = Period.days(2).toString(f);
+        f.parsePeriod(twoDays);
     }
 
     public void testFormatPrefixRegEx1() {

@@ -18,7 +18,9 @@ package org.joda.time.format;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.TreeSet;
@@ -1073,13 +1075,22 @@ public class PeriodFormatterBuilder {
      * Different amounts are supported based on the provided parameters.
      */
     static class RegExAffix implements PeriodFieldAffix {
+        private static final Comparator<String> LENGTH_DESC_COMPARATOR = new Comparator<String>() {
+            public int compare(String o1, String o2) {
+                return o2.length() - o1.length();
+            }
+        };
+        
         private final String[] iSuffixes;
         private final Pattern[] iPatterns;
+
+        // The parse method has to iterate over the suffixes from the longest one to the shortest one
+        // Otherwise it might consume not enough characters.
+        private final String[] iSuffixesSortedDescByLength;
 
         RegExAffix(String[] regExes, String[] texts) {
             iSuffixes = texts.clone();
             iPatterns = new Pattern[regExes.length];
-
             for (int i = 0; i < regExes.length; i++) {
                 Pattern pattern = PATTERNS.get(regExes[i]);
                 if (pattern == null) {
@@ -1088,6 +1099,8 @@ public class PeriodFormatterBuilder {
                 }
                 iPatterns[i] = pattern;
             }
+            iSuffixesSortedDescByLength = iSuffixes.clone();
+            Arrays.sort(iSuffixesSortedDescByLength, LENGTH_DESC_COMPARATOR);
         }
 
         private int selectSuffixIndex(int value) {
@@ -1113,7 +1126,7 @@ public class PeriodFormatterBuilder {
         }
 
         public int parse(String periodStr, int position) {
-            for (String text : iSuffixes) {
+            for (String text : iSuffixesSortedDescByLength) {
                 if (periodStr.regionMatches(true, position, text, 0, text.length())) {
                     return position + text.length();
                 }
@@ -1124,7 +1137,7 @@ public class PeriodFormatterBuilder {
         public int scan(String periodStr, final int position) {
             int sourceLength = periodStr.length();
             for (int pos = position; pos < sourceLength; pos++) {
-                for (String text : iSuffixes) {
+                for (String text : iSuffixesSortedDescByLength) {
 
                     if (periodStr.regionMatches(true, pos, text, 0, text.length())) {
                         return pos;

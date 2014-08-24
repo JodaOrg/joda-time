@@ -445,6 +445,18 @@ public class TestPeriodFormatterBuilder extends TestCase {
         } catch (IllegalArgumentException ex) {
         }
     }
+    
+    //-----------------------------------------------------------------------
+    public void testFormatPrefixComposite1() {
+        PeriodFormatter f = new PeriodFormatterBuilder().appendPrefix("d")
+                .appendPrefix("a", "ay")
+                .appendPrefix(new String[] { "^1$", "^.*$" }, new String[] { "y:", "s:" })
+                .appendDays().toFormatter();
+        String oneMS = Period.days(2).toString(f);
+        assertEquals("days:2", oneMS);
+        Period period = f.parsePeriod(oneMS);
+        assertEquals(Period.days(2), period);
+    }
 
     //-----------------------------------------------------------------------
     public void testFormatSuffixSimple1() {
@@ -600,6 +612,18 @@ public class TestPeriodFormatterBuilder extends TestCase {
             fail();
         } catch (IllegalStateException ex) {
         }
+    }
+    
+    //-----------------------------------------------------------------------
+    public void testFormatSuffixComposite1() {
+        PeriodFormatter f = new PeriodFormatterBuilder().appendDays().appendSuffix("d")
+                .appendSuffix("a", "ay")
+                .appendSuffix(new String[] { "^1$", "^.*$" }, new String[] { "y", "s" })
+                .toFormatter();
+        String oneMS = Period.days(2).toString(f);
+        assertEquals("2days", oneMS);
+        Period period = f.parsePeriod(oneMS);
+        assertEquals(Period.days(2), period);
     }
 
     //-----------------------------------------------------------------------

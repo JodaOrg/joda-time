@@ -1185,9 +1185,14 @@ public class PeriodFormatterBuilder {
         }
 
         public int scan(String periodStr, final int position) {
-            int pos = iLeft.scan(periodStr, position);
-            if (pos >= 0) {
-                return iRight.scan(periodStr, pos);
+            int leftPosition = iLeft.scan(periodStr, position);
+            if (leftPosition >= 0) {
+                int rightPosition = iRight.scan(periodStr, iLeft.parse(periodStr, leftPosition));
+                if (rightPosition >= 0 && leftPosition > 0) { 
+                    return leftPosition;
+                } else {
+                    return rightPosition;
+                }
             }
             return ~position;
         }

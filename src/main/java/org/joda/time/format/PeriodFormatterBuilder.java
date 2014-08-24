@@ -21,8 +21,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -128,6 +130,11 @@ public class PeriodFormatterBuilder {
      */
     public PeriodFormatter toFormatter() {
         PeriodFormatter formatter = toFormatter(iElementPairs, iNotPrinter, iNotParser);
+        for (FieldFormatter fieldFormatter : iFieldFormatters) {
+            if (fieldFormatter != null) {
+                fieldFormatter.finish(iFieldFormatters);
+            }
+        }
         iFieldFormatters = (FieldFormatter[]) iFieldFormatters.clone();
         return formatter;
     }
@@ -936,13 +943,89 @@ public class PeriodFormatterBuilder {
          * @return position where affix starts, or original ~position if not found
          */
         int scan(String periodStr, int position);
+
+        /**
+         * @return a copy of array of affixes
+         */
+        String[] getAffixes();
+
+        /**
+         * This method should be called only once.
+         * After first call consecutive calls to this methods will have no effect.
+         * Causes this affix to ignore a match (parse and scan
+         * methods) if there is an affix in the passed list that holds 
+         * affix text which satisfy both following conditions:
+         *  - the affix text is also a match
+         *  - the affix text is longer than the match from this object
+         * 
+         * @param affixesToIgnore
+         */
+        void finish(Set<PeriodFieldAffix> affixesToIgnore);
+    }
+
+    static abstract class IgnorableAffix implements PeriodFieldAffix {
+
+        private String[] iOtherAffixes = new String[]{};
+
+        private boolean iFinished = false;
+
+        public void finish(Set<PeriodFieldAffix> periodFieldAffixesToIgnore) {
+            if (!iFinished) {
+                iFinished = true;
+                
+                // Calculate the shortest affix in this instance.
+                int shortestAffixLength = Integer.MAX_VALUE;
+                for (String affix : getAffixes()) {
+                    if (affix.length() < shortestAffixLength) {
+                        shortestAffixLength = affix.length();
+                    }
+                }
+                
+                // Pick only affixes that are longer than the shortest affix in this instance.
+                // This will reduce the number of parse operations and thus speed up the PeriodFormatter.
+                Set<String> affixesToIgnore = new HashSet<String>();
+                for (PeriodFieldAffix periodFieldAffixToIgnore : periodFieldAffixesToIgnore) {
+                    if (periodFieldAffixToIgnore != null) {
+                        for (String affixToIgnore : periodFieldAffixToIgnore.getAffixes()) {
+                            if (affixToIgnore.length() > shortestAffixLength) {
+                                affixesToIgnore.add(affixToIgnore);
+                            }
+                        }                       
+                    }
+                }
+                iOtherAffixes = affixesToIgnore.toArray(new String[affixesToIgnore
+                        .size()]);
+            }
+        }
+        
+        /**
+         * Checks if there is a match among the other affixes (stored internally) 
+         * that is longer than the passed value (textLength)
+         * 
+         * @param textLength - the length of the match
+         * @param periodStr - the Period string that will be parsed
+         * @param position - the position in the Period string at which the parsing should be started.
+         * @return true if the other affixes (stored internally) contain a match 
+         *  that is longer than the textLength parameter, false otherwise
+         */
+        protected boolean matchesOtherAffix(int textLength, String periodStr, int position) {
+            for (String affixToIgnore : iOtherAffixes) {
+                int textToIgnoreLength = affixToIgnore.length();
+                if (textLength < textToIgnoreLength
+                        && periodStr.regionMatches(true, position, affixToIgnore, 0,
+                                textToIgnoreLength)) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
     //-----------------------------------------------------------------------
     /**
      * Implements an affix where the text does not vary by the amount.
      */
-    static class SimpleAffix implements PeriodFieldAffix {
+    static class SimpleAffix extends IgnorableAffix {
         private final String iText;
 
         SimpleAffix(String text) {
@@ -965,7 +1048,9 @@ public class PeriodFormatterBuilder {
             String text = iText;
             int textLength = text.length();
             if (periodStr.regionMatches(true, position, text, 0, textLength)) {
-                return position + textLength;
+                if (!matchesOtherAffix(textLength, periodStr, position)) {
+                    return position + textLength;
+                }
             }
             return ~position;
         }
@@ -977,7 +1062,9 @@ public class PeriodFormatterBuilder {
             search:
             for (int pos = position; pos < sourceLength; pos++) {
                 if (periodStr.regionMatches(true, pos, text, 0, textLength)) {
-                    return pos;
+                    if (!matchesOtherAffix(textLength, periodStr, pos)) {
+                        return pos;
+                    }
                 }
                 // Only allow number characters to be skipped in search of suffix.
                 switch (periodStr.charAt(pos)) {
@@ -991,6 +1078,10 @@ public class PeriodFormatterBuilder {
             }
             return ~position;
         }
+
+        public String[] getAffixes() {
+            return new String[] { iText };
+        }
     }
 
     //-----------------------------------------------------------------------
@@ -998,7 +1089,7 @@ public class PeriodFormatterBuilder {
      * Implements an affix where the text varies by the amount of the field.
      * Only singular (1) and plural (not 1) are supported.
      */
-    static class PluralAffix implements PeriodFieldAffix {
+    static class PluralAffix extends IgnorableAffix {
         private final String iSingularText;
         private final String iPluralText;
 
@@ -1032,11 +1123,15 @@ public class PeriodFormatterBuilder {
 
             if (periodStr.regionMatches
                 (true, position, text1, 0, text1.length())) {
-                return position + text1.length();
+                if (!matchesOtherAffix(text1.length(), periodStr, position)) {
+                    return position + text1.length();
+                }
             }
             if (periodStr.regionMatches
                 (true, position, text2, 0, text2.length())) {
-                return position + text2.length();
+                if (!matchesOtherAffix(text2.length(), periodStr, position)) {
+                    return position + text2.length();
+                }
             }
 
             return ~position;
@@ -1059,13 +1154,21 @@ public class PeriodFormatterBuilder {
             int sourceLength = periodStr.length();
             for (int pos = position; pos < sourceLength; pos++) {
                 if (periodStr.regionMatches(true, pos, text1, 0, textLength1)) {
-                    return pos;
+                    if (!matchesOtherAffix(text1.length(), periodStr, pos)) {
+                        return pos;                        
+                    }
                 }
                 if (periodStr.regionMatches(true, pos, text2, 0, textLength2)) {
-                    return pos;
+                    if (!matchesOtherAffix(text2.length(), periodStr, pos)) {
+                        return pos;                        
+                    }
                 }
             }
             return ~position;
+        }
+
+        public String[] getAffixes() {
+            return new String[] { iSingularText, iPluralText };
         }
     }
 
@@ -1074,7 +1177,7 @@ public class PeriodFormatterBuilder {
      * Implements an affix where the text varies by the amount of the field.
      * Different amounts are supported based on the provided parameters.
      */
-    static class RegExAffix implements PeriodFieldAffix {
+    static class RegExAffix extends IgnorableAffix {
         private static final Comparator<String> LENGTH_DESC_COMPARATOR = new Comparator<String>() {
             public int compare(String o1, String o2) {
                 return o2.length() - o1.length();
@@ -1128,7 +1231,9 @@ public class PeriodFormatterBuilder {
         public int parse(String periodStr, int position) {
             for (String text : iSuffixesSortedDescByLength) {
                 if (periodStr.regionMatches(true, position, text, 0, text.length())) {
-                    return position + text.length();
+                    if (!matchesOtherAffix(text.length(), periodStr, position)) {
+                        return position + text.length();
+                    }
                 }
             }
             return ~position;
@@ -1138,13 +1243,18 @@ public class PeriodFormatterBuilder {
             int sourceLength = periodStr.length();
             for (int pos = position; pos < sourceLength; pos++) {
                 for (String text : iSuffixesSortedDescByLength) {
-
                     if (periodStr.regionMatches(true, pos, text, 0, text.length())) {
-                        return pos;
+                        if (!matchesOtherAffix(text.length(), periodStr, pos)) {
+                            return pos;
+                        }
                     }
                 }
             }
             return ~position;
+        }
+
+        public String[] getAffixes() {
+            return iSuffixes.clone();
         }
     }
 
@@ -1152,13 +1262,24 @@ public class PeriodFormatterBuilder {
     /**
      * Builds a composite affix by merging two other affix implementations.
      */
-    static class CompositeAffix implements PeriodFieldAffix {
+    static class CompositeAffix extends IgnorableAffix {
         private final PeriodFieldAffix iLeft;
         private final PeriodFieldAffix iRight;
+        private final String[] iLeftRightCombinations;
 
         CompositeAffix(PeriodFieldAffix left, PeriodFieldAffix right) {
             iLeft = left;
             iRight = right;
+
+            // We need to construct all possible combinations of left and right.
+            // We are doing it once in constructor so that getAffixes() is quicker.
+            Set<String> result = new HashSet<String>(); 
+            for (String leftText : iLeft.getAffixes()) {
+                for (String rightText : iRight.getAffixes()) {
+                    result.add(leftText + rightText);
+                }
+            }
+            iLeftRightCombinations =  result.toArray(new String[result.size()]);
         }
 
         public int calculatePrintedLength(int value) {
@@ -1177,24 +1298,33 @@ public class PeriodFormatterBuilder {
         }
 
         public int parse(String periodStr, int position) {
-            position = iLeft.parse(periodStr, position);
-            if (position >= 0) {
-                position = iRight.parse(periodStr, position);
+            int pos = iLeft.parse(periodStr, position);
+            if (pos >= 0) {
+                pos = iRight.parse(periodStr, pos);
+                if (pos >= 0 && matchesOtherAffix(parse(periodStr, pos) - pos, periodStr, position)) {
+                    return ~position;
+                }
             }
-            return position;
+            return pos;
         }
 
         public int scan(String periodStr, final int position) {
             int leftPosition = iLeft.scan(periodStr, position);
             if (leftPosition >= 0) {
                 int rightPosition = iRight.scan(periodStr, iLeft.parse(periodStr, leftPosition));
-                if (rightPosition >= 0 && leftPosition > 0) { 
-                    return leftPosition;
-                } else {
-                    return rightPosition;
+                if (!(rightPosition >= 0 && matchesOtherAffix(iRight.parse(periodStr, rightPosition) - leftPosition, periodStr, position))) {
+                    if (leftPosition > 0) {
+                        return leftPosition;
+                    } else {
+                        return rightPosition;
+                    }
                 }
             }
             return ~position;
+        }
+
+        public String[] getAffixes() {
+            return iLeftRightCombinations.clone();
         }
     }
 
@@ -1219,6 +1349,8 @@ public class PeriodFormatterBuilder {
         
         private final PeriodFieldAffix iPrefix;
         private final PeriodFieldAffix iSuffix;
+
+        private boolean iFinished = false;
 
         FieldFormatter(int minPrintedDigits, int printZeroSetting,
                        int maxParsedDigits, boolean rejectSignedValues,
@@ -1246,6 +1378,26 @@ public class PeriodFormatterBuilder {
                 suffix = new CompositeAffix(field.iSuffix, suffix);
             }
             iSuffix = suffix;
+        }
+
+        public void finish(FieldFormatter[] fieldFormatters) {
+            if (!iFinished) {
+                iFinished = true;
+                Set<PeriodFieldAffix> prefixesToIgnore = new HashSet<PeriodFormatterBuilder.PeriodFieldAffix>();
+                Set<PeriodFieldAffix> suffixesToIgnore = new HashSet<PeriodFormatterBuilder.PeriodFieldAffix>();
+                for (FieldFormatter fieldFormatter : fieldFormatters) {
+                    if (fieldFormatter != null && !this.equals(fieldFormatter)) {
+                        prefixesToIgnore.add(fieldFormatter.iPrefix);
+                        suffixesToIgnore.add(fieldFormatter.iSuffix);
+                    }
+                }
+                if (iPrefix != null) {
+                    iPrefix.finish(prefixesToIgnore);                    
+                }
+                if (iSuffix != null) {
+                    iSuffix.finish(suffixesToIgnore);                    
+                }
+            }
         }
 
         public int countFieldsToPrint(ReadablePeriod period, int stopAt, Locale locale) {

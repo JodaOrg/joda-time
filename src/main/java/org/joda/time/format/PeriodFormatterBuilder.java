@@ -963,10 +963,11 @@ public class PeriodFormatterBuilder {
         void finish(Set<PeriodFieldAffix> affixesToIgnore);
     }
 
+    /**
+     * An affix that can be ignored.
+     */
     static abstract class IgnorableAffix implements PeriodFieldAffix {
-
-        private String[] iOtherAffixes = new String[]{};
-
+        private String[] iOtherAffixes = new String[0];
         private boolean iFinished = false;
 
         public void finish(Set<PeriodFieldAffix> periodFieldAffixesToIgnore) {
@@ -993,8 +994,7 @@ public class PeriodFormatterBuilder {
                         }                       
                     }
                 }
-                iOtherAffixes = affixesToIgnore.toArray(new String[affixesToIgnore
-                        .size()]);
+                iOtherAffixes = affixesToIgnore.toArray(new String[affixesToIgnore.size()]);
             }
         }
         
@@ -1002,9 +1002,9 @@ public class PeriodFormatterBuilder {
          * Checks if there is a match among the other affixes (stored internally) 
          * that is longer than the passed value (textLength)
          * 
-         * @param textLength - the length of the match
-         * @param periodStr - the Period string that will be parsed
-         * @param position - the position in the Period string at which the parsing should be started.
+         * @param textLength  the length of the match
+         * @param periodStr  the Period string that will be parsed
+         * @param position  the position in the Period string at which the parsing should be started.
          * @return true if the other affixes (stored internally) contain a match 
          *  that is longer than the textLength parameter, false otherwise
          */
@@ -1012,8 +1012,7 @@ public class PeriodFormatterBuilder {
             for (String affixToIgnore : iOtherAffixes) {
                 int textToIgnoreLength = affixToIgnore.length();
                 if (textLength < textToIgnoreLength
-                        && periodStr.regionMatches(true, position, affixToIgnore, 0,
-                                textToIgnoreLength)) {
+                        && periodStr.regionMatches(true, position, affixToIgnore, 0, textToIgnoreLength)) {
                     return true;
                 }
             }
@@ -1155,12 +1154,12 @@ public class PeriodFormatterBuilder {
             for (int pos = position; pos < sourceLength; pos++) {
                 if (periodStr.regionMatches(true, pos, text1, 0, textLength1)) {
                     if (!matchesOtherAffix(text1.length(), periodStr, pos)) {
-                        return pos;                        
+                        return pos;
                     }
                 }
                 if (periodStr.regionMatches(true, pos, text2, 0, textLength2)) {
                     if (!matchesOtherAffix(text2.length(), periodStr, pos)) {
-                        return pos;                        
+                        return pos;
                     }
                 }
             }
@@ -1383,17 +1382,20 @@ public class PeriodFormatterBuilder {
         public void finish(FieldFormatter[] fieldFormatters) {
             if (!iFinished) {
                 iFinished = true;
-                Set<PeriodFieldAffix> prefixesToIgnore = new HashSet<PeriodFormatterBuilder.PeriodFieldAffix>();
-                Set<PeriodFieldAffix> suffixesToIgnore = new HashSet<PeriodFormatterBuilder.PeriodFieldAffix>();
+                // find all other affixes that are in use
+                Set<PeriodFieldAffix> prefixesToIgnore = new HashSet<PeriodFieldAffix>();
+                Set<PeriodFieldAffix> suffixesToIgnore = new HashSet<PeriodFieldAffix>();
                 for (FieldFormatter fieldFormatter : fieldFormatters) {
                     if (fieldFormatter != null && !this.equals(fieldFormatter)) {
                         prefixesToIgnore.add(fieldFormatter.iPrefix);
                         suffixesToIgnore.add(fieldFormatter.iSuffix);
                     }
                 }
+                // if we have a prefix then allow ignore behaviour
                 if (iPrefix != null) {
                     iPrefix.finish(prefixesToIgnore);                    
                 }
+                // if we have a suffix then allow ignore behaviour
                 if (iSuffix != null) {
                     iSuffix.finish(suffixesToIgnore);                    
                 }

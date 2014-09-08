@@ -339,7 +339,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
             fail();
         } catch (IllegalArgumentException ex) {}
     }
-    
+
     public void testFormatPrefixSimple4IgnoringPrefix() {
         PeriodFormatter f = builder.appendPrefix("m").appendMinutes()
                 .appendSeparator(" ").appendPrefix("ms").appendMillis().toFormatter();
@@ -348,7 +348,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         Period period = f.parsePeriod(oneMS);
         assertEquals(Period.millis(1), period);
     }
-    
+
     public void testPluralAffixParseOrder() {
         PeriodFormatter f = builder.appendDays().appendSuffix("day", "days").toFormatter();
         String twoDays = Period.days(2).toString(f);
@@ -486,7 +486,6 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals("msss2", twoMS);
         Period period2 = f.parsePeriod(twoMS);
         assertEquals(Period.millis(2), period2);
-
     }
 
     //-----------------------------------------------------------------------

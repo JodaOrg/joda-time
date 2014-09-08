@@ -91,7 +91,7 @@ public abstract class DateTimeZone implements Serializable {
     private static final long serialVersionUID = 5546345482340108586L;
 
     /** The time zone for Universal Coordinated Time */
-    public static final DateTimeZone UTC = new FixedDateTimeZone("UTC", "UTC", 0, 0);
+    public static final DateTimeZone UTC = UTCDateTimeZone.INSTANCE;
     /** Maximum offset. */
     private static final int MAX_MILLIS = (86400 * 1000) - 1;
 

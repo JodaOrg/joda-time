@@ -548,6 +548,15 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(Period.millis(1), period);
     }
 
+    public void testFormatPrefixSimple6IgnoringPrefix() {
+        PeriodFormatter f = builder.appendMinutes().appendSuffix("M")
+                .appendSeparator(" ").appendMillis().appendSuffix("ms").toFormatter();
+        String oneMS = Period.millis(1).toString(f);
+        assertEquals("1ms", oneMS);
+        Period period = f.parsePeriod(oneMS);
+        assertEquals(Period.millis(1), period);
+    }
+
     public void testFormatSuffixPlural1() {
         PeriodFormatter f = builder.appendYears().appendSuffix(" year", " years").toFormatter();
         assertEquals("1 year", f.print(PERIOD));

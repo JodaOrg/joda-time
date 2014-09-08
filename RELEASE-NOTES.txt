@@ -47,6 +47,10 @@ Bug fixes since 2.4
 - Additional overflow check for Duration constructor [#159]
   Handle MIN/MAX value better.
 
+- Handle complex prefix/suffix combinations [#154, #169]
+  For example, 'm' for minutes and 'ms' for milliseconds
+  which both start with 'm'
+
 
 Scala
 --------

@@ -967,13 +967,10 @@ public class PeriodFormatterBuilder {
      * An affix that can be ignored.
      */
     static abstract class IgnorableAffix implements PeriodFieldAffix {
-        private String[] iOtherAffixes = new String[0];
-        private boolean iFinished = false;
+        private volatile String[] iOtherAffixes;
 
         public void finish(Set<PeriodFieldAffix> periodFieldAffixesToIgnore) {
-            if (!iFinished) {
-                iFinished = true;
-                
+            if (iOtherAffixes == null) {
                 // Calculate the shortest affix in this instance.
                 int shortestAffixLength = Integer.MAX_VALUE;
                 for (String affix : getAffixes()) {
@@ -997,10 +994,10 @@ public class PeriodFormatterBuilder {
                 iOtherAffixes = affixesToIgnore.toArray(new String[affixesToIgnore.size()]);
             }
         }
-        
+
         /**
          * Checks if there is a match among the other affixes (stored internally) 
-         * that is longer than the passed value (textLength)
+         * that is longer than the passed value (textLength).
          * 
          * @param textLength  the length of the match
          * @param periodStr  the Period string that will be parsed
@@ -1009,11 +1006,13 @@ public class PeriodFormatterBuilder {
          *  that is longer than the textLength parameter, false otherwise
          */
         protected boolean matchesOtherAffix(int textLength, String periodStr, int position) {
-            for (String affixToIgnore : iOtherAffixes) {
-                int textToIgnoreLength = affixToIgnore.length();
-                if (textLength < textToIgnoreLength
-                        && periodStr.regionMatches(true, position, affixToIgnore, 0, textToIgnoreLength)) {
-                    return true;
+            if (iOtherAffixes != null) {
+                for (String affixToIgnore : iOtherAffixes) {
+                    int textToIgnoreLength = affixToIgnore.length();
+                    if (textLength < textToIgnoreLength
+                            && periodStr.regionMatches(true, position, affixToIgnore, 0, textToIgnoreLength)) {
+                        return true;
+                    }
                 }
             }
             return false;
@@ -1349,8 +1348,6 @@ public class PeriodFormatterBuilder {
         private final PeriodFieldAffix iPrefix;
         private final PeriodFieldAffix iSuffix;
 
-        private boolean iFinished = false;
-
         FieldFormatter(int minPrintedDigits, int printZeroSetting,
                        int maxParsedDigits, boolean rejectSignedValues,
                        int fieldType, FieldFormatter[] fieldFormatters,
@@ -1380,25 +1377,22 @@ public class PeriodFormatterBuilder {
         }
 
         public void finish(FieldFormatter[] fieldFormatters) {
-            if (!iFinished) {
-                iFinished = true;
-                // find all other affixes that are in use
-                Set<PeriodFieldAffix> prefixesToIgnore = new HashSet<PeriodFieldAffix>();
-                Set<PeriodFieldAffix> suffixesToIgnore = new HashSet<PeriodFieldAffix>();
-                for (FieldFormatter fieldFormatter : fieldFormatters) {
-                    if (fieldFormatter != null && !this.equals(fieldFormatter)) {
-                        prefixesToIgnore.add(fieldFormatter.iPrefix);
-                        suffixesToIgnore.add(fieldFormatter.iSuffix);
-                    }
+            // find all other affixes that are in use
+            Set<PeriodFieldAffix> prefixesToIgnore = new HashSet<PeriodFieldAffix>();
+            Set<PeriodFieldAffix> suffixesToIgnore = new HashSet<PeriodFieldAffix>();
+            for (FieldFormatter fieldFormatter : fieldFormatters) {
+                if (fieldFormatter != null && !this.equals(fieldFormatter)) {
+                    prefixesToIgnore.add(fieldFormatter.iPrefix);
+                    suffixesToIgnore.add(fieldFormatter.iSuffix);
                 }
-                // if we have a prefix then allow ignore behaviour
-                if (iPrefix != null) {
-                    iPrefix.finish(prefixesToIgnore);                    
-                }
-                // if we have a suffix then allow ignore behaviour
-                if (iSuffix != null) {
-                    iSuffix.finish(suffixesToIgnore);                    
-                }
+            }
+            // if we have a prefix then allow ignore behaviour
+            if (iPrefix != null) {
+                iPrefix.finish(prefixesToIgnore);                    
+            }
+            // if we have a suffix then allow ignore behaviour
+            if (iSuffix != null) {
+                iSuffix.finish(suffixesToIgnore);                    
             }
         }
 

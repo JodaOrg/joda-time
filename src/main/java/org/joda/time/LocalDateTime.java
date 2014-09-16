@@ -718,10 +718,14 @@ public final class LocalDateTime
     /**
      * Converts this object to a DateTime using the default zone.
      * <p>
-     * This method will throw an exception if the datetime that would be
-     * created does not exist when the time zone is taken into account.
+     * When the time zone is applied, the local date-time may be affected by daylight saving.
+     * In a daylight saving gap, when the local time does not exist,
+     * this method will throw an exception.
+     * In a daylight saving overlap, when the same local time occurs twice,
+     * this method returns the first occurrence of the local time.
      * 
      * @return <code>this</code>
+     * @throws IllegalInstantException if the local time does not exist when the time zone is applied
      */
     public DateTime toDateTime() {
         return toDateTime((DateTimeZone) null);
@@ -730,11 +734,15 @@ public final class LocalDateTime
     /**
      * Converts this object to a DateTime using the specified zone.
      * <p>
-     * This method will throw an exception if the datetime that would be
-     * created does not exist when the time zone is taken into account.
+     * When the time zone is applied, the local date-time may be affected by daylight saving.
+     * In a daylight saving gap, when the local time does not exist,
+     * this method will throw an exception.
+     * In a daylight saving overlap, when the same local time occurs twice,
+     * this method returns the first occurrence of the local time.
      * 
      * @param zone time zone to apply, or default if null
      * @return a DateTime using the same millis
+     * @throws IllegalInstantException if the local time does not exist when the time zone is applied
      */
     public DateTime toDateTime(DateTimeZone zone) {
         zone = DateTimeUtils.getZone(zone);

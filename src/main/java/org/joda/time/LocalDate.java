@@ -902,16 +902,22 @@ public final class LocalDate
      * <p>
      * The resulting chronology is determined by the chronology of this
      * LocalDate. The chronology of the time must match.
-     * If the time is null, the current time in the date's chronology is used.
      * <p>
-     * This method will throw an exception if the datetime that would be
-     * created does not exist when the time zone is taken into account.
+     * If the time is null, this method delegates to {@link #toDateTimeAtCurrentTime(DateTimeZone)}
+     * and the following documentation does not apply.
+     * <p>
+     * When the time zone is applied, the local date-time may be affected by daylight saving.
+     * In a daylight saving gap, when the local time does not exist,
+     * this method will throw an exception.
+     * In a daylight saving overlap, when the same local time occurs twice,
+     * this method returns the first occurrence of the local time.
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param time  the time of day to use, null means current time
+     * @param time  the time of day to use, null uses current time
      * @return the DateTime instance
      * @throws IllegalArgumentException if the chronology of the time does not match
+     * @throws IllegalInstantException if the local time does not exist when the time zone is applied
      */
     public DateTime toDateTime(LocalTime time) {
         return toDateTime(time, null);
@@ -923,29 +929,36 @@ public final class LocalDate
      * <p>
      * The resulting chronology is determined by the chronology of this
      * LocalDate plus the time zone. The chronology of the time must match.
-     * If the time is null, the current time in the date's chronology is used.
      * <p>
-     * This method will throw an exception if the datetime that would be
-     * created does not exist when the time zone is taken into account.
+     * If the time is null, this method delegates to {@link #toDateTimeAtCurrentTime(DateTimeZone)}
+     * and the following documentation does not apply.
+     * <p>
+     * When the time zone is applied, the local date-time may be affected by daylight saving.
+     * In a daylight saving gap, when the local time does not exist,
+     * this method will throw an exception.
+     * In a daylight saving overlap, when the same local time occurs twice,
+     * this method returns the first occurrence of the local time.
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param time  the time of day to use, null means current time
+     * @param time  the time of day to use, null uses current time
      * @param zone  the zone to get the DateTime in, null means default
      * @return the DateTime instance
      * @throws IllegalArgumentException if the chronology of the time does not match
+     * @throws IllegalInstantException if the local time does not exist when the time zone is applied
      */
     public DateTime toDateTime(LocalTime time, DateTimeZone zone) {
-        if (time != null && getChronology() != time.getChronology()) {
+        if (time == null) {
+            return toDateTimeAtCurrentTime(zone);
+        }
+        if (getChronology() != time.getChronology()) {
             throw new IllegalArgumentException("The chronology of the time does not match");
         }
         Chronology chrono = getChronology().withZone(zone);
-        long instant = DateTimeUtils.currentTimeMillis();
-        instant = chrono.set(this, instant);
-        if (time != null) {
-            instant = chrono.set(time, instant);
-        }
-        return new DateTime(instant, chrono);
+        return new DateTime(
+                        getYear(), getMonthOfYear(), getDayOfMonth(),
+                        time.getHourOfDay(), time.getMinuteOfHour(),
+                        time.getSecondOfMinute(), time.getMillisOfSecond(), chrono);
     }
 
     //-----------------------------------------------------------------------

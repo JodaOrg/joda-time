@@ -50,6 +50,7 @@ public class TestLocalDate_Basics extends TestCase {
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
+    private static final DateTimeZone NEW_YORK = DateTimeZone.forID("America/New_York");
 //    private static final int OFFSET = 1;
     private static final GJChronology GJ_UTC = GJChronology.getInstanceUTC();
     private static final Chronology COPTIC_PARIS = CopticChronology.getInstance(PARIS);
@@ -58,6 +59,7 @@ public class TestLocalDate_Basics extends TestCase {
     private static final Chronology COPTIC_UTC = CopticChronology.getInstanceUTC();
 //    private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
     private static final Chronology ISO_LONDON = ISOChronology.getInstance(LONDON);
+    private static final Chronology ISO_NEW_YORK = ISOChronology.getInstance(NEW_YORK);
 //    private static final Chronology ISO_TOKYO = ISOChronology.getInstance(TOKYO);
 //    private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
     private static final Chronology BUDDHIST_PARIS = BuddhistChronology.getInstance(PARIS);
@@ -858,6 +860,31 @@ public class TestLocalDate_Basics extends TestCase {
         DateTime test = base.toDateTime((LocalTime) null, TOKYO);
         check(base, 2005, 6, 9);
         DateTime expected = new DateTime(2005, 6, 9, 12, 13, 14, 15, COPTIC_TOKYO);
+        assertEquals(expected, test);
+    }
+
+    public void testToDateTime_LocalTime_Zone_dstGap() {
+        LocalDate base = new LocalDate(2014, 3, 30, ISO_LONDON);
+        LocalTime tod = new LocalTime(1, 30, 0, 0, ISO_LONDON);
+        try {
+            base.toDateTime(tod, LONDON);
+            fail();
+        } catch (IllegalInstantException ex) {}
+    }
+
+    public void testToDateTime_LocalTime_Zone_dstOverlap() {
+        LocalDate base = new LocalDate(2014, 10, 26, ISO_LONDON);
+        LocalTime tod = new LocalTime(1, 30, 0, 0, ISO_LONDON);
+        DateTime test = base.toDateTime(tod, LONDON);
+        DateTime expected = new DateTime(2014, 10, 26, 1, 30, ISO_LONDON).withEarlierOffsetAtOverlap();
+        assertEquals(expected, test);
+    }
+
+    public void testToDateTime_LocalTime_Zone_dstOverlap_NewYork() {
+        LocalDate base = new LocalDate(2007, 11, 4, ISO_NEW_YORK);
+        LocalTime tod = new LocalTime(1, 30, 0, 0, ISO_NEW_YORK);
+        DateTime test = base.toDateTime(tod, NEW_YORK);
+        DateTime expected = new DateTime(2007, 11, 4, 1, 30, ISO_NEW_YORK).withEarlierOffsetAtOverlap();
         assertEquals(expected, test);
     }
 

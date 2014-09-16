@@ -40,7 +40,13 @@ Serialization compatible - Yes
 Data compatible - Yes, except
  - DateTimeZone data updated to version 2014e
 
-Semantic compatible - Yes
+Semantic compatible - Yes, except
+ - LocalDate.toDateTime(LocalTime) and LocalDate.toDateTime(LocalTime, DateTimeZone)
+   If you pass a null LocalTime to the method, no changes have been made
+   If you pass a non-null LocalTime then behaviour during daylight saving gap and overlap has changed
+   During a daylight saving gap the exception has changed from IllegalFieldValueException to IllegalInstantException
+   During a daylight saving overlap the earlier offset is selected
+   Previously, the earlier offset was chosen east of Greenwich and the later offset west of Greenwich
 
 
 Deprecations since 2.4

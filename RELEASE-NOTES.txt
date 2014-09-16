@@ -66,6 +66,13 @@ Bug fixes since 2.4
   Referencing DateTimeZone and FixedDateTimeZone from two threads at startup could deadlock
   Add package scoped UTCDateTimeZone class to avoid this
 
+- Use of current time when converting from LocalDate [#177]
+  LocalDate.toDateTime(LocalTime) and LocalDate.toDateTime(LocalTime, DateTimeZone)
+  These methods used DateTimeUtils.currentTimeMillis() in all cases, rather than just when LocalTime was null
+  Behaviour when LocalTiem is null has been left unchanged
+  When LocalTime is non-null, it no longer uses DateTimeUtils.currentTimeMillis()
+  This change resulted in the semantic change detailed above
+
 
 Scala
 --------

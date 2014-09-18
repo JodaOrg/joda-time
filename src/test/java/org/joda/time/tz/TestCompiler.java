@@ -193,6 +193,16 @@ public class TestCompiler extends TestCase {
         assertEquals(false, test.iAdvanceDayOfWeek);
     }
 
+    public void test_2400_specific_day() {
+        StringTokenizer st = new StringTokenizer("Sep 21 24:00");
+        DateTimeOfYear test = new DateTimeOfYear(st);
+        assertEquals(9, test.iMonthOfYear);  // Sep
+        assertEquals(22, test.iDayOfMonth);   // 22st
+        assertEquals(0, test.iDayOfWeek);    // Ignored
+        assertEquals(0, test.iMillisOfDay);  // 00:00
+        assertEquals(false, test.iAdvanceDayOfWeek);
+    }
+
     public void test_Amman_2003() {
         DateTimeZone zone = DateTimeZone.forID("Asia/Amman");
         DateTime dt = new DateTime(2003, 3, 1, 0, 0, zone);

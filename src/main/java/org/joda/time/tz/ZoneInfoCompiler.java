@@ -581,13 +581,19 @@ public class ZoneInfoCompiler {
                         str = st.nextToken();
                         zoneChar = parseZoneChar(str.charAt(str.length() - 1));
                         if (str.equals("24:00")) {
-                            LocalDate date = (day == -1 ?
-                                    new LocalDate(2001, month, 1).plusMonths(1) :
-                                    new LocalDate(2001, month, day).plusDays(1));
-                            advance = (day != -1);
-                            month = date.getMonthOfYear();
-                            day = date.getDayOfMonth();
-                            dayOfWeek = ((dayOfWeek - 1 + 1) % 7) + 1;
+                            if (day == -1) {
+                                LocalDate date =  new LocalDate(2001, month, 1).plusMonths(1);
+                                advance = false;
+                                month = date.getMonthOfYear();
+                                day = date.getDayOfMonth();
+                                dayOfWeek = ((dayOfWeek - 1 + 1) % 7) + 1;
+                            } else {
+                                LocalDate date = new LocalDate(2001, month, day).plusDays(1);
+                                advance = true;
+                                month = date.getMonthOfYear();
+                                day = date.getDayOfMonth();
+                                dayOfWeek = 0;
+                            }
                         } else {
                             millis = parseTime(str);
                         }

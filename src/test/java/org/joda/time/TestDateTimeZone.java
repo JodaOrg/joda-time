@@ -264,7 +264,6 @@ public class TestDateTimeZone extends TestCase {
         map.put("AGT", "America/Argentina/Buenos_Aires");
         map.put("BET", "America/Sao_Paulo");
         map.put("ART", "Africa/Cairo");
-        map.put("CAT", "Africa/Harare");
         map.put("EAT", "Africa/Addis_Ababa");
         map.put("NET", "Asia/Yerevan");
         map.put("PLT", "Asia/Karachi");
@@ -287,6 +286,11 @@ public class TestDateTimeZone extends TestCase {
 //            System.out.println(zone);
 //            System.out.println("------");
         }
+        // gee thanks time-zone db maintainer for damaging the database
+        // and breaking the long-standing  association with CAT
+        TimeZone juZone = TimeZone.getTimeZone("CAT");
+        DateTimeZone zone = DateTimeZone.forTimeZone(juZone);
+        assertTrue(zone.getID().equals("Africa/Harare") || zone.getID().equals("Africa/Maputo"));
     }
 
     //-----------------------------------------------------------------------

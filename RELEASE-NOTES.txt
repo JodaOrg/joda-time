@@ -21,6 +21,9 @@ Enhancements since 2.4
 - Add regex based Period formatting [#166]
   Regex based formatting allows for languages with more complex rules, such as Polish
 
+- Add time-zone database version to manifest [#176, #183]
+  The version is available as key 'Time-Zone-Database-Version'
+
 
 Compatibility with 2.4
 ----------------------

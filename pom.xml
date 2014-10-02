@@ -302,6 +302,9 @@
               <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
               <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
             </manifest>
+            <manifestEntries>
+              <Time-Zone-Database-Version>${tz.database.version}</Time-Zone-Database-Version>
+            </manifestEntries>
           </archive>
         </configuration>
       </plugin>
@@ -742,5 +745,6 @@
     <!-- Other properties -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <tz.database.version>2014e</tz.database.version>
   </properties>
 </project>

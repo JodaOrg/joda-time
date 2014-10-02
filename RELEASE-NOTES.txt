@@ -39,6 +39,7 @@ Serialization compatible - Yes
 
 Data compatible - Yes, except
  - DateTimeZone data updated to version 2014e
+ - Bug in time zone compilation fixed
 
 Semantic compatible - Yes, except
  - LocalDate.toDateTime(LocalTime) and LocalDate.toDateTime(LocalTime, DateTimeZone)
@@ -55,6 +56,9 @@ Deprecations since 2.4
 
 Bug fixes since 2.4
 -------------------
+- Time zone compiler failed to correctly process 24:00 [#173, #182]
+  This caused reported time to be wrong in Africa/Cairo (and possibly others)
+
 - Additional overflow check for Duration constructor [#159]
   Handle MIN/MAX value better.
 

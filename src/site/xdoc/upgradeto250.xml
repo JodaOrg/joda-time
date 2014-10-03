@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+ <properties>
+  <title>Java date and time API - Upgrade from 2.4 to 2.5</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+<body>
+
+<section name="Upgrade">
+<p>
+These are the release notes and advice for upgrading Joda-Time from version 2.4 to version 2.5.
+<source>
+Joda-Time version 2.5
+---------------------
+
+Joda-Time is a date and time handling library that seeks to replace the JDK
+Date and Calendar classes.
+
+This release contains enhancements, bug fixes and a time zone update.
+The release runs on JDK 5 or later.
+
+Joda-Time is licensed under the business-friendly Apache License Version 2.
+This is the same license as all of Apache, plus other open source projects such as Spring.
+The intent is to make the code available to the Java community with the minimum
+of restrictions. If the license causes you problems please contact the mailing list.
+
+**  Please also check out our related projects   **
+** http://www.joda.org/joda-time/related.html **
+
+
+Enhancements since 2.4
+----------------------
+- Add regex based Period formatting [#166]
+  Regex based formatting allows for languages with more complex rules, such as Polish
+
+- Add time-zone database version to manifest [#176, #183]
+  The version is available as key 'Time-Zone-Database-Version'
+
+
+Compatibility with 2.4
+----------------------
+Build system - Yes
+
+Binary compatible - Yes
+
+Source compatible - Yes, except
+ - The constant DateTimeZone.UTC has changed implementation type
+   It used to be a FixedDateTimeZone, now it is a UTCDateTimeZone
+   This avoids a potential deadlock scenario
+   Serialization is unaffected
+   This change will only be observable if you cast the UTC constant to FixedDateTimeZone
+
+Serialization compatible - Yes
+
+Data compatible - Yes, except
+ - DateTimeZone data updated to version 2014h
+ - Bug in time zone compilation fixed
+
+Semantic compatible - Yes, except
+ - LocalDate.toDateTime(LocalTime) and LocalDate.toDateTime(LocalTime, DateTimeZone)
+   If you pass a null LocalTime to the method, no changes have been made
+   If you pass a non-null LocalTime then behaviour during daylight saving gap and overlap has changed
+   During a daylight saving gap the exception has changed from IllegalFieldValueException to IllegalInstantException
+   During a daylight saving overlap the earlier offset is selected
+   Previously, the earlier offset was chosen east of Greenwich and the later offset west of Greenwich
+
+
+Deprecations since 2.4
+----------------------
+
+
+Bug fixes since 2.4
+-------------------
+- Time zone compiler failed to correctly process 24:00 [#173, #182]
+  This caused reported time to be wrong in Africa/Cairo (and possibly others)
+
+- Additional overflow check for Duration constructor [#159]
+  Handle MIN/MAX value better.
+
+- Handle complex prefix/suffix combinations [#154, #169]
+  For example, 'm' for minutes and 'ms' for milliseconds
+  which both start with 'm'
+
+- Fix deadlock [#171]
+  Referencing DateTimeZone and FixedDateTimeZone from two threads at startup could deadlock
+  Add package scoped UTCDateTimeZone class to avoid this
+
+- Use of current time when converting from LocalDate [#177]
+  LocalDate.toDateTime(LocalTime) and LocalDate.toDateTime(LocalTime, DateTimeZone)
+  These methods used DateTimeUtils.currentTimeMillis() in all cases, rather than just when LocalTime was null
+  Behaviour when LocalTiem is null has been left unchanged
+  When LocalTime is non-null, it no longer uses DateTimeUtils.currentTimeMillis()
+  This change resulted in the semantic change detailed above
+
+
+Scala
+--------
+Joda-Time uses annotations from Joda-Convert.
+In the Java programming language, this dependency is optional, however in Scala it is not.
+Scala users must manually add the Joda-Convert v1.2 dependency.
+</source>
+</p>
+</section>
+
+</body>
+</document>

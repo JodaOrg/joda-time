@@ -97,6 +97,8 @@ public class PeriodFormatterBuilder {
 
     private PeriodFieldAffix iPrefix;
 
+    private Locale locale;
+
     // List of Printers and Parsers used to build a final formatter.
     private List<Object> iElementPairs;
     /** Set to true if the formatter is not a printer. */
@@ -129,7 +131,7 @@ public class PeriodFormatterBuilder {
      * @throws IllegalStateException if the builder can produce neither a printer nor a parser
      */
     public PeriodFormatter toFormatter() {
-        PeriodFormatter formatter = toFormatter(iElementPairs, iNotPrinter, iNotParser);
+        PeriodFormatter formatter = toFormatter(iElementPairs, iNotPrinter, iNotParser, locale);
         for (FieldFormatter fieldFormatter : iFieldFormatters) {
             if (fieldFormatter != null) {
                 fieldFormatter.finish(iFieldFormatters);
@@ -195,6 +197,19 @@ public class PeriodFormatterBuilder {
         iNotPrinter = false;
         iNotParser = false;
         iFieldFormatters = new FieldFormatter[10];
+    }
+
+    /**
+     * Sets the locale. This method only sets the locale for reference purposes.
+     * The passed locale does not have effect on the localization of formatted strings
+     * nor parsing of localized strings.
+     *
+     * @param locale  locale describing the PeriodFormatter
+     * @return this PeriodFormatterBuilder
+     */
+    public PeriodFormatterBuilder withLocale(Locale locale) {
+        this.locale = locale;
+        return this;
     }
 
     /**
@@ -887,7 +902,7 @@ public class PeriodFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
-    private static PeriodFormatter toFormatter(List<Object> elementPairs, boolean notPrinter, boolean notParser) {
+    private static PeriodFormatter toFormatter(List<Object> elementPairs, boolean notPrinter, boolean notParser, Locale locale) {
         if (notPrinter && notParser) {
             throw new IllegalStateException("Builder has created neither a printer nor a parser");
         }
@@ -895,18 +910,18 @@ public class PeriodFormatterBuilder {
         if (size >= 2 && elementPairs.get(0) instanceof Separator) {
             Separator sep = (Separator) elementPairs.get(0);
             if (sep.iAfterParser == null && sep.iAfterPrinter == null) {
-                PeriodFormatter f = toFormatter(elementPairs.subList(2, size), notPrinter, notParser);
+                PeriodFormatter f = toFormatter(elementPairs.subList(2, size), notPrinter, notParser, locale);
                 sep = sep.finish(f.getPrinter(), f.getParser());
-                return new PeriodFormatter(sep, sep);
+                return new PeriodFormatter(sep, sep, locale, null);
             }
         }
         Object[] comp = createComposite(elementPairs);
         if (notPrinter) {
-            return new PeriodFormatter(null, (PeriodParser) comp[1]);
+            return new PeriodFormatter(null, (PeriodParser) comp[1], locale, null);
         } else if (notParser) {
-            return new PeriodFormatter((PeriodPrinter) comp[0], null);
+            return new PeriodFormatter((PeriodPrinter) comp[0], null, locale, null);
         } else {
-            return new PeriodFormatter((PeriodPrinter) comp[0], (PeriodParser) comp[1]);
+            return new PeriodFormatter((PeriodPrinter) comp[0], (PeriodParser) comp[1], locale, null);
         }
     }
 

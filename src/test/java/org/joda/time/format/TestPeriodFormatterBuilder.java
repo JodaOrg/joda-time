@@ -1135,4 +1135,10 @@ public class TestPeriodFormatterBuilder extends TestCase {
         pfmt2.parsePeriod("PT1003199059S");
     }
 
+    public void testWithLocale() {
+        PeriodFormatter pf1 = builder.withLocale(Locale.ENGLISH).toFormatter();
+        assertEquals(Locale.ENGLISH, pf1.getLocale());
+        PeriodFormatter pf2 = builder.withLocale(Locale.CANADA_FRENCH).toFormatter();
+        assertEquals(Locale.CANADA_FRENCH, pf2.getLocale());
+    }
 }

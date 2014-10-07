@@ -609,4 +609,19 @@ public class TestPeriodFormat extends TestCase {
         Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
         assertEquals("1 dzie\u0144, 5 godzin, 6 minut, 7 sekund i 8 milisekund", PeriodFormat.wordBased(PL).print(p));
     }
+
+    public void test_getDefault_localeValue() {
+        PeriodFormatter pf = PeriodFormat.getDefault();
+        assertEquals(Locale.ENGLISH, pf.getLocale());
+    }
+
+    public void test_wordBased_localeValue() {
+        PeriodFormatter pf = PeriodFormat.wordBased();
+        assertEquals(DE, pf.getLocale());
+    }
+
+    public void test_wordBasedWithLocale_localeValue() {
+        PeriodFormatter pf = PeriodFormat.wordBased(FR);
+        assertEquals(FR, pf.getLocale());
+    }
 }

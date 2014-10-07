@@ -199,16 +199,16 @@ public class PeriodFormat {
         if (pf == null) {
             ResourceBundle b = ResourceBundle.getBundle(BUNDLE_NAME, locale);
             if (containsKey(b, "PeriodFormat.regex.separator")) {
-                pf = buildRegExFormatter(b);
+                pf = buildRegExFormatter(b, locale);
             } else {
-                pf = buildNonRegExFormatter(b);
+                pf = buildNonRegExFormatter(b, locale);
             }
             FORMATTERS.putIfAbsent(locale, pf);
         }
         return pf;
     }
 
-    private static PeriodFormatter buildRegExFormatter(ResourceBundle b) {
+    private static PeriodFormatter buildRegExFormatter(ResourceBundle b, Locale locale) {
         String[] variants = retrieveVariants(b);
         String regExSeparator = b.getString("PeriodFormat.regex.separator");
         
@@ -291,10 +291,11 @@ public class PeriodFormat {
         } else {
             builder.appendSuffix(b.getString("PeriodFormat.millisecond"), b.getString("PeriodFormat.milliseconds"));
         }
+        builder.withLocale(locale);
         return builder.toFormatter();
     }
 
-    private static PeriodFormatter buildNonRegExFormatter(ResourceBundle b) {
+    private static PeriodFormatter buildNonRegExFormatter(ResourceBundle b, Locale locale) {
         String[] variants = retrieveVariants(b);
         return new PeriodFormatterBuilder()
             .appendYears()
@@ -320,6 +321,7 @@ public class PeriodFormat {
             .appendSeparator(b.getString("PeriodFormat.commaspace"), b.getString("PeriodFormat.spaceandspace"), variants)
             .appendMillis()
             .appendSuffix(b.getString("PeriodFormat.millisecond"), b.getString("PeriodFormat.milliseconds"))
+            .withLocale(locale)
             .toFormatter();
     }
 

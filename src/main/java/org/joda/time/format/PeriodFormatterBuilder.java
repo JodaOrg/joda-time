@@ -1059,7 +1059,7 @@ public class PeriodFormatterBuilder {
             int sourceLength = periodStr.length();
             search:
             for (int pos = position; pos < sourceLength; pos++) {
-                if (periodStr.regionMatches(true, pos, text, 0, textLength)) {
+                if (periodStr.regionMatches(false, pos, text, 0, textLength)) {
                     if (!matchesOtherAffix(textLength, periodStr, pos)) {
                         return pos;
                     }

@@ -99,7 +99,7 @@ public class PeriodFormatter {
      * @param locale  the locale to use
      * @param type  the parse period type
      */
-    private PeriodFormatter(
+    PeriodFormatter(
             PeriodPrinter printer, PeriodParser parser,
             Locale locale, PeriodType type) {
         super();
@@ -148,15 +148,20 @@ public class PeriodFormatter {
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a new formatter with a different locale that will be used
-     * for printing and parsing.
+     * Returns a new formatter with a different locale.
+     * Note that the returned PeriodFormatter will work exactly the same as this instance
+     * with the exception of {@link org.joda.time.format.PeriodFormatter#getLocale()} method
+     * which will return the passed locale. The passed locale will have no effect
+     * on the localization of prefixes/suffixes done with the help of the returned PeriodFormatter.
      * <p>
      * A PeriodFormatter is immutable, so a new instance is returned,
      * and the original is unaltered and still usable.
-     * 
+     *
      * @param locale  the locale to use
      * @return the new formatter
+     * @deprecated use {@link PeriodFormat#wordBased(java.util.Locale)} to create a new PeriodFormatter
      */
+    @Deprecated
     public PeriodFormatter withLocale(Locale locale) {
         if (locale == getLocale() || (locale != null && locale.equals(getLocale()))) {
             return this;

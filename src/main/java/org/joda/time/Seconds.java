@@ -39,7 +39,7 @@ import org.joda.time.format.PeriodFormatter;
  * @author Stephen Colebourne
  * @since 1.4
  */
-public final class Seconds extends BaseSingleFieldPeriod {
+public final class Seconds extends BaseSingleFieldPeriod implements StandardPeriod {
 
     /** Constant representing zero seconds. */
     public static final Seconds ZERO = new Seconds(0);
@@ -293,6 +293,24 @@ public final class Seconds extends BaseSingleFieldPeriod {
     public Minutes toStandardMinutes() {
         return Minutes.minutes(getValue() / DateTimeConstants.SECONDS_PER_MINUTE);
     }
+    
+    /**
+     * Converts this period in seconds to a period in seconds assuming a
+     * 24 hour day, 60 minute hour and 60 second minute.
+     * <p>
+     * This method allows you to convert between different types of period.
+     * However to achieve this it makes the assumption that all days are 24 hours
+     * long, all hours are 60 minutes long and all minutes are 60 seconds long.
+     * This is not true when daylight savings is considered and may also not
+     * be true for some unusual chronologies. However, it is included
+     * as it is a useful operation for many applications and business rules.
+     * 
+     * @return this
+     */
+    public Seconds toStandardSeconds() {
+    	return this;
+    }
+    
 
     //-----------------------------------------------------------------------
     /**

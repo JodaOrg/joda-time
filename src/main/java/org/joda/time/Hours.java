@@ -39,7 +39,7 @@ import org.joda.time.format.PeriodFormatter;
  * @author Stephen Colebourne
  * @since 1.4
  */
-public final class Hours extends BaseSingleFieldPeriod {
+public final class Hours extends BaseSingleFieldPeriod implements StandardPeriod {
 
     /** Constant representing zero hours. */
     public static final Hours ZERO = new Hours(0);
@@ -280,6 +280,22 @@ public final class Hours extends BaseSingleFieldPeriod {
         return Days.days(getValue() / DateTimeConstants.HOURS_PER_DAY);
     }
 
+    /**
+     * Converts this period in hours to a period in hours assuming a
+     * 24 hour day.
+     * <p>
+     * This method allows you to convert between different types of period.
+     * However to achieve this it makes the assumption that all days are 24 hours long.
+     * This is not true when daylight savings is considered and may also not
+     * be true for some unusual chronologies. However, it is included
+     * as it is a useful operation for many applications and business rules.
+     * 
+     * @return this
+     */
+    public Hours toStandardHours(){
+    	return this;
+    }
+    
     /**
      * Converts this period in hours to a period in minutes assuming a
      * 60 minute hour.

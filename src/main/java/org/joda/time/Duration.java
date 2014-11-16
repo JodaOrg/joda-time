@@ -38,7 +38,7 @@ import org.joda.time.field.FieldUtils;
  */
 public final class Duration
         extends BaseDuration
-        implements ReadableDuration, Serializable {
+        implements ReadableDuration, Serializable, StandardPeriod {
 
     /** Constant representing zero millisecond duration */
     public static final Duration ZERO = new Duration(0L);
@@ -212,6 +212,25 @@ public final class Duration
 
     //-----------------------------------------------------------------------
     /**
+     * Gets the length of this duration in weeks assuming that there are the
+     * standard number of milliseconds in a day.
+     * <p>
+     * This method assumes that there are 7 days in a week, 24 hours in a day,
+     * 60 minutes in an hour, 60 seconds in a minute and 1000 milliseconds in
+     * a second. This will be true for most days, however days with Daylight
+     * Savings changes will not have 24 hours, so use this method with care.
+     * <p>
+     * This returns <code>getMillis() / MILLIS_PER_WEEK</code>.
+     * The result is an integer division, thus excess milliseconds are truncated.
+     *
+     * @return the length of the duration in standard seconds
+     * @since 2.0
+     */
+    public long getStandardWeeks() {
+        return getMillis() / DateTimeConstants.MILLIS_PER_WEEK;
+    }
+    
+    /**
      * Gets the length of this duration in days assuming that there are the
      * standard number of milliseconds in a day.
      * <p>
@@ -295,6 +314,23 @@ public final class Duration
     }
 
     /**
+     * Converts this period to a period in weeks assuming a
+     * 7 day week.
+     * <p>
+     * This method allows you to convert between different types of period.
+     * However to achieve this it makes the assumption that all weeks are
+     * 7 days long.
+     * This may not be true for some unusual chronologies. However, it is included
+     * as it is a useful operation for many applications and business rules.
+     * 
+     * @return a period representing the number of weeks for this period
+     */
+    public Weeks toStandardWeeks(){
+    	long weeks = getStandardWeeks();
+    	return Weeks.weeks(FieldUtils.safeToInt(weeks));
+    }
+    
+    /**
      * Converts this duration to a period in days assuming that there are the
      * standard number of milliseconds in a day.
      * <p>
@@ -362,6 +398,23 @@ public final class Duration
         return Seconds.seconds(FieldUtils.safeToInt(seconds));
     }
 
+    /**
+     * Converts this period to a duration in milliseconds assuming a
+     * 24 hour day, 60 minute hour and 60 second minute.
+     * <p>
+     * This method allows you to convert from a period to a duration.
+     * However to achieve this it makes the assumption that all days are 24 hours
+     * long, all hours are 60 minutes and all minutes are 60 seconds.
+     * This is not true when daylight savings time is considered, and may also
+     * not be true for some unusual chronologies. However, it is included as it
+     * is a useful operation for many applications and business rules.
+     * 
+     * @return this
+     */
+    public Duration toStandardDuration(){
+    	return this;
+    }
+    
     //-----------------------------------------------------------------------
     /**
      * Creates a new Duration instance with a different millisecond length.

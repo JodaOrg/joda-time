@@ -39,7 +39,7 @@ import org.joda.time.format.PeriodFormatter;
  * @author Stephen Colebourne
  * @since 1.4
  */
-public final class Weeks extends BaseSingleFieldPeriod {
+public final class Weeks extends BaseSingleFieldPeriod implements StandardPeriod {
 
     /** Constant representing zero weeks. */
     public static final Weeks ZERO = new Weeks(0);
@@ -227,6 +227,23 @@ public final class Weeks extends BaseSingleFieldPeriod {
     }
 
     //-----------------------------------------------------------------------
+    /**
+     * Converts this period in weeks to a period in weeks assuming a
+     * 7 day week.
+     * <p>
+     * This method allows you to convert between different types of period.
+     * However to achieve this it makes the assumption that all weeks are
+     * 7 days long.
+     * This may not be true for some unusual chronologies. However, it is included
+     * as it is a useful operation for many applications and business rules.
+     * 
+     * @return this
+     */
+    public Weeks toStandardWeeks(){
+    	return this;
+    }
+    
+    
     /**
      * Converts this period in weeks to a period in days assuming a
      * 7 day week.

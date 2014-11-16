@@ -44,7 +44,7 @@ class ReadableDurationConverter extends AbstractConverter
 
     //-----------------------------------------------------------------------
     /**
-     * Extracts the millis from an object of this convertor's type.
+     * Extracts the millis from an object of this converter's type.
      * 
      * @param object  the object to convert, must not be null
      * @return the millisecond value

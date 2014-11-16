@@ -26,7 +26,7 @@ import org.joda.time.JodaTimePermission;
  * interval converters.
  * <p>
  * This class is threadsafe, so adding/removing converters can be done at any
- * time. Updating the set of convertors is relatively expensive, and so should
+ * time. Updating the set of converters is relatively expensive, and so should
  * not be performed often.
  * <p>
  * The default instant converters are:

@@ -40,7 +40,7 @@ public abstract class AbstractConverter implements Converter {
 
     //-----------------------------------------------------------------------
     /**
-     * Extracts the millis from an object of this convertor's type.
+     * Extracts the millis from an object of this converter's type.
      * <p>
      * This implementation returns the current time.
      * 
@@ -54,7 +54,7 @@ public abstract class AbstractConverter implements Converter {
 
     //-----------------------------------------------------------------------
     /**
-     * Extracts the chronology from an object of this convertor's type
+     * Extracts the chronology from an object of this converter's type
      * where the time zone is specified.
      * <p>
      * This implementation returns the ISO chronology.
@@ -68,7 +68,7 @@ public abstract class AbstractConverter implements Converter {
     }
 
     /**
-     * Extracts the chronology from an object of this convertor's type
+     * Extracts the chronology from an object of this converter's type
      * where the chronology is specified.
      * <p>
      * This implementation returns the chronology specified, or the

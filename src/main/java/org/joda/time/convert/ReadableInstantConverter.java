@@ -88,7 +88,7 @@ class ReadableInstantConverter extends AbstractConverter
     }
 
     /**
-     * Extracts the millis from an object of this convertor's type.
+     * Extracts the millis from an object of this converter's type.
      * 
      * @param object  the ReadableInstant to convert, must not be null
      * @param chrono  the non-null result of getChronology

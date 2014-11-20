@@ -46,6 +46,9 @@ Bug fixes since 2.5
   For example, 'M' for months and 'm' for minutes.
   Parser is generally case insensitive, but handles this specific case sensitivity
 
+- Attempt to tackle an Android deadlock [#196]
+  Use dedicated lock objects instead of locking on the class object
+
 
 Scala
 --------

@@ -101,14 +101,24 @@ public abstract class DateTimeZone implements Serializable {
     private static NameProvider cNameProvider;
     /** The set of ID strings. */
     private static Set<String> cAvailableIDs;
+
+    /** Lock object to avoid locking on DateTimeZone.class. */
+    private static final Object cDefaultLock = new Object();
     /** The default time zone. */
     private static volatile DateTimeZone cDefault;
+
+    /** Lock object to avoid locking on DateTimeZone.class. */
+    private static final Object cOffsetFormatterLock = new Object();
     /** A formatter for printing and parsing zones. */
     private static DateTimeFormatter cOffsetFormatter;
 
+    /** Lock object to avoid locking on DateTimeZone.class. */
+    private static final Object iFixedOffsetCacheLock = new Object();
     /** Cache that maps fixed offset strings to softly referenced DateTimeZones */
     private static Map<String, SoftReference<DateTimeZone>> iFixedOffsetCache;
 
+    /** Lock object to avoid locking on DateTimeZone.class. */
+    private static final Object cZoneIdConversionLock = new Object();
     /** Cache of old zone IDs to new zone IDs */
     private static Map<String, String> cZoneIdConversion;
 
@@ -133,7 +143,7 @@ public abstract class DateTimeZone implements Serializable {
     public static DateTimeZone getDefault() {
         DateTimeZone zone = cDefault;
         if (zone == null) {
-            synchronized(DateTimeZone.class) {
+            synchronized(cDefaultLock) {
                 zone = cDefault;
                 if (zone == null) {
                     DateTimeZone temp = null;
@@ -179,7 +189,7 @@ public abstract class DateTimeZone implements Serializable {
         if (zone == null) {
             throw new IllegalArgumentException("The datetime zone must not be null");
         }
-        synchronized(DateTimeZone.class) {
+        synchronized(cDefaultLock) {
             cDefault = zone;
         }
     }
@@ -376,24 +386,26 @@ public abstract class DateTimeZone implements Serializable {
      * @param offset  the offset in millis
      * @return the zone
      */
-    private static synchronized DateTimeZone fixedOffsetZone(String id, int offset) {
+    private static DateTimeZone fixedOffsetZone(String id, int offset) {
         if (offset == 0) {
             return DateTimeZone.UTC;
         }
-        if (iFixedOffsetCache == null) {
-            iFixedOffsetCache = new HashMap<String, SoftReference<DateTimeZone>>();
-        }
-        DateTimeZone zone;
-        Reference<DateTimeZone> ref = iFixedOffsetCache.get(id);
-        if (ref != null) {
-            zone = ref.get();
-            if (zone != null) {
-                return zone;
+        synchronized (iFixedOffsetCacheLock) {
+            if (iFixedOffsetCache == null) {
+                iFixedOffsetCache = new HashMap<String, SoftReference<DateTimeZone>>();
             }
+            DateTimeZone zone;
+            Reference<DateTimeZone> ref = iFixedOffsetCache.get(id);
+            if (ref != null) {
+                zone = ref.get();
+                if (zone != null) {
+                    return zone;
+                }
+            }
+            zone = new FixedDateTimeZone(id, null, offset, offset);
+            iFixedOffsetCache.put(id, new SoftReference<DateTimeZone>(zone));
+            return zone;
         }
-        zone = new FixedDateTimeZone(id, null, offset, offset);
-        iFixedOffsetCache.put(id, new SoftReference<DateTimeZone>(zone));
-        return zone;
     }
 
     /**
@@ -582,47 +594,49 @@ public abstract class DateTimeZone implements Serializable {
      * @param id  the old style id
      * @return the new style id, null if not found
      */
-    private static synchronized String getConvertedId(String id) {
-        Map<String, String> map = cZoneIdConversion;
-        if (map == null) {
-            // Backwards compatibility with TimeZone.
-            map = new HashMap<String, String>();
-            map.put("GMT", "UTC");
-            map.put("WET", "WET");
-            map.put("CET", "CET");
-            map.put("MET", "CET");
-            map.put("ECT", "CET");
-            map.put("EET", "EET");
-            map.put("MIT", "Pacific/Apia");
-            map.put("HST", "Pacific/Honolulu");  // JDK 1.1 compatible
-            map.put("AST", "America/Anchorage");
-            map.put("PST", "America/Los_Angeles");
-            map.put("MST", "America/Denver");  // JDK 1.1 compatible
-            map.put("PNT", "America/Phoenix");
-            map.put("CST", "America/Chicago");
-            map.put("EST", "America/New_York");  // JDK 1.1 compatible
-            map.put("IET", "America/Indiana/Indianapolis");
-            map.put("PRT", "America/Puerto_Rico");
-            map.put("CNT", "America/St_Johns");
-            map.put("AGT", "America/Argentina/Buenos_Aires");
-            map.put("BET", "America/Sao_Paulo");
-            map.put("ART", "Africa/Cairo");
-            map.put("CAT", "Africa/Harare");
-            map.put("EAT", "Africa/Addis_Ababa");
-            map.put("NET", "Asia/Yerevan");
-            map.put("PLT", "Asia/Karachi");
-            map.put("IST", "Asia/Kolkata");
-            map.put("BST", "Asia/Dhaka");
-            map.put("VST", "Asia/Ho_Chi_Minh");
-            map.put("CTT", "Asia/Shanghai");
-            map.put("JST", "Asia/Tokyo");
-            map.put("ACT", "Australia/Darwin");
-            map.put("AET", "Australia/Sydney");
-            map.put("SST", "Pacific/Guadalcanal");
-            map.put("NST", "Pacific/Auckland");
-            cZoneIdConversion = map;
+    private static String getConvertedId(String id) {
+        synchronized (cZoneIdConversionLock) {
+            Map<String, String> map = cZoneIdConversion;
+            if (map == null) {
+                // Backwards compatibility with TimeZone.
+                map = new HashMap<String, String>();
+                map.put("GMT", "UTC");
+                map.put("WET", "WET");
+                map.put("CET", "CET");
+                map.put("MET", "CET");
+                map.put("ECT", "CET");
+                map.put("EET", "EET");
+                map.put("MIT", "Pacific/Apia");
+                map.put("HST", "Pacific/Honolulu");  // JDK 1.1 compatible
+                map.put("AST", "America/Anchorage");
+                map.put("PST", "America/Los_Angeles");
+                map.put("MST", "America/Denver");  // JDK 1.1 compatible
+                map.put("PNT", "America/Phoenix");
+                map.put("CST", "America/Chicago");
+                map.put("EST", "America/New_York");  // JDK 1.1 compatible
+                map.put("IET", "America/Indiana/Indianapolis");
+                map.put("PRT", "America/Puerto_Rico");
+                map.put("CNT", "America/St_Johns");
+                map.put("AGT", "America/Argentina/Buenos_Aires");
+                map.put("BET", "America/Sao_Paulo");
+                map.put("ART", "Africa/Cairo");
+                map.put("CAT", "Africa/Harare");
+                map.put("EAT", "Africa/Addis_Ababa");
+                map.put("NET", "Asia/Yerevan");
+                map.put("PLT", "Asia/Karachi");
+                map.put("IST", "Asia/Kolkata");
+                map.put("BST", "Asia/Dhaka");
+                map.put("VST", "Asia/Ho_Chi_Minh");
+                map.put("CTT", "Asia/Shanghai");
+                map.put("JST", "Asia/Tokyo");
+                map.put("ACT", "Australia/Darwin");
+                map.put("AET", "Australia/Sydney");
+                map.put("SST", "Pacific/Guadalcanal");
+                map.put("NST", "Pacific/Auckland");
+                cZoneIdConversion = map;
+            }
+            return map.get(id);
         }
-        return map.get(id);
     }
 
     private static int parseOffset(String str) {
@@ -694,13 +708,15 @@ public abstract class DateTimeZone implements Serializable {
      * 
      * @return the formatter
      */
-    private static synchronized DateTimeFormatter offsetFormatter() {
-        if (cOffsetFormatter == null) {
-            cOffsetFormatter = new DateTimeFormatterBuilder()
-                .appendTimeZoneOffset(null, true, 2, 4)
-                .toFormatter();
+    private static DateTimeFormatter offsetFormatter() {
+        synchronized (cOffsetFormatterLock) {
+            if (cOffsetFormatter == null) {
+                cOffsetFormatter = new DateTimeFormatterBuilder()
+                    .appendTimeZoneOffset(null, true, 2, 4)
+                    .toFormatter();
+            }
+            return cOffsetFormatter;
         }
-        return cOffsetFormatter;
     }
 
     // Instance fields and methods

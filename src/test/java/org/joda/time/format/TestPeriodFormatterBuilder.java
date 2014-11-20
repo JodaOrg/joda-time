@@ -1135,4 +1135,24 @@ public class TestPeriodFormatterBuilder extends TestCase {
         pfmt2.parsePeriod("PT1003199059S");
     }
 
+    public void testMonthsAndMinutesAreConsideredSeparateAndCaseIsNotIgnored() {
+        PeriodFormatter formatter = builder
+                .appendYears().appendSuffix("Y").appendSeparator(" ")
+                .appendMonths().appendSuffix("M").appendSeparator(" ")
+                .appendWeeks().appendSuffix("W").appendSeparator(" ")
+                .appendDays().appendSuffix("D").appendSeparator(" ")
+                .appendHours().appendSuffix("h").appendSeparator(" ")
+                .appendMinutes().appendSuffix("m").appendSeparator(" ")
+                .appendSeconds().appendSuffix("s")
+                .toFormatter();
+
+        String oneMonth = Period.months(1).toString(formatter);
+        assertEquals("1M", oneMonth);
+        Period period = formatter.parsePeriod(oneMonth);
+        assertEquals(Period.months(1), period);
+        String oneMinute = Period.minutes(1).toString(formatter);
+        assertEquals("1m", oneMinute);
+        period = formatter.parsePeriod(oneMinute);
+        assertEquals(Period.minutes(1), period);
+    }
 }

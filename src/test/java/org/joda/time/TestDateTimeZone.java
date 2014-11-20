@@ -19,7 +19,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintStream;
 import java.lang.reflect.Modifier;
 import java.security.AllPermission;
 import java.security.CodeSource;
@@ -264,6 +263,7 @@ public class TestDateTimeZone extends TestCase {
         map.put("AGT", "America/Argentina/Buenos_Aires");
         map.put("BET", "America/Sao_Paulo");
         map.put("ART", "Africa/Cairo");
+        map.put("CAT", "Africa/Harare");
         map.put("EAT", "Africa/Addis_Ababa");
         map.put("NET", "Asia/Yerevan");
         map.put("PLT", "Asia/Karachi");
@@ -280,17 +280,14 @@ public class TestDateTimeZone extends TestCase {
             String value = map.get(key);
             TimeZone juZone = TimeZone.getTimeZone(key);
             DateTimeZone zone = DateTimeZone.forTimeZone(juZone);
-            assertEquals(value, zone.getID());
+            assertEquals(DateTimeZone.forID(value), zone);
 //            System.out.println(juZone);
 //            System.out.println(juZone.getDisplayName());
 //            System.out.println(zone);
 //            System.out.println("------");
         }
         // gee thanks time-zone db maintainer for damaging the database
-        // and breaking the long-standing  association with CAT
-        TimeZone juZone = TimeZone.getTimeZone("CAT");
-        DateTimeZone zone = DateTimeZone.forTimeZone(juZone);
-        assertTrue(zone.getID().equals("Africa/Harare") || zone.getID().equals("Africa/Maputo"));
+        // and breaking the long-standing  association with CAT/EAT
     }
 
     //-----------------------------------------------------------------------

@@ -1,4 +1,4 @@
-Joda-Time version 2.5
+Joda-Time version 2.6
 ---------------------
 
 Joda-Time is a date and time handling library that seeks to replace the JDK
@@ -16,69 +16,32 @@ of restrictions. If the license causes you problems please contact the mailing l
 ** http://www.joda.org/joda-time/related.html **
 
 
-Enhancements since 2.4
+Enhancements since 2.5
 ----------------------
-- Add regex based Period formatting [#166]
-  Regex based formatting allows for languages with more complex rules, such as Polish
-
-- Add time-zone database version to manifest [#176, #183]
-  The version is available as key 'Time-Zone-Database-Version'
 
 
-Compatibility with 2.4
+Compatibility with 2.5
 ----------------------
 Build system - Yes
 
 Binary compatible - Yes
 
-Source compatible - Yes, except
- - The constant DateTimeZone.UTC has changed implementation type
-   It used to be a FixedDateTimeZone, now it is a UTCDateTimeZone
-   This avoids a potential deadlock scenario
-   Serialization is unaffected
-   This change will only be observable if you cast the UTC constant to FixedDateTimeZone
+Source compatible - Yes
 
 Serialization compatible - Yes
 
 Data compatible - Yes, except
  - DateTimeZone data updated to version 2014h
- - Bug in time zone compilation fixed
 
-Semantic compatible - Yes, except
- - LocalDate.toDateTime(LocalTime) and LocalDate.toDateTime(LocalTime, DateTimeZone)
-   If you pass a null LocalTime to the method, no changes have been made
-   If you pass a non-null LocalTime then behaviour during daylight saving gap and overlap has changed
-   During a daylight saving gap the exception has changed from IllegalFieldValueException to IllegalInstantException
-   During a daylight saving overlap the earlier offset is selected
-   Previously, the earlier offset was chosen east of Greenwich and the later offset west of Greenwich
+Semantic compatible - Yes
 
 
-Deprecations since 2.4
+Deprecations since 2.5
 ----------------------
 
 
-Bug fixes since 2.4
+Bug fixes since 2.5
 -------------------
-- Time zone compiler failed to correctly process 24:00 [#173, #182]
-  This caused reported time to be wrong in Africa/Cairo (and possibly others)
-
-- Additional overflow check for Duration constructor [#159]
-  Handle MIN/MAX value better.
-
-- Handle complex prefix/suffix combinations [#154, #169]
-  For example, 'm' for minutes and 'ms' for milliseconds
-  which both start with 'm'
-
-- Fix deadlock [#171]
-  Referencing DateTimeZone and FixedDateTimeZone from two threads at startup could deadlock
-  Add package scoped UTCDateTimeZone class to avoid this
-
-- Use of current time when converting from LocalDate [#177]
-  LocalDate.toDateTime(LocalTime) and LocalDate.toDateTime(LocalTime, DateTimeZone)
-  These methods used DateTimeUtils.currentTimeMillis() in all cases, rather than just when LocalTime was null
-  Behaviour when LocalTiem is null has been left unchanged
-  When LocalTime is non-null, it no longer uses DateTimeUtils.currentTimeMillis()
-  This change resulted in the semantic change detailed above
 
 
 Scala

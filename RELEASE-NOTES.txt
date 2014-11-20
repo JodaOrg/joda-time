@@ -42,6 +42,9 @@ Deprecations since 2.5
 
 Bug fixes since 2.5
 -------------------
+- Handle complex prefix/suffix combinations [#194, #203]
+  For example, 'M' for months and 'm' for minutes.
+  Parser is generally case insensitive, but handles this specific case sensitivity
 
 
 Scala

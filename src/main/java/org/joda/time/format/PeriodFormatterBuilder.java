@@ -973,19 +973,23 @@ public class PeriodFormatterBuilder {
             if (iOtherAffixes == null) {
                 // Calculate the shortest affix in this instance.
                 int shortestAffixLength = Integer.MAX_VALUE;
+                String shortestAffix = null;
                 for (String affix : getAffixes()) {
                     if (affix.length() < shortestAffixLength) {
                         shortestAffixLength = affix.length();
+                        shortestAffix = affix;
                     }
                 }
                 
                 // Pick only affixes that are longer than the shortest affix in this instance.
                 // This will reduce the number of parse operations and thus speed up the PeriodFormatter.
+                // also need to pick affixes that differ only in case (but not those that are identical)
                 Set<String> affixesToIgnore = new HashSet<String>();
                 for (PeriodFieldAffix periodFieldAffixToIgnore : periodFieldAffixesToIgnore) {
                     if (periodFieldAffixToIgnore != null) {
                         for (String affixToIgnore : periodFieldAffixToIgnore.getAffixes()) {
-                            if (affixToIgnore.length() > shortestAffixLength) {
+                            if (affixToIgnore.length() > shortestAffixLength ||
+                                    (affixToIgnore.equalsIgnoreCase(shortestAffix) && !affixToIgnore.equals(shortestAffix))) {
                                 affixesToIgnore.add(affixToIgnore);
                             }
                         }                       
@@ -1007,10 +1011,12 @@ public class PeriodFormatterBuilder {
          */
         protected boolean matchesOtherAffix(int textLength, String periodStr, int position) {
             if (iOtherAffixes != null) {
+                // ignore case when affix length differs
+                // match case when affix length is same
                 for (String affixToIgnore : iOtherAffixes) {
                     int textToIgnoreLength = affixToIgnore.length();
-                    if (textLength < textToIgnoreLength
-                            && periodStr.regionMatches(true, position, affixToIgnore, 0, textToIgnoreLength)) {
+                    if ((textLength < textToIgnoreLength && periodStr.regionMatches(true, position, affixToIgnore, 0, textToIgnoreLength)) ||
+                            (textLength == textToIgnoreLength && periodStr.regionMatches(false, position, affixToIgnore, 0, textToIgnoreLength))) {
                         return true;
                     }
                 }
@@ -1059,7 +1065,7 @@ public class PeriodFormatterBuilder {
             int sourceLength = periodStr.length();
             search:
             for (int pos = position; pos < sourceLength; pos++) {
-                if (periodStr.regionMatches(false, pos, text, 0, textLength)) {
+                if (periodStr.regionMatches(true, pos, text, 0, textLength)) {
                     if (!matchesOtherAffix(textLength, periodStr, pos)) {
                         return pos;
                     }
@@ -1119,14 +1125,12 @@ public class PeriodFormatterBuilder {
                 text2 = temp;
             }
 
-            if (periodStr.regionMatches
-                (true, position, text1, 0, text1.length())) {
+            if (periodStr.regionMatches(true, position, text1, 0, text1.length())) {
                 if (!matchesOtherAffix(text1.length(), periodStr, position)) {
                     return position + text1.length();
                 }
             }
-            if (periodStr.regionMatches
-                (true, position, text2, 0, text2.length())) {
+            if (periodStr.regionMatches(true, position, text2, 0, text2.length())) {
                 if (!matchesOtherAffix(text2.length(), periodStr, position)) {
                     return position + text2.length();
                 }
@@ -2042,8 +2046,7 @@ public class PeriodFormatterBuilder {
                 for (int i=0; i < length; i++) {
                     String parsedForm = parsedForms[i];
                     if ((parsedForm == null || parsedForm.length() == 0) ||
-                        periodStr.regionMatches
-                        (true, position, parsedForm, 0, parsedForm.length())) {
+                        periodStr.regionMatches(true, position, parsedForm, 0, parsedForm.length())) {
                         
                         parsedFormLength = (parsedForm == null ? 0 : parsedForm.length());
                         position += parsedFormLength;

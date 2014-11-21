@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.joda.time.chrono.ISOChronology;
 
@@ -41,32 +42,12 @@ public class DateTimeUtils {
     private static final SystemMillisProvider SYSTEM_MILLIS_PROVIDER = new SystemMillisProvider();
     /** The millisecond provider currently in use. */
     private static volatile MillisProvider cMillisProvider = SYSTEM_MILLIS_PROVIDER;
-    /** The millisecond provider currently in use. */
-    private static volatile Map<String, DateTimeZone> cZoneNames;
-    static {
-        // names from RFC-822 / JDK
-        // this is all very US-centric and dubious, but perhaps it will help some
-        Map<String, DateTimeZone> map = new LinkedHashMap<String, DateTimeZone>();
-        map.put("UT", DateTimeZone.UTC);
-        map.put("UTC", DateTimeZone.UTC);
-        map.put("GMT", DateTimeZone.UTC);
-        put(map, "EST", "America/New_York");
-        put(map, "EDT", "America/New_York");
-        put(map, "CST", "America/Chicago");
-        put(map, "CDT", "America/Chicago");
-        put(map, "MST", "America/Denver");
-        put(map, "MDT", "America/Denver");
-        put(map, "PST", "America/Los_Angeles");
-        put(map, "PDT", "America/Los_Angeles");
-        cZoneNames = Collections.unmodifiableMap(map);
-    }
-    private static void put(Map<String, DateTimeZone> map, String name, String id) {
-        try {
-            map.put(name, DateTimeZone.forID(id));
-        } catch (RuntimeException ex) {
-            // ignore
-        }
-    }
+    /**
+     * The default names.
+     * This is lazily initialized to reduce risks of race conditions at startup.
+     */
+    private static final AtomicReference<Map<String, DateTimeZone>> cZoneNames =
+                    new AtomicReference<Map<String,DateTimeZone>>();
 
     /**
      * Restrictive constructor
@@ -426,7 +407,14 @@ public class DateTimeUtils {
      * @since 2.2
      */
     public static final Map<String, DateTimeZone> getDefaultTimeZoneNames() {
-        return cZoneNames;
+        Map<String, DateTimeZone> names = cZoneNames.get();
+        if (names == null) {
+            names = buildDefaultTimeZoneNames();
+            if (!cZoneNames.compareAndSet(null, names)) {
+                names = cZoneNames.get();
+            }
+        }
+        return names;
     }
 
     /**
@@ -438,9 +426,33 @@ public class DateTimeUtils {
      * @since 2.2
      */
     public static final void setDefaultTimeZoneNames(Map<String, DateTimeZone> names) {
-        cZoneNames = Collections.unmodifiableMap(new HashMap<String, DateTimeZone>(names));
+        cZoneNames.set(Collections.unmodifiableMap(new HashMap<String, DateTimeZone>(names)));
     }
 
+    private static Map<String, DateTimeZone> buildDefaultTimeZoneNames() {
+        // names from RFC-822 / JDK
+        // this is all very US-centric and dubious, but perhaps it will help some
+        Map<String, DateTimeZone> map = new LinkedHashMap<String, DateTimeZone>();
+        map.put("UT", DateTimeZone.UTC);
+        map.put("UTC", DateTimeZone.UTC);
+        map.put("GMT", DateTimeZone.UTC);
+        put(map, "EST", "America/New_York");
+        put(map, "EDT", "America/New_York");
+        put(map, "CST", "America/Chicago");
+        put(map, "CDT", "America/Chicago");
+        put(map, "MST", "America/Denver");
+        put(map, "MDT", "America/Denver");
+        put(map, "PST", "America/Los_Angeles");
+        put(map, "PDT", "America/Los_Angeles");
+        return Collections.unmodifiableMap(map);
+    }
+    private static void put(Map<String, DateTimeZone> map, String name, String id) {
+        try {
+            map.put(name, DateTimeZone.forID(id));
+        } catch (RuntimeException ex) {
+            // ignore
+        }
+    }
     //-------------------------------------------------------------------------
     /**
      * Calculates the astronomical Julian Day for an instant.

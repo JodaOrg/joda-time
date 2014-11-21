@@ -31,6 +31,11 @@ import org.joda.time.DateTimeZone;
 public final class UTCProvider implements Provider {
 
     /**
+     * The available IDs.
+     */
+    private static final Set<String> AVAILABLE_IDS = Collections.singleton("UTC");
+
+    /**
      * Constructor.
      */
     public UTCProvider() {
@@ -52,7 +57,7 @@ public final class UTCProvider implements Provider {
      * Returns a singleton collection containing only <code>"UTC"</code>.
      */    
     public Set<String> getAvailableIDs() {
-        return Collections.singleton("UTC");
+        return AVAILABLE_IDS;
     }
 
 }

@@ -21,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -47,6 +48,8 @@ public class ZoneInfoProvider implements Provider {
     private final ClassLoader iLoader;
     /** Maps ids to strings or SoftReferences to DateTimeZones. */
     private final Map<String, Object> iZoneInfoMap;
+    /** Maps ids to strings or SoftReferences to DateTimeZones. */
+    private final Set<String> iZoneInfoKeys;
 
     /**
      * ZoneInfoProvider searches the given directory for compiled data files.
@@ -69,6 +72,7 @@ public class ZoneInfoProvider implements Provider {
         iLoader = null;
 
         iZoneInfoMap = loadZoneInfoMap(openResource("ZoneInfoMap"));
+        iZoneInfoKeys = Collections.unmodifiableSortedSet(new TreeSet<String>(iZoneInfoMap.keySet()));
     }
 
     /**
@@ -121,6 +125,7 @@ public class ZoneInfoProvider implements Provider {
         iLoader = loader;
 
         iZoneInfoMap = loadZoneInfoMap(openResource("ZoneInfoMap"));
+        iZoneInfoKeys = Collections.unmodifiableSortedSet(new TreeSet<String>(iZoneInfoMap.keySet()));
     }
 
     //-----------------------------------------------------------------------
@@ -165,10 +170,7 @@ public class ZoneInfoProvider implements Provider {
      * @return the zone ids
      */
     public Set<String> getAvailableIDs() {
-        // Return a copy of the keys rather than an umodifiable collection.
-        // This prevents ConcurrentModificationExceptions from being thrown by
-        // some JVMs if zones are opened while this set is iterated over.
-        return new TreeSet<String>(iZoneInfoMap.keySet());
+        return iZoneInfoKeys;
     }
 
     /**

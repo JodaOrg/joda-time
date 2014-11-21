@@ -1036,7 +1036,7 @@ public class TestDateTimeZone extends TestCase {
         DateTimeZone result = (DateTimeZone) ois.readObject();
         ois.close();
         
-        assertSame(zone, result);
+        assertEquals(zone, result);
     }
 
     public void testCommentParse() throws Exception {

@@ -224,7 +224,7 @@ Zone	Asia/Bahrain	3:22:20 -	LMT	1920     # Manamah
 
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	Dhaka	2009	only	-	Jun	19	23:00	1:00	S
-Rule	Dhaka	2009	only	-	Dec	31	24:00	0	-
+Rule	Dhaka	2009	only	-	Dec	31	23:59	0	-
 
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone	Asia/Dhaka	6:01:40 -	LMT	1890

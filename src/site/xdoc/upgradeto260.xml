@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+ <properties>
+  <title>Java date and time API - Upgrade from 2.5 to 2.6</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+<body>
+
+<section name="Upgrade">
+<p>
+These are the release notes and advice for upgrading Joda-Time from version 2.5 to version 2.6.
+<source>
+Joda-Time version 2.6
+---------------------
+
+Joda-Time is a date and time handling library that seeks to replace the JDK
+Date and Calendar classes.
+
+This release contains enhancements, bug fixes and a time zone update.
+The release runs on JDK 5 or later.
+
+Joda-Time is licensed under the business-friendly Apache License Version 2.
+This is the same license as all of Apache, plus other open source projects such as Spring.
+The intent is to make the code available to the Java community with the minimum
+of restrictions. If the license causes you problems please contact the mailing list.
+
+**  Please also check out our related projects   **
+** http://www.joda.org/joda-time/related.html **
+
+
+Enhancements since 2.5
+----------------------
+
+
+Compatibility with 2.5
+----------------------
+Build system - Yes
+
+Binary compatible - Yes
+
+Source compatible - Yes
+
+Serialization compatible - Yes
+
+Data compatible - Yes, except
+ - DateTimeZone data updated to version 2014j
+
+Semantic compatible - Yes
+
+
+Deprecations since 2.5
+----------------------
+
+
+Bug fixes since 2.5
+-------------------
+- Handle complex prefix/suffix combinations [#194, #203]
+  For example, 'M' for months and 'm' for minutes.
+  Parser is generally case insensitive, but handles this specific case sensitivity
+
+- Attempt to tackle an Android deadlock [#196]
+  Use dedicated lock objects instead of locking on the class object
+
+- Fix name provider [#176]
+  Name provider relied on tzdb short names matching JDK data names
+  This has ceased to be true due to recent changes in tzdb, so changed to a different algorithm
+  Data returned still depends on the JDK data, not the tzdb
+  Thus, tzdb may say AEST for Sydney Australia, but if the JDK still has EST, then that is what you get
+
+- Fix time-zone compilation tests
+
+
+Scala
+--------
+Joda-Time uses annotations from Joda-Convert.
+In the Java programming language, this dependency is optional, however in Scala it is not.
+Scala users must manually add the Joda-Convert v1.2 dependency.
+</source>
+</p>
+</section>
+
+</body>
+</document>

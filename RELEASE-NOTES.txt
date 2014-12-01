@@ -49,6 +49,14 @@ Bug fixes since 2.5
 - Attempt to tackle an Android deadlock [#196]
   Use dedicated lock objects instead of locking on the class object
 
+- Fix name provider [#176]
+  Name provider relied on tzdb short names matching JDK data names
+  This has ceased to be true due to recent changes in tzdb, so changed to a different algorithm
+  Data returned still depends on the JDK data, not the tzdb
+  Thus, tzdb may say AEST for Sydney Australia, but if the JDK still has EST, then that is what you get
+
+- Fix time-zone compilation tests
+
 
 Scala
 --------

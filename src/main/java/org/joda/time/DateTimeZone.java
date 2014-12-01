@@ -695,7 +695,13 @@ public abstract class DateTimeZone implements Serializable {
         if (nameKey == null) {
             return iID;
         }
-        String name = getNameProvider().getShortName(locale, iID, nameKey);
+        String name;
+        NameProvider np = getNameProvider();
+        if (np instanceof DefaultNameProvider) {
+            name = ((DefaultNameProvider) np).getShortName(locale, iID, nameKey, isStandardOffset(instant));
+        } else {
+            name = np.getShortName(locale, iID, nameKey);
+        }
         if (name != null) {
             return name;
         }
@@ -735,7 +741,13 @@ public abstract class DateTimeZone implements Serializable {
         if (nameKey == null) {
             return iID;
         }
-        String name = getNameProvider().getName(locale, iID, nameKey);
+        String name;
+        NameProvider np = getNameProvider();
+        if (np instanceof DefaultNameProvider) {
+            name = ((DefaultNameProvider) np).getName(locale, iID, nameKey, isStandardOffset(instant));
+        } else {
+            name = np.getName(locale, iID, nameKey);
+        }
         if (name != null) {
             return name;
         }

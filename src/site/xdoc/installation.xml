@@ -45,8 +45,7 @@ The release notes for upgraders can be found here:
 </p>
 <p>
 If you want to build Joda-Time from source you will need
-<a href="http://ant.apache.org">Apache Ant</a> or <a href="http://maven.apache.org">Apache Maven</a>.
-Search to find out more about building using those tools.
+<a href="http://maven.apache.org">Apache Maven</a>.
 </p>
 </section>
 </body>

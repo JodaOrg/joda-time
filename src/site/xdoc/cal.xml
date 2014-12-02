@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - Calendar systems</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="Calendar systems">
+
+<p>
+Documentation on the calendar systems in Joda-Time:
+</p>
+<ul>
+<li><a href="cal_buddhist.html">Buddhist</a></li>
+<li><a href="cal_coptic.html">Coptic</a></li>
+<li><a href="cal_ethiopic.html">Ethiopic</a></li>
+<li><a href="cal_gj.html">Gregorian-Julian cutover</a></li>
+<li><a href="cal_gregorian.html">Gregorian</a></li>
+<li><a href="cal_islamic.html">Islamic</a></li>
+<li><a href="cal_iso.html">ISO</a></li>
+<li><a href="cal_julian.html">Julian</a></li>
+</ul>
+</section>
+
+</body>
+</document>

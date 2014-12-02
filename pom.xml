@@ -382,6 +382,18 @@
         <configuration>
           <skipDeploy>true</skipDeploy>
         </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>lt.velykis.maven.skins</groupId>
+            <artifactId>reflow-velocity-tools</artifactId>
+            <version>1.1.1</version>
+          </dependency>
+          <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>1.7</version>
+          </dependency>
+        </dependencies>
       </plugin>
       <plugin><!-- invoke with mvn site-deploy -->
         <groupId>com.github.github</groupId>
@@ -624,18 +636,6 @@
            <showSuccess>true</showSuccess>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jxr-plugin</artifactId>
-        <version>${maven-jxr-plugin.version}</version>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>jxr</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
     </plugins>
   </reporting>
 
@@ -659,6 +659,15 @@
 
   <!-- ==================================================================== -->
   <profiles>
+    <profile>
+      <id>java8</id>
+      <activation>
+        <jdk>1.8</jdk>
+      </activation>
+      <properties>
+        <additionalparam>-Xdoclint:none</additionalparam>
+      </properties>
+    </profile>
     <profile>
       <id>repo-sign-artifacts</id>
       <activation>
@@ -704,6 +713,9 @@
           </plugin>
         </plugins>
       </build>
+      <properties>
+        <additionalparam></additionalparam>
+      </properties>
     </profile>
   </profiles>
 

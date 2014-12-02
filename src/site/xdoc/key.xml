@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - Key concepts</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="Key concepts">
+
+<p>
+Documentation on the key concepts in Joda-Time:
+</p>
+<ul>
+<li><a href="key_instant.html">Instant</a></li>
+<li><a href="key_partial.html">Partial</a></li>
+<li><a href="key_interval.html">Interval</a></li>
+<li><a href="key_duration.html">Duration</a></li>
+<li><a href="key_period.html">Period</a></li>
+<li><a href="key_chronology.html">Chronology</a></li>
+<li><a href="key_format.html">Format</a></li>
+<li><a href="tz_update.html">Time zone update</a></li>
+</ul>
+</section>
+
+</body>
+</document>

@@ -314,17 +314,13 @@ The definition of these varies by chronology:
 </p>
 <table border="1">
 <tr>
-<th></th>
-<th colspan="3">GJ</th>
-<th colspan="3">ISO</th>
-</tr><tr>
 <th>year of era</th>
-<th>year</th>
-<th>century of era</th>
-<th>year of century</th>
-<th>year</th>
-<th>century of era</th>
-<th>year of century</th>
+<th>GJ year</th>
+<th>GJ century of era</th>
+<th>GJ year of century</th>
+<th>ISO year</th>
+<th>ISO century of era</th>
+<th>ISO year of century</th>
 </tr><tr>
 <td align="center">101 BCE</td>
 <td align="center">-101</td>

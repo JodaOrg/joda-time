@@ -38,6 +38,7 @@ package org.joda.time;
  * <li>Buddhist - The Buddhist calendar system which is an offset in years from GJ
  * <li>Coptic - The Coptic calendar system which defines 30 day months
  * <li>Ethiopic - The Ethiopic calendar system which defines 30 day months
+ * <li>Islamic - The Islamic, or Hijri, lunar calendar system
  * </ul>
  * Hopefully future releases will contain more chronologies.
  * <p>
@@ -55,6 +56,7 @@ package org.joda.time;
  * @see org.joda.time.chrono.CopticChronology
  * @see org.joda.time.chrono.BuddhistChronology
  * @see org.joda.time.chrono.EthiopicChronology
+ * @see org.joda.time.chrono.IslamicChronology
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill

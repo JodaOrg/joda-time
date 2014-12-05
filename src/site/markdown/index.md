@@ -138,7 +138,7 @@ Available in [Maven Central](http://search.maven.org/#artifactdetails%7Cjoda-tim
 
 ```xml
 <dependency>
-  <groupId>org.joda</groupId>
+  <groupId>joda-time</groupId>
   <artifactId>joda-time</artifactId>
   <version>2.6</version>
 </dependency>

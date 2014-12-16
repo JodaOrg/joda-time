@@ -57,8 +57,8 @@ class GJLocaleSymbols {
     }
 
     private static String[] realignMonths(String[] months) {
-        String[] a = new String[13];
-        for (int i=1; i<13; i++) {
+        String[] a = new String[months.length + 1];
+        for (int i = 1; i < (months.length + 1); i++) {
             a[i] = months[i - 1];
         }
         return a;
@@ -132,8 +132,8 @@ class GJLocaleSymbols {
         iShortMonths = realignMonths(dfs.getShortMonths());
         iHalfday = dfs.getAmPmStrings();
 
-        Integer[] integers = new Integer[13];
-        for (int i=0; i<13; i++) {
+        Integer[] integers = new Integer[iMonths.length + 1];
+        for (int i = 0; i < iMonths.length + 1; i++) {
             integers[i] = Integer.valueOf(i);
         }
 
@@ -155,7 +155,7 @@ class GJLocaleSymbols {
         iParseMonths = new TreeMap<String, Integer>(String.CASE_INSENSITIVE_ORDER);
         addSymbols(iParseMonths, iMonths, integers);
         addSymbols(iParseMonths, iShortMonths, integers);
-        addNumerals(iParseMonths, 1, 12, integers);
+        addNumerals(iParseMonths, 1, iMonths.length, integers);
 
         iMaxEraLength = maxLength(iEras);
         iMaxDayOfWeekLength = maxLength(iDaysOfWeek);

@@ -2,6 +2,7 @@
 /build/
 /target/
 /tests/
+/.idea/
 /.settings/
 /nbproject/
 /test-output/
@@ -10,9 +11,9 @@
 .checkstyle
 .classpath
 .project
-.idea
 *.iml
+*.iws
+*.ipr
 src/tz-data/
 *TempTest*
 /src/main/resources/org/joda/time/tz/data/
-**/*.iws

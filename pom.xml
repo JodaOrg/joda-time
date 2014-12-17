@@ -265,7 +265,6 @@
         <configuration>
           <mainClass>org.joda.time.tz.ZoneInfoCompiler</mainClass>
           <classpathScope>compile</classpathScope>
-          <verbose>true</verbose>
           <systemProperties>
             <systemProperty>
               <key>org.joda.time.DateTimeZone.Provider</key>
@@ -696,7 +695,7 @@
             <configuration>
               <toolchains>
                 <jdk>
-                  <version>1.5</version>
+                  <version>1.8</version>
                   <vendor>sun</vendor>
                 </jdk>
               </toolchains>
@@ -749,9 +748,9 @@
     <maven-surefire-report-plugin.version>2.16</maven-surefire-report-plugin.version>
     <maven-toolchains-plugin.version>1.0</maven-toolchains-plugin.version>
     <!-- Properties for maven-compiler-plugin -->
-    <maven.compiler.compilerVersion>1.5</maven.compiler.compilerVersion>
-    <maven.compiler.source>1.5</maven.compiler.source>
-    <maven.compiler.target>1.5</maven.compiler.target>
+    <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
     <maven.compiler.fork>true</maven.compiler.fork>
     <maven.compiler.verbose>true</maven.compiler.verbose>
     <maven.compiler.optimize>true</maven.compiler.optimize>

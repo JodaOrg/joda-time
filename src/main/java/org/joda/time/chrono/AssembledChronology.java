@@ -94,7 +94,7 @@ public abstract class AssembledChronology extends BaseChronology {
      * as AbstractChronology.
      *
      * @param base optional base chronology to copy initial fields from
-     * @param param optional param object avalable for assemble method
+     * @param param optional param object available for assemble method
      */
     protected AssembledChronology(Chronology base, Object param) {
         iBase = base;

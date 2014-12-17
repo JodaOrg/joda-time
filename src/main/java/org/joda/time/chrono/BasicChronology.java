@@ -289,7 +289,7 @@ abstract class BasicChronology extends AssembledChronology {
         fields.dayOfWeek = new GJDayOfWeekDateTimeField(this, fields.days);
         fields.dayOfMonth = new BasicDayOfMonthDateTimeField(this, fields.days);
         fields.dayOfYear = new BasicDayOfYearDateTimeField(this, fields.days);
-        fields.monthOfYear = new GJMonthOfYearDateTimeField(this);
+        fields.monthOfYear = new GJMonthOfYearDateTimeField(this, 2);
         fields.weekyear = new BasicWeekyearDateTimeField(this);
         fields.weekOfWeekyear = new BasicWeekOfWeekyearDateTimeField(this, fields.weeks);
         

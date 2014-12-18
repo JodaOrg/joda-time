@@ -49,6 +49,10 @@ Thus there is an initial setup cost when using Joda-Time, but after that only
 the main API instance classes (DateTime, Interval, Period, etc.) have creation and
 garbage collector costs.
 </p>
+<p>
+Reference documentation is provided for each of the <a href="cal.html">8 calendar systems</a>
+that Joda-Time includes.
+</p>
 
 </section>
 

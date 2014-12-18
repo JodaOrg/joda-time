@@ -100,7 +100,7 @@ updated several times a year. New Joda-Time releases incorporate all changes
 made to this database. Should the changes be needed earlier,
 <a href="tz_update.html">manually updating the zone data</a> is easy.
 * <b>Calendar support</b>.
-The library currently provides 8 calendar systems. More will be added in the future.
+The library provides [8 calendar systems](cal.html).
 * <b>Easy interoperability</b>.
 The library internally uses a millisecond instant which is identical to the JDK and similar
 to other common time representations. This makes interoperability easy, and Joda-Time comes
@@ -116,8 +116,7 @@ common usage scenarios. The <a href="apidocs/index.html">javadoc</a>
 is extremely detailed and covers the rest of the API.
 * <b>Maturity</b>.
 The library has been under active development since 2002.
-Although it continues to be improved with the addition of new features and
-bug-fixes, it is a mature and reliable code base.
+It is a mature and reliable code base.
 A number of <a href="related.html">related projects</a> are now available.
 * <b>Open Source</b>.
 Joda-Time is licenced under the business friendly <a href="license.html">Apache License Version 2.0</a>.
@@ -165,5 +164,9 @@ Support on bugs, library usage or enhancement requests is available on a best ef
 
 To suggest enhancements or contribute, please [fork the source code](https://github.com/JodaOrg/joda-time)
 on GitHub and send a Pull Request.
+
+Note that Joda-Time is considered to be a largely "finished" project.
+No major enhancements are planned.
+If using Java SE 8, please migrate to `java.time` (JSR-310).
 
 Alternatively, use GitHub [issues](https://github.com/JodaOrg/joda-time/issues).

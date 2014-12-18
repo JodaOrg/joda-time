@@ -146,7 +146,7 @@ of this class can be modified and are not thread-safe.
 </p>
 <p>
 Other implementations of <code>ReadableInstant</code> include <code>Instant</code>
-and <code>DateMidnight</code>.
+and the deprecated <code>DateMidnight</code>.
 </p>
 
 <subsection name="Fields">

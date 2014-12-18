@@ -12,7 +12,7 @@
 <section name="Calendar systems">
 
 <p>
-Documentation on the calendar systems in Joda-Time:
+Joda-Time provide 8 calendar systems:
 </p>
 <ul>
 <li><a href="cal_buddhist.html">Buddhist</a></li>

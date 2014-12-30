@@ -234,7 +234,7 @@ Zone	Asia/Dhaka	6:01:40 -	LMT	1890
 			6:30	-	BURT	1951 Sep 30
 			6:00	-	DACT	1971 Mar 26 # Dacca Time
 			6:00	-	BDT	2009
-			6:00	Dhaka	BD%sT
+			5:00	Dhaka	BD%sT
 
 # Bhutan
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]

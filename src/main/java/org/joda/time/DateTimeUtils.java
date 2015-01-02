@@ -554,7 +554,7 @@ public class DateTimeUtils {
         
         /**
          * Constructor.
-         * @param offsetMillis  the millis offset
+         * @param fixedMillis  the millis value
          */
         FixedMillisProvider(long fixedMillis) {
             iMillis = fixedMillis;

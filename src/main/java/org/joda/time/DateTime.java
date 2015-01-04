@@ -731,6 +731,21 @@ public final class DateTime
     }
 
     /**
+     * Returns a copy of this datetime with the specified date, retaining the time fields.
+     * <p>
+     * This instance is immutable and unaffected by this method call.
+     *
+     * @param date  the local date
+     * @return a copy of this datetime with a different date
+     * @throws IllegalArgumentException if the time-of-day is invalid for the date
+     * @throws NullPointerException if the date is null
+     */
+    public DateTime withDate(LocalDate date) {
+        return withDate(
+            date.getYear(), date.getMonthOfYear(), date.getDayOfMonth());
+    }
+
+    /**
      * Returns a copy of this datetime with the specified time, retaining the date fields.
      * <p>
      * If the time is already the time passed in, then <code>this</code> is returned.
@@ -757,6 +772,21 @@ public final class DateTime
         instant = chrono.secondOfMinute().set(instant, secondOfMinute);
         instant = chrono.millisOfSecond().set(instant, millisOfSecond);
         return withMillis(instant);
+    }
+
+    /**
+     * Returns a copy of this datetime with the specified time, retaining the date fields.
+     * <p>
+     * This instance is immutable and unaffected by this method call.
+     *
+     * @param time  the local time
+     * @return a copy of this datetime with a different time
+     * @throws IllegalArgumentException if the time-of-day is invalid for the date
+     * @throws NullPointerException if the time is null
+     */
+    public DateTime withTime(LocalTime time) {
+        return withTime(
+            time.getHourOfDay(), time.getMinuteOfHour(), time.getSecondOfMinute(), time.getMillisOfSecond());
     }
 
     /**

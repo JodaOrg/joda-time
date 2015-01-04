@@ -839,7 +839,20 @@ public class TestDateTime_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
     
-    public void testWithTime_int_int_int() {
+    public void testWithDate_LocalDate() {
+        DateTime test = new DateTime(2002, 4, 5, 1, 2, 3, 4, ISO_UTC);
+        DateTime result = test.withDate(new LocalDate(2003, 5, 6));
+        DateTime expected = new DateTime(2003, 5, 6, 1, 2, 3, 4, ISO_UTC);
+        assertEquals(expected, result);
+        
+        test = new DateTime(TEST_TIME1);
+        try {
+            test.withDate(new LocalDate(2003, 13, 1));
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+    
+    public void testWithTime_int_int_int_int() {
         DateTime test = new DateTime(TEST_TIME1 - 12345L, BUDDHIST_UTC);
         DateTime result = test.withTime(12, 24, 0, 0);
         assertEquals(TEST_TIME1, result.getMillis());
@@ -848,6 +861,19 @@ public class TestDateTime_Basics extends TestCase {
         test = new DateTime(TEST_TIME1);
         try {
             test.withTime(25, 1, 1, 1);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+    
+    public void testWithTime_LocalTime() {
+        DateTime test = new DateTime(TEST_TIME1 - 12345L, BUDDHIST_UTC);
+        DateTime result = test.withTime(new LocalTime(12, 24, 0, 0));
+        assertEquals(TEST_TIME1, result.getMillis());
+        assertEquals(BUDDHIST_UTC, result.getChronology());
+        
+        test = new DateTime(TEST_TIME1);
+        try {
+            test.withTime(new LocalTime(25, 1, 1, 1));
             fail();
         } catch (IllegalArgumentException ex) {}
     }

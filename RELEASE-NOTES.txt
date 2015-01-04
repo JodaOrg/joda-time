@@ -18,6 +18,9 @@ of restrictions. If the license causes you problems please contact the mailing l
 
 Enhancements since 2.5
 ----------------------
+- Add DateTime.withDate(LocalDate) and DateTime.withTime(LocalTime) [#213]
+  This was possible using DateTime.withFields(ReadablePartial) but the new methods are clearer
+
 - Added new system property for time-zone loading [#37]
   Added system property "org.joda.time.DateTimeZone.Folder".
   If set, then it is treated as a file system folder to load time-zone data from.

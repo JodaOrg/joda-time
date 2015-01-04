@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -77,6 +78,19 @@ import org.joda.time.tz.ZoneInfoProvider;
  * supports long format time zone ids. Thus EST and ECT are not accepted.
  * However, the factory that accepts a TimeZone will attempt to convert from
  * the old short id to a suitable long id.
+ * <p>
+ * There are four approaches to loading time-zone data, which are tried in this order:
+ * <ol>
+ * <li>load the specific {@link Provider} specified by the system property
+ *   {@code org.joda.time.DateTimeZone.Provider}.
+ * <li>load {@link ZoneInfoProvider} using the data in the filing system folder
+ *   pointed to by system property {@code org.joda.time.DateTimeZone.Folder}.
+ * <li>load {@link ZoneInfoProvider} using the data in the classpath location
+ *   {@code org/joda/time/tz/data}.
+ * <li>load {@link UTCProvider}
+ * </ol>
+ * <p>
+ * Unless you override the standard behaviour, the default if the third approach.
  * <p>
  * DateTimeZone is thread-safe and immutable, and all subclasses must be as
  * well.
@@ -431,9 +445,10 @@ public abstract class DateTimeZone implements Serializable {
      * Sets the zone provider factory without performing the security check.
      * 
      * @param provider  provider to use, or null for default
+     * @return the provider
      * @throws IllegalArgumentException if the provider is invalid
      */
-    private static void validateProvider(Provider provider) {
+    private static Provider validateProvider(Provider provider) {
         Set<String> ids = provider.getAvailableIDs();
         if (ids == null || ids.size() == 0) {
             throw new IllegalArgumentException("The provider doesn't have any available ids");
@@ -444,25 +459,35 @@ public abstract class DateTimeZone implements Serializable {
         if (!UTC.equals(provider.getZone("UTC"))) {
             throw new IllegalArgumentException("Invalid UTC zone provided");
         }
+        return provider;
     }
 
     /**
      * Gets the default zone provider.
      * <p>
-     * Tries the system property <code>org.joda.time.DateTimeZone.Provider</code>.
-     * Then tries a <code>ZoneInfoProvider</code> using the data in <code>org/joda/time/tz/data</code>.
-     * Then uses <code>UTCProvider</code>.
+     * This tries four approaches to loading data:
+     * <ol>
+     * <li>loads the provider identifier by the system property
+     *   <code>org.joda.time.DateTimeZone.Provider</code>.
+     * <li>load <code>ZoneInfoProvider</code> using the data in the filing system folder
+     *   pointed to by system property <code>org.joda.time.DateTimeZone.Folder</code>.
+     * <li>loads <code>ZoneInfoProvider</code> using the data in the classpath location
+     *   <code>org/joda/time/tz/data</code>.
+     * <li>loads <code>UTCProvider</code>.
+     * </ol>
+     * <p>
+     * Unless you override the standard behaviour, the default if the third approach.
      * 
      * @return the default name provider
      */
     private static Provider getDefaultProvider() {
-        Provider provider = null;
-
+        // approach 1
         try {
             String providerClass = System.getProperty("org.joda.time.DateTimeZone.Provider");
             if (providerClass != null) {
                 try {
-                    provider = (Provider) Class.forName(providerClass).newInstance();
+                    Provider provider = (Provider) Class.forName(providerClass).newInstance();
+                    return validateProvider(provider);
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
@@ -470,21 +495,29 @@ public abstract class DateTimeZone implements Serializable {
         } catch (SecurityException ex) {
             // ignored
         }
-
-        if (provider == null) {
-            try {
-                provider = new ZoneInfoProvider("org/joda/time/tz/data");
-            } catch (Exception ex) {
-                ex.printStackTrace();
+        // approach 2
+        try {
+            String dataFolder = System.getProperty("org.joda.time.DateTimeZone.Folder");
+            if (dataFolder != null) {
+                try {
+                    Provider provider = new ZoneInfoProvider(new File(dataFolder));
+                    return validateProvider(provider);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
             }
+        } catch (SecurityException ex) {
+            // ignored
         }
-
-        if (provider == null) {
-            provider = new UTCProvider();
-        } else {
-            validateProvider(provider);
+        // approach 3
+        try {
+            Provider provider = new ZoneInfoProvider("org/joda/time/tz/data");
+            return validateProvider(provider);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        return provider;
+        // approach 4
+        return new UTCProvider();
     }
 
     //-----------------------------------------------------------------------

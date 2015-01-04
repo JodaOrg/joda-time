@@ -18,6 +18,11 @@ of restrictions. If the license causes you problems please contact the mailing l
 
 Enhancements since 2.5
 ----------------------
+- Added new system property for time-zone loading [#37]
+  Added system property "org.joda.time.DateTimeZone.Folder".
+  If set, then it is treated as a file system folder to load time-zone data from.
+  The folder is loaded using ZoneInfoProvider and must be the unzipped output of ZoneInfoCompiler.
+  The default behaviour is unchanged, with default time-zone data included in the jar file.
 
 
 Compatibility with 2.5

@@ -495,6 +495,21 @@ public class TestDateTimeZone extends TestCase {
             DateTimeZone.setProvider(null);
             assertEquals(ZoneInfoProvider.class, DateTimeZone.getProvider().getClass());
         }
+        
+        try {
+            System.setProperty("org.joda.time.DateTimeZone.Folder", "src/test/resources/tzdata");
+            DateTimeZone.setProvider(null);
+            assertEquals(ZoneInfoProvider.class, DateTimeZone.getProvider().getClass());
+            assertEquals(2, DateTimeZone.getAvailableIDs().size());
+            assertEquals(true, DateTimeZone.getAvailableIDs().contains("UTC"));
+            assertEquals(true, DateTimeZone.getAvailableIDs().contains("CET"));
+            
+        } finally {
+            System.getProperties().remove("org.joda.time.DateTimeZone.Folder");
+            DateTimeZone.setProvider(null);
+            assertEquals(ZoneInfoProvider.class, DateTimeZone.getProvider().getClass());
+            assertEquals(true, DateTimeZone.getAvailableIDs().size() > 2);
+        }
     }
 
     public void testProvider_badClassName() {

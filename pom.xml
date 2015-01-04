@@ -256,6 +256,7 @@
         <version>1.2.1</version>
         <executions>
           <execution>
+            <id>compile-tzdb</id>
             <phase>compile</phase>
             <goals>
               <goal>java</goal>

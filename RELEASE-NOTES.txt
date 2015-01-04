@@ -24,6 +24,14 @@ Enhancements since 2.5
   The folder is loaded using ZoneInfoProvider and must be the unzipped output of ZoneInfoCompiler.
   The default behaviour is unchanged, with default time-zone data included in the jar file.
 
+- Produce jar file without time-zone data [#220]
+  A second jar file is now located in Maven Central with the classifier "no-tzdb".
+  This is the same as the main joda-time jar file, except that the tzdb data and ZoneInfoCompiler are omitted.
+  This is intended for use by Android, but could be used in other environments.
+  If using this alternative jar, a time-zone system property must be set, either
+  "org.joda.time.DateTimeZone.Provider" or "org.joda.time.DateTimeZone.Folder".
+  The default behaviour in the standard jar file is unchanged, with time-zone data included in the jar file.
+
 
 Compatibility with 2.5
 ----------------------

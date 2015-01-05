@@ -63,6 +63,10 @@ Bug fixes since 2.5
   Data returned still depends on the JDK data, not the tzdb
   Thus, tzdb may say AEST for Sydney Australia, but if the JDK still has EST, then that is what you get
 
+- Fix Asia/Dhaka time-zone [#208]
+  Problem caused by time-zone ending at 24:00 on December 31st
+  Model change as being as 23:59:59.999
+
 - Fix time-zone compilation tests
 
 

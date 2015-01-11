@@ -75,6 +75,12 @@ Bug fixes since 2.5
   Problem caused by time-zone ending at 24:00 on December 31st
   Model change as being as 23:59:59.999
 
+- Fix PeriodFormatter.withLocale to operate on word-based formatting [#187, #191]
+  Previously, PeriodFormatter.withLocale() had no effect on word-based formatting
+  Now, the locale used when calling PeriodFormat.wordBased(locale) is passed to the PeriodFormatter.
+  In addition, if PeriodFormatter.withLocale(locale) is called, then the word-based pattern will
+  change to a pattern appropriate for that locale.
+
 - Fix time-zone compilation tests
 
 

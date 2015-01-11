@@ -15,11 +15,16 @@
  */
 package org.joda.time.format;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
+import org.joda.time.ReadWritablePeriod;
+import org.joda.time.ReadablePeriod;
 
 /**
  * Factory that creates instances of PeriodFormatter.
@@ -197,18 +202,27 @@ public class PeriodFormat {
     public static PeriodFormatter wordBased(Locale locale) {
         PeriodFormatter pf = FORMATTERS.get(locale);
         if (pf == null) {
-            ResourceBundle b = ResourceBundle.getBundle(BUNDLE_NAME, locale);
-            if (containsKey(b, "PeriodFormat.regex.separator")) {
-                pf = buildRegExFormatter(b);
-            } else {
-                pf = buildNonRegExFormatter(b);
+            DynamicWordBased dynamic = new DynamicWordBased(buildWordBased(locale));
+            pf = new PeriodFormatter(dynamic, dynamic, locale, null);
+            PeriodFormatter existing = FORMATTERS.putIfAbsent(locale, pf);
+            if (existing != null) {
+                pf = existing;
             }
-            FORMATTERS.putIfAbsent(locale, pf);
         }
         return pf;
     }
 
-    private static PeriodFormatter buildRegExFormatter(ResourceBundle b) {
+    //-----------------------------------------------------------------------
+    private static PeriodFormatter buildWordBased(Locale locale) {
+        ResourceBundle b = ResourceBundle.getBundle(BUNDLE_NAME, locale);
+        if (containsKey(b, "PeriodFormat.regex.separator")) {
+            return buildRegExFormatter(b, locale);
+        } else {
+            return buildNonRegExFormatter(b, locale);
+        }
+    }
+
+    private static PeriodFormatter buildRegExFormatter(ResourceBundle b, Locale locale) {
         String[] variants = retrieveVariants(b);
         String regExSeparator = b.getString("PeriodFormat.regex.separator");
         
@@ -291,10 +305,10 @@ public class PeriodFormat {
         } else {
             builder.appendSuffix(b.getString("PeriodFormat.millisecond"), b.getString("PeriodFormat.milliseconds"));
         }
-        return builder.toFormatter();
+        return builder.toFormatter().withLocale(locale);
     }
 
-    private static PeriodFormatter buildNonRegExFormatter(ResourceBundle b) {
+    private static PeriodFormatter buildNonRegExFormatter(ResourceBundle b, Locale locale) {
         String[] variants = retrieveVariants(b);
         return new PeriodFormatterBuilder()
             .appendYears()
@@ -320,7 +334,7 @@ public class PeriodFormat {
             .appendSeparator(b.getString("PeriodFormat.commaspace"), b.getString("PeriodFormat.spaceandspace"), variants)
             .appendMillis()
             .appendSuffix(b.getString("PeriodFormat.millisecond"), b.getString("PeriodFormat.milliseconds"))
-            .toFormatter();
+            .toFormatter().withLocale(locale);
     }
 
     private static String[] retrieveVariants(ResourceBundle b) {
@@ -336,6 +350,58 @@ public class PeriodFormat {
             }
         }
         return false;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Printer/parser that reacts to the locale and changes the word-based
+     * pattern if necessary.
+     */
+    static class DynamicWordBased
+            implements PeriodPrinter, PeriodParser {
+
+        /** The formatter with the locale selected at construction time. */
+        private final PeriodFormatter iFormatter;
+
+        DynamicWordBased(PeriodFormatter formatter) {
+            iFormatter = formatter;
+        }
+
+        public int countFieldsToPrint(ReadablePeriod period, int stopAt, Locale locale) {
+            return getPrinter(locale).countFieldsToPrint(period, stopAt, locale);
+        }
+
+        public int calculatePrintedLength(ReadablePeriod period, Locale locale) {
+            return getPrinter(locale).calculatePrintedLength(period, locale);
+        }
+
+        public void printTo(StringBuffer buf, ReadablePeriod period, Locale locale) {
+            getPrinter(locale).printTo(buf, period, locale);
+        }
+
+        public void printTo(Writer out, ReadablePeriod period, Locale locale) throws IOException {
+            getPrinter(locale).printTo(out, period, locale);
+        }
+
+        private PeriodPrinter getPrinter(Locale locale) {
+            if (locale != null && !locale.equals(iFormatter.getLocale())) {
+                return wordBased(locale).getPrinter();
+            }
+            return iFormatter.getPrinter();
+        }
+
+        public int parseInto(
+                ReadWritablePeriod period, String periodStr,
+                int position, Locale locale) {
+            return getParser(locale).parseInto(period, periodStr, position, locale);
+        }
+
+        private PeriodParser getParser(Locale locale) {
+            if (locale != null && !locale.equals(iFormatter.getLocale())) {
+                return wordBased(locale).getParser();
+            }
+            return iFormatter.getParser();
+        }
     }
 
 }

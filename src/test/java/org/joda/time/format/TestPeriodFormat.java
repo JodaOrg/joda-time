@@ -609,4 +609,45 @@ public class TestPeriodFormat extends TestCase {
         Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
         assertEquals("1 dzie\u0144, 5 godzin, 6 minut, 7 sekund i 8 milisekund", PeriodFormat.wordBased(PL).print(p));
     }
+
+    //-----------------------------------------------------------------------
+    public void test_getDefault_localeValue() {
+        PeriodFormatter pf = PeriodFormat.getDefault();
+        assertEquals(Locale.ENGLISH, pf.getLocale());
+    }
+
+    public void test_wordBased_localeValue() {
+        PeriodFormatter pf = PeriodFormat.wordBased();
+        assertEquals(DE, pf.getLocale());
+    }
+
+    public void test_wordBasedWithLocale_localeValue() {
+        PeriodFormatter pf = PeriodFormat.wordBased(FR);
+        assertEquals(FR, pf.getLocale());
+    }
+
+    //-----------------------------------------------------------------------
+    public void test_wordBased_en_withLocale_pt() {
+        Period p = Period.days(2).withHours(5);
+        PeriodFormatter format1 = PeriodFormat.wordBased(EN);
+        assertEquals("2 days and 5 hours", format1.print(p));
+        assertEquals(p, format1.parsePeriod("2 days and 5 hours"));
+        assertEquals(EN, format1.getLocale());
+        
+        PeriodFormatter format2 = format1.withLocale(PT);
+        assertEquals("2 dias e 5 horas", format2.print(p));
+        assertEquals(p, format2.parsePeriod("2 dias e 5 horas"));
+        assertEquals(PT, format2.getLocale());
+        
+        PeriodFormatter format3 = format1.withLocale(DE);
+        assertEquals("2 Tage und 5 Stunden", format3.print(p));
+        assertEquals(p, format3.parsePeriod("2 Tage und 5 Stunden"));
+        assertEquals(DE, format3.getLocale());
+        
+        PeriodFormatter format4 = format1.withLocale(null);
+        assertEquals("2 days and 5 hours", format4.print(p));
+        assertEquals(p, format4.parsePeriod("2 days and 5 hours"));
+        assertEquals(null, format4.getLocale());
+    }
+
 }

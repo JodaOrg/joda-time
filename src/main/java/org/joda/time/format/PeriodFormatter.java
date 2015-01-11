@@ -99,7 +99,7 @@ public class PeriodFormatter {
      * @param locale  the locale to use
      * @param type  the parse period type
      */
-    private PeriodFormatter(
+    PeriodFormatter(
             PeriodPrinter printer, PeriodParser parser,
             Locale locale, PeriodType type) {
         super();
@@ -153,6 +153,8 @@ public class PeriodFormatter {
      * <p>
      * A PeriodFormatter is immutable, so a new instance is returned,
      * and the original is unaltered and still usable.
+     * <p>
+     * A null locale indicates that no specific locale override is in use.
      * 
      * @param locale  the locale to use
      * @return the new formatter
@@ -166,6 +168,8 @@ public class PeriodFormatter {
 
     /**
      * Gets the locale that will be used for printing and parsing.
+     * <p>
+     * A null locale indicates that no specific locale override is in use.
      * 
      * @return the locale to use
      */

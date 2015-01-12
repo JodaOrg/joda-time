@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+ <properties>
+  <title>Java date and time API - Upgrade from 2.6 to 2.7</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+<body>
+
+<section name="Upgrade">
+<p>
+These are the release notes and advice for upgrading Joda-Time from version 2.6 to version 2.7.
+<source>
+Joda-Time version 2.7
+---------------------
+
+Joda-Time is a date and time handling library that seeks to replace the JDK
+Date and Calendar classes.
+
+This release contains enhancements, bug fixes and a time zone update.
+The release runs on JDK 5 or later.
+
+Joda-Time is licensed under the business-friendly Apache License Version 2.
+This is the same license as all of Apache, plus other open source projects such as Spring.
+The intent is to make the code available to the Java community with the minimum
+of restrictions. If the license causes you problems please contact the mailing list.
+
+**  Please also check out our related projects   **
+** http://www.joda.org/joda-time/related.html **
+
+
+Enhancements since 2.6
+----------------------
+- Add DateTime.withDate(LocalDate) and DateTime.withTime(LocalTime) [#213]
+  This was possible using DateTime.withFields(ReadablePartial) but the new methods are clearer
+
+- Added new system property for time-zone loading [#37]
+  Added system property "org.joda.time.DateTimeZone.Folder".
+  If set, then it is treated as a file system folder to load time-zone data from.
+  The folder is loaded using ZoneInfoProvider and must be the unzipped output of ZoneInfoCompiler.
+  The default behaviour is unchanged, with default time-zone data included in the jar file.
+
+- Produce jar file without time-zone data [#220]
+  A second jar file is now located in Maven Central with the classifier "no-tzdb".
+  This is the same as the main joda-time jar file, except that the tzdb data and ZoneInfoCompiler are omitted.
+  This is intended for use by Android, but could be used in other environments.
+  If using this alternative jar, a time-zone system property must be set, either
+  "org.joda.time.DateTimeZone.Provider" or "org.joda.time.DateTimeZone.Folder".
+  The default behaviour in the standard jar file is unchanged, with time-zone data included in the jar file.
+
+
+Compatibility with 2.6
+----------------------
+Build system - Yes
+
+Binary compatible - Yes
+
+Source compatible - Yes
+
+Serialization compatible - Yes
+
+Data compatible - Yes
+ - DateTimeZone data still at version 2014j
+
+Semantic compatible - Yes
+
+
+Deprecations since 2.6
+----------------------
+
+
+Bug fixes since 2.6
+-------------------
+- Fix Asia/Dhaka time-zone [#208]
+  Problem caused by time-zone ending at 24:00 on December 31st
+  Model change as being as 23:59:59.999
+
+- Fix PeriodFormatter.withLocale to operate on word-based formatting [#187, #191]
+  Previously, PeriodFormatter.withLocale() had no effect on word-based formatting
+  Now, the locale used when calling PeriodFormat.wordBased(locale) is passed to the PeriodFormatter.
+  In addition, if PeriodFormatter.withLocale(locale) is called, then the word-based pattern will
+  change to a pattern appropriate for that locale.
+
+
+Scala
+--------
+Joda-Time uses annotations from Joda-Convert.
+In the Java programming language, this dependency is optional, however in Scala it is not.
+Scala users must manually add the Joda-Convert v1.2 dependency.
+</source>
+</p>
+</section>
+
+</body>
+</document>

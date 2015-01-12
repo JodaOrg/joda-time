@@ -1,4 +1,4 @@
-Joda-Time version 2.6
+Joda-Time version 2.7
 ---------------------
 
 Joda-Time is a date and time handling library that seeks to replace the JDK
@@ -16,7 +16,7 @@ of restrictions. If the license causes you problems please contact the mailing l
 ** http://www.joda.org/joda-time/related.html **
 
 
-Enhancements since 2.5
+Enhancements since 2.6
 ----------------------
 - Add DateTime.withDate(LocalDate) and DateTime.withTime(LocalTime) [#213]
   This was possible using DateTime.withFields(ReadablePartial) but the new methods are clearer
@@ -36,7 +36,7 @@ Enhancements since 2.5
   The default behaviour in the standard jar file is unchanged, with time-zone data included in the jar file.
 
 
-Compatibility with 2.5
+Compatibility with 2.6
 ----------------------
 Build system - Yes
 
@@ -46,31 +46,18 @@ Source compatible - Yes
 
 Serialization compatible - Yes
 
-Data compatible - Yes, except
- - DateTimeZone data updated to version 2014j
+Data compatible - Yes
+ - DateTimeZone data still at version 2014j
 
 Semantic compatible - Yes
 
 
-Deprecations since 2.5
+Deprecations since 2.6
 ----------------------
 
 
-Bug fixes since 2.5
+Bug fixes since 2.6
 -------------------
-- Handle complex prefix/suffix combinations [#194, #203]
-  For example, 'M' for months and 'm' for minutes.
-  Parser is generally case insensitive, but handles this specific case sensitivity
-
-- Attempt to tackle an Android deadlock [#196]
-  Use dedicated lock objects instead of locking on the class object
-
-- Fix name provider [#176]
-  Name provider relied on tzdb short names matching JDK data names
-  This has ceased to be true due to recent changes in tzdb, so changed to a different algorithm
-  Data returned still depends on the JDK data, not the tzdb
-  Thus, tzdb may say AEST for Sydney Australia, but if the JDK still has EST, then that is what you get
-
 - Fix Asia/Dhaka time-zone [#208]
   Problem caused by time-zone ending at 24:00 on December 31st
   Model change as being as 23:59:59.999
@@ -80,8 +67,6 @@ Bug fixes since 2.5
   Now, the locale used when calling PeriodFormat.wordBased(locale) is passed to the PeriodFormatter.
   In addition, if PeriodFormatter.withLocale(locale) is called, then the word-based pattern will
   change to a pattern appropriate for that locale.
-
-- Fix time-zone compilation tests
 
 
 Scala

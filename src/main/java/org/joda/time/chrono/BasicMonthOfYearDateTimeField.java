@@ -209,7 +209,7 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
         }
         if (partial.size() > 0 && partial.getFieldType(0).equals(DateTimeFieldType.monthOfYear()) && fieldIndex == 0) {
             // month is largest field and being added to, such as month-day
-            int curMonth0 = partial.getValue(0) - 1;
+            int curMonth0 = values[0] - 1;
             int newMonth = ((curMonth0 + (valueToAdd % 12) + 12) % 12) + 1;
             return set(partial, 0, values, newMonth);
         }

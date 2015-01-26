@@ -18,6 +18,9 @@ of restrictions. If the license causes you problems please contact the mailing l
 
 Enhancements since 2.7
 ----------------------
+- Encode properties files using unicode escapes [#228]
+  The properties files are supposed to be loaded using ISO 8859-1 but Android seems to have issues with that.
+  Re-encode the files using unicode escapes to sidestep the issue.
 
 
 Compatibility with 2.7

@@ -48,6 +48,10 @@ Bug fixes since 2.7
 - Fix MonthDay.plusDays() [#227]
   The algorithm was incorrect when adding enough days to cause the month to change twice.
 
+- Fix DateTime.withDate() DateTime.withTime() [#233]
+  The algorithm incorrectly changed the hour of day when certain DST dates were hit.
+  The new algorithm avoids an IllegalInstantException when moving to a DST gap.
+
 
 Scala
 --------

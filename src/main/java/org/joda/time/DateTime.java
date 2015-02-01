@@ -713,6 +713,8 @@ public final class DateTime
      * DateTime set = monthOfYear().setCopy(6);
      * </pre>
      * <p>
+     * If the time is invalid on the new date due to the time-zone, the time will be adjusted.
+     * <p>
      * This instance is immutable and unaffected by this method call.
      *
      * @param year  the new year value
@@ -723,15 +725,14 @@ public final class DateTime
      */
     public DateTime withDate(int year, int monthOfYear, int dayOfMonth) {
         Chronology chrono = getChronology();
-        long instant = getMillis();
-        instant = chrono.year().set(instant, year);
-        instant = chrono.monthOfYear().set(instant, monthOfYear);
-        instant = chrono.dayOfMonth().set(instant, dayOfMonth);
-        return withMillis(instant);
+        long localInstant = chrono.withUTC().getDateTimeMillis(year, monthOfYear, dayOfMonth, getMillisOfDay());
+        return withMillis(chrono.getZone().convertLocalToUTC(localInstant, false, getMillis()));
     }
 
     /**
      * Returns a copy of this datetime with the specified date, retaining the time fields.
+     * <p>
+     * If the time is invalid on the new date due to the time-zone, the time will be adjusted.
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
@@ -755,6 +756,8 @@ public final class DateTime
      * DateTime set = dt.hourOfDay().setCopy(6);
      * </pre>
      * <p>
+     * If the new time is invalid due to the time-zone, the time will be adjusted.
+     * <p>
      * This instance is immutable and unaffected by this method call.
      *
      * @param hourOfDay  the hour of the day
@@ -766,16 +769,15 @@ public final class DateTime
      */
     public DateTime withTime(int hourOfDay, int minuteOfHour, int secondOfMinute, int millisOfSecond) {
         Chronology chrono = getChronology();
-        long instant = getMillis();
-        instant = chrono.hourOfDay().set(instant, hourOfDay);
-        instant = chrono.minuteOfHour().set(instant, minuteOfHour);
-        instant = chrono.secondOfMinute().set(instant, secondOfMinute);
-        instant = chrono.millisOfSecond().set(instant, millisOfSecond);
-        return withMillis(instant);
+        long localInstant = chrono.withUTC().getDateTimeMillis(
+            getYear(), getMonthOfYear(), getDayOfMonth(), hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+        return withMillis(chrono.getZone().convertLocalToUTC(localInstant, false, getMillis()));
     }
 
     /**
      * Returns a copy of this datetime with the specified time, retaining the date fields.
+     * <p>
+     * If the new time is invalid due to the time-zone, the time will be adjusted.
      * <p>
      * This instance is immutable and unaffected by this method call.
      *

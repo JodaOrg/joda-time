@@ -839,6 +839,30 @@ public class TestDateTime_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
     
+    public void testWithDate_int_int_int_toDST1() {
+        // 2010-03-28T02:55 is DST time, need to change to 03:55
+        DateTime test = new DateTime(2015, 1, 10, 2, 55, 0, 0, ISO_PARIS);
+        DateTime result = test.withDate(2010, 3, 28);
+        DateTime expected = new DateTime(2010, 3, 28, 3, 55, 0, 0, ISO_PARIS);
+        assertEquals(expected, result);
+    }
+    
+    public void testWithDate_int_int_int_toDST2() {
+        // 2010-03-28T02:55 is DST time, need to change to 03:55
+        DateTime test = new DateTime(2015, 1, 28, 2, 55, 0, 0, ISO_PARIS);
+        DateTime result = test.withDate(2010, 3, 28);
+        DateTime expected = new DateTime(2010, 3, 28, 3, 55, 0, 0, ISO_PARIS);
+        assertEquals(expected, result);
+    }
+    
+    public void testWithDate_int_int_int_affectedByDST() {
+        // 2010-03-28T02:55 is DST time, need to avoid time being changed to 03:55
+        DateTime test = new DateTime(2015, 1, 28, 2, 55, 0, 0, ISO_PARIS);
+        DateTime result = test.withDate(2010, 3, 10);
+        DateTime expected = new DateTime(2010, 3, 10, 2, 55, 0, 0, ISO_PARIS);
+        assertEquals(expected, result);
+    }
+    
     public void testWithDate_LocalDate() {
         DateTime test = new DateTime(2002, 4, 5, 1, 2, 3, 4, ISO_UTC);
         DateTime result = test.withDate(new LocalDate(2003, 5, 6));
@@ -852,6 +876,7 @@ public class TestDateTime_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
     
+    //-----------------------------------------------------------------------
     public void testWithTime_int_int_int_int() {
         DateTime test = new DateTime(TEST_TIME1 - 12345L, BUDDHIST_UTC);
         DateTime result = test.withTime(12, 24, 0, 0);
@@ -863,6 +888,14 @@ public class TestDateTime_Basics extends TestCase {
             test.withTime(25, 1, 1, 1);
             fail();
         } catch (IllegalArgumentException ex) {}
+    }
+    
+    public void testWithTime_int_int_int_int_toDST() {
+        // 2010-03-28T02:55 is DST time, need to change to 03:55
+        DateTime test = new DateTime(2010, 3, 28, 0, 0, 0, 0, ISO_PARIS);
+        DateTime result = test.withTime(2, 55, 0, 0);
+        DateTime expected = new DateTime(2010, 3, 28, 3, 55, 0, 0, ISO_PARIS);
+        assertEquals(expected, result);
     }
     
     public void testWithTime_LocalTime() {

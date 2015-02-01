@@ -31,7 +31,7 @@ package org.joda.time;
  * <p>
  * The provided chronology implementations are:
  * <ul>
- * <li>ISO - Based on the ISO8601 standard and suitable for use after about 1600
+ * <li>ISO - The <i>de facto<i> world calendar system, based on the ISO-8601 standard
  * <li>GJ - Historically accurate calendar with Julian followed by Gregorian
  * <li>Gregorian - The Gregorian calendar system used for all time (proleptic)
  * <li>Julian - The Julian calendar system used for all time (proleptic)

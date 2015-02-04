@@ -1653,7 +1653,7 @@ public class PeriodFormatterBuilder {
                             fractValue *= 10;
                         }
                     }
-                    if (wholeValue < 0) {
+                    if (c == '-') {
                         fractValue = -fractValue;
                     }
                 }

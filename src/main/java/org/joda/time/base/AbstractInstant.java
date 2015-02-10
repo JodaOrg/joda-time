@@ -385,7 +385,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * comparing solely by millisecond.
      *
      * @param instant  a millisecond instant to check against
-     * @return true if this instant is before the instant passed in
+     * @return true if this instant is equal to the instant passed in
      */
     public boolean isEqual(long instant) {
         return (getMillis() == instant);
@@ -395,7 +395,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * Is this instant equal to the current instant
      * comparing solely by millisecond.
      * 
-     * @return true if this instant is before the current instant
+     * @return true if this instant is equal to the current instant
      */
     public boolean isEqualNow() {
         return isEqual(DateTimeUtils.currentTimeMillis());

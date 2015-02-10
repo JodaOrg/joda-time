@@ -34,7 +34,7 @@ Source compatible - Yes
 Serialization compatible - Yes
 
 Data compatible - Yes
- - DateTimeZone data still at version 2014j
+ - DateTimeZone data updated to version 2015a
 
 Semantic compatible - Yes
 

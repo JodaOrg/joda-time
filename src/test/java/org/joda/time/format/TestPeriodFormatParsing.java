@@ -95,6 +95,22 @@ public class TestPeriodFormatParsing extends TestCase {
         assertEquals(new Period(6, 3, 0, 2, 0, 0, 0, 0), p);
     }
 
+    public void testParseNegativeMillis1() {
+        Period period = new Period(0, 0, 0, -1);
+        String formatted = period.toString();
+        assertEquals("PT-0.001S", formatted);
+        Period parsed = Period.parse(formatted);
+        assertEquals(period, parsed);
+    }
+
+    public void testParseNegativeMillis2() {
+        Period period = new Period(0, 0, 0, -999);
+        String formatted = period.toString();
+        assertEquals("PT-0.999S", formatted);
+        Period parsed = Period.parse(formatted);
+        assertEquals(period, parsed);
+    }
+
     public void testParseCustom1() {
         PeriodFormatter formatter = new PeriodFormatterBuilder()
             .printZeroAlways()

@@ -1573,11 +1573,12 @@ public class PeriodFormatterBuilder {
             int length = 0;
             int fractPos = -1;
             boolean hasDigits = false;
+            boolean negative = false;
             while (length < limit) {
                 char c = text.charAt(position + length);
                 // leading sign
                 if (length == 0 && (c == '-' || c == '+') && !iRejectSignedValues) {
-                    boolean negative = c == '-';
+                    negative = c == '-';
 
                     // Next character must be a digit.
                     if (length + 1 >= limit || 
@@ -1653,7 +1654,7 @@ public class PeriodFormatterBuilder {
                             fractValue *= 10;
                         }
                     }
-                    if (wholeValue < 0) {
+                    if (negative || wholeValue < 0) {
                         fractValue = -fractValue;
                     }
                 }

@@ -52,6 +52,9 @@ Bug fixes since 2.7
   The algorithm incorrectly changed the hour of day when certain DST dates were hit.
   The new algorithm avoids an IllegalInstantException when moving to a DST gap.
 
+- Fix Period.parse() [#238]
+  Negative periods of a fraction of a second were not parsed correctly.
+
 
 Scala
 --------

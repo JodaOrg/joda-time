@@ -35,6 +35,97 @@ Serialization compatible - Yes
 
 Data compatible - Yes
  - DateTimeZone data updated to version 2015a
+ - In the past year, the IANA time-zone database maintainer has changed unique time-zone data for many parts
+   of the world into shared "links". For example, in IANA 'Asia/Kuwait' now links to 'Asia/Riyadh'.
+   (I personally disagree with the IANA time-zone database maintainer's actions but my objections were ignored).
+   This was a problem for Joda-Time as we interpreted the concept of links (many years ago) as only being used
+   for backwards compatibility. Links are exposed in Joda-Time, because if you request a time-zone for a linked
+   identifier you get the target of the link back. As such, in recent versions of Joda-Time, it was not possible
+   to obtain a DateTimeZone with an appropriate identifier for many parts of the world, such as 'Asia/Kuwait'.
+   With this release, most links in the main IANA files are now restored to be real zones.
+   As a side effect of this, some identifiers that used to act as links are now real zones.
+   In summary, in the last Joda-Time release, requesting 'Asia/Kuwait' would have given back 'Asia/Riyadh',
+   but it now returns 'Asia/Kuwait' (where 'Asia/Kuwait' and 'Asia/Riyadh' have the same time-zone rules).
+   In most cases, this won't have any impact on your application.
+ Zones affected (now real zones rather than incorrect links):
+ * Africa/Bamako
+ * Africa/Banjul
+ * Africa/Conakry
+ * Africa/Dakar
+ * Africa/Freetown
+ * Africa/Lome
+ * Africa/Nouakchott
+ * Africa/Ouagadougou
+ * Africa/Sao_Tome
+ * Atlantic/St_Helena
+ * Africa/Addis_Ababa
+ * Africa/Asmara
+ * Africa/Dar_es_Salaam
+ * Africa/Djibouti
+ * Africa/Kampala
+ * Africa/Mogadishu
+ * Indian/Antananarivo
+ * Indian/Comoro
+ * Indian/Mayotte
+ * Africa/Blantyre
+ * Africa/Bujumbura
+ * Africa/Gaborone
+ * Africa/Harare
+ * Africa/Kigali
+ * Africa/Lubumbashi
+ * Africa/Lusaka
+ * Africa/Bangui
+ * Africa/Brazzaville
+ * Africa/Douala
+ * Africa/Kinshasa
+ * Africa/Libreville
+ * Africa/Luanda
+ * Africa/Malabo
+ * Africa/Niamey
+ * Africa/Porto-Novo
+ * Africa/Maseru
+ * Africa/Mbabane
+ * Africa/Juba
+ * Europe/Nicosia
+ * Asia/Bahrain
+ * Asia/Aden
+ * Asia/Kuwait
+ * Asia/Phnom_Penh
+ * Asia/Vientiane
+ * Asia/Muscat
+ * Antarctica/McMurdo
+ * Europe/Jersey
+ * Europe/Guernsey
+ * Europe/Isle_of_Man
+ * Europe/Mariehamn
+ * Europe/Busingen
+ * Europe/Vatican
+ * Europe/San_Marino
+ * Europe/Vaduz
+ * Arctic/Longyearbyen
+ * Europe/Ljubljana
+ * Europe/Podgorica
+ * Europe/Sarajevo
+ * Europe/Skopje
+ * Europe/Zagreb
+ * Europe/Bratislava
+ * Asia/Istanbul
+ * Pacific/Johnston
+ * America/Aruba
+ * America/Lower_Princes
+ * America/Kralendijk
+ * America/Anguilla
+ * America/Dominica
+ * America/Grenada
+ * America/Guadeloupe
+ * America/Marigot
+ * America/Montserrat
+ * America/St_Barthelemy
+ * America/St_Kitts
+ * America/St_Lucia
+ * America/St_Thomas
+ * America/St_Vincent
+ * America/Tortola
 
 Semantic compatible - Yes
 

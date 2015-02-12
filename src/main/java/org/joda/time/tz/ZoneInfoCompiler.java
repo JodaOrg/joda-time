@@ -29,9 +29,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
-import java.util.Map.Entry;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
@@ -350,12 +350,16 @@ public class ZoneInfoCompiler {
     private List<Zone> iZones;
 
     // List String pairs to link.
-    private List<String> iLinks;
+    private List<String> iGoodLinks;
+
+    // List String pairs to link.
+    private List<String> iBackLinks;
 
     public ZoneInfoCompiler() {
         iRuleSets = new HashMap<String, RuleSet>();
         iZones = new ArrayList<Zone>();
-        iLinks = new ArrayList<String>();
+        iGoodLinks = new ArrayList<String>();
+        iBackLinks = new ArrayList<String>();
     }
 
     /**
@@ -368,7 +372,7 @@ public class ZoneInfoCompiler {
         if (sources != null) {
             for (int i=0; i<sources.length; i++) {
                 BufferedReader in = new BufferedReader(new FileReader(sources[i]));
-                parseDataFile(in);
+                parseDataFile(in, "backward".equals(sources[i].getName()));
                 in.close();
             }
         }
@@ -385,60 +389,68 @@ public class ZoneInfoCompiler {
         }
 
         Map<String, DateTimeZone> map = new TreeMap<String, DateTimeZone>();
+        Map<String, Zone> sourceMap = new TreeMap<String, Zone>();
 
         System.out.println("Writing zoneinfo files");
-        for (int i=0; i<iZones.size(); i++) {
+        // write out the standard entries
+        for (int i = 0; i < iZones.size(); i++) {
             Zone zone = iZones.get(i);
             DateTimeZoneBuilder builder = new DateTimeZoneBuilder();
             zone.addToBuilder(builder, iRuleSets);
-            final DateTimeZone original = builder.toDateTimeZone(zone.iName, true);
-            DateTimeZone tz = original;
+            DateTimeZone tz = builder.toDateTimeZone(zone.iName, true);
             if (test(tz.getID(), tz)) {
                 map.put(tz.getID(), tz);
+                sourceMap.put(tz.getID(), zone);
                 if (outputDir != null) {
-                    if (ZoneInfoCompiler.verbose()) {
-                        System.out.println("Writing " + tz.getID());
-                    }
-                    File file = new File(outputDir, tz.getID());
-                    if (!file.getParentFile().exists()) {
-                        file.getParentFile().mkdirs();
-                    }
-                    OutputStream out = new FileOutputStream(file);
-                    try {
-                        builder.writeTo(zone.iName, out);
-                    } finally {
-                        out.close();
-                    }
-
-                    // Test if it can be read back.
-                    InputStream in = new FileInputStream(file);
-                    DateTimeZone tz2 = DateTimeZoneBuilder.readFrom(in, tz.getID());
-                    in.close();
-
-                    if (!original.equals(tz2)) {
-                        System.out.println("*e* Error in " + tz.getID() +
-                                           ": Didn't read properly from file");
-                    }
+                    writeZone(outputDir, builder, tz);
                 }
             }
         }
 
-        for (int pass=0; pass<2; pass++) {
-            for (int i=0; i<iLinks.size(); i += 2) {
-                String id = iLinks.get(i);
-                String alias = iLinks.get(i + 1);
+        // revive zones from "good" links
+        for (int i = 0; i < iGoodLinks.size(); i += 2) {
+            String baseId = iGoodLinks.get(i);
+            String alias = iGoodLinks.get(i + 1);
+            Zone sourceZone = sourceMap.get(baseId);
+            if (sourceZone == null) {
+                System.out.println("Cannot find source zone '" + baseId + "' to link alias '" + alias + "' to");
+            } else {
+                DateTimeZoneBuilder builder = new DateTimeZoneBuilder();
+                sourceZone.addToBuilder(builder, iRuleSets);
+                DateTimeZone revived = builder.toDateTimeZone(alias, true);
+                if (test(revived.getID(), revived)) {
+                    map.put(revived.getID(), revived);
+                    if (outputDir != null) {
+                        writeZone(outputDir, builder, revived);
+                    }
+                }
+                map.put(revived.getID(), revived);
+                if (ZoneInfoCompiler.verbose()) {
+                    System.out.println("Good link: " + alias + " -> " + baseId + " revived");
+                }
+            }
+        }
+
+        // store "back" links as aliases (where name is permanently mapped
+        for (int pass = 0; pass < 2; pass++) {
+            for (int i = 0; i < iBackLinks.size(); i += 2) {
+                String id = iBackLinks.get(i);
+                String alias = iBackLinks.get(i + 1);
                 DateTimeZone tz = map.get(id);
                 if (tz == null) {
                     if (pass > 0) {
-                        System.out.println("Cannot find time zone '" + id +
-                                           "' to link alias '" + alias + "' to");
+                        System.out.println("Cannot find time zone '" + id + "' to link alias '" + alias + "' to");
                     }
                 } else {
                     map.put(alias, tz);
+                    if (ZoneInfoCompiler.verbose()) {
+                        System.out.println("Back link: " + alias + " -> " + tz.getID());
+                    }
                 }
             }
         }
 
+        // write map that unites the time-zone data, pointing aliases and real zones at files
         if (outputDir != null) {
             System.out.println("Writing ZoneInfoMap");
             File file = new File(outputDir, "ZoneInfoMap");
@@ -461,7 +473,33 @@ public class ZoneInfoCompiler {
         return map;
     }
 
-    public void parseDataFile(BufferedReader in) throws IOException {
+    private void writeZone(File outputDir, DateTimeZoneBuilder builder, DateTimeZone tz) throws IOException {
+        if (ZoneInfoCompiler.verbose()) {
+            System.out.println("Writing " + tz.getID());
+        }
+        File file = new File(outputDir, tz.getID());
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+        OutputStream out = new FileOutputStream(file);
+        try {
+            builder.writeTo(tz.getID(), out);
+        } finally {
+            out.close();
+        }
+
+        // Test if it can be read back.
+        InputStream in = new FileInputStream(file);
+        DateTimeZone tz2 = DateTimeZoneBuilder.readFrom(in, tz.getID());
+        in.close();
+
+        if (!tz.equals(tz2)) {
+            System.out.println("*e* Error in " + tz.getID() +
+                               ": Didn't read properly from file");
+        }
+    }
+
+    public void parseDataFile(BufferedReader in, boolean backward) throws IOException {
         Zone zone = null;
         String line;
         while ((line = in.readLine()) != null) {
@@ -506,8 +544,18 @@ public class ZoneInfoCompiler {
                 } else if (token.equalsIgnoreCase("Zone")) {
                     zone = new Zone(st);
                 } else if (token.equalsIgnoreCase("Link")) {
-                    iLinks.add(st.nextToken());
-                    iLinks.add(st.nextToken());
+                    String real = st.nextToken();
+                    String alias = st.nextToken();
+                    // links in "backward" are deprecated names
+                    // links in other files should be kept
+                    // special case a few to try to repair terrible damage to tzdb
+                    if (backward || alias.equals("US/Pacific-New") || alias.startsWith("Etc/") || alias.equals("GMT")) {
+                        iBackLinks.add(real);
+                        iBackLinks.add(alias);
+                    } else {
+                        iGoodLinks.add(real);
+                        iGoodLinks.add(alias);
+                    }
                 } else {
                     System.out.println("Unknown line: " + line);
                 }

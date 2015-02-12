@@ -293,6 +293,7 @@
             <argument>etcetera</argument>
             <argument>backward</argument>
             <argument>systemv</argument>
+            <argument>backzone</argument>
           </arguments>
         </configuration>
       </plugin>

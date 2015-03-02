@@ -116,6 +116,9 @@ public class DefaultNameProvider implements NameProvider {
         if (locale == null || id == null || nameKey == null) {
             return null;
         }
+        if (id.startsWith("Etc/")) {
+            id = id.substring(4);
+        }
 
         Map<String, Map<Boolean, Object>> byIdCache = iByLocaleCache2.get(locale);
         if (byIdCache == null) {

@@ -149,6 +149,9 @@ Bug fixes since 2.7
 - Fix Period.parse() [#238]
   Negative periods of a fraction of a second were not parsed correctly.
 
+- Format Etc/GMT time-zone using GMT data [#244]
+  This change will provide better text formats for pattern letter 'z'.
+
 
 Scala
 --------

@@ -22,6 +22,9 @@ Enhancements since 2.7
   The properties files are supposed to be loaded using ISO 8859-1 but Android seems to have issues with that.
   Re-encode the files using unicode escapes to sidestep the issue.
 
+- Avoid ProGuard errors in Android jar [#246]
+  Separate logging from time-zone compilation
+
 
 Compatibility with 2.7
 ----------------------

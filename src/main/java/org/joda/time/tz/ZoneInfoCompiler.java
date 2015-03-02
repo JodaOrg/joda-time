@@ -65,20 +65,6 @@ public class ZoneInfoCompiler {
 
     static Chronology cLenientISO;
 
-    static ThreadLocal<Boolean> cVerbose = new ThreadLocal<Boolean>() {
-        protected Boolean initialValue() {
-            return Boolean.FALSE;
-        }
-    };
-
-    /**
-     * Gets a flag indicating that verbose logging is required.
-     * @return true to log verbosely
-     */
-    public static boolean verbose() {
-        return cVerbose.get();
-    }
-
     //-----------------------------------------------------------------------
     /**
      * Launches the ZoneInfoCompiler tool.
@@ -132,7 +118,7 @@ public class ZoneInfoCompiler {
             sources[j] = inputDir == null ? new File(args[i]) : new File(inputDir, args[i]);
         }
 
-        cVerbose.set(verbose);
+        ZoneInfoLogger.set(verbose);
         ZoneInfoCompiler zic = new ZoneInfoCompiler();
         zic.compile(outputDir, sources);
     }
@@ -425,7 +411,7 @@ public class ZoneInfoCompiler {
                     }
                 }
                 map.put(revived.getID(), revived);
-                if (ZoneInfoCompiler.verbose()) {
+                if (ZoneInfoLogger.verbose()) {
                     System.out.println("Good link: " + alias + " -> " + baseId + " revived");
                 }
             }
@@ -443,7 +429,7 @@ public class ZoneInfoCompiler {
                     }
                 } else {
                     map.put(alias, tz);
-                    if (ZoneInfoCompiler.verbose()) {
+                    if (ZoneInfoLogger.verbose()) {
                         System.out.println("Back link: " + alias + " -> " + tz.getID());
                     }
                 }
@@ -474,7 +460,7 @@ public class ZoneInfoCompiler {
     }
 
     private void writeZone(File outputDir, DateTimeZoneBuilder builder, DateTimeZone tz) throws IOException {
-        if (ZoneInfoCompiler.verbose()) {
+        if (ZoneInfoLogger.verbose()) {
             System.out.println("Writing " + tz.getID());
         }
         File file = new File(outputDir, tz.getID());

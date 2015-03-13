@@ -773,7 +773,7 @@
     <maven-javadoc-plugin.version>2.10.1</maven-javadoc-plugin.version>
     <maven-jxr-plugin.version>2.5</maven-jxr-plugin.version>
     <maven-plugin-plugin.version>3.4</maven-plugin-plugin.version>
-    <maven-pmd-plugin.version>3.3</maven-pmd-plugin.version>
+    <maven-pmd-plugin.version>3.4</maven-pmd-plugin.version>
     <maven-project-info-reports-plugin.version>2.8</maven-project-info-reports-plugin.version>
     <maven-repository-plugin.version>2.3.1</maven-repository-plugin.version>
     <maven-resources-plugin.version>2.7</maven-resources-plugin.version>

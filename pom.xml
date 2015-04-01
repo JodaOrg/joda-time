@@ -293,6 +293,9 @@
             <argument>etcetera</argument>
             <argument>backward</argument>
             <argument>systemv</argument>
+	    <argument>iso3166.tab</argument>
+            <argument>zone.tab</argument>
+            <argument>zone1970.tab</argument>
           </arguments>
         </configuration>
       </plugin>

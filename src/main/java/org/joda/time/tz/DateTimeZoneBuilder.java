@@ -29,6 +29,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
@@ -36,6 +38,7 @@ import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
+import org.joda.time.TimeZoneLocationInfo;
 import org.joda.time.chrono.ISOChronology;
 
 /**
@@ -110,7 +113,7 @@ public class DateTimeZoneBuilder {
         switch (in.readUnsignedByte()) {
         case 'F':
             DateTimeZone fixed = new FixedDateTimeZone
-                (id, in.readUTF(), (int)readMillis(in), (int)readMillis(in));
+                (id, in.readUTF(), (int)readMillis(in), (int)readMillis(in), parseTimeZoneLocationInfo(in.readLine()));
             if (fixed.equals(DateTimeZone.UTC)) {
                 fixed = DateTimeZone.UTC;
             }
@@ -122,6 +125,32 @@ public class DateTimeZoneBuilder {
         default:
             throw new IOException("Invalid encoding");
         }
+    }
+    
+    /**
+     * Parses the location-info string read from file and creates a 
+     * {@link TimeZoneLocationInfo} object.
+     *
+     * @param locationInfo	String to be parsed
+     * @return	{@link TimeZoneLocationInfo} object if string is parsed successfully, null otherwise
+     */
+    public static TimeZoneLocationInfo parseTimeZoneLocationInfo(String locationInfo) {
+    	if(locationInfo == null) {
+    		return null;
+    	}
+    	TimeZoneLocationInfo locInfo = null;
+    	try {
+	    	String pattern = ".*latitude=(.*), longitude=(.*), comments=(.*), countries=(.*)].*";
+	        Pattern r = Pattern.compile(pattern);
+	        Matcher m = r.matcher(locationInfo);
+	        m.matches();
+	        locInfo = new TimeZoneLocationInfo(m.group(1), m.group(2), m.group(3), m.group(4));
+    	} catch (Exception e) {
+    		System.out.println("Failed to parse location-info string");
+    		e.printStackTrace();
+		}
+        
+        return locInfo;
     }
 
     /**
@@ -328,8 +357,19 @@ public class DateTimeZoneBuilder {
      *
      * @param id  time zone id to assign
      * @param outputID  true if the zone id should be output
-     */
+     */    
     public DateTimeZone toDateTimeZone(String id, boolean outputID) {
+    	return toDateTimeZone(id, outputID, null);
+    }
+    
+    /**
+     * Processes all the rules and builds a DateTimeZone along with location-info
+     *
+     * @param id  			time zone id to assign
+     * @param outputID  	true if the zone id should be output
+     * @param locationInfo	{@link TimeZoneLocationInfo} object for this timezone
+     */
+    public DateTimeZone toDateTimeZone(String id, boolean outputID, TimeZoneLocationInfo locationInfo) {
         if (id == null) {
             throw new IllegalArgumentException();
         }
@@ -393,7 +433,7 @@ public class DateTimeZoneBuilder {
                                   tr.getWallOffset(), tr.getStandardOffset());
         }
 
-        PrecalculatedZone zone = PrecalculatedZone.create(id, outputID, transitions, tailZone);
+        PrecalculatedZone zone = PrecalculatedZone.create(id, outputID, transitions, tailZone, locationInfo);
         if (zone.isCachable()) {
             return CachedDateTimeZone.forZone(zone);
         }
@@ -433,20 +473,21 @@ public class DateTimeZoneBuilder {
     }
 
     /**
-     * Encodes a built DateTimeZone to the given stream. Call readFrom to
-     * decode the data into a DateTimeZone object.
+     * Encodes a built DateTimeZone along with the location-info to the given stream.
+     * Call readFrom to decode the data into a DateTimeZone object.
      *
-     * @param out  the output stream to receive the encoded DateTimeZone
+     * @param locationInfo 		location-info of the timezone
+     * @param out  				the output stream to receive the encoded DateTimeZone
      * @since 1.5 (parameter added)
      */
-    public void writeTo(String zoneID, OutputStream out) throws IOException {
+    public void writeTo(String zoneID, OutputStream out, TimeZoneLocationInfo locationInfo) throws IOException {
         if (out instanceof DataOutput) {
-            writeTo(zoneID, (DataOutput)out);
+            writeTo(zoneID, (DataOutput)out, locationInfo);
         } else {
-            writeTo(zoneID, (DataOutput)new DataOutputStream(out));
+            writeTo(zoneID, (DataOutput)new DataOutputStream(out), locationInfo);
         }
     }
-
+    
     /**
      * Encodes a built DateTimeZone to the given stream. Call readFrom to
      * decode the data into a DateTimeZone object.
@@ -454,9 +495,21 @@ public class DateTimeZoneBuilder {
      * @param out  the output stream to receive the encoded DateTimeZone
      * @since 1.5 (parameter added)
      */
-    public void writeTo(String zoneID, DataOutput out) throws IOException {
+    public void writeTo(String zoneID, OutputStream out) throws IOException {
+        writeTo(zoneID, out, null);
+    }
+
+    /**
+     * Encodes a built DateTimeZone along with the location-info to the given stream.
+     * Call readFrom to decode the data into a DateTimeZone object.
+     *
+     * @param locationInfo 		location-info of the timezone
+     * @param out  the output stream to receive the encoded DateTimeZone
+     * @since 1.5 (parameter added)
+     */
+    public void writeTo(String zoneID, DataOutput out, TimeZoneLocationInfo locationInfo) throws IOException {
         // pass false so zone id is not written out
-        DateTimeZone zone = toDateTimeZone(zoneID, false);
+        DateTimeZone zone = toDateTimeZone(zoneID, false, locationInfo);
 
         if (zone instanceof FixedDateTimeZone) {
             out.writeByte('F'); // 'F' for fixed
@@ -471,6 +524,10 @@ public class DateTimeZoneBuilder {
                 out.writeByte('P'); // 'P' for precalculated, uncached
             }
             ((PrecalculatedZone)zone).writeTo(out);
+        }
+        //Write the location-info if present
+        if(locationInfo != null) {
+        	out.writeBytes(locationInfo.toString());
         }
     }
 
@@ -1374,10 +1431,14 @@ public class DateTimeZoneBuilder {
             if (in.readBoolean()) {
                 tailZone = DSTZone.readFrom(in, id);
             }
-
+            
+            //Try to read the location-info from the file
+            String locationInfoString = in.readLine();
+            TimeZoneLocationInfo locationInfo = DateTimeZoneBuilder.parseTimeZoneLocationInfo(locationInfoString);
             return new PrecalculatedZone
-                (id, transitions, wallOffsets, standardOffsets, nameKeys, tailZone);
+                (id, transitions, wallOffsets, standardOffsets, nameKeys, tailZone, locationInfo);
         }
+        
 
         /**
          * Factory to create instance from builder.
@@ -1386,9 +1447,10 @@ public class DateTimeZoneBuilder {
          * @param outputID  true if the zone id should be output
          * @param transitions  the list of Transition objects
          * @param tailZone  optional zone for getting info beyond precalculated tables
+         * @param locationInfo	the location-info for this timezone
          */
         static PrecalculatedZone create(String id, boolean outputID, ArrayList<Transition> transitions,
-                                        DSTZone tailZone) {
+                                        DSTZone tailZone, TimeZoneLocationInfo locationInfo) {
             int size = transitions.size();
             if (size == 0) {
                 throw new IllegalArgumentException();
@@ -1481,7 +1543,7 @@ public class DateTimeZoneBuilder {
             }
             
             return new PrecalculatedZone
-                ((outputID ? id : ""), trans, wallOffsets, standardOffsets, nameKeys, tailZone);
+                ((outputID ? id : ""), trans, wallOffsets, standardOffsets, nameKeys, tailZone, locationInfo);
         }
 
         // All array fields have the same length.
@@ -1500,7 +1562,7 @@ public class DateTimeZoneBuilder {
         private PrecalculatedZone(String id, long[] transitions, int[] wallOffsets,
                           int[] standardOffsets, String[] nameKeys, DSTZone tailZone)
         {
-            super(id);
+            super(id, null);
             iTransitions = transitions;
             iWallOffsets = wallOffsets;
             iStandardOffsets = standardOffsets;
@@ -1508,6 +1570,20 @@ public class DateTimeZoneBuilder {
             iTailZone = tailZone;
         }
 
+        /**
+         * Constructor with location-info
+         */
+        private PrecalculatedZone(String id, long[] transitions, int[] wallOffsets,
+                int[] standardOffsets, String[] nameKeys, DSTZone tailZone, TimeZoneLocationInfo locationInfo)
+		{
+		  super(id, locationInfo);
+		  iTransitions = transitions;
+		  iWallOffsets = wallOffsets;
+		  iStandardOffsets = standardOffsets;
+		  iNameKeys = nameKeys;
+		  iTailZone = tailZone;
+		}
+        
         public String getNameKey(long instant) {
             long[] transitions = iTransitions;
             int i = Arrays.binarySearch(transitions, instant);

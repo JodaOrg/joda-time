@@ -659,7 +659,7 @@ public abstract class DateTimeZone implements Serializable {
     //--------------------------------------------------------------------
 
     private final String iID;
-
+    private TimeZoneLocationInfo iLocationInfo;
     /**
      * Constructor.
      * 
@@ -671,8 +671,23 @@ public abstract class DateTimeZone implements Serializable {
             throw new IllegalArgumentException("Id must not be null");
         }
         iID = id;
+        iLocationInfo = null;
     }
 
+    /**
+     * Constructor.
+     * 
+     * @param id  			the id to use
+     * @param locationInfo  the location info for this timezone
+     * @throws IllegalArgumentException if the id is null
+     */
+    protected DateTimeZone(String id, TimeZoneLocationInfo locationInfo) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id must not be null");
+        }
+        iID = id;
+        iLocationInfo = locationInfo;
+    }
     // Principal methods
     //--------------------------------------------------------------------
 
@@ -685,7 +700,24 @@ public abstract class DateTimeZone implements Serializable {
     public final String getID() {
         return iID;
     }
+    
 
+    /**
+     * Gets the location-info of this datetime zone.
+     * 
+     * @return the location-info of this datetime zone
+     */
+    public TimeZoneLocationInfo getLocationInfo() {
+		return iLocationInfo;
+	}
+
+    /**
+     * Sets the location-info of this datetime zone.
+     */
+	public void setLocationInfo(TimeZoneLocationInfo locationInfo) {
+		this.iLocationInfo = locationInfo;
+	}
+	
     /**
      * Returns a non-localized name that is unique to this time zone. It can be
      * combined with id to form a unique key for fetching localized names.
@@ -1267,7 +1299,7 @@ public abstract class DateTimeZone implements Serializable {
         return new Stub(iID);
     }
 
-    /**
+	/**
      * Used to serialize DateTimeZones by id.
      */
     private static final class Stub implements Serializable {

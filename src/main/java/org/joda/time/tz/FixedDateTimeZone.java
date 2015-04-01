@@ -16,6 +16,7 @@
 package org.joda.time.tz;
 
 import org.joda.time.DateTimeZone;
+import org.joda.time.TimeZoneLocationInfo;
 
 /**
  * Basic DateTimeZone implementation that has a fixed name key and offsets.
@@ -40,6 +41,16 @@ public final class FixedDateTimeZone extends DateTimeZone {
         iWallOffset = wallOffset;
         iStandardOffset = standardOffset;
     }
+    /**
+     * Constructor with location-info.
+     */
+    public FixedDateTimeZone(String id, String nameKey,
+        int wallOffset, int standardOffset, TimeZoneLocationInfo locationInfo) {
+		super(id, locationInfo);
+		iNameKey = nameKey;
+		iWallOffset = wallOffset;
+		iStandardOffset = standardOffset;
+	}
 
     public String getNameKey(long instant) {
         return iNameKey;

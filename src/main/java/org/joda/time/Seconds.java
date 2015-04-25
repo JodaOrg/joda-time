@@ -149,7 +149,7 @@ public final class Seconds extends BaseSingleFieldPeriod {
      * durations for each field. Only those fields which have a precise duration in
      * the ISO UTC chronology can be converted.
      * <ul>
-     * <li>One week consists of 7 seconds.
+     * <li>One week consists of 7 days.
      * <li>One day consists of 24 hours.
      * <li>One hour consists of 60 minutes.
      * <li>One minute consists of 60 seconds.

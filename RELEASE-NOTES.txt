@@ -130,6 +130,9 @@ Data compatible - Yes
  * America/St_Vincent
  * America/Tortola
 
+The change made should mean that further damage by the IANA time-zone database maintainer
+will be less noticeable.
+
 Semantic compatible - Yes
 
 

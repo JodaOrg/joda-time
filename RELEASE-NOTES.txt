@@ -155,6 +155,12 @@ Bug fixes since 2.7
 - Format Etc/GMT time-zone using GMT data [#244]
   This change will provide better text formats for pattern letter 'z'.
 
+- Fix Property.toInterval() [#262]
+  The conversion of a field property to an interval did not take the chronology into account.
+  Thus, dateTime.hourOfDay().toInterval() previously resulted in an interval in the default
+  chronology, rather than the chronology of the dateTime.
+  The chronology is now passed to the interval.
+
 
 Scala
 --------

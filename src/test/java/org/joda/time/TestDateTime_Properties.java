@@ -1343,10 +1343,10 @@ public class TestDateTime_Properties extends TestCase {
       assertEquals(new DateTime(2004, 6, 9, 13, 0, 0, 0), testInterval.getStart());
       assertEquals(new DateTime(2004, 6, 9, 14, 0, 0, 0), testInterval.getEnd());
 
-      DateTime midnightTest = new DateTime(2004, 6, 9, 23, 23, 43, 53);
+      DateTime midnightTest = new DateTime(2004, 6, 9, 23, 23, 43, 53, COPTIC_PARIS);
       Interval midnightTestInterval = midnightTest.hourOfDay().toInterval();
-      assertEquals(new DateTime(2004, 6, 9, 23, 0, 0, 0), midnightTestInterval.getStart());
-      assertEquals(new DateTime(2004, 6, 10, 0, 0, 0, 0), midnightTestInterval.getEnd());
+      assertEquals(new DateTime(2004, 6, 9, 23, 0, 0, 0, COPTIC_PARIS), midnightTestInterval.getStart());
+      assertEquals(new DateTime(2004, 6, 10, 0, 0, 0, 0, COPTIC_PARIS), midnightTestInterval.getEnd());
     }
 
     public void testPropertyToIntervalMinuteOfHour() {

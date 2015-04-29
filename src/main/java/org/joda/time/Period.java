@@ -501,6 +501,16 @@ public final class Period
      * (exposed as 4 weeks and 2 days).
      * The results are explained by considering that the start date plus the
      * calculated period result in the end date.
+     * <p>
+     * Another special case is around daylight savings. Consider the case where there
+     * is a DST gap from 01:00 to 02:00. The period from 00:30 to 02:30 will return
+     * one hour, not two, due to the missing hour.
+     * However, once the period exceeds one day, a different effect comes into play.
+     * Consider the period from 00:30 just before the DST gap to 02:30 one day later.
+     * Since this exceeds a day, the algorithm first adds one day following normal period
+     * rules, to get 00:30 one day later, and then adds 2 hours to reach 02:30.
+     * In this way, the DST gap effectively "disappears".
+     * In other words, the addition of days takes precedence over the addition of hours.
      *
      * @param startInstant  interval start, null means now
      * @param endInstant  interval end, null means now
@@ -519,6 +529,16 @@ public final class Period
      * By contrast, 2013-01-31 to 2013-03-30 is treated as one month and 30 days.
      * The results are explained by considering that the start date plus the
      * calculated period result in the end date.
+     * <p>
+     * Another special case is around daylight savings. Consider the case where there
+     * is a DST gap from 01:00 to 02:00. The period from 00:30 to 02:30 will return
+     * one hour, not two, due to the missing hour.
+     * However, once the period exceeds one day, a different effect comes into play.
+     * Consider the period from 00:30 just before the DST gap to 02:30 one day later.
+     * Since this exceeds a day, the algorithm first adds one day following normal period
+     * rules, to get 00:30 one day later, and then adds 2 hours to reach 02:30.
+     * In this way, the DST gap effectively "disappears".
+     * In other words, the addition of days takes precedence over the addition of hours.
      *
      * @param startInstant  interval start, null means now
      * @param endInstant  interval end, null means now

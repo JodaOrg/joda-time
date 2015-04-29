@@ -370,7 +370,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
         DateTimeField field = getField();
         long start = field.roundFloor(getMillis());
         long end = field.add(start, 1);
-        Interval interval = new Interval(start, end);
+        Interval interval = new Interval(start, end, getChronology());
         return interval;
     }
 

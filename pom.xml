@@ -257,7 +257,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>      
         <artifactId>exec-maven-plugin</artifactId>
-        <version>1.3.2</version>
+        <version>1.4.0</version>
         <executions>
           <execution>
             <id>compile-tzdb</id>
@@ -760,22 +760,22 @@
   <!-- ==================================================================== -->
   <properties>
     <!-- Plugin version numbers -->
-    <maven-assembly-plugin.version>2.5.3</maven-assembly-plugin.version>
+    <maven-assembly-plugin.version>2.5.4</maven-assembly-plugin.version>
     <maven-changes-plugin.version>2.11</maven-changes-plugin.version>
-    <maven-checkstyle-plugin.version>2.13</maven-checkstyle-plugin.version>
+    <maven-checkstyle-plugin.version>2.15</maven-checkstyle-plugin.version>
     <maven-clean-plugin.version>2.6.1</maven-clean-plugin.version>
-    <maven-compiler-plugin.version>3.2</maven-compiler-plugin.version>
+    <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
     <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
-    <maven-dependency-plugin.version>2.9</maven-dependency-plugin.version>
+    <maven-dependency-plugin.version>2.10</maven-dependency-plugin.version>
     <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
     <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
-    <maven-jar-plugin.version>2.5</maven-jar-plugin.version>
-    <maven-javadoc-plugin.version>2.10.1</maven-javadoc-plugin.version>
+    <maven-jar-plugin.version>2.6</maven-jar-plugin.version>
+    <maven-javadoc-plugin.version>2.10.3</maven-javadoc-plugin.version>
     <maven-jxr-plugin.version>2.5</maven-jxr-plugin.version>
     <maven-plugin-plugin.version>3.4</maven-plugin-plugin.version>
-    <maven-pmd-plugin.version>3.3</maven-pmd-plugin.version>
+    <maven-pmd-plugin.version>3.4</maven-pmd-plugin.version>
     <maven-project-info-reports-plugin.version>2.8</maven-project-info-reports-plugin.version>
-    <maven-repository-plugin.version>2.3.1</maven-repository-plugin.version>
+    <maven-repository-plugin.version>2.4</maven-repository-plugin.version>
     <maven-resources-plugin.version>2.7</maven-resources-plugin.version>
     <maven-site-plugin.version>3.4</maven-site-plugin.version>
     <maven-source-plugin.version>2.4</maven-source-plugin.version>

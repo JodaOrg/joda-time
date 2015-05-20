@@ -37,7 +37,7 @@ Source compatible - Yes
 Serialization compatible - Yes
 
 Data compatible - Yes
- - DateTimeZone data updated to version 2015a
+ - DateTimeZone data updated to version 2015d
  - In the past year, the IANA time-zone database maintainer has changed unique time-zone data for many parts
    of the world into shared "links". For example, in IANA 'Asia/Kuwait' now links to 'Asia/Riyadh'.
    (I personally disagree with the IANA time-zone database maintainer's actions but my objections were ignored).

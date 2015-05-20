@@ -316,7 +316,7 @@
                 <manifestFile>src/conf/MANIFEST.MF</manifestFile>
                 <manifestEntries>
                   <Time-Zone-Database-Version>${tz.database.version}</Time-Zone-Database-Version>
-                  <Implementation-Title>Joda-Time-No-TZDB</Implementation-Title>
+                  <Implementation-Title>org.joda.time</Implementation-Title>
                 </manifestEntries>
               </archive>
             </configuration>

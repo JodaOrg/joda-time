@@ -17,12 +17,13 @@ package org.joda.time;
 
 import java.util.Locale;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.chrono.CopticChronology;
+import org.joda.time.chrono.IslamicChronology;
 import org.joda.time.chrono.LenientChronology;
 import org.joda.time.chrono.StrictChronology;
+
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
  * This class is a Junit unit test for YearMonthDay.
@@ -104,6 +105,11 @@ public class TestLocalDate_Properties extends TestCase {
         assertEquals(-292275054, test.year().getMinimumValueOverall());
         assertEquals(292278993, test.year().getMaximumValue());
         assertEquals(292278993, test.year().getMaximumValueOverall());
+    }
+
+    public void testPropertyIsMaxValueYear() {
+        assertTrue(new LocalDate(292278993, 3, 5).year().isMaximumValue());
+        assertFalse(new LocalDate(292278992, 3, 5).year().isMaximumValue());
     }
 
     public void testPropertyAddToCopyYear() {
@@ -217,6 +223,11 @@ public class TestLocalDate_Properties extends TestCase {
         assertEquals(1, test.monthOfYear().getMinimumValueOverall());
         assertEquals(12, test.monthOfYear().getMaximumValue());
         assertEquals(12, test.monthOfYear().getMaximumValueOverall());
+    }
+
+    public void testPropertyIsMaxValuesMonth() {
+        assertFalse(new LocalDate(2015, 5, 27).monthOfYear().isMaximumValue());
+        assertTrue(new LocalDate(2016, 12, 13).monthOfYear().isMaximumValue());
     }
 
     public void testPropertyAddToCopyMonth() {
@@ -364,6 +375,19 @@ public class TestLocalDate_Properties extends TestCase {
         assertEquals(29, test.dayOfMonth().getMaximumValue());
         test = new LocalDate(1971, 2, 9);
         assertEquals(28, test.dayOfMonth().getMaximumValue());
+    }
+
+    public void testPropertyIsMaxMinValuesDay() {
+        assertTrue(new LocalDate(2015, 2, 28).dayOfMonth().isMaximumValue());
+        assertFalse(new LocalDate(2016, 2, 28).dayOfMonth().isMaximumValue());
+        assertTrue(new LocalDate(2016, 2, 29).dayOfMonth().isMaximumValue());
+        assertFalse(new LocalDate(2015, 5, 27).dayOfMonth().isMaximumValue());
+        assertTrue(new LocalDate(2015, 5, 31).dayOfMonth().isMaximumValue());
+        assertTrue(new LocalDate(2015, 2, 1).dayOfMonth().isMinimumValue());
+        assertFalse(new LocalDate(2016, 2, 2).dayOfMonth().isMinimumValue());
+
+        assertTrue(LocalDate.now(IslamicChronology.getInstance()).withMonthOfYear(6).withDayOfMonth(29).dayOfMonth().isMaximumValue());
+        assertTrue(LocalDate.now(IslamicChronology.getInstance()).withYear(2004).withMonthOfYear(12).withDayOfMonth(30).dayOfMonth().isMaximumValue());
     }
 
     public void testPropertyAddToCopyDay() {

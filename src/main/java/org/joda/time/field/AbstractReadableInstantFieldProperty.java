@@ -324,6 +324,26 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
     }
 
     /**
+     * Checks whether or not this property contains the maximum value.
+     *
+     * @return <code>true</code> if this property has the maximum value
+     * possible, <code>false</code> otherwise
+     */
+    public boolean isMaximumValue() {
+        return getField().get(getMillis()) == getMaximumValue();
+    }
+
+    /**
+     * Checks whether or not this property contains the minimum value.
+     *
+     * @return <code>true</code> if this property has the minimum value
+     * possible, <code>false</code> otherwise
+     */
+    public boolean isMinimumValue() {
+        return getField().get(getMillis()) == getMinimumValue();
+    }
+
+    /**
      * Gets the maximum text length for the field.
      * 
      * @param locale  optional locale to use for selecting a text symbol

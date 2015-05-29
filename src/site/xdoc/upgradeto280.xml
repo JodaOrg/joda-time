@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+ <properties>
+  <title>Java date and time API - Upgrade from 2.7 to 2.8</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+<body>
+
+<section name="Upgrade">
+<p>
+These are the release notes and advice for upgrading Joda-Time from version 2.7 to version 2.8.
+<source>
+Joda-Time version 2.8
+---------------------
+
+Joda-Time is a date and time handling library that seeks to replace the JDK
+Date and Calendar classes.
+
+This release contains enhancements, bug fixes and a time zone update.
+The release runs on JDK 5 or later.
+
+Joda-Time is licensed under the business-friendly Apache License Version 2.
+This is the same license as all of Apache, plus other open source projects such as Spring.
+The intent is to make the code available to the Java community with the minimum
+of restrictions. If the license causes you problems please contact the mailing list.
+
+**  Please also check out our related projects   **
+** http://www.joda.org/joda-time/related.html **
+
+
+Enhancements since 2.7
+----------------------
+- Encode properties files using unicode escapes [#228]
+  The properties files are supposed to be loaded using ISO 8859-1 but Android seems to have issues with that.
+  Re-encode the files using unicode escapes to sidestep the issue.
+
+- Avoid ProGuard errors in Android jar [#246]
+  Separate logging from time-zone compilation
+
+
+Compatibility with 2.7
+----------------------
+Build system - Yes
+
+Binary compatible - Yes
+
+Source compatible - Yes
+
+Serialization compatible - Yes
+
+Data compatible - Yes
+ - DateTimeZone data updated to version 2015d
+ - In the past year, the IANA time-zone database maintainer has changed unique time-zone data for many parts
+   of the world into shared "links". For example, in IANA 'Asia/Kuwait' now links to 'Asia/Riyadh'.
+   (I personally disagree with the IANA time-zone database maintainer's actions but my objections were ignored).
+   This was a problem for Joda-Time as we interpreted the concept of links (many years ago) as only being used
+   for backwards compatibility. Links are exposed in Joda-Time, because if you request a time-zone for a linked
+   identifier you get the target of the link back. As such, in recent versions of Joda-Time, it was not possible
+   to obtain a DateTimeZone with an appropriate identifier for many parts of the world, such as 'Asia/Kuwait'.
+   With this release, most links in the main IANA files are now restored to be real zones.
+   As a side effect of this, some identifiers that used to act as links are now real zones.
+   In summary, in the last Joda-Time release, requesting 'Asia/Kuwait' would have given back 'Asia/Riyadh',
+   but it now returns 'Asia/Kuwait' (where 'Asia/Kuwait' and 'Asia/Riyadh' have the same time-zone rules).
+   In most cases, this won't have any impact on your application.
+ Zones affected (now real zones rather than incorrect links):
+ * Africa/Bamako
+ * Africa/Banjul
+ * Africa/Conakry
+ * Africa/Dakar
+ * Africa/Freetown
+ * Africa/Lome
+ * Africa/Nouakchott
+ * Africa/Ouagadougou
+ * Africa/Sao_Tome
+ * Atlantic/St_Helena
+ * Africa/Addis_Ababa
+ * Africa/Asmara
+ * Africa/Dar_es_Salaam
+ * Africa/Djibouti
+ * Africa/Kampala
+ * Africa/Mogadishu
+ * Indian/Antananarivo
+ * Indian/Comoro
+ * Indian/Mayotte
+ * Africa/Blantyre
+ * Africa/Bujumbura
+ * Africa/Gaborone
+ * Africa/Harare
+ * Africa/Kigali
+ * Africa/Lubumbashi
+ * Africa/Lusaka
+ * Africa/Bangui
+ * Africa/Brazzaville
+ * Africa/Douala
+ * Africa/Kinshasa
+ * Africa/Libreville
+ * Africa/Luanda
+ * Africa/Malabo
+ * Africa/Niamey
+ * Africa/Porto-Novo
+ * Africa/Maseru
+ * Africa/Mbabane
+ * Africa/Juba
+ * Europe/Nicosia
+ * Asia/Bahrain
+ * Asia/Aden
+ * Asia/Kuwait
+ * Asia/Phnom_Penh
+ * Asia/Vientiane
+ * Asia/Muscat
+ * Antarctica/McMurdo
+ * Europe/Jersey
+ * Europe/Guernsey
+ * Europe/Isle_of_Man
+ * Europe/Mariehamn
+ * Europe/Busingen
+ * Europe/Vatican
+ * Europe/San_Marino
+ * Europe/Vaduz
+ * Arctic/Longyearbyen
+ * Europe/Ljubljana
+ * Europe/Podgorica
+ * Europe/Sarajevo
+ * Europe/Skopje
+ * Europe/Zagreb
+ * Europe/Bratislava
+ * Asia/Istanbul
+ * Pacific/Johnston
+ * America/Aruba
+ * America/Lower_Princes
+ * America/Kralendijk
+ * America/Anguilla
+ * America/Dominica
+ * America/Grenada
+ * America/Guadeloupe
+ * America/Marigot
+ * America/Montserrat
+ * America/St_Barthelemy
+ * America/St_Kitts
+ * America/St_Lucia
+ * America/St_Thomas
+ * America/St_Vincent
+ * America/Tortola
+
+The change made should mean that further damage by the IANA time-zone database maintainer
+will be less noticeable.
+
+Semantic compatible - Yes
+
+
+Deprecations since 2.7
+----------------------
+
+
+Bug fixes since 2.7
+-------------------
+- Fix MonthDay.plusDays() [#227]
+  The algorithm was incorrect when adding enough days to cause the month to change twice.
+
+- Fix DateTime.withDate() DateTime.withTime() [#233]
+  The algorithm incorrectly changed the hour of day when certain DST dates were hit.
+  The new algorithm avoids an IllegalInstantException when moving to a DST gap.
+
+- Fix Period.parse() [#238]
+  Negative periods of a fraction of a second were not parsed correctly.
+
+- Format Etc/GMT time-zone using GMT data [#244]
+  This change will provide better text formats for pattern letter 'z'.
+
+- Fix Property.toInterval() [#262]
+  The conversion of a field property to an interval did not take the chronology into account.
+  Thus, dateTime.hourOfDay().toInterval() previously resulted in an interval in the default
+  chronology, rather than the chronology of the dateTime.
+  The chronology is now passed to the interval.
+
+
+Scala
+--------
+Joda-Time uses annotations from Joda-Convert.
+In the Java programming language, this dependency is optional, however in Scala it is not.
+Scala users must manually add the Joda-Convert v1.2 dependency.
+</source>
+</p>
+</section>
+
+</body>
+</document>

@@ -790,6 +790,22 @@ public class ISODateTimeFormat {
     }
 
     /**
+     * Returns a formatter that combines a full date and time with optional millis,
+     * separated by a 'T' (yyyy-MM-dd'T'HH:mm:ssZZ or yyyy-MM-dd'T'HH:mm:ss.SSSZZ).
+     * <p>
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
+     * <p>
+     * The returned formatter prints and parses only this format, which optinaly includes milliseconds.
+     * See {@link #dateTimeParser()} for a more flexible parser that accepts different formats.
+     *
+     * @return a formatter for yyyy-MM-dd'T'HH:mm:ssZZ
+     */
+    public static DateTimeFormatter dateTimeOptionalMillis() {
+        return Constants.dtox;
+    }
+
+    /**
      * Returns a formatter for a full ordinal date, using a four
      * digit year and three digit dayOfYear (yyyy-DDD).
      * <p>
@@ -1286,6 +1302,7 @@ public class ISODateTimeFormat {
             ttx = tTimeNoMillis(),  // Ttime no millis
             dt = dateTime(), // date time
             dtx = dateTimeNoMillis(), // date time no millis
+            dtox = dateTimeOptionalMillis(), // date time with optional millis
 
             //wd,  // week date (same as wwd)
             wdt = weekDateTime(), // week date time
@@ -1547,6 +1564,20 @@ public class ISODateTimeFormat {
                     .toFormatter();
             }
             return dtx;
+        }
+
+        private static DateTimeFormatter dateTimeOptionalMillis() {
+            if (dtox == null) {
+                return new DateTimeFormatterBuilder()
+                    .append(ISODateTimeFormat.date())
+                    .appendLiteral('T')
+                    .append(hourMinuteSecond())
+                    .appendOptional(fractionElement()
+                            .getParser())
+                    .append(offsetElement())
+                    .toFormatter();
+            }
+            return dtox;
         }
 
         private static DateTimeFormatter ordinalDate() {

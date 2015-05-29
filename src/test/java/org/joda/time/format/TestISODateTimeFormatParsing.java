@@ -470,6 +470,47 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void test_dateTimeOptionalMillis() {
+        DateTimeZone.setDefault(DateTimeZone.UTC);
+        DateTimeFormatter parser = ISODateTimeFormat.dateTimeOptionalMillis();
+        assertParse(parser, "2006-02-04T10:20:30Z", new DateTime(2006, 2, 4, 10, 20, 30, 0));
+        assertParse(parser, "2006-02-4T10:20:30Z", new DateTime(2006, 2, 4, 10, 20, 30, 0));
+        assertParse(parser, "2006-2-04T10:20:30Z", new DateTime(2006, 2, 4, 10, 20, 30, 0));
+        assertParse(parser, "2006-2-4T10:20:30Z", new DateTime(2006, 2, 4, 10, 20, 30, 0));
+        assertParse(parser, "2006-02-04T5:6:7Z", new DateTime(2006, 2, 4, 5, 6, 7, 0));
+        assertParse(parser, "2006-02-04T10:20:30.400999999Z", new DateTime(2006, 2, 4, 10, 20, 30, 400));
+        assertParse(parser, "2006-02-04T10:20:30.400Z", new DateTime(2006, 2, 4, 10, 20, 30, 400));
+        assertParse(parser, "2006-02-04T10:20:30.40Z", new DateTime(2006, 2, 4, 10, 20, 30, 400));
+        assertParse(parser, "2006-02-04T10:20:30.4Z", new DateTime(2006, 2, 4, 10, 20, 30, 400));
+        assertParse(parser, "2006-02-4T10:20:30.400Z", new DateTime(2006, 2, 4, 10, 20, 30, 400));
+        assertParse(parser, "2006-2-04T10:20:30.400Z", new DateTime(2006, 2, 4, 10, 20, 30, 400));
+        assertParse(parser, "2006-2-4T10:20:30.400Z", new DateTime(2006, 2, 4, 10, 20, 30, 400));
+        assertParse(parser, "2006-02-04T5:6:7.800Z", new DateTime(2006, 2, 4, 5, 6, 7, 800));
+        assertParse(parser, false, "2006-02-T10:20:30Z");
+        assertParse(parser, false, "2006-12T10:20:30Z");
+        assertParse(parser, false, "2006-1T10:20:30Z");
+        assertParse(parser, false, "2006T10:20:30Z");
+        assertParse(parser, false, "200T10:20:30Z");
+        assertParse(parser, false, "20T10:20:30Z");
+        assertParse(parser, false, "2T10:20:30Z");
+        assertParse(parser, false, "2006-02-04T10:20Z");
+        assertParse(parser, false, "2006-02-04T10:2Z");
+        assertParse(parser, false, "2006-02-04T10Z");
+        assertParse(parser, false, "2006-02-04T1Z");
+        assertParse(parser, false, "2006-02-T10:20:30.400Z");
+        assertParse(parser, false, "2006-12T10:20:30.400Z");
+        assertParse(parser, false, "2006-1T10:20:30.400Z");
+        assertParse(parser, false, "2006T10:20:30.400Z");
+        assertParse(parser, false, "200T10:20:30.400Z");
+        assertParse(parser, false, "20T10:20:30.400Z");
+        assertParse(parser, false, "2T10:20:30.400Z");
+        assertParse(parser, false, "2006-02-04T10:20.400Z");
+        assertParse(parser, false, "2006-02-04T10:2.400Z");
+        assertParse(parser, false, "2006-02-04T10.400Z");
+        assertParse(parser, false, "2006-02-04T1.400Z");
+    }
+
+    //-----------------------------------------------------------------------
     public void test_ordinalDate() {
         DateTimeFormatter parser = ISODateTimeFormat.ordinalDate();
         assertParse(parser, "2006-123", new DateTime(2006, 1, 1, 0, 0, 0, 0).withDayOfYear(123));

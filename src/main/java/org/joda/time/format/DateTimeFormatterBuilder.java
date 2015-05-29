@@ -17,10 +17,10 @@ package org.joda.time.format;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.joda.time.Chronology;
@@ -2313,7 +2313,11 @@ public class DateTimeFormatterBuilder {
             implements InternalPrinter, InternalParser {
 
         INSTANCE;
-        static final Set<String> ALL_IDS = DateTimeZone.getAvailableIDs();
+        static final List<String> ALL_IDS;
+        static {
+            ALL_IDS = new ArrayList<String>(DateTimeZone.getAvailableIDs());
+            Collections.sort(ALL_IDS);
+        }
         static final int MAX_LENGTH;
         static {
             int max = 0;
@@ -2343,18 +2347,39 @@ public class DateTimeFormatterBuilder {
 
         public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
             String best = null;
-            for (String id : ALL_IDS) {
+            int pos = prefixedStartPosition(text, position);
+            for (int i = pos; i < ALL_IDS.size(); i++) {
+                String id = ALL_IDS.get(i);
                 if (csStartsWith(text, position, id)) {
                     if (best == null || id.length() > best.length()) {
                         best = id;
                     }
-                }
+                } else break;
             }
             if (best != null) {
                 bucket.setZone(DateTimeZone.forID(best));
                 return position + best.length();
             }
             return ~position;
+        }
+
+        private static int prefixedStartPosition(CharSequence text, int position) {
+            int lo = 0;
+            int hi = ALL_IDS.size() - 1;
+
+            while (lo <= hi) {
+                int mid = (lo + hi) >>> 1;
+                String value = ALL_IDS.get(mid);
+                int compare = csCompare(value, text, position);
+                if (compare > 0) {
+                    hi = mid - 1;
+                } else if (compare < 0) {
+                    lo = mid + 1;
+                } else {
+                    return mid;
+                }
+            }
+            return lo;
         }
     }
 
@@ -2587,6 +2612,15 @@ public class DateTimeFormatterBuilder {
 
             return ~bestInvalidPos;
         }
+    }
+
+    static int csCompare(String search, CharSequence text, int position) {
+        int compareLen = Math.min(text.length() - position, search.length());
+        for (int i = 0; i < compareLen; i++) {
+            int result = search.charAt(i) - text.charAt(position + i);
+            if (result != 0) return result;
+        }
+        return 0;
     }
 
     static boolean csStartsWith(CharSequence text, int position, String search) {

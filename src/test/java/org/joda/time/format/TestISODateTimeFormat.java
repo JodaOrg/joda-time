@@ -205,6 +205,26 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("2004-06-09T12:20:30+02:00", ISODateTimeFormat.dateTimeNoMillis().print(dt));
     }
 
+    public void testFormat_dateTimeOptinalMillis() {
+        DateTime dateTime = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
+        assertEquals("2004-06-09T10:20:30.040Z", ISODateTimeFormat.dateTimeOptionalMillis().print(dateTime));
+
+        dateTime = dateTime.withZone(LONDON);
+        assertEquals("2004-06-09T11:20:30.040+01:00", ISODateTimeFormat.dateTimeOptionalMillis().print(dateTime));
+
+        dateTime = dateTime.withZone(PARIS);
+        assertEquals("2004-06-09T12:20:30.040+02:00", ISODateTimeFormat.dateTimeOptionalMillis().print(dateTime));
+
+        DateTime dateTimeNoMillis = new DateTime(2004, 6, 9, 10, 20, 30, 0, UTC);
+        assertEquals("2004-06-09T10:20:30Z", ISODateTimeFormat.dateTimeOptionalMillis().print(dateTimeNoMillis));
+
+        dateTimeNoMillis = dateTimeNoMillis.withZone(LONDON);
+        assertEquals("2004-06-09T11:20:30+01:00", ISODateTimeFormat.dateTimeOptionalMillis().print(dateTimeNoMillis));
+
+        dateTimeNoMillis = dateTimeNoMillis.withZone(PARIS);
+        assertEquals("2004-06-09T12:20:30+02:00", ISODateTimeFormat.dateTimeOptionalMillis().print(dateTimeNoMillis));
+    }
+
     public void testFormat_ordinalDate() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004-161", ISODateTimeFormat.ordinalDate().print(dt));

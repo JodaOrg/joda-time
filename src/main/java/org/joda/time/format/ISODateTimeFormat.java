@@ -15,11 +15,17 @@
  */
 package org.joda.time.format;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
+import org.joda.time.Chronology;
 import org.joda.time.DateTimeFieldType;
+import org.joda.time.DateTimeZone;
+import org.joda.time.ReadablePartial;
 
 /**
  * Factory that creates instances of DateTimeFormatter based on the ISO8601 standard.
@@ -1568,14 +1574,19 @@ public class ISODateTimeFormat {
 
         private static DateTimeFormatter dateTimeOptionalMillis() {
             if (dtox == null) {
-                return new DateTimeFormatterBuilder()
+                final DateTimePrinter dateTimePrinter = dateTime().getPrinter();
+                final DateTimePrinter dateTimeNoMillisPrinter = dateTimeNoMillis().getPrinter();
+                final DateTimePrinter printer = new ISODateTimeOptionalMillisPrinter(
+                        dateTimePrinter, dateTimeNoMillisPrinter);
+                final DateTimeParser parser =  new DateTimeFormatterBuilder()
                     .append(ISODateTimeFormat.date())
                     .appendLiteral('T')
                     .append(hourMinuteSecond())
                     .appendOptional(fractionElement()
                             .getParser())
                     .append(offsetElement())
-                    .toFormatter();
+                    .toParser();
+                return new DateTimeFormatter(printer, parser);
             }
             return dtox;
         }
@@ -2042,6 +2053,56 @@ public class ISODateTimeFormat {
             return ze;
         }
 
+        private static class ISODateTimeOptionalMillisPrinter implements DateTimePrinter {
+            private final DateTimePrinter dateTimePrinter;
+            private final DateTimePrinter dateTimeNoMillisPrinter;
+
+            private ISODateTimeOptionalMillisPrinter(
+                    DateTimePrinter dateTimePrinter, DateTimePrinter dateTimeNoMillisPrinter) {
+                this.dateTimePrinter = dateTimePrinter;
+                this.dateTimeNoMillisPrinter = dateTimeNoMillisPrinter;
+            }
+
+            public int estimatePrintedLength() {
+                return dateTimePrinter.estimatePrintedLength();
+            }
+
+            public void printTo(StringBuffer buf, long instant, Chronology chrono, int displayOffset, DateTimeZone displayZone,
+                    Locale locale) {
+                if (instant % 1000 == 0) {
+                    dateTimeNoMillisPrinter.printTo(buf, instant, chrono, displayOffset, displayZone, locale);
+                } else {
+                    dateTimePrinter.printTo(buf, instant, chrono, displayOffset, displayZone, locale);
+                }
+            }
+
+            public void printTo(Writer out, long instant, Chronology chrono, int displayOffset, DateTimeZone displayZone,
+                    Locale locale) throws IOException {
+                if (instant % 1000 == 0) {
+                    dateTimeNoMillisPrinter.printTo(out, instant, chrono, displayOffset, displayZone, locale);
+                } else {
+                    dateTimePrinter.printTo(out, instant, chrono, displayOffset, displayZone, locale);
+                }
+            }
+
+            public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
+                final int millis = partial.get(DateTimeFieldType.millisOfSecond());
+                if (millis == 0) {
+                    dateTimeNoMillisPrinter.printTo(buf, partial, locale);
+                } else {
+                    dateTimePrinter.printTo(buf, partial, locale);
+                }
+            }
+
+            public void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException {
+                final int millis = partial.get(DateTimeFieldType.millisOfSecond());
+                if (millis == 0) {
+                    dateTimeNoMillisPrinter.printTo(out, partial, locale);
+                } else {
+                    dateTimePrinter.printTo(out, partial, locale);
+                }
+            }
+        }
     }
 
 }

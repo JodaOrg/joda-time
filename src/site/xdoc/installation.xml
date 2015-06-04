@@ -22,6 +22,7 @@ of the source code suitable for linking to the jar file in IDEs such as Eclipse.
 <p>
 The release notes for upgraders can be found here:
 <ul>
+<li><a href="upgradeto280.html">Version 2.8</a> - upgrade from Version 2.7</li>
 <li><a href="upgradeto270.html">Version 2.7</a> - upgrade from Version 2.6</li>
 <li><a href="upgradeto260.html">Version 2.6</a> - upgrade from Version 2.5</li>
 <li><a href="upgradeto250.html">Version 2.5</a> - upgrade from Version 2.4</li>

@@ -125,21 +125,21 @@ Joda-Time is licenced under the business friendly <a href="license.html">Apache 
 
 ## <i></i> Releases
 
-[Release 2.8](download.html) is the current latest release.
+[Release 2.8.1](download.html) is the current latest release.
 This release is considered stable and worthy of the 2.x tag.
-See the [upgrade notes](upgradeto280.html) for full details.
+See the [upgrade notes](upgradeto281.html) for full details.
 
 Joda-Time requires Java SE 5 or later and has [no dependencies](dependencies.html).
 There is a *compile-time* dependency on [Joda-Convert](http://www.joda.org/joda-convert/),
 but this is not required at runtime thanks to the magic of annotations.
 
-Available in [Maven Central](http://search.maven.org/#artifactdetails%7Cjoda-time%7Cjoda-time%7C2.8%7Cjar).
+Available in [Maven Central](http://search.maven.org/#artifactdetails%7Cjoda-time%7Cjoda-time%7C2.8.1%7Cjar).
 
 ```xml
 <dependency>
   <groupId>joda-time</groupId>
   <artifactId>joda-time</artifactId>
-  <version>2.8</version>
+  <version>2.8.1</version>
 </dependency>
 ```
 
@@ -153,7 +153,7 @@ Key changes included the use of Java SE 5 or later, generics, and the removal of
 deprecated methods. See the [upgrade notes](upgradeto200.html) for full details when upgrading from 1.x
 including information on the corner cases that are not compatible.
 The ancient release [1.6.2](https://sourceforge.net/projects/joda-time/files/joda-time/1.6.2/) was
-the last release to support Java SE 4 and the last v1.x release
+the last release to support Java SE 4 and the last v1.x release.
 
 
 ---

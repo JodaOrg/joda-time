@@ -760,7 +760,7 @@
   <!-- ==================================================================== -->
   <properties>
     <!-- Plugin version numbers -->
-    <maven-assembly-plugin.version>2.5.4</maven-assembly-plugin.version>
+    <maven-assembly-plugin.version>2.5.5</maven-assembly-plugin.version>
     <maven-changes-plugin.version>2.11</maven-changes-plugin.version>
     <maven-checkstyle-plugin.version>2.15</maven-checkstyle-plugin.version>
     <maven-clean-plugin.version>2.6.1</maven-clean-plugin.version>

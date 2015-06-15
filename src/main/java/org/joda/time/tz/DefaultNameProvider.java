@@ -70,7 +70,7 @@ public class DefaultNameProvider implements NameProvider {
             String[][] zoneStringsEn = DateTimeUtils.getDateFormatSymbols(Locale.ENGLISH).getZoneStrings();
             String[] setEn = null;
             for (String[] strings : zoneStringsEn) {
-                if (strings != null && strings.length == 5 && id.equals(strings[0])) {
+                if (strings != null && strings.length >= 5 && id.equals(strings[0])) {
                     setEn = strings;
                     break;
                 }
@@ -78,7 +78,7 @@ public class DefaultNameProvider implements NameProvider {
             String[][] zoneStringsLoc = DateTimeUtils.getDateFormatSymbols(locale).getZoneStrings();
             String[] setLoc = null;
             for (String[] strings : zoneStringsLoc) {
-                if (strings != null && strings.length == 5 && id.equals(strings[0])) {
+                if (strings != null && strings.length >= 5 && id.equals(strings[0])) {
                     setLoc = strings;
                     break;
                 }
@@ -132,7 +132,7 @@ public class DefaultNameProvider implements NameProvider {
             String[][] zoneStringsEn = DateTimeUtils.getDateFormatSymbols(Locale.ENGLISH).getZoneStrings();
             String[] setEn = null;
             for (String[] strings : zoneStringsEn) {
-                if (strings != null && strings.length == 5 && id.equals(strings[0])) {
+                if (strings != null && strings.length >= 5 && id.equals(strings[0])) {
                     setEn = strings;
                     break;
                 }
@@ -140,7 +140,7 @@ public class DefaultNameProvider implements NameProvider {
             String[][] zoneStringsLoc = DateTimeUtils.getDateFormatSymbols(locale).getZoneStrings();
             String[] setLoc = null;
             for (String[] strings : zoneStringsLoc) {
-                if (strings != null && strings.length == 5 && id.equals(strings[0])) {
+                if (strings != null && strings.length >= 5 && id.equals(strings[0])) {
                     setLoc = strings;
                     break;
                 }

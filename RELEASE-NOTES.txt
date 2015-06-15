@@ -18,6 +18,9 @@ of restrictions. If the license causes you problems please contact the mailing l
 
 Changes in 2.8.1
 ================
+- Fixed to handle JDK 8u60 [#288, #291]
+  Without this fix, formatting a time-zone will print "+00:00" instead of "GMT" for the GMT time-zone
+
 
 
 

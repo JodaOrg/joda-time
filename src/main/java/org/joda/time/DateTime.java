@@ -138,7 +138,7 @@ public final class DateTime
      * the offset is directly parsed and stored.
      * As such, {@code DateTime.parse("2010-06-30T01:20+02:00")} and
      * {@code new DateTime("2010-06-30T01:20+02:00"))} are NOT equal.
-     * The object produced via this method has a zone of {@code DateTimeZone.forOffsetHours(1)}.
+     * The object produced via this method has a zone of {@code DateTimeZone.forOffsetHours(2)}.
      * The object produced via the constructor has a zone of {@code DateTimeZone.getDefault()}.
      * 
      * @param str  the string to parse, not null

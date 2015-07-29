@@ -424,7 +424,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * Converts the duration of the interval to a <code>Period</code> using the
      * All period type.
      * <p>
-     * This method should be used to exract the field values describing the
+     * This method should be used to extract the field values describing the
      * difference between the start and end instants.
      *
      * @return a time period derived from the interval
@@ -437,7 +437,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * Converts the duration of the interval to a <code>Period</code> using the
      * specified period type.
      * <p>
-     * This method should be used to exract the field values describing the
+     * This method should be used to extract the field values describing the
      * difference between the start and end instants.
      *
      * @param type  the requested type of the duration, null means AllType

@@ -1,3 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+ <properties>
+  <title>Java date and time API - Upgrade from 2.8.1 to 2.8.2</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+<body>
+
+<section name="Upgrade">
+<p>
+These are the release notes and advice for upgrading Joda-Time from version 2.8.1 to version 2.8.2.
+<source>
 Joda-Time version 2.8.2
 -----------------------
 
@@ -30,20 +44,9 @@ Changes in 2.8.0
 
 See http://www.joda.org/joda-time/upgradeto280.html
 
+</source>
+</p>
+</section>
 
-Scala
------
-Joda-Time uses annotations from Joda-Convert.
-In the Java programming language, this dependency is optional, however in Scala it is not.
-Scala users must manually add the Joda-Convert v1.2 dependency.
-
-
-Feedback
---------
-Feedback is best received using GitHub issues and Pull Requests.
-https://github.com/JodaOrg/joda-time/
-
-Feedback is also welcomed via the joda-interest mailing list.
-
-The Joda team
-http://www.joda.org/joda-time/
+</body>
+</document>

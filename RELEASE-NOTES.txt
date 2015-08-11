@@ -1,4 +1,4 @@
-Joda-Time version 2.8.1
+Joda-Time version 2.8.2
 -----------------------
 
 Joda-Time is a date and time handling library that seeks to replace the JDK
@@ -14,6 +14,11 @@ of restrictions. If the license causes you problems please contact the mailing l
 
 **  Please also check out our related projects   **
 ** http://www.joda.org/joda-time/related.html **
+
+
+Changes in 2.8.2
+================
+
 
 
 Changes in 2.8.1

@@ -18,6 +18,7 @@ of restrictions. If the license causes you problems please contact the mailing l
 
 Changes in 2.8.2
 ================
+- DateTimeZone data updated to version 2015f
 
 
 

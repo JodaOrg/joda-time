@@ -21,6 +21,8 @@ Changes in 2.8.3
 - Added Interval.parseWithOffset(String) [#299, #296]
   Provides a way to parse the fixed offset in an interval string
 
+- Clarify that PeriodFormatterBuilder is in an invalid state once built [#309]
+
 
 Changes in 2.8.2
 ================

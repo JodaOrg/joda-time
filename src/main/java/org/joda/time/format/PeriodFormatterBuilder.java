@@ -118,7 +118,7 @@ public class PeriodFormatterBuilder {
      * This is the main method used by applications at the end of the build
      * process to create a usable formatter.
      * <p>
-     * Subsequent changes to this builder do not affect the returned formatter.
+     * Once this method has been called, the builder is in an invalid state.
      * <p>
      * The returned formatter may not support both printing and parsing.
      * The methods {@link PeriodFormatter#isPrinter()} and

@@ -2313,7 +2313,7 @@ public class DateTimeFormatterBuilder {
             implements InternalPrinter, InternalParser {
 
         INSTANCE;
-        static final List<String> ALL_IDS;
+        private static final List<String> ALL_IDS;
         static {
             ALL_IDS = new ArrayList<String>(DateTimeZone.getAvailableIDs());
             Collections.sort(ALL_IDS);
@@ -2354,7 +2354,9 @@ public class DateTimeFormatterBuilder {
                     if (best == null || id.length() > best.length()) {
                         best = id;
                     }
-                } else break;
+                } else {
+                    break;
+                }
             }
             if (best != null) {
                 bucket.setZone(DateTimeZone.forID(best));
@@ -2370,7 +2372,7 @@ public class DateTimeFormatterBuilder {
             while (lo <= hi) {
                 int mid = (lo + hi) >>> 1;
                 String value = ALL_IDS.get(mid);
-                int compare = csCompare(value, text, position);
+                int compare = csCompare(text, position, value);
                 if (compare > 0) {
                     hi = mid - 1;
                 } else if (compare < 0) {
@@ -2614,11 +2616,13 @@ public class DateTimeFormatterBuilder {
         }
     }
 
-    static int csCompare(String search, CharSequence text, int position) {
+    static int csCompare(CharSequence text, int position, String search) {
         int compareLen = Math.min(text.length() - position, search.length());
         for (int i = 0; i < compareLen; i++) {
             int result = search.charAt(i) - text.charAt(position + i);
-            if (result != 0) return result;
+            if (result != 0) {
+                return result;
+            }
         }
         return 0;
     }

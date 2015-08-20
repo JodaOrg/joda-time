@@ -19,8 +19,10 @@ import java.io.Serializable;
 
 import org.joda.time.base.BaseInterval;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.joda.time.format.ISOPeriodFormat;
+import org.joda.time.format.PeriodFormatter;
 
 /**
  * Interval is the standard implementation of an immutable time interval.
@@ -61,12 +63,87 @@ public final class Interval
      * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}
      * and {@link ISOPeriodFormat#standard()}, and may be 'datetime/datetime',
      * 'datetime/period' or 'period/datetime'.
+     * <p>
+     * This method operates by parsing in the default time-zone.
+     * Any offset contained within the string being parsed will be normalised to the
+     * offset of the default time-zone. See also {@link #parseWithOffset(String)}.
      * 
      * @param str  the string to parse, not null
      * @since 2.0
      */
     public static Interval parse(String str) {
         return new Interval(str);
+    }
+
+    /**
+     * Parses a {@code Interval} from the specified string, using any offset it contains.
+     * <p>
+     * The String formats are described by
+     * {@link ISODateTimeFormat#dateTimeParser()}{@code .withOffsetParsed()}
+     * and {@link ISOPeriodFormat#standard()}, and may be 'datetime/datetime',
+     * 'datetime/period' or 'period/datetime'.
+     * <p>
+     * Sometimes this method and {@code new Interval(str)} return different results.
+     * This can be confusing as the difference is not visible in {@link #toString()}.
+     * <p>
+     * When passed a string without an offset, such as '2010-06-30T01:20/P1D',
+     * both the constructor and this method use the default time-zone.
+     * As such, {@code Interval.parseWithOffset("2010-06-30T01:20/P1D")} and
+     * {@code new Interval("2010-06-30T01:20/P1D"))} are equal.
+     * <p>
+     * However, when this method is passed a string with an offset,
+     * the offset is directly parsed and stored.
+     * As such, {@code Interval.parseWithOffset("2010-06-30T01:20+02:00/P1D")} and
+     * {@code new Interval("2010-06-30T01:20+02:00/P1D"))} are NOT equal.
+     * The object produced via this method has a zone of {@code DateTimeZone.forOffsetHours(2)}.
+     * The object produced via the constructor has a zone of {@code DateTimeZone.getDefault()}.
+     * 
+     * @param str  the string to parse, not null
+     * @since 2.9
+     */
+    public static Interval parseWithOffset(String str) {
+        int separator = str.indexOf('/');
+        if (separator < 0) {
+            throw new IllegalArgumentException("Format requires a '/' separator: " + str);
+        }
+        String leftStr = str.substring(0, separator);
+        if (leftStr.length() <= 0) {
+            throw new IllegalArgumentException("Format invalid: " + str);
+        }
+        String rightStr = str.substring(separator + 1);
+        if (rightStr.length() <= 0) {
+            throw new IllegalArgumentException("Format invalid: " + str);
+        }
+
+        DateTimeFormatter dateTimeParser = ISODateTimeFormat.dateTimeParser().withOffsetParsed();
+        PeriodFormatter periodParser = ISOPeriodFormat.standard();
+        DateTime start = null;
+        Period period = null;
+        
+        // before slash
+        char c = leftStr.charAt(0);
+        if (c == 'P' || c == 'p') {
+            period = periodParser.withParseType(PeriodType.standard()).parsePeriod(leftStr);
+        } else {
+            start = dateTimeParser.parseDateTime(leftStr);
+        }
+        
+        // after slash
+        c = rightStr.charAt(0);
+        if (c == 'P' || c == 'p') {
+            if (period != null) {
+                throw new IllegalArgumentException("Interval composed of two durations: " + str);
+            }
+            period = periodParser.withParseType(PeriodType.standard()).parsePeriod(rightStr);
+            return new Interval(start, period);
+        } else {
+            DateTime end = dateTimeParser.parseDateTime(rightStr);
+            if (period != null) {
+                return new Interval(period, end);
+            } else {
+                return new Interval(start, end);
+            }
+        }
     }
 
     //-----------------------------------------------------------------------

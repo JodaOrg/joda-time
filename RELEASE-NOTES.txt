@@ -18,6 +18,9 @@ Changes in 2.8.3
 ================
 - Faster parsing of time-zone identifiers [#282]
 
+- Added Interval.parseWithOffset(String) [#299, #296]
+  Provides a way to parse the fixed offset in an interval string
+
 
 Changes in 2.8.2
 ================

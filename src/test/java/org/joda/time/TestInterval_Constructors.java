@@ -39,6 +39,7 @@ public class TestInterval_Constructors extends TestCase {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
+    private static final DateTimeZone OFFSET_04_00 = DateTimeZone.forOffsetHours(4);
     
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
                      366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 
@@ -102,12 +103,51 @@ public class TestInterval_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testParse_noFormatter() throws Throwable {
+    public void testParse_noOffsetInString() throws Throwable {
         DateTime start = new DateTime(2010, 6, 30, 12, 30, ISOChronology.getInstance(PARIS));
         DateTime end = new DateTime(2010, 7, 1, 14, 30, ISOChronology.getInstance(PARIS));
         assertEquals(new Interval(start, end), Interval.parse("2010-06-30T12:30/2010-07-01T14:30"));
         assertEquals(new Interval(start, end), Interval.parse("2010-06-30T12:30/P1DT2H"));
         assertEquals(new Interval(start, end), Interval.parse("P1DT2H/2010-07-01T14:30"));
+    }
+
+    public void testParse_offsetInString() throws Throwable {
+        DateTime start = new DateTime(2010, 6, 30, 10, 30, ISOChronology.getInstance(PARIS));
+        DateTime end = new DateTime(2010, 7, 1, 12, 30, ISOChronology.getInstance(PARIS));
+        assertEquals(new Interval(start, end), Interval.parse("2010-06-30T12:30+04:00/2010-07-01T14:30+04:00"));
+        assertEquals(new Interval(start, end), Interval.parse("2010-06-30T12:30+04:00/P1DT2H"));
+        assertEquals(new Interval(start, end), Interval.parse("P1DT2H/2010-07-01T14:30+04:00"));
+    }
+
+    public void testParseWithOffset_noOffsetInString() throws Throwable {
+        DateTime start = new DateTime(2010, 6, 30, 12, 30, ISOChronology.getInstance(PARIS));
+        DateTime end = new DateTime(2010, 7, 1, 14, 30, ISOChronology.getInstance(PARIS));
+        assertEquals(new Interval(start, end), Interval.parseWithOffset("2010-06-30T12:30/2010-07-01T14:30"));
+        assertEquals(new Interval(start, end), Interval.parseWithOffset("2010-06-30T12:30/P1DT2H"));
+        assertEquals(new Interval(start, end), Interval.parseWithOffset("P1DT2H/2010-07-01T14:30"));
+    }
+
+    public void testParseWithOffset_offsetInString() throws Throwable {
+        DateTime start = new DateTime(2010, 6, 30, 12, 30, ISOChronology.getInstance(OFFSET_04_00));
+        DateTime end = new DateTime(2010, 7, 1, 14, 30, ISOChronology.getInstance(OFFSET_04_00));
+        assertEquals(new Interval(start, end), Interval.parseWithOffset("2010-06-30T12:30+04:00/2010-07-01T14:30+04:00"));
+        assertEquals(new Interval(start, end), Interval.parseWithOffset("2010-06-30T12:30+04:00/p1DT2H"));
+        assertEquals(new Interval(start, end), Interval.parseWithOffset("p1DT2H/2010-07-01T14:30+04:00"));
+    }
+
+    public void testParseWithOffset_invalid() throws Throwable {
+        try {
+            Interval.parseWithOffset("2010-06-30T12:30");
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
+        try {
+            Interval.parseWithOffset("P1D/P1D");
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
     }
 
     //-----------------------------------------------------------------------

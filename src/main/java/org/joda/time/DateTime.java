@@ -123,11 +123,11 @@ public final class DateTime
     /**
      * Parses a {@code DateTime} from the specified string.
      * <p>
-     * This uses {@link ISODateTimeFormat#dateTimeParser().withOffsetParsed()}
+     * This uses {@link ISODateTimeFormat#dateTimeParser()}{@code .withOffsetParsed()}
      * which is different to passing a {@code String} to the constructor.
      * <p>
      * Sometimes this method and {@code new DateTime(str)} return different results.
-     * This can be confusing as the different is not visible in {@link #toString()}.
+     * This can be confusing as the difference is not visible in {@link #toString()}.
      * <p>
      * When passed a date-time string without an offset, such as '2010-06-30T01:20',
      * both the constructor and this method use the default time-zone.

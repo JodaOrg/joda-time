@@ -501,6 +501,20 @@ public class DateTimeFormatter {
     /**
      * Prints a ReadableInstant, using the chronology supplied by the instant.
      *
+     * @param buf  the destination to format to, not null
+     * @param instant  instant to format, null means now
+     */
+    public void printTo(StringBuilder buf, ReadableInstant instant) {
+        try {
+            printTo((Appendable) buf, instant);
+        } catch (IOException ex) {
+            // StringBuilder does not throw IOException
+        }
+    }
+
+    /**
+     * Prints a ReadableInstant, using the chronology supplied by the instant.
+     *
      * @param out  the destination to format to, not null
      * @param instant  instant to format, null means now
      */
@@ -534,6 +548,21 @@ public class DateTimeFormatter {
             printTo((Appendable) buf, instant);
         } catch (IOException ex) {
             // StringBuffer does not throw IOException
+        }
+    }
+
+    /**
+     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
+     * using ISO chronology in the default DateTimeZone.
+     *
+     * @param buf  the destination to format to, not null
+     * @param instant  millis since 1970-01-01T00:00:00Z
+     */
+    public void printTo(StringBuilder buf, long instant) {
+        try {
+            printTo((Appendable) buf, instant);
+        } catch (IOException ex) {
+            // StringBuilder does not throw IOException
         }
     }
 
@@ -575,6 +604,23 @@ public class DateTimeFormatter {
             printTo((Appendable) buf, partial);
         } catch (IOException ex) {
             // StringBuffer does not throw IOException
+        }
+    }
+
+    /**
+     * Prints a ReadablePartial.
+     * <p>
+     * Neither the override chronology nor the override zone are used
+     * by this method.
+     *
+     * @param buf  the destination to format to, not null
+     * @param partial  partial to format
+     */
+    public void printTo(StringBuilder buf, ReadablePartial partial) {
+        try {
+            printTo((Appendable) buf, partial);
+        } catch (IOException ex) {
+            // StringBuilder does not throw IOException
         }
     }
 

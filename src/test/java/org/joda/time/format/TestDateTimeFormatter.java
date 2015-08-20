@@ -179,6 +179,28 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testPrint_builderMethods() throws Exception {
+        DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
+        StringBuilder buf = new StringBuilder();
+        f.printTo(buf, dt);
+        assertEquals("Wed 2004-06-09T10:20:30Z", buf.toString());
+        
+        buf = new StringBuilder();
+        f.printTo(buf, dt.getMillis());
+        assertEquals("Wed 2004-06-09T11:20:30+01:00", buf.toString());
+        
+        buf = new StringBuilder();
+        ISODateTimeFormat.yearMonthDay().printTo(buf, dt.toYearMonthDay());
+        assertEquals("2004-06-09", buf.toString());
+        
+        buf = new StringBuilder();
+        try {
+            ISODateTimeFormat.yearMonthDay().printTo(buf, (ReadablePartial) null);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
     public void testPrint_writerMethods() throws Exception {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         CharArrayWriter out = new CharArrayWriter();

@@ -23,6 +23,8 @@ Changes in 2.8.3
 
 - Clarify that PeriodFormatterBuilder is in an invalid state once built [#309]
 
+- Add DateTimeFormatter methods for StringBuilder [#298]
+
 
 Changes in 2.8.2
 ================

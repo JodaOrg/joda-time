@@ -253,7 +253,7 @@ public class TestDateTimeUtils extends TestCase {
             DateTimeUtils.setCurrentMillisSystem();
         }
         long now2 = DateTimeUtils.currentTimeMillis();
-        assertEquals(now1, now2);
+        assertEquals(Math.abs(now1 - now2) < 100, true);
     }
 
     //-----------------------------------------------------------------------

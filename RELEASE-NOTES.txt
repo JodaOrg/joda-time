@@ -25,6 +25,8 @@ Changes in 2.8.3
 
 - Add DateTimeFormatter methods for StringBuilder [#298]
 
+- Add Italian period translations [#312]
+
 
 Changes in 2.8.2
 ================

@@ -27,6 +27,8 @@ Changes in 2.8.3
 
 - Add Italian period translations [#312]
 
+- Add Czech period translations [#313]
+
 
 Changes in 2.8.2
 ================

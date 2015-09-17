@@ -29,6 +29,8 @@ Changes in 2.8.3
 
 - Add Czech period translations [#313]
 
+- Fix overflow bug in intervals [#315]
+
 
 Changes in 2.8.2
 ================

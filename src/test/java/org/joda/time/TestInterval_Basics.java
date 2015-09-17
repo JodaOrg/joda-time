@@ -140,6 +140,11 @@ public class TestInterval_Basics extends TestCase {
         assertSame(Duration.ZERO, test.toDuration());
     }
 
+    public void testGetDuration3() {
+        Interval test = new Interval(Long.MIN_VALUE, -2);
+        assertEquals(-2L - Long.MIN_VALUE, test.toDurationMillis());
+    }
+
     public void testEqualsHashCode() {
         Interval test1 = new Interval(TEST_TIME1, TEST_TIME2);
         Interval test2 = new Interval(TEST_TIME1, TEST_TIME2);

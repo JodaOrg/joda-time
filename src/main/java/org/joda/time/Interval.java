@@ -462,7 +462,7 @@ public final class Interval
     }
 
     /**
-     * Creates a new interval with the specified start millisecond instant.
+     * Creates a new interval with the specified end millisecond instant.
      *
      * @param endInstant  the end instant for the new interval
      * @return an interval with the start from this interval and the specified end

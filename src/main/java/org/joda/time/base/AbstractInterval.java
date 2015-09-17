@@ -399,7 +399,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @throws ArithmeticException if the duration exceeds the capacity of a long
      */
     public long toDurationMillis() {
-        return FieldUtils.safeAdd(getEndMillis(), -getStartMillis());
+        return FieldUtils.safeSubtract(getEndMillis(), getStartMillis());
     }
 
     /**

@@ -31,6 +31,10 @@ Changes in 2.8.3
 
 - Add Czech period translations [#313]
 
+- Allow DateTime and Interval to refer to values at Long.MIN_VALUE and Long.MAX_VALUE [#297, #190]
+  A DateTime may be created with any millisecond value, however at the very edges there may be
+  some undesirable effects, for example alway using UTC instead of the time-zone
+
 - Fix overflow bug in intervals [#315]
 
 - Better error message for malformed tzdb files [#319]

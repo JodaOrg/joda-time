@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2013 Stephen Colebourne
+ *  Copyright 2001-2015 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -82,6 +82,13 @@ class BasicYearDateTimeField extends ImpreciseDateTimeField {
     public long set(long instant, int year) {
         FieldUtils.verifyValueBounds
             (this, year, iChronology.getMinYear(), iChronology.getMaxYear());
+        return iChronology.setYear(instant, year);
+    }
+
+    @Override
+    public long setExtended(long instant, int year) {
+        FieldUtils.verifyValueBounds(
+                this, year, iChronology.getMinYear() - 1, iChronology.getMaxYear() + 1);
         return iChronology.setYear(instant, year);
     }
 

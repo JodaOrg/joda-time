@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2014 Stephen Colebourne
+ *  Copyright 2001-2015 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -565,7 +565,7 @@ public class DateTimeParserBucket {
         
         long set(long millis, boolean reset) {
             if (iText == null) {
-                millis = iField.set(millis, iValue);
+                millis = iField.setExtended(millis, iValue);
             } else {
                 millis = iField.set(millis, iText, iLocale);
             }

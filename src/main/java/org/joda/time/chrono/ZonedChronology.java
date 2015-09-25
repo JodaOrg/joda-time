@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2013 Stephen Colebourne
+ *  Copyright 2001-2015 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -135,9 +135,19 @@ public final class ZonedChronology extends AssembledChronology {
      * @return the instant from 1970-01-01T00:00:00Z
      */
     private long localToUTC(long localInstant) {
+        if (localInstant == Long.MAX_VALUE) {
+            return Long.MAX_VALUE;
+        } else if (localInstant == Long.MIN_VALUE) {
+            return Long.MIN_VALUE;
+        }
         DateTimeZone zone = getZone();
         int offset = zone.getOffsetFromLocal(localInstant);
         long utcInstant = localInstant - offset;
+        if (localInstant > 0 && utcInstant < 0) {
+            return Long.MAX_VALUE;
+        } else if (localInstant < 0 && utcInstant > 0) {
+            return Long.MIN_VALUE;
+        }
         int offsetBasedOnUtc = zone.getOffset(utcInstant);
         if (offset != offsetBasedOnUtc) {
             throw new IllegalInstantException(localInstant, zone.getID());

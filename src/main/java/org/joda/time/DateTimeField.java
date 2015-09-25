@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2015 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -377,6 +377,20 @@ public abstract class DateTimeField {
      * @throws IllegalArgumentException if the value is invalid
      */
     public abstract long set(long instant, int value);
+
+    /**
+     * Sets a value in the milliseconds supplied, allowing a little leniency at the margins.
+     * <p>
+     * This is primarily an internal method used by parsing.
+     * 
+     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to set in
+     * @param value  the value to set, in the units of the field
+     * @return the updated milliseconds
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public long setExtended(long instant, int value) {
+        return set(instant, value);
+    }
 
     /**
      * Sets a value using the specified partial instant.

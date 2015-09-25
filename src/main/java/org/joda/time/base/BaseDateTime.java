@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2011 Stephen Colebourne
+ *  Copyright 2001-2015 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -124,10 +124,7 @@ public abstract class BaseDateTime
         super();
         iChronology = checkChronology(chronology);
         iMillis = checkInstant(instant, iChronology);
-        // validate not over maximum
-        if (iChronology.year().isSupported()) {
-            iChronology.year().set(iMillis, iChronology.year().get(iMillis));
-        }
+        adjustForMinMax();
     }
 
     //-----------------------------------------------------------------------
@@ -152,6 +149,7 @@ public abstract class BaseDateTime
         Chronology chrono = checkChronology(converter.getChronology(instant, zone));
         iChronology = chrono;
         iMillis = checkInstant(converter.getInstantMillis(instant, chrono), chrono);
+        adjustForMinMax();
     }
 
     /**
@@ -173,6 +171,7 @@ public abstract class BaseDateTime
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
         iChronology = checkChronology(converter.getChronology(instant, chronology));
         iMillis = checkInstant(converter.getInstantMillis(instant, chronology), iChronology);
+        adjustForMinMax();
     }
 
     //-----------------------------------------------------------------------
@@ -258,6 +257,13 @@ public abstract class BaseDateTime
         long instant = iChronology.getDateTimeMillis(year, monthOfYear, dayOfMonth,
             hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
         iMillis = checkInstant(instant, iChronology);
+        adjustForMinMax();
+    }
+
+    private void adjustForMinMax() {
+        if (iMillis == Long.MIN_VALUE || iMillis == Long.MAX_VALUE) {
+            iChronology = iChronology.withUTC();
+        }
     }
 
     //-----------------------------------------------------------------------

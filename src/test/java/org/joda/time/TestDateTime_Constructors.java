@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2010 Stephen Colebourne
+ *  Copyright 2001-2015 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -241,36 +241,6 @@ public class TestDateTime_Constructors extends TestCase {
         DateTime test = new DateTime(TEST_TIME2);
         assertEquals(ISOChronology.getInstance(), test.getChronology());
         assertEquals(TEST_TIME2, test.getMillis());
-    }
-
-    /**
-     * Test constructor (long)
-     */
-    public void testConstructor_long_max() throws Throwable {
-        DateTime dt = new DateTime(292278993, 12, 31, 23, 59, 59, 999);
-        DateTime test = new DateTime(dt.getMillis());
-        assertEquals(dt, test);
-        try {
-            new DateTime(dt.getMillis() + 1);
-            fail();
-        } catch (IllegalFieldValueException ex) {
-            // expected
-        }
-    }
-
-    /**
-     * Test constructor (long)
-     */
-    public void testConstructor_long_min() throws Throwable {
-        DateTime dt = new DateTime(-292275054, 1, 1, 0, 0);
-        DateTime test = new DateTime(dt.getMillis());
-        assertEquals(dt, test);
-        try {
-            new DateTime(dt.getMillis() - 1);
-            fail();
-        } catch (IllegalFieldValueException ex) {
-            // expected
-        }
     }
 
     /**

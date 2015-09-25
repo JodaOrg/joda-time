@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2014 Stephen Colebourne
+ *  Copyright 2001-2015 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -146,6 +146,7 @@ abstract class BasicChronology extends AssembledChronology {
         return DateTimeZone.UTC;
     }
 
+    @Override
     public long getDateTimeMillis(
             int year, int monthOfYear, int dayOfMonth, int millisOfDay)
             throws IllegalArgumentException {
@@ -156,9 +157,10 @@ abstract class BasicChronology extends AssembledChronology {
 
         FieldUtils.verifyValueBounds
             (DateTimeFieldType.millisOfDay(), millisOfDay, 0, DateTimeConstants.MILLIS_PER_DAY - 1);
-        return getDateMidnightMillis(year, monthOfYear, dayOfMonth) + millisOfDay;
+        return getDateTimeMillis0(year, monthOfYear, dayOfMonth, millisOfDay);
     }
 
+    @Override
     public long getDateTimeMillis(
             int year, int monthOfYear, int dayOfMonth,
             int hourOfDay, int minuteOfHour, int secondOfMinute, int millisOfSecond)
@@ -173,12 +175,29 @@ abstract class BasicChronology extends AssembledChronology {
         FieldUtils.verifyValueBounds(DateTimeFieldType.minuteOfHour(), minuteOfHour, 0, 59);
         FieldUtils.verifyValueBounds(DateTimeFieldType.secondOfMinute(), secondOfMinute, 0, 59);
         FieldUtils.verifyValueBounds(DateTimeFieldType.millisOfSecond(), millisOfSecond, 0, 999);
+        long millisOfDay = hourOfDay * DateTimeConstants.MILLIS_PER_HOUR
+                        + minuteOfHour * DateTimeConstants.MILLIS_PER_MINUTE
+                        + secondOfMinute * DateTimeConstants.MILLIS_PER_SECOND
+                        + millisOfSecond;
+        return getDateTimeMillis0(year, monthOfYear, dayOfMonth, (int) millisOfDay);
+    }
 
-        return getDateMidnightMillis(year, monthOfYear, dayOfMonth)
-            + hourOfDay * DateTimeConstants.MILLIS_PER_HOUR
-            + minuteOfHour * DateTimeConstants.MILLIS_PER_MINUTE
-            + secondOfMinute * DateTimeConstants.MILLIS_PER_SECOND
-            + millisOfSecond;
+    private long getDateTimeMillis0(int year, int monthOfYear, int dayOfMonth, int millisOfDay) {
+        long dayInstant = getDateMidnightMillis(year, monthOfYear, dayOfMonth);
+        // try reversed calculation from next day for MIN
+        if (dayInstant == Long.MIN_VALUE) {
+            dayInstant = getDateMidnightMillis(year, monthOfYear, dayOfMonth + 1);
+            millisOfDay  = millisOfDay - 86400000;
+        }
+        // check for limit caused by millisOfDay addition
+        // even if dayInstant already MIN or MAX, this still works fine with int math
+        long result = dayInstant + millisOfDay;
+        if (result  < 0 && dayInstant > 0) {
+            return Long.MAX_VALUE;
+        } else if (result  > 0 && dayInstant < 0) {
+            return Long.MIN_VALUE;
+        }
+        return result;
     }
 
     public int getMinimumDaysInFirstWeek() {
@@ -608,10 +627,17 @@ abstract class BasicChronology extends AssembledChronology {
      * @return the milliseconds
      */
     long getDateMidnightMillis(int year, int monthOfYear, int dayOfMonth) {
-        FieldUtils.verifyValueBounds(DateTimeFieldType.year(), year, getMinYear(), getMaxYear());
+        FieldUtils.verifyValueBounds(DateTimeFieldType.year(), year, getMinYear() - 1, getMaxYear() + 1);
         FieldUtils.verifyValueBounds(DateTimeFieldType.monthOfYear(), monthOfYear, 1, getMaxMonth(year));
         FieldUtils.verifyValueBounds(DateTimeFieldType.dayOfMonth(), dayOfMonth, 1, getDaysInYearMonth(year, monthOfYear));
-        return getYearMonthDayMillis(year, monthOfYear, dayOfMonth);
+        long instant = getYearMonthDayMillis(year, monthOfYear, dayOfMonth);
+        // check for limit caused by min/max year +1/-1
+        if (instant < 0 && year == getMaxYear() + 1) {
+            return Long.MAX_VALUE;
+        } else if (instant > 0 && year == getMinYear() - 1) {
+            return Long.MIN_VALUE;
+        }
+        return instant;
     }
 
     /**

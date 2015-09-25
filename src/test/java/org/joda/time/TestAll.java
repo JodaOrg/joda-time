@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2010 Stephen Colebourne
+ *  Copyright 2001-2015 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -129,6 +129,7 @@ public class TestAll extends TestCase {
         suite.addTest(TestStringConvert.suite());
         suite.addTest(TestSerialization.suite());
         suite.addTest(TestIllegalFieldValueException.suite());
+        suite.addTest(TestMinMaxLong.suite());
         return suite;
     }
 

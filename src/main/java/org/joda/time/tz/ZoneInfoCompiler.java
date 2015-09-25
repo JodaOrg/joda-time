@@ -694,6 +694,9 @@ public class ZoneInfoCompiler {
         public final String iLetterS;
 
         Rule(StringTokenizer st) {
+            if (st.countTokens() < 6) {
+                throw new IllegalArgumentException("Attempting to create a Rule from an incomplete tokenizer");
+            }
             iName = st.nextToken().intern();
             iFromYear = parseYear(st.nextToken(), 0);
             iToYear = parseYear(st.nextToken(), iFromYear);

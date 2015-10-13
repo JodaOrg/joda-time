@@ -33,6 +33,8 @@ Changes in 2.8.3
 
 - Fix overflow bug in intervals [#315]
 
+- Better error message for malformed tzdb files [#319]
+
 
 Changes in 2.8.2
 ================

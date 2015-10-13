@@ -60,7 +60,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      */
     protected void checkInterval(long start, long end) {
         if (end < start) {
-            throw new IllegalArgumentException("The end instant must be greater or equal to the start");
+            throw new IllegalArgumentException("The end instant must be greater the start");
         }
     }
 

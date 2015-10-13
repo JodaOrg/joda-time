@@ -35,6 +35,8 @@ Changes in 2.8.3
 
 - Better error message for malformed tzdb files [#319]
 
+- Better error message for interval constructor [#321]
+
 
 Changes in 2.8.2
 ================

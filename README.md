@@ -46,11 +46,17 @@ Various documentation is available:
 
 
 ### Releases
-[Release 2.8.2](http://www.joda.org/joda-time/download.html) is the current latest release.
+[Release 2.9](http://www.joda.org/joda-time/download.html) is the current latest release.
 This release is considered stable and worthy of the 2.x tag.
 It depends on JDK 1.5 or later.
 
-Available in the [Maven Central repository](http://search.maven.org/#artifactdetails|joda-time|joda-time|2.8.2|jar)
+Available in the [Maven Central repository](http://search.maven.org/#artifactdetails|joda-time|joda-time|2.9|jar)
+
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>2.9</version>
+    </dependency>
 
 
 ### Related projects

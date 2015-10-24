@@ -1304,25 +1304,21 @@ public class DateTimeFormatterBuilder {
             int limit = Math.min(iMaxParsedDigits, text.length() - position);
 
             boolean negative = false;
+            boolean positive = false;
             int length = 0;
             while (length < limit) {
                 char c = text.charAt(position + length);
                 if (length == 0 && (c == '-' || c == '+') && iSigned) {
                     negative = c == '-';
+                    positive = c == '+';
 
                     // Next character must be a digit.
                     if (length + 1 >= limit || 
-                        (c = text.charAt(position + length + 1)) < '0' || c > '9')
-                    {
+                        (c = text.charAt(position + length + 1)) < '0' || c > '9') {
                         break;
                     }
+                    length++;
 
-                    if (negative) {
-                        length++;
-                    } else {
-                        // Skip the '+' for parseInt to succeed.
-                        position++;
-                    }
                     // Expand the limit to disregard the sign character.
                     limit = Math.min(limit + 1, text.length() - position);
                     continue;
@@ -1341,10 +1337,15 @@ public class DateTimeFormatterBuilder {
             if (length >= 9) {
                 // Since value may exceed integer limits, use stock parser
                 // which checks for this.
-                value = Integer.parseInt(text.subSequence(position, position += length).toString());
+                if (positive) {
+                    value = Integer.parseInt(text.subSequence(position + 1, position += length).toString());
+                } else {
+                    value = Integer.parseInt(text.subSequence(position, position += length).toString());
+                }
+//                value = Integer.parseInt(text.subSequence(position, position += length).toString());
             } else {
                 int i = position;
-                if (negative) {
+                if (negative || positive) {
                     i++;
                 }
                 try {

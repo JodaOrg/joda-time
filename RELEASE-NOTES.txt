@@ -16,6 +16,8 @@ This is the same license as all of Apache, plus other open source projects such 
 
 Changes in 2.8.3
 ================
+- DateTimeZone data updated to version 2015g
+
 - Faster parsing of time-zone identifiers [#282]
 
 - Added Interval.parseWithOffset(String) [#299, #296]

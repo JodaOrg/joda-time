@@ -1,5 +1,5 @@
-Joda-Time version 2.9
----------------------
+Joda-Time version 2.9.1
+-----------------------
 
 Joda-Time is a date and time handling library that seeks to replace the JDK
 Date and Calendar classes. For Java SE 8 and later, please use java.time instead.
@@ -12,6 +12,11 @@ This is the same license as all of Apache, plus other open source projects such 
 
 **  Please also check out our related projects   **
 ** http://www.joda.org/joda-time/related.html **
+
+
+Bug fixes since 2.9
+-------------------
+- Fix bug introduced by Long.MIN_VALUE and Long.MAX_VALUE changes [#328]
 
 
 Enhancements since 2.8

@@ -42,6 +42,10 @@ public final class ZonedChronology extends AssembledChronology {
 
     /** Serialization lock */
     private static final long serialVersionUID = -1079258847191166848L;
+    /**
+     * Avoid calculation errors near zero.
+     */
+    private static final long NEAR_ZERO = 7L * 24 * 60 * 60 * 1000;
 
     /**
      * Create a ZonedChronology for any chronology, overriding any time zone it
@@ -143,9 +147,9 @@ public final class ZonedChronology extends AssembledChronology {
         DateTimeZone zone = getZone();
         int offset = zone.getOffsetFromLocal(localInstant);
         long utcInstant = localInstant - offset;
-        if (localInstant > 0 && utcInstant < 0) {
+        if (localInstant > NEAR_ZERO && utcInstant < 0) {
             return Long.MAX_VALUE;
-        } else if (localInstant < 0 && utcInstant > 0) {
+        } else if (localInstant < -NEAR_ZERO && utcInstant > 0) {
             return Long.MIN_VALUE;
         }
         int offsetBasedOnUtc = zone.getOffset(utcInstant);

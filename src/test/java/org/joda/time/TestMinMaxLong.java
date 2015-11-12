@@ -314,4 +314,13 @@ public class TestMinMaxLong extends TestCase {
         assertEquals(test2, test1);
     }
 
+    public void testDateTime_aroundZero() {
+        DateTime base = new DateTime(1970, 1, 1, 1, 2, DateTimeZone.UTC);
+        assertEquals(62 * 60000L, base.getMillis());
+        for (int i = -23; i <= 23; i++) {
+            DateTime dt = new DateTime(1970, 1, 1, 1, 2, DateTimeZone.forOffsetHours(i));
+            assertEquals(base.getMillis() - i * 3600000L, dt.getMillis());
+        }
+    }
+
 }

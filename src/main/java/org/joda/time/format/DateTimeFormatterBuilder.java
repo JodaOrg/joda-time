@@ -2618,14 +2618,16 @@ public class DateTimeFormatterBuilder {
     }
 
     static int csCompare(CharSequence text, int position, String search) {
-        int compareLen = Math.min(text.length() - position, search.length());
+        int matchLen = text.length() - position;
+        int searchLen = search.length();
+        int compareLen = Math.min(matchLen, searchLen);
         for (int i = 0; i < compareLen; i++) {
             int result = search.charAt(i) - text.charAt(position + i);
             if (result != 0) {
                 return result;
             }
         }
-        return 0;
+        return searchLen - matchLen;
     }
 
     static boolean csStartsWith(CharSequence text, int position, String search) {

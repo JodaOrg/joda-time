@@ -435,6 +435,26 @@ public class TestDateTimeFormatterBuilder extends TestCase {
         assertEquals(dt, f.parseDateTime("2007-03-04 12:30 America/Dawson_Creek"));
     }
 
+    public void test_printParseZoneEtcGMT() {
+        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
+                .appendPattern("yyyy-MM-dd HH:mm ZZZ");
+        DateTimeFormatter f = bld.toFormatter();
+
+        DateTime dt = new DateTime(2007, 3, 4, 12, 30, 0, DateTimeZone.forID("Etc/GMT"));
+        assertEquals("2007-03-04 12:30 Etc/GMT", f.print(dt));
+        assertEquals(dt, f.parseDateTime("2007-03-04 12:30 Etc/GMT"));
+    }
+
+    public void test_printParseZoneEtcGMT1() {
+        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
+                .appendPattern("yyyy-MM-dd HH:mm ZZZ");
+        DateTimeFormatter f = bld.toFormatter();
+
+        DateTime dt = new DateTime(2007, 3, 4, 12, 30, 0, DateTimeZone.forID("Etc/GMT+1"));
+        assertEquals("2007-03-04 12:30 Etc/GMT+1", f.print(dt));
+        assertEquals(dt, f.parseDateTime("2007-03-04 12:30 Etc/GMT+1"));
+    }
+
     public void test_printParseZoneBahiaBanderas() {
         DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
             .appendPattern("yyyy-MM-dd HH:mm ").appendTimeZoneId();

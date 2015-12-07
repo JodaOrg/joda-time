@@ -528,6 +528,9 @@ public class ZoneInfoCompiler {
                         rs.addRule(r);
                     }
                 } else if (token.equalsIgnoreCase("Zone")) {
+		    if (st.countTokens() < 4) {
+			throw new IllegalArgumentException("Attempting to create a Zone from an incomplete tokenizer");
+		    }
                     zone = new Zone(st);
                 } else if (token.equalsIgnoreCase("Link")) {
                     String real = st.nextToken();

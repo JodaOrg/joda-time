@@ -278,8 +278,8 @@ public class TestScaledDurationField extends TestCase {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(test);
-        byte[] bytes = baos.toByteArray();
         oos.close();
+        byte[] bytes = baos.toByteArray();
         
         ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
         ObjectInputStream ois = new ObjectInputStream(bais);

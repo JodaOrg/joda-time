@@ -117,8 +117,8 @@ class StringConverter extends AbstractConverter
             if (str.charAt(i) >= '0' && str.charAt(i) <= '9') {
                 // ok
             } else if (i == 0 && str.charAt(0) == '-') {
-            	// ok
-            	negative = true;
+                // ok
+                negative = true;
             } else if (i > (negative ? 1 : 0) && str.charAt(i) == '.' && dot == -1) {
                 // ok
                 dot = i;
@@ -136,7 +136,7 @@ class StringConverter extends AbstractConverter
             }
             millis = Integer.parseInt(str);
         } else if (negative) {
-        	seconds = Long.parseLong(str.substring(firstDigit, str.length()));
+            seconds = Long.parseLong(str.substring(firstDigit, str.length()));
         } else {
             seconds = Long.parseLong(str);
         }

@@ -71,11 +71,9 @@ public final class LimitChronology extends AssembledChronology {
         lowerLimit = lowerLimit == null ? null : lowerLimit.toDateTime();
         upperLimit = upperLimit == null ? null : upperLimit.toDateTime();
 
-        if (lowerLimit != null && upperLimit != null) {
-            if (!lowerLimit.isBefore(upperLimit)) {
-                throw new IllegalArgumentException
-                    ("The lower limit must be come before than the upper limit");
-            }
+        if (lowerLimit != null && upperLimit != null && !lowerLimit.isBefore(upperLimit)) {
+            throw new IllegalArgumentException
+            ("The lower limit must be come before than the upper limit");
         }
 
         return new LimitChronology(base, (DateTime)lowerLimit, (DateTime)upperLimit);

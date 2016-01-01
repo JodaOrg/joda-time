@@ -361,8 +361,8 @@ public class DateTimeZoneBuilder {
 
             while ((next = rs.nextTransition(millis, saveMillis)) != null) {
                 if (addTransition(transitions, next) && tailZone != null) {
-                	// Got the extra transition before DSTZone.
-                	break;
+                    // Got the extra transition before DSTZone.
+                    break;
                 }
                 millis = next.getMillis();
                 saveMillis = next.getSaveMillis();

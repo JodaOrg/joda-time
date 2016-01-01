@@ -271,8 +271,8 @@ public class TestDateTimeComparator extends TestCase {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(c);
-        byte[] bytes = baos.toByteArray();
         oos.close();
+        byte[] bytes = baos.toByteArray();
         
         ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
         ObjectInputStream ois = new ObjectInputStream(bais);
@@ -289,8 +289,8 @@ public class TestDateTimeComparator extends TestCase {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(c);
-        byte[] bytes = baos.toByteArray();
         oos.close();
+        byte[] bytes = baos.toByteArray();
         
         ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
         ObjectInputStream ois = new ObjectInputStream(bais);

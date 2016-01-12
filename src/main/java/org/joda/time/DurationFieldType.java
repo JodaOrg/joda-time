@@ -99,7 +99,7 @@ public abstract class DurationFieldType implements Serializable {
     /**
      * Get the millis field type.
      * 
-     * @return the DateTimeFieldType constant
+     * @return the DurationFieldType constant
      */
     public static DurationFieldType millis() {
         return MILLIS_TYPE;
@@ -108,7 +108,7 @@ public abstract class DurationFieldType implements Serializable {
     /**
      * Get the seconds field type.
      * 
-     * @return the DateTimeFieldType constant
+     * @return the DurationFieldType constant
      */
     public static DurationFieldType seconds() {
         return SECONDS_TYPE;
@@ -117,7 +117,7 @@ public abstract class DurationFieldType implements Serializable {
     /**
      * Get the minutes field type.
      * 
-     * @return the DateTimeFieldType constant
+     * @return the DurationFieldType constant
      */
     public static DurationFieldType minutes() {
         return MINUTES_TYPE;
@@ -126,7 +126,7 @@ public abstract class DurationFieldType implements Serializable {
     /**
      * Get the hours field type.
      * 
-     * @return the DateTimeFieldType constant
+     * @return the DurationFieldType constant
      */
     public static DurationFieldType hours() {
         return HOURS_TYPE;
@@ -135,7 +135,7 @@ public abstract class DurationFieldType implements Serializable {
     /**
      * Get the halfdays field type.
      * 
-     * @return the DateTimeFieldType constant
+     * @return the DurationFieldType constant
      */
     public static DurationFieldType halfdays() {
         return HALFDAYS_TYPE;
@@ -145,7 +145,7 @@ public abstract class DurationFieldType implements Serializable {
     /**
      * Get the days field type.
      * 
-     * @return the DateTimeFieldType constant
+     * @return the DurationFieldType constant
      */
     public static DurationFieldType days() {
         return DAYS_TYPE;
@@ -154,7 +154,7 @@ public abstract class DurationFieldType implements Serializable {
     /**
      * Get the weeks field type.
      * 
-     * @return the DateTimeFieldType constant
+     * @return the DurationFieldType constant
      */
     public static DurationFieldType weeks() {
         return WEEKS_TYPE;
@@ -163,7 +163,7 @@ public abstract class DurationFieldType implements Serializable {
     /**
      * Get the weekyears field type.
      * 
-     * @return the DateTimeFieldType constant
+     * @return the DurationFieldType constant
      */
     public static DurationFieldType weekyears() {
         return WEEKYEARS_TYPE;
@@ -172,7 +172,7 @@ public abstract class DurationFieldType implements Serializable {
     /**
      * Get the months field type.
      * 
-     * @return the DateTimeFieldType constant
+     * @return the DurationFieldType constant
      */
     public static DurationFieldType months() {
         return MONTHS_TYPE;
@@ -181,7 +181,7 @@ public abstract class DurationFieldType implements Serializable {
     /**
      * Get the years field type.
      * 
-     * @return the DateTimeFieldType constant
+     * @return the DurationFieldType constant
      */
     public static DurationFieldType years() {
         return YEARS_TYPE;
@@ -190,7 +190,7 @@ public abstract class DurationFieldType implements Serializable {
     /**
      * Get the centuries field type.
      * 
-     * @return the DateTimeFieldType constant
+     * @return the DurationFieldType constant
      */
     public static DurationFieldType centuries() {
         return CENTURIES_TYPE;
@@ -199,7 +199,7 @@ public abstract class DurationFieldType implements Serializable {
     /**
      * Get the eras field type.
      * 
-     * @return the DateTimeFieldType constant
+     * @return the DurationFieldType constant
      */
     public static DurationFieldType eras() {
         return ERAS_TYPE;

@@ -230,7 +230,7 @@ public class DateTimeFormat {
      * <p>
      * The format will change as you change the locale of the formatter.
      * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
+     *
      * @return the formatter
      */
     public static DateTimeFormatter shortDate() {
@@ -242,7 +242,7 @@ public class DateTimeFormat {
      * <p>
      * The format will change as you change the locale of the formatter.
      * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
+     *
      * @return the formatter
      */
     public static DateTimeFormatter shortTime() {
@@ -254,7 +254,7 @@ public class DateTimeFormat {
      * <p>
      * The format will change as you change the locale of the formatter.
      * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
+     *
      * @return the formatter
      */
     public static DateTimeFormatter shortDateTime() {
@@ -267,7 +267,7 @@ public class DateTimeFormat {
      * <p>
      * The format will change as you change the locale of the formatter.
      * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
+     *
      * @return the formatter
      */
     public static DateTimeFormatter mediumDate() {
@@ -279,7 +279,7 @@ public class DateTimeFormat {
      * <p>
      * The format will change as you change the locale of the formatter.
      * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
+     *
      * @return the formatter
      */
     public static DateTimeFormatter mediumTime() {
@@ -291,7 +291,7 @@ public class DateTimeFormat {
      * <p>
      * The format will change as you change the locale of the formatter.
      * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
+     *
      * @return the formatter
      */
     public static DateTimeFormatter mediumDateTime() {
@@ -304,7 +304,7 @@ public class DateTimeFormat {
      * <p>
      * The format will change as you change the locale of the formatter.
      * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
+     *
      * @return the formatter
      */
     public static DateTimeFormatter longDate() {
@@ -316,7 +316,7 @@ public class DateTimeFormat {
      * <p>
      * The format will change as you change the locale of the formatter.
      * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
+     *
      * @return the formatter
      */
     public static DateTimeFormatter longTime() {
@@ -328,7 +328,7 @@ public class DateTimeFormat {
      * <p>
      * The format will change as you change the locale of the formatter.
      * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
+     *
      * @return the formatter
      */
     public static DateTimeFormatter longDateTime() {
@@ -341,7 +341,7 @@ public class DateTimeFormat {
      * <p>
      * The format will change as you change the locale of the formatter.
      * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
+     *
      * @return the formatter
      */
     public static DateTimeFormatter fullDate() {
@@ -353,7 +353,7 @@ public class DateTimeFormat {
      * <p>
      * The format will change as you change the locale of the formatter.
      * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
+     *
      * @return the formatter
      */
     public static DateTimeFormatter fullTime() {
@@ -365,7 +365,7 @@ public class DateTimeFormat {
      * <p>
      * The format will change as you change the locale of the formatter.
      * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
+     *
      * @return the formatter
      */
     public static DateTimeFormatter fullDateTime() {
@@ -562,6 +562,8 @@ public class DateTimeFormat {
                     builder.appendLiteral(new String(sub));
                 }
                 break;
+            case 'Q': // quarter
+                builder.appendQuarterOfYear(tokenLen);
             default:
                 throw new IllegalArgumentException
                     ("Illegal pattern component: " + token);
@@ -571,7 +573,7 @@ public class DateTimeFormat {
 
     /**
      * Parses an individual token.
-     * 
+     *
      * @param pattern  the pattern string
      * @param indexRef  a single element array, where the input is the start
      *  location and the output is the location after parsing the token
@@ -606,7 +608,7 @@ public class DateTimeFormat {
 
             for (; i < length; i++) {
                 c = pattern.charAt(i);
-                
+
                 if (c == '\'') {
                     if (i + 1 < length && pattern.charAt(i + 1) == '\'') {
                         // '' is treated as escaped '
@@ -631,7 +633,7 @@ public class DateTimeFormat {
 
     /**
      * Returns true if token should be parsed as a numeric field.
-     * 
+     *
      * @param token  the token to parse
      * @return true if numeric field
      */
@@ -665,7 +667,7 @@ public class DateTimeFormat {
                 }
             }
         }
-            
+
         return false;
     }
 
@@ -721,7 +723,7 @@ public class DateTimeFormat {
 
     /**
      * Gets the formatter for the specified style.
-     * 
+     *
      * @param dateStyle  the date style
      * @param timeStyle  the time style
      * @return the formatter
@@ -744,7 +746,7 @@ public class DateTimeFormat {
 
     /**
      * Creates a formatter for the specified style.
-     * 
+     *
      * @param dateStyle  the date style
      * @param timeStyle  the time style
      * @return the formatter
@@ -762,7 +764,7 @@ public class DateTimeFormat {
 
     /**
      * Gets the JDK style code from the Joda code.
-     * 
+     *
      * @param ch  the Joda style code
      * @return the JDK style code
      */
@@ -788,7 +790,7 @@ public class DateTimeFormat {
             implements InternalPrinter, InternalParser {
 
         private static final ConcurrentHashMap<StyleFormatterCacheKey, DateTimeFormatter> cCache = new ConcurrentHashMap<StyleFormatterCacheKey, DateTimeFormatter>();
-        
+
         private final int iDateStyle;
         private final int iTimeStyle;
         private final int iType;

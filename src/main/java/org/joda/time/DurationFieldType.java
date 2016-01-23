@@ -54,7 +54,8 @@ public abstract class DurationFieldType implements Serializable {
         HOURS = 9,
         MINUTES = 10,
         SECONDS = 11,
-        MILLIS = 12;
+        MILLIS = 12,
+        QUARTERS = 13;
 
     /** The eras field type. */
     static final DurationFieldType ERAS_TYPE = new StandardDurationFieldType("eras", ERAS);
@@ -80,6 +81,8 @@ public abstract class DurationFieldType implements Serializable {
     static final DurationFieldType SECONDS_TYPE = new StandardDurationFieldType("seconds", SECONDS);
     /** The millis field type. */
     static final DurationFieldType MILLIS_TYPE = new StandardDurationFieldType("millis", MILLIS);
+    /** The quarters field type. */
+    static final DurationFieldType QUARTERS_TYPE = new StandardDurationFieldType("quarters", QUARTERS);
 
     /** The name of the field type. */
     private final String iName;
@@ -87,7 +90,7 @@ public abstract class DurationFieldType implements Serializable {
     //-----------------------------------------------------------------------
     /**
      * Constructor.
-     * 
+     *
      * @param name  the name to use, which by convention, are plural.
      */
     protected DurationFieldType(String name) {
@@ -98,7 +101,7 @@ public abstract class DurationFieldType implements Serializable {
     //-----------------------------------------------------------------------
     /**
      * Get the millis field type.
-     * 
+     *
      * @return the DurationFieldType constant
      */
     public static DurationFieldType millis() {
@@ -107,7 +110,7 @@ public abstract class DurationFieldType implements Serializable {
 
     /**
      * Get the seconds field type.
-     * 
+     *
      * @return the DurationFieldType constant
      */
     public static DurationFieldType seconds() {
@@ -116,7 +119,7 @@ public abstract class DurationFieldType implements Serializable {
 
     /**
      * Get the minutes field type.
-     * 
+     *
      * @return the DurationFieldType constant
      */
     public static DurationFieldType minutes() {
@@ -125,7 +128,7 @@ public abstract class DurationFieldType implements Serializable {
 
     /**
      * Get the hours field type.
-     * 
+     *
      * @return the DurationFieldType constant
      */
     public static DurationFieldType hours() {
@@ -134,7 +137,7 @@ public abstract class DurationFieldType implements Serializable {
 
     /**
      * Get the halfdays field type.
-     * 
+     *
      * @return the DurationFieldType constant
      */
     public static DurationFieldType halfdays() {
@@ -144,7 +147,7 @@ public abstract class DurationFieldType implements Serializable {
     //-----------------------------------------------------------------------
     /**
      * Get the days field type.
-     * 
+     *
      * @return the DurationFieldType constant
      */
     public static DurationFieldType days() {
@@ -153,7 +156,7 @@ public abstract class DurationFieldType implements Serializable {
 
     /**
      * Get the weeks field type.
-     * 
+     *
      * @return the DurationFieldType constant
      */
     public static DurationFieldType weeks() {
@@ -162,7 +165,7 @@ public abstract class DurationFieldType implements Serializable {
 
     /**
      * Get the weekyears field type.
-     * 
+     *
      * @return the DurationFieldType constant
      */
     public static DurationFieldType weekyears() {
@@ -171,7 +174,7 @@ public abstract class DurationFieldType implements Serializable {
 
     /**
      * Get the months field type.
-     * 
+     *
      * @return the DurationFieldType constant
      */
     public static DurationFieldType months() {
@@ -180,7 +183,7 @@ public abstract class DurationFieldType implements Serializable {
 
     /**
      * Get the years field type.
-     * 
+     *
      * @return the DurationFieldType constant
      */
     public static DurationFieldType years() {
@@ -189,7 +192,7 @@ public abstract class DurationFieldType implements Serializable {
 
     /**
      * Get the centuries field type.
-     * 
+     *
      * @return the DurationFieldType constant
      */
     public static DurationFieldType centuries() {
@@ -198,18 +201,28 @@ public abstract class DurationFieldType implements Serializable {
 
     /**
      * Get the eras field type.
-     * 
+     *
      * @return the DurationFieldType constant
      */
     public static DurationFieldType eras() {
         return ERAS_TYPE;
     }
 
+    /**
+     * Get the quarters field type.
+     *
+     * @return the DurationFieldType constant
+     */
+    public static DurationFieldType quarters() {
+        return QUARTERS_TYPE;
+    }
+
+
     //-----------------------------------------------------------------------
     /**
      * Get the name of the field.
      * By convention, names are plural.
-     * 
+     *
      * @return field name
      */
     public String getName() {
@@ -236,7 +249,7 @@ public abstract class DurationFieldType implements Serializable {
 
     /**
      * Get a suitable debug string.
-     * 
+     *
      * @return debug string
      */
     public String toString() {
@@ -252,7 +265,7 @@ public abstract class DurationFieldType implements Serializable {
 
         /**
          * Constructor.
-         * 
+         *
          * @param name  the name to use
          */
         StandardDurationFieldType(String name, byte ordinal) {
@@ -280,7 +293,7 @@ public abstract class DurationFieldType implements Serializable {
 
         public DurationField getField(Chronology chronology) {
             chronology = DateTimeUtils.getChronology(chronology);
-            
+
             switch (iOrdinal) {
                 case ERAS:
                     return chronology.eras();
@@ -306,6 +319,8 @@ public abstract class DurationFieldType implements Serializable {
                     return chronology.seconds();
                 case MILLIS:
                     return chronology.millis();
+                case QUARTERS:
+                    return chronology.quarters();
                 default:
                     // Shouldn't happen.
                     throw new InternalError();
@@ -314,7 +329,7 @@ public abstract class DurationFieldType implements Serializable {
 
         /**
          * Ensure a singleton is returned.
-         * 
+         *
          * @return the singleton type
          */
         private Object readResolve() {
@@ -343,6 +358,8 @@ public abstract class DurationFieldType implements Serializable {
                     return SECONDS_TYPE;
                 case MILLIS:
                     return MILLIS_TYPE;
+                case QUARTERS:
+                    return QUARTERS_TYPE;
                 default:
                     // Shouldn't happen.
                     return this;

@@ -59,7 +59,7 @@ public abstract class AbstractPartial
      * Gets the field for a specific index in the chronology specified.
      * <p>
      * This method must not use any instance variables.
-     * 
+     *
      * @param index  the index to retrieve
      * @param chrono  the chronology to use
      * @return the field
@@ -70,7 +70,7 @@ public abstract class AbstractPartial
     //-----------------------------------------------------------------------
     /**
      * Gets the field type at the specifed index.
-     * 
+     *
      * @param index  the index
      * @return the field type
      * @throws IndexOutOfBoundsException if the index is invalid
@@ -96,7 +96,7 @@ public abstract class AbstractPartial
 
     /**
      * Gets the field at the specifed index.
-     * 
+     *
      * @param index  the index
      * @return the field
      * @throws IndexOutOfBoundsException if the index is invalid
@@ -271,7 +271,7 @@ public abstract class AbstractPartial
     }
 
     /**
-     * Gets a hash code for the ReadablePartial that is compatible with the 
+     * Gets a hash code for the ReadablePartial that is compatible with the
      * equals method.
      *
      * @return a suitable hash code

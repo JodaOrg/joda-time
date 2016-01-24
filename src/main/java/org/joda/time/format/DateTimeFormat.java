@@ -564,6 +564,7 @@ public class DateTimeFormat {
                 break;
             case 'Q': // quarter
                 builder.appendQuarterOfYear(tokenLen);
+                break;
             default:
                 throw new IllegalArgumentException
                     ("Illegal pattern component: " + token);

@@ -81,7 +81,7 @@ public final class DateTime
     /**
      * Obtains a {@code DateTime} set to the current system millisecond time
      * using <code>ISOChronology</code> in the default time zone.
-     * 
+     *
      * @return the current date-time, not null
      * @since 2.0
      */
@@ -140,7 +140,7 @@ public final class DateTime
      * {@code new DateTime("2010-06-30T01:20+02:00"))} are NOT equal.
      * The object produced via this method has a zone of {@code DateTimeZone.forOffsetHours(2)}.
      * The object produced via the constructor has a zone of {@code DateTimeZone.getDefault()}.
-     * 
+     *
      * @param str  the string to parse, not null
      * @since 2.0
      */
@@ -151,7 +151,7 @@ public final class DateTime
 
     /**
      * Parses a {@code DateTime} from the specified string using a formatter.
-     * 
+     *
      * @param str  the string to parse, not null
      * @param formatter  the formatter to use, not null
      * @since 2.0
@@ -164,7 +164,7 @@ public final class DateTime
     /**
      * Constructs an instance set to the current system millisecond time
      * using <code>ISOChronology</code> in the default time zone.
-     * 
+     *
      * @see #now()
      */
     public DateTime() {
@@ -536,7 +536,7 @@ public final class DateTime
     //-----------------------------------------------------------------------
     /**
      * Get this object as a DateTime by returning <code>this</code>.
-     * 
+     *
      * @return <code>this</code>
      */
     public DateTime toDateTime() {
@@ -546,7 +546,7 @@ public final class DateTime
     /**
      * Get this object as a DateTime using ISOChronology in the default zone,
      * returning <code>this</code> if possible.
-     * 
+     *
      * @return a DateTime using the same millis
      */
     public DateTime toDateTimeISO() {
@@ -558,7 +558,7 @@ public final class DateTime
 
     /**
      * Get this object as a DateTime, returning <code>this</code> if possible.
-     * 
+     *
      * @param zone time zone to apply, or default if null
      * @return a DateTime using the same millis
      */
@@ -572,7 +572,7 @@ public final class DateTime
 
     /**
      * Get this object as a DateTime, returning <code>this</code> if possible.
-     * 
+     *
      * @param chronology chronology to apply, or ISOChronology if null
      * @return a DateTime using the same millis
      */
@@ -657,7 +657,7 @@ public final class DateTime
         if (newZone == originalZone) {
             return this;
         }
-        
+
         long millis = originalZone.getMillisKeepLocal(newZone, getMillis());
         return new DateTime(millis, getChronology().withZone(newZone));
     }
@@ -865,7 +865,7 @@ public final class DateTime
      * DateTime added = dt.plusYears(6);
      * DateTime added = dt.plus(Period.years(6));
      * </pre>
-     * 
+     *
      * @param fieldType  the field type to add to, not null
      * @param amount  the amount to add
      * @return a copy of this datetime with the field updated
@@ -888,7 +888,7 @@ public final class DateTime
      * Returns a copy of this datetime with the specified duration added.
      * <p>
      * If the addition is zero, then <code>this</code> is returned.
-     * 
+     *
      * @param durationToAdd  the duration to add to this one
      * @param scalar  the amount of times to add, such as -1 to subtract once
      * @return a copy of this datetime with the duration added
@@ -906,7 +906,7 @@ public final class DateTime
      * Returns a copy of this datetime with the specified duration added.
      * <p>
      * If the addition is zero, then <code>this</code> is returned.
-     * 
+     *
      * @param durationToAdd  the duration to add to this one, null means zero
      * @param scalar  the amount of times to add, such as -1 to subtract once
      * @return a copy of this datetime with the duration added
@@ -928,7 +928,7 @@ public final class DateTime
      * period instances. Adding one field is best achieved using methods
      * like {@link #withFieldAdded(DurationFieldType, int)}
      * or {@link #plusYears(int)}.
-     * 
+     *
      * @param period  the period to add to this one, null means zero
      * @param scalar  the amount of times to add, such as -1 to subtract once
      * @return a copy of this datetime with the period added
@@ -948,7 +948,7 @@ public final class DateTime
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * This datetime instance is immutable and unaffected by this method call.
-     * 
+     *
      * @param duration  the duration, in millis, to add to this one
      * @return a copy of this datetime with the duration added
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
@@ -962,7 +962,7 @@ public final class DateTime
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * This datetime instance is immutable and unaffected by this method call.
-     * 
+     *
      * @param duration  the duration to add to this one, null means zero
      * @return a copy of this datetime with the duration added
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
@@ -988,7 +988,7 @@ public final class DateTime
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * This datetime instance is immutable and unaffected by this method call.
-     * 
+     *
      * @param period  the duration to add to this one, null means zero
      * @return a copy of this datetime with the period added
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
@@ -1236,7 +1236,7 @@ public final class DateTime
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * This datetime instance is immutable and unaffected by this method call.
-     * 
+     *
      * @param duration  the duration, in millis, to reduce this instant by
      * @return a copy of this datetime with the duration taken away
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
@@ -1250,7 +1250,7 @@ public final class DateTime
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * This datetime instance is immutable and unaffected by this method call.
-     * 
+     *
      * @param duration  the duration to reduce this instant by
      * @return a copy of this datetime with the duration taken away
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
@@ -1277,7 +1277,7 @@ public final class DateTime
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * This datetime instance is immutable and unaffected by this method call.
-     * 
+     *
      * @param period  the period to reduce this instant by
      * @return a copy of this datetime with the period taken away
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
@@ -1544,7 +1544,7 @@ public final class DateTime
     /**
      * Converts this object to a <code>DateMidnight</code> using the
      * same millis and chronology.
-     * 
+     *
      * @return a DateMidnight using the same millis and chronology
      * @deprecated DateMidnight is deprecated
      */
@@ -1556,7 +1556,7 @@ public final class DateTime
     /**
      * Converts this object to a <code>YearMonthDay</code> using the
      * same millis and chronology.
-     * 
+     *
      * @return a YearMonthDay using the same millis and chronology
      * @deprecated Use LocalDate instead of YearMonthDay
      */
@@ -1568,7 +1568,7 @@ public final class DateTime
     /**
      * Converts this object to a <code>TimeOfDay</code> using the
      * same millis and chronology.
-     * 
+     *
      * @return a TimeOfDay using the same millis and chronology
      * @deprecated Use LocalTime instead of TimeOfDay
      */
@@ -1883,7 +1883,7 @@ public final class DateTime
     //-----------------------------------------------------------------------
     /**
      * Get the era property which provides access to advanced functionality.
-     * 
+     *
      * @return the era property
      */
     public Property era() {
@@ -1892,7 +1892,7 @@ public final class DateTime
 
     /**
      * Get the century of era property which provides access to advanced functionality.
-     * 
+     *
      * @return the year of era property
      */
     public Property centuryOfEra() {
@@ -1901,7 +1901,7 @@ public final class DateTime
 
     /**
      * Get the year of century property which provides access to advanced functionality.
-     * 
+     *
      * @return the year of era property
      */
     public Property yearOfCentury() {
@@ -1910,7 +1910,7 @@ public final class DateTime
 
     /**
      * Get the year of era property which provides access to advanced functionality.
-     * 
+     *
      * @return the year of era property
      */
     public Property yearOfEra() {
@@ -1919,7 +1919,7 @@ public final class DateTime
 
     /**
      * Get the year property which provides access to advanced functionality.
-     * 
+     *
      * @return the year property
      */
     public Property year() {
@@ -1928,7 +1928,7 @@ public final class DateTime
 
     /**
      * Get the year of a week based year property which provides access to advanced functionality.
-     * 
+     *
      * @return the year of a week based year property
      */
     public Property weekyear() {
@@ -1937,7 +1937,7 @@ public final class DateTime
 
     /**
      * Get the month of year property which provides access to advanced functionality.
-     * 
+     *
      * @return the month of year property
      */
     public Property monthOfYear() {
@@ -1945,8 +1945,16 @@ public final class DateTime
     }
 
     /**
+     * Get the quarter of year property which provides access to advanced functionality.
+     *
+     * @return the quarter of year property
+     */
+    public Property quarterOfYear() {
+        return new Property(this, getChronology().quarterOfYear());
+    }
+    /**
      * Get the week of a week based year property which provides access to advanced functionality.
-     * 
+     *
      * @return the week of a week based year property
      */
     public Property weekOfWeekyear() {
@@ -1955,7 +1963,7 @@ public final class DateTime
 
     /**
      * Get the day of year property which provides access to advanced functionality.
-     * 
+     *
      * @return the day of year property
      */
     public Property dayOfYear() {
@@ -1964,7 +1972,7 @@ public final class DateTime
 
     /**
      * Get the day of month property which provides access to advanced functionality.
-     * 
+     *
      * @return the day of month property
      */
     public Property dayOfMonth() {
@@ -1973,7 +1981,7 @@ public final class DateTime
 
     /**
      * Get the day of week property which provides access to advanced functionality.
-     * 
+     *
      * @return the day of week property
      */
     public Property dayOfWeek() {
@@ -1984,7 +1992,7 @@ public final class DateTime
     //-----------------------------------------------------------------------
     /**
      * Get the hour of day field property which provides access to advanced functionality.
-     * 
+     *
      * @return the hour of day property
      */
     public Property hourOfDay() {
@@ -1993,7 +2001,7 @@ public final class DateTime
 
     /**
      * Get the minute of day property which provides access to advanced functionality.
-     * 
+     *
      * @return the minute of day property
      */
     public Property minuteOfDay() {
@@ -2002,7 +2010,7 @@ public final class DateTime
 
     /**
      * Get the minute of hour field property which provides access to advanced functionality.
-     * 
+     *
      * @return the minute of hour property
      */
     public Property minuteOfHour() {
@@ -2011,7 +2019,7 @@ public final class DateTime
 
     /**
      * Get the second of day property which provides access to advanced functionality.
-     * 
+     *
      * @return the second of day property
      */
     public Property secondOfDay() {
@@ -2020,7 +2028,7 @@ public final class DateTime
 
     /**
      * Get the second of minute field property which provides access to advanced functionality.
-     * 
+     *
      * @return the second of minute property
      */
     public Property secondOfMinute() {
@@ -2029,7 +2037,7 @@ public final class DateTime
 
     /**
      * Get the millis of day property which provides access to advanced functionality.
-     * 
+     *
      * @return the millis of day property
      */
     public Property millisOfDay() {
@@ -2038,7 +2046,7 @@ public final class DateTime
 
     /**
      * Get the millis of second property which provides access to advanced functionality.
-     * 
+     *
      * @return the millis of second property
      */
     public Property millisOfSecond() {
@@ -2076,18 +2084,18 @@ public final class DateTime
      * @since 1.0
      */
     public static final class Property extends AbstractReadableInstantFieldProperty {
-        
+
         /** Serialization version */
         private static final long serialVersionUID = -6983323811635733510L;
-        
+
         /** The instant this property is working against */
         private DateTime iInstant;
         /** The field this property is working against */
         private DateTimeField iField;
-        
+
         /**
          * Constructor.
-         * 
+         *
          * @param instant  the instant to set
          * @param field  the field to use
          */
@@ -2096,7 +2104,7 @@ public final class DateTime
             iInstant = instant;
             iField = field;
         }
-        
+
         /**
          * Writes the property in a safe serialization format.
          */
@@ -2117,41 +2125,41 @@ public final class DateTime
         //-----------------------------------------------------------------------
         /**
          * Gets the field being used.
-         * 
+         *
          * @return the field
          */
         public DateTimeField getField() {
             return iField;
         }
-        
+
         /**
          * Gets the milliseconds of the datetime that this property is linked to.
-         * 
+         *
          * @return the milliseconds
          */
         protected long getMillis() {
             return iInstant.getMillis();
         }
-        
+
         /**
          * Gets the chronology of the datetime that this property is linked to.
-         * 
+         *
          * @return the chronology
          * @since 1.4
          */
         protected Chronology getChronology() {
             return iInstant.getChronology();
         }
-        
+
         /**
          * Gets the datetime being used.
-         * 
+         *
          * @return the datetime
          */
         public DateTime getDateTime() {
             return iInstant;
         }
-        
+
         //-----------------------------------------------------------------------
         /**
          * Adds to this field in a copy of this DateTime.
@@ -2160,7 +2168,7 @@ public final class DateTime
          * This operation is faster than converting a DateTime to a MutableDateTime
          * and back again when setting one field. When setting multiple fields,
          * it is generally quicker to make the conversion to MutableDateTime.
-         * 
+         *
          * @param value  the value to add to the field in the copy
          * @return a copy of the DateTime with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
@@ -2168,7 +2176,7 @@ public final class DateTime
         public DateTime addToCopy(int value) {
             return iInstant.withMillis(iField.add(iInstant.getMillis(), value));
         }
-        
+
         /**
          * Adds to this field in a copy of this DateTime.
          * <p>
@@ -2176,7 +2184,7 @@ public final class DateTime
          * This operation is faster than converting a DateTime to a MutableDateTime
          * and back again when setting one field. When setting multiple fields,
          * it is generally quicker to make the conversion to MutableDateTime.
-         * 
+         *
          * @param value  the value to add to the field in the copy
          * @return a copy of the DateTime with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
@@ -2184,7 +2192,7 @@ public final class DateTime
         public DateTime addToCopy(long value) {
             return iInstant.withMillis(iField.add(iInstant.getMillis(), value));
         }
-        
+
         /**
          * Adds to this field, possibly wrapped, in a copy of this DateTime.
          * A wrapped operation only changes this field.
@@ -2194,7 +2202,7 @@ public final class DateTime
          * This operation is faster than converting a DateTime to a MutableDateTime
          * and back again when setting one field. When setting multiple fields,
          * it is generally quicker to make the conversion to MutableDateTime.
-         * 
+         *
          * @param value  the value to add to the field in the copy
          * @return a copy of the DateTime with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
@@ -2202,7 +2210,7 @@ public final class DateTime
         public DateTime addWrapFieldToCopy(int value) {
             return iInstant.withMillis(iField.addWrapField(iInstant.getMillis(), value));
         }
-        
+
         //-----------------------------------------------------------------------
         /**
          * Sets this field in a copy of the DateTime.
@@ -2211,7 +2219,7 @@ public final class DateTime
          * This operation is faster than converting a DateTime to a MutableDateTime
          * and back again when setting one field. When setting multiple fields,
          * it is generally quicker to make the conversion to MutableDateTime.
-         * 
+         *
          * @param value  the value to set the field in the copy to
          * @return a copy of the DateTime with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
@@ -2219,7 +2227,7 @@ public final class DateTime
         public DateTime setCopy(int value) {
             return iInstant.withMillis(iField.set(iInstant.getMillis(), value));
         }
-        
+
         /**
          * Sets this field in a copy of the DateTime to a parsed text value.
          * <p>
@@ -2227,7 +2235,7 @@ public final class DateTime
          * This operation is faster than converting a DateTime to a MutableDateTime
          * and back again when setting one field. When setting multiple fields,
          * it is generally quicker to make the conversion to MutableDateTime.
-         * 
+         *
          * @param text  the text value to set
          * @param locale  optional locale to use for selecting a text symbol
          * @return a copy of the DateTime with the field value changed
@@ -2236,7 +2244,7 @@ public final class DateTime
         public DateTime setCopy(String text, Locale locale) {
             return iInstant.withMillis(iField.set(iInstant.getMillis(), text, locale));
         }
-        
+
         /**
          * Sets this field in a copy of the DateTime to a parsed text value.
          * <p>
@@ -2244,7 +2252,7 @@ public final class DateTime
          * This operation is faster than converting a DateTime to a MutableDateTime
          * and back again when setting one field. When setting multiple fields,
          * it is generally quicker to make the conversion to MutableDateTime.
-         * 
+         *
          * @param text  the text value to set
          * @return a copy of the DateTime with the field value changed
          * @throws IllegalArgumentException if the text value isn't valid
@@ -2252,7 +2260,7 @@ public final class DateTime
         public DateTime setCopy(String text) {
             return setCopy(text, null);
         }
-        
+
         //-----------------------------------------------------------------------
         /**
          * Returns a new DateTime with this field set to the maximum value
@@ -2288,7 +2296,7 @@ public final class DateTime
                 throw ex;
             }
         }
-        
+
         /**
          * Returns a new DateTime with this field set to the minimum value
          * for this field.
@@ -2317,7 +2325,7 @@ public final class DateTime
                 throw ex;
             }
         }
-        
+
         //-----------------------------------------------------------------------
         /**
          * Rounds to the lowest whole unit of this field on a copy of this DateTime.
@@ -2327,7 +2335,7 @@ public final class DateTime
         public DateTime roundFloorCopy() {
             return iInstant.withMillis(iField.roundFloor(iInstant.getMillis()));
         }
-        
+
         /**
          * Rounds to the highest whole unit of this field on a copy of this DateTime.
          *
@@ -2336,7 +2344,7 @@ public final class DateTime
         public DateTime roundCeilingCopy() {
             return iInstant.withMillis(iField.roundCeiling(iInstant.getMillis()));
         }
-        
+
         /**
          * Rounds to the nearest whole unit of this field on a copy of this DateTime,
          * favoring the floor if halfway.
@@ -2346,7 +2354,7 @@ public final class DateTime
         public DateTime roundHalfFloorCopy() {
             return iInstant.withMillis(iField.roundHalfFloor(iInstant.getMillis()));
         }
-        
+
         /**
          * Rounds to the nearest whole unit of this field on a copy of this DateTime,
          * favoring the ceiling if halfway.
@@ -2356,7 +2364,7 @@ public final class DateTime
         public DateTime roundHalfCeilingCopy() {
             return iInstant.withMillis(iField.roundHalfCeiling(iInstant.getMillis()));
         }
-        
+
         /**
          * Rounds to the nearest whole unit of this field on a copy of this
          * DateTime.  If halfway, the ceiling is favored over the floor only if

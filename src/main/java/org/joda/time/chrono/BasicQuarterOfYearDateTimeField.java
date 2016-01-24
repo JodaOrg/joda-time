@@ -54,7 +54,7 @@ class BasicQuarterOfYearDateTimeField extends BasicMonthOfYearDateTimeField {
      * @return the quarter extracted from the input.
      */
     public int get(long instant) {
-        return super.get(instant) % 4 + 1;
+        return (super.get(instant) - 1) / 3 + 1;
     }
 
     //-----------------------------------------------------------------------

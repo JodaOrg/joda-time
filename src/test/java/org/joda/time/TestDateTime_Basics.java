@@ -256,7 +256,18 @@ public class TestDateTime_Basics extends TestCase {
     public void testWithers() {
         DateTime test = new DateTime(1970, 6, 9, 10, 20, 30, 40, GJ_DEFAULT);
         check(test.withYear(2000), 2000, 6, 9, 10, 20, 30, 40);
+        check(test.withMonthOfYear(1), 1970, 1, 9, 10, 20, 30, 40);
         check(test.withMonthOfYear(2), 1970, 2, 9, 10, 20, 30, 40);
+        check(test.withMonthOfYear(3), 1970, 3, 9, 10, 20, 30, 40);
+        check(test.withMonthOfYear(4), 1970, 4, 9, 10, 20, 30, 40);
+        check(test.withMonthOfYear(5), 1970, 5, 9, 10, 20, 30, 40);
+        check(test.withMonthOfYear(6), 1970, 6, 9, 10, 20, 30, 40);
+        check(test.withMonthOfYear(7), 1970, 7, 9, 10, 20, 30, 40);
+        check(test.withMonthOfYear(8), 1970, 8, 9, 10, 20, 30, 40);
+        check(test.withMonthOfYear(9), 1970, 9, 9, 10, 20, 30, 40);
+        check(test.withMonthOfYear(10), 1970, 10, 9, 10, 20, 30, 40);
+        check(test.withMonthOfYear(11), 1970, 11, 9, 10, 20, 30, 40);
+        check(test.withMonthOfYear(12), 1970, 12, 9, 10, 20, 30, 40);
         check(test.withDayOfMonth(2), 1970, 6, 2, 10, 20, 30, 40);
         check(test.withDayOfYear(6), 1970, 1, 6, 10, 20, 30, 40);
         check(test.withDayOfWeek(6), 1970, 6, 13, 10, 20, 30, 40);

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2013 Stephen Colebourne
+ *  Copyright 2001-2013 Andy Georges
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -24,12 +24,9 @@ import org.joda.time.field.FieldUtils;
 import org.joda.time.field.ImpreciseDateTimeField;
 
 /**
- * Provides time calculations for the month of the year component of time.
+ * Provides time calculations for the quarter of the year component of time.
  *
- * @author Guy Allard
- * @author Stephen Colebourne
- * @author Brian S O'Neill
- * @since 1.2, refactored from GJMonthOfYearDateTimeField
+ * @author Andy Georges
  */
 class BasicQuarterOfYearDateTimeField extends BasicMonthOfYearDateTimeField {
 

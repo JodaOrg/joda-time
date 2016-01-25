@@ -52,12 +52,19 @@ It depends on JDK 1.5 or later.
 
 Available in the [Maven Central repository](http://search.maven.org/#artifactdetails|joda-time|joda-time|2.9.1|jar)
 
-    <dependency>
-      <groupId>joda-time</groupId>
-      <artifactId>joda-time</artifactId>
-      <version>2.9.1</version>
-    </dependency>
+**Maven configuration:**
+```xml
+<dependency>
+  <groupId>joda-time</groupId>
+  <artifactId>joda-time</artifactId>
+  <version>2.9.1</version>
+</dependency>
+```
 
+**Gradle configuration:**
+```groovy
+compile 'joda-time:joda-time:2.9.1'
+```
 
 ### Related projects
 Related projects at GitHub:

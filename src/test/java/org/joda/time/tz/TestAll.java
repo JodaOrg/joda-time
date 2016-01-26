@@ -39,6 +39,7 @@ public class TestAll extends TestCase {
         suite.addTest(TestCompiler.suite());
         suite.addTest(TestCachedDateTimeZone.suite());
         suite.addTest(TestFixedDateTimeZone.suite());
+        suite.addTest(TestTimeZoneCountries.suite());
         return suite;
     }
 

@@ -32,6 +32,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
@@ -39,6 +41,7 @@ import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import org.joda.time.MutableDateTime;
+import org.joda.time.TimeZoneLocationInfo;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.LenientChronology;
 import org.joda.time.format.DateTimeFormatter;
@@ -340,12 +343,20 @@ public class ZoneInfoCompiler {
 
     // List String pairs to link.
     private List<String> iBackLinks;
+    
+    //Maps country codes to location-info of the timezone 
+    private Map<String, TimeZoneLocationInfo> timeZoneCountry;
+    
+    //Maps country codes to country names
+    private Map<String, String> countryCodes;
 
     public ZoneInfoCompiler() {
         iRuleSets = new HashMap<String, RuleSet>();
         iZones = new ArrayList<Zone>();
         iGoodLinks = new ArrayList<String>();
         iBackLinks = new ArrayList<String>();
+        timeZoneCountry = new HashMap<String, TimeZoneLocationInfo>();
+        countryCodes = new HashMap<String, String>();
     }
 
     /**
@@ -357,8 +368,16 @@ public class ZoneInfoCompiler {
     public Map<String, DateTimeZone> compile(File outputDir, File[] sources) throws IOException {
         if (sources != null) {
             for (int i=0; i<sources.length; i++) {
+            	String fileName = sources[i].getName();
                 BufferedReader in = new BufferedReader(new FileReader(sources[i]));
-                parseDataFile(in, "backward".equals(sources[i].getName()));
+                
+                if(fileName.equals("zone.tab") || fileName.equals("zone1970.tab")) {
+                	parseTimeZoneCountry(in);
+                } else if(fileName.equals("iso3166.tab")) {
+                	parseCountryCodes(in);
+                } else {
+                	parseDataFile(in, "backward".equals(fileName));
+                }
                 in.close();
             }
         }
@@ -381,7 +400,8 @@ public class ZoneInfoCompiler {
             Zone zone = iZones.get(i);
             DateTimeZoneBuilder builder = new DateTimeZoneBuilder();
             zone.addToBuilder(builder, iRuleSets);
-            DateTimeZone tz = builder.toDateTimeZone(zone.iName, true);
+            TimeZoneLocationInfo locationInfo = timeZoneCountry.get(zone.iName);
+            DateTimeZone tz = builder.toDateTimeZone(zone.iName, true, locationInfo);
             if (test(tz.getID(), tz)) {
                 map.put(tz.getID(), tz);
                 sourceMap.put(tz.getID(), zone);
@@ -401,7 +421,8 @@ public class ZoneInfoCompiler {
             } else {
                 DateTimeZoneBuilder builder = new DateTimeZoneBuilder();
                 sourceZone.addToBuilder(builder, iRuleSets);
-                DateTimeZone revived = builder.toDateTimeZone(alias, true);
+                TimeZoneLocationInfo locationInfo = timeZoneCountry.get(alias);
+                DateTimeZone revived = builder.toDateTimeZone(alias, true, locationInfo);
                 if (test(revived.getID(), revived)) {
                     map.put(revived.getID(), revived);
                     if (outputDir != null) {
@@ -466,23 +487,86 @@ public class ZoneInfoCompiler {
             file.getParentFile().mkdirs();
         }
         OutputStream out = new FileOutputStream(file);
+        TimeZoneLocationInfo locationInfo = null;
         try {
-            builder.writeTo(tz.getID(), out);
+        	locationInfo = timeZoneCountry.get(tz.getID());
+            builder.writeTo(tz.getID(), out, locationInfo);
         } finally {
             out.close();
         }
-
         // Test if it can be read back.
         InputStream in = new FileInputStream(file);
         DateTimeZone tz2 = DateTimeZoneBuilder.readFrom(in, tz.getID());
         in.close();
-
         if (!tz.equals(tz2)) {
             System.out.println("*e* Error in " + tz.getID() +
                                ": Didn't read properly from file");
         }
     }
 
+    public void parseTimeZoneCountry(BufferedReader in) throws IOException {
+    	String line;
+        while ((line = in.readLine()) != null) {
+        	String trimmed = line.trim();
+            if (trimmed.length() == 0 || trimmed.charAt(0) == '#') {
+                continue;
+            }
+            int index = line.indexOf('#');
+            if (index >= 0) {
+                line = line.substring(0, index);
+            }
+            StringTokenizer st = new StringTokenizer(line, " \t");
+            if(st.hasMoreTokens()) {
+            	String codes = st.nextToken();
+            	String coord = st.nextToken();
+                String timezone = st.nextToken();
+                String comment = "";
+                while(st.hasMoreTokens()) {
+                	comment += st.nextToken() + " ";
+                }
+                comment = comment.trim();
+                HashMap<String, String> countries = new HashMap<String, String>();
+                StringTokenizer st2 = new StringTokenizer(codes, ",");
+                while(st2.hasMoreTokens()) {
+                	String code = st2.nextToken();
+                	countries.put(code, countryCodes.get(code));
+                }
+                String pattern = "([+-]\\d+)([+-]\\d+)";
+                Pattern r = Pattern.compile(pattern);
+                Matcher m = r.matcher(coord);
+                m.matches();
+                String latitude = m.groupCount() >= 1 ? m.group(1) : "";
+                String longitude = m.groupCount() >= 2 ? m.group(2) : "";
+                TimeZoneLocationInfo locationInfo = new TimeZoneLocationInfo(latitude, longitude, comment, countries);
+                timeZoneCountry.put(timezone, locationInfo);
+            }
+        }
+    }
+    
+    public void parseCountryCodes(BufferedReader in) throws IOException {
+    	String line;
+        while ((line = in.readLine()) != null) {
+        	String trimmed = line.trim();
+            if (trimmed.length() == 0 || trimmed.charAt(0) == '#') {
+                continue;
+            }
+            int index = line.indexOf('#');
+            if (index >= 0) {
+                line = line.substring(0, index);
+            }
+            StringTokenizer st = new StringTokenizer(line, " \t");
+            if(st.hasMoreTokens()) {
+            	String code = st.nextToken();
+            	String country = "";
+            	while(st.hasMoreTokens()) {
+                	country += st.nextToken() + " ";
+                }
+            	country = country.trim();
+                countryCodes.put(code, country);
+            }
+        }
+    }
+    
     public void parseDataFile(BufferedReader in, boolean backward) throws IOException {
         Zone zone = null;
         String line;
@@ -756,7 +840,7 @@ public class ZoneInfoCompiler {
                 "LetterS: " + iLetterS + "\n";
         }
     }
-
+    
     private static class RuleSet {
         private List<Rule> iRules;
 

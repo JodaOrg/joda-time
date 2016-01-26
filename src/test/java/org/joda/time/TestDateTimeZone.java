@@ -664,7 +664,7 @@ public class TestDateTimeZone extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testConstructor() {
-        assertEquals(1, DateTimeZone.class.getDeclaredConstructors().length);
+        assertEquals(2, DateTimeZone.class.getDeclaredConstructors().length);
         assertTrue(Modifier.isProtected(DateTimeZone.class.getDeclaredConstructors()[0].getModifiers()));
         try {
             new DateTimeZone(null) {

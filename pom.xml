@@ -335,6 +335,7 @@
           <includes>
             <include>**/TestAllPackages.java</include>
           </includes>
+          <!--argLine>-Djava.security.manager -Djava.security.policy=${basedir}/src/test/resources/java.policy</argLine-->
         </configuration>
       </plugin>
       <plugin>

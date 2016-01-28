@@ -104,6 +104,21 @@ public class TestMonths extends TestCase {
         assertEquals(6, Months.monthsBetween(start, end2).getMonths());
     }
 
+    public void testFactory_monthsBetween_RInstant_LocalDate_EndMonth() {
+        assertEquals(0, Months.monthsBetween(
+                new DateTime(2006, 1, 31, 0, 0, 0, PARIS), new DateTime(2006, 2, 27, 0, 0, 0, PARIS)).getMonths());
+        assertEquals(1, Months.monthsBetween(
+                new DateTime(2006, 1, 28, 0, 0, 0, PARIS), new DateTime(2006, 2, 28, 0, 0, 0, PARIS)).getMonths());
+        assertEquals(1, Months.monthsBetween(
+                new DateTime(2006, 1, 29, 0, 0, 0, PARIS), new DateTime(2006, 2, 28, 0, 0, 0, PARIS)).getMonths());
+        assertEquals(1, Months.monthsBetween(
+                new DateTime(2006, 1, 30, 0, 0, 0, PARIS), new DateTime(2006, 2, 28, 0, 0, 0, PARIS)).getMonths());
+        assertEquals(1, Months.monthsBetween(
+                new DateTime(2006, 1, 31, 0, 0, 0, PARIS), new DateTime(2006, 2, 28, 0, 0, 0, PARIS)).getMonths());
+        assertEquals(1, Months.monthsBetween(
+                new DateTime(2006, 1, 31, 0, 0, 0, PARIS), new DateTime(2006, 3, 1, 0, 0, 0, PARIS)).getMonths());
+    }
+
     //-------------------------------------------------------------------------
     @SuppressWarnings("deprecation")
     public void testFactory_monthsBetween_RPartial_LocalDate() {
@@ -116,6 +131,15 @@ public class TestMonths extends TestCase {
         assertEquals(0, Months.monthsBetween(end1, end1).getMonths());
         assertEquals(-3, Months.monthsBetween(end1, start).getMonths());
         assertEquals(6, Months.monthsBetween(start, end2).getMonths());
+    }
+
+    public void testFactory_monthsBetween_RPartial_LocalDate_EndMonth() {
+        assertEquals(0, Months.monthsBetween(new LocalDate(2006, 1, 31), new LocalDate(2006, 2, 27)).getMonths());
+        assertEquals(1, Months.monthsBetween(new LocalDate(2006, 1, 28), new LocalDate(2006, 2, 28)).getMonths());
+        assertEquals(1, Months.monthsBetween(new LocalDate(2006, 1, 29), new LocalDate(2006, 2, 28)).getMonths());
+        assertEquals(1, Months.monthsBetween(new LocalDate(2006, 1, 30), new LocalDate(2006, 2, 28)).getMonths());
+        assertEquals(1, Months.monthsBetween(new LocalDate(2006, 1, 31), new LocalDate(2006, 2, 28)).getMonths());
+        assertEquals(1, Months.monthsBetween(new LocalDate(2006, 1, 31), new LocalDate(2006, 3, 1)).getMonths());
     }
 
     public void testFactory_monthsBetween_RPartial_YearMonth() {

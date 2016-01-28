@@ -128,6 +128,10 @@ public final class Months extends BaseSingleFieldPeriod {
      * Creates a <code>Months</code> representing the number of whole months
      * between the two specified datetimes. This method corectly handles
      * any daylight savings time changes that may occur during the interval.
+     * <p>
+     * This method calculates by adding months to the start date until the result
+     * is past the end date. As such, a period from the end of a "long" month to
+     * the end of a "short" month is counted as a whole month.
      *
      * @param start  the start instant, must not be null
      * @param end  the end instant, must not be null
@@ -145,6 +149,10 @@ public final class Months extends BaseSingleFieldPeriod {
      * <p>
      * The two partials must contain the same fields, for example you can specify
      * two <code>LocalDate</code> objects.
+     * <p>
+     * This method calculates by adding months to the start date until the result
+     * is past the end date. As such, a period from the end of a "long" month to
+     * the end of a "short" month is counted as a whole month.
      *
      * @param start  the start partial date, must not be null
      * @param end  the end partial date, must not be null

@@ -441,7 +441,9 @@ public class DateTimeZoneBuilder {
         if (out instanceof DataOutput) {
             writeTo(zoneID, (DataOutput)out);
         } else {
-            writeTo(zoneID, (DataOutput)new DataOutputStream(out));
+            DataOutputStream dout = new DataOutputStream(out);
+            writeTo(zoneID, (DataOutput)dout);
+            dout.flush();
         }
     }
 

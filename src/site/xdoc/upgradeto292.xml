@@ -2,7 +2,7 @@
 
 <document>
  <properties>
-  <title>Java date and time API - Upgrade from 2.9 to 2.9.1</title>
+  <title>Java date and time API - Upgrade from 2.9 to 2.9.2</title>
   <author>Stephen Colebourne</author>
  </properties>
 
@@ -12,13 +12,13 @@
 <p>
 These are the release notes and advice for upgrading Joda-Time from version 2.8 to version 2.9.
 <source>
-Joda-Time version 2.9.1
+Joda-Time version 2.9.2
 -----------------------
 
 Joda-Time is a date and time handling library that seeks to replace the JDK
 Date and Calendar classes. For Java SE 8 and later, please use java.time instead.
 
-This release contains one bug fix.
+This release contains one bug fix, a time-zone update and some minor internal changes.
 The release runs on JDK 5 or later.
 
 Joda-Time is licensed under the business-friendly Apache License Version 2.
@@ -26,6 +26,17 @@ This is the same license as all of Apache, plus other open source projects such 
 
 **  Please also check out our related projects   **
 ** http://www.joda.org/joda-time/related.html **
+
+
+Bug fixes in 2.9.2
+------------------
+ - Fix bug in time-zone binary search [#332]
+
+ - DateTimeZone data updated to version 2016a (version 2.9 had time-zone data 2015g)
+
+ - Minor fixes to code internals [#339, #326, #344, #350, #343]
+ 
+ - Better document behaviour [#325]
 
 
 Bug fixes in 2.9.1

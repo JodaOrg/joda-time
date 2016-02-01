@@ -38,8 +38,8 @@ import org.joda.time.format.ISODateTimeFormat;
  * This class has no concept of a chronology, all methods work on the
  * millisecond instant.
  * <p>
- * This class should generally not be used directly by API users. The 
- * {@link ReadableInstant} interface should be used when different 
+ * This class should generally not be used directly by API users. The
+ * {@link ReadableInstant} interface should be used when different
  * kinds of date/time objects are to be referenced.
  * <p>
  * Whenever you want to implement <code>ReadableInstant</code> you should
@@ -64,7 +64,7 @@ public abstract class AbstractInstant implements ReadableInstant {
     //-----------------------------------------------------------------------
     /**
      * Gets the time zone of the instant from the chronology.
-     * 
+     *
      * @return the DateTimeZone that the instant is using, never null
      */
     public DateTimeZone getZone() {
@@ -115,7 +115,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * Instant dt = new Instant();
      * int gjYear = dt.get(Chronology.getCoptic().year());
      * </pre>
-     * 
+     *
      * @param field  the DateTimeField to use, not null
      * @return the value
      * @throws IllegalArgumentException if the field is null
@@ -130,7 +130,7 @@ public abstract class AbstractInstant implements ReadableInstant {
     //-----------------------------------------------------------------------
     /**
      * Get this object as an Instant.
-     * 
+     *
      * @return an Instant using the same millis
      */
     public Instant toInstant() {
@@ -157,7 +157,7 @@ public abstract class AbstractInstant implements ReadableInstant {
 
     /**
      * Get this object as a DateTime using the same chronology but a different zone.
-     * 
+     *
      * @param zone time zone to apply, or default if null
      * @return a DateTime using the same millis
      */
@@ -169,7 +169,7 @@ public abstract class AbstractInstant implements ReadableInstant {
 
     /**
      * Get this object as a DateTime using the given chronology and its zone.
-     * 
+     *
      * @param chronology chronology to apply, or ISOChronology if null
      * @return a DateTime using the same millis
      */
@@ -202,7 +202,7 @@ public abstract class AbstractInstant implements ReadableInstant {
 
     /**
      * Get this object as a MutableDateTime using the same chronology but a different zone.
-     * 
+     *
      * @param zone time zone to apply, or default if null
      * @return a MutableDateTime using the same millis
      */
@@ -214,7 +214,7 @@ public abstract class AbstractInstant implements ReadableInstant {
 
     /**
      * Get this object as a MutableDateTime using the given chronology and its zone.
-     * 
+     *
      * @param chronology chronology to apply, or ISOChronology if null
      * @return a MutableDateTime using the same millis
      */
@@ -296,10 +296,10 @@ public abstract class AbstractInstant implements ReadableInstant {
         if (this == other) {
             return 0;
         }
-        
+
         long otherMillis = other.getMillis();
         long thisMillis = getMillis();
-        
+
         // cannot do (thisMillis - otherMillis) as can overflow
         if (thisMillis == otherMillis) {
             return 0;
@@ -326,7 +326,7 @@ public abstract class AbstractInstant implements ReadableInstant {
     /**
      * Is this instant after the current instant
      * comparing solely by millisecond.
-     * 
+     *
      * @return true if this instant is after the current instant
      */
     public boolean isAfterNow() {
@@ -360,7 +360,7 @@ public abstract class AbstractInstant implements ReadableInstant {
     /**
      * Is this instant before the current instant
      * comparing solely by millisecond.
-     * 
+     *
      * @return true if this instant is before the current instant
      */
     public boolean isBeforeNow() {
@@ -394,7 +394,7 @@ public abstract class AbstractInstant implements ReadableInstant {
     /**
      * Is this instant equal to the current instant
      * comparing solely by millisecond.
-     * 
+     *
      * @return true if this instant is equal to the current instant
      */
     public boolean isEqualNow() {
@@ -416,7 +416,7 @@ public abstract class AbstractInstant implements ReadableInstant {
     //-----------------------------------------------------------------------
     /**
      * Output the date time in ISO8601 format (yyyy-MM-ddTHH:mm:ss.SSSZZ).
-     * 
+     *
      * @return ISO8601 time formatted string, not null
      */
     @ToString

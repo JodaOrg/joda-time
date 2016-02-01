@@ -43,8 +43,8 @@ public class TestDateTimeFormat extends TestCase {
     private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
     private static final DateTimeZone NEWYORK = DateTimeZone.forID("America/New_York");
 
-    long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
-                     366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 
+    long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 +
+                     366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 +
                      365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 +
                      366 + 365;
     // 2002-06-09
@@ -100,10 +100,10 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("G").withLocale(Locale.UK);
         assertEquals(dt.toString(), "AD", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "AD", f.print(dt));
-        
+
         dt = dt.withZone(PARIS);
         assertEquals(dt.toString(), "AD", f.print(dt));
     }
@@ -113,13 +113,13 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("C").withLocale(Locale.UK);
         assertEquals(dt.toString(), "20", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "20", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "20", f.print(dt));
-        
+
         dt = new DateTime(-123, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals(dt.toString(), "1", f.print(dt));
     }
@@ -129,34 +129,34 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("Y").withLocale(Locale.UK);
         assertEquals(dt.toString(), "2004", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "2004", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "2004", f.print(dt));
-        
+
         dt = new DateTime(-123, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals(dt.toString(), "124", f.print(dt));  // 124th year of BCE
-    }        
+    }
 
     public void testFormat_yearOfEra_twoDigit() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("YY").withLocale(Locale.UK);
         assertEquals(dt.toString(), "04", f.print(dt));
-        
+
         dt = new DateTime(-123, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals(dt.toString(), "23", f.print(dt));
-        
+
         // current time set to 2002-06-09
         f = f.withZoneUTC();
         DateTime expect = null;
         expect = new DateTime(2004, 1, 1, 0, 0, 0, 0, UTC);
         assertEquals(expect, f.parseDateTime("04"));
-        
+
         expect = new DateTime(1922, 1, 1, 0, 0, 0, 0, UTC);
         assertEquals(expect, f.parseDateTime("22"));
-        
+
         expect = new DateTime(2021, 1, 1, 0, 0, 0, 0, UTC);
         assertEquals(expect, f.parseDateTime("21"));
 
@@ -203,20 +203,20 @@ public class TestDateTimeFormat extends TestCase {
         dt = new DateTime(-2005, 10, 1, 0, 0, 0, 0, chrono);
         assertEquals(dt, f.parseDateTime("2005-10 BC"));
         assertEquals(dt, f.parseDateTime("2005-10 BCE"));
-    }        
+    }
 
     //-----------------------------------------------------------------------
     public void testFormat_year() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("y").withLocale(Locale.UK);
         assertEquals(dt.toString(), "2004", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "2004", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "2004", f.print(dt));
-        
+
         dt = new DateTime(-123, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals(dt.toString(), "-123", f.print(dt));
 
@@ -236,19 +236,19 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("yy").withLocale(Locale.UK);
         assertEquals(dt.toString(), "04", f.print(dt));
-        
+
         dt = new DateTime(-123, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals(dt.toString(), "23", f.print(dt));
-        
+
         // current time set to 2002-06-09
         f = f.withZoneUTC();
         DateTime expect = null;
         expect = new DateTime(2004, 1, 1, 0, 0, 0, 0, UTC);
         assertEquals(expect, f.parseDateTime("04"));
-        
+
         expect = new DateTime(1922, 1, 1, 0, 0, 0, 0, UTC);
         assertEquals(expect, f.parseDateTime("22"));
-        
+
         expect = new DateTime(2021, 1, 1, 0, 0, 0, 0, UTC);
         assertEquals(expect, f.parseDateTime("21"));
 
@@ -351,11 +351,11 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(278004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("yyyy");
         assertEquals(dt.toString(), "278004", f.print(dt));
-        
+
         // for coverage
         f = DateTimeFormat.forPattern("yyyyMMdd");
         assertEquals(dt.toString(), "2780040609", f.print(dt));
-        
+
         // for coverage
         f = DateTimeFormat.forPattern("yyyyddMM");
         assertEquals(dt.toString(), "2780040906", f.print(dt));
@@ -366,13 +366,13 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("x").withLocale(Locale.UK);
         assertEquals(dt.toString(), "2004", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "2004", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "2004", f.print(dt));
-        
+
         dt = new DateTime(-123, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals(dt.toString(), "-123", f.print(dt));
     }
@@ -381,19 +381,19 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("xx").withLocale(Locale.UK);
         assertEquals(dt.toString(), "04", f.print(dt));
-        
+
         dt = new DateTime(-123, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals(dt.toString(), "23", f.print(dt));
-        
+
         // current time set to 2002-06-09
         f = f.withZoneUTC();
         DateTime expect = null;
         expect = new DateTime(2003, 12, 29, 0, 0, 0, 0, UTC);
         assertEquals(expect, f.parseDateTime("04"));
-        
+
         expect = new DateTime(1922, 1, 2, 0, 0, 0, 0, UTC);
         assertEquals(expect, f.parseDateTime("22"));
-        
+
         expect = new DateTime(2021, 1, 4, 0, 0, 0, 0, UTC);
         assertEquals(expect, f.parseDateTime("21"));
 
@@ -497,10 +497,10 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("w").withLocale(Locale.UK);
         assertEquals(dt.toString(), "24", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "24", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "24", f.print(dt));
     }
@@ -510,10 +510,10 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("e").withLocale(Locale.UK);
         assertEquals(dt.toString(), "3", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "3", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "3", f.print(dt));
     }
@@ -523,13 +523,13 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("E").withLocale(Locale.UK);
         assertEquals(dt.toString(), "Wed", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "Wed", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "Wed", f.print(dt));
-        
+
         f = f.withLocale(Locale.FRENCH);
         assertEquals(dt.toString(), "mer.", f.print(dt));
     }
@@ -539,13 +539,13 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("EEEE").withLocale(Locale.UK);
         assertEquals(dt.toString(), "Wednesday", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "Wednesday", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "Wednesday", f.print(dt));
-        
+
         f = f.withLocale(Locale.FRENCH);
         assertEquals(dt.toString(), "mercredi", f.print(dt));
     }
@@ -555,10 +555,10 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("D").withLocale(Locale.UK);
         assertEquals(dt.toString(), "161", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "161", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "161", f.print(dt));
     }
@@ -568,26 +568,40 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("M").withLocale(Locale.UK);
         assertEquals(dt.toString(), "6", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "6", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "6", f.print(dt));
     }
+
+    //-----------------------------------------------------------------------
+    public void testFormat_quarterOfYear() {
+        DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
+        DateTimeFormatter f = DateTimeFormat.forPattern("Q").withLocale(Locale.UK);
+        assertEquals(dt.toString(), "2", f.print(dt));
+
+        dt = dt.withZone(NEWYORK);
+        assertEquals(dt.toString(), "2", f.print(dt));
+
+        dt = dt.withZone(TOKYO);
+        assertEquals(dt.toString(), "2", f.print(dt));
+    }
+
 
     //-----------------------------------------------------------------------
     public void testFormat_monthOfYearShortText() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("MMM").withLocale(Locale.UK);
         assertEquals(dt.toString(), "Jun", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "Jun", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "Jun", f.print(dt));
-        
+
         f = f.withLocale(Locale.FRENCH);
         assertEquals(dt.toString(), "juin", f.print(dt));
     }
@@ -597,13 +611,13 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("MMMM").withLocale(Locale.UK);
         assertEquals(dt.toString(), "June", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "June", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "June", f.print(dt));
-        
+
         f = f.withLocale(Locale.FRENCH);
         assertEquals(dt.toString(), "juin", f.print(dt));
     }
@@ -613,10 +627,10 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("d").withLocale(Locale.UK);
         assertEquals(dt.toString(), "9", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "9", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "9", f.print(dt));
     }
@@ -626,10 +640,10 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("a").withLocale(Locale.UK);
         assertEquals(dt.toString(), "AM", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "AM", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "PM", f.print(dt));
     }
@@ -639,13 +653,13 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("K").withLocale(Locale.UK);
         assertEquals(dt.toString(), "10", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "6", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "7", f.print(dt));
-        
+
         dt = new DateTime(2004, 6, 9, 0, 0, 0, 0, UTC);
         assertEquals(dt.toString(), "0", f.print(dt));
     }
@@ -655,13 +669,13 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("h").withLocale(Locale.UK);
         assertEquals(dt.toString(), "10", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "6", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "7", f.print(dt));
-        
+
         dt = new DateTime(2004, 6, 9, 0, 0, 0, 0, UTC);
         assertEquals(dt.toString(), "12", f.print(dt));
     }
@@ -671,13 +685,13 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("H").withLocale(Locale.UK);
         assertEquals(dt.toString(), "10", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "6", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "19", f.print(dt));
-        
+
         dt = new DateTime(2004, 6, 9, 0, 0, 0, 0, UTC);
         assertEquals(dt.toString(), "0", f.print(dt));
     }
@@ -687,13 +701,13 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("k").withLocale(Locale.UK);
         assertEquals(dt.toString(), "10", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "6", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "19", f.print(dt));
-        
+
         dt = new DateTime(2004, 6, 9, 0, 0, 0, 0, UTC);
         assertEquals(dt.toString(), "24", f.print(dt));
     }
@@ -703,10 +717,10 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("m").withLocale(Locale.UK);
         assertEquals(dt.toString(), "20", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "20", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "20", f.print(dt));
     }
@@ -716,10 +730,10 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("s").withLocale(Locale.UK);
         assertEquals(dt.toString(), "30", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "30", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "30", f.print(dt));
     }
@@ -729,10 +743,10 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("SSS").withLocale(Locale.UK);
         assertEquals(dt.toString(), "040", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "040", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "040", f.print(dt));
     }
@@ -742,10 +756,10 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("SSSSSS").withLocale(Locale.UK);
         assertEquals(dt.toString(), "040000", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "040000", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "040000", f.print(dt));
     }
@@ -755,10 +769,10 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("z").withLocale(Locale.UK);
         assertEquals(dt.toString(), "UTC", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "EDT", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "JST", f.print(dt));
     }
@@ -767,10 +781,10 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("zzzz").withLocale(Locale.UK);
         assertEquals(dt.toString(), "Coordinated Universal Time", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "Eastern Daylight Time", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "Japan Standard Time", f.print(dt));
     }
@@ -780,10 +794,10 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("Z").withLocale(Locale.UK);
         assertEquals(dt.toString(), "+0000", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "-0400", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "+0900", f.print(dt));
     }
@@ -792,10 +806,10 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("ZZ").withLocale(Locale.UK);
         assertEquals(dt.toString(), "+00:00", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "-04:00", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "+09:00", f.print(dt));
     }
@@ -804,10 +818,10 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("ZZZ").withLocale(Locale.UK);
         assertEquals(dt.toString(), "UTC", f.print(dt));
-        
+
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "America/New_York", f.print(dt));
-        
+
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "Asia/Tokyo", f.print(dt));
     }
@@ -865,26 +879,26 @@ public class TestDateTimeFormat extends TestCase {
     //-----------------------------------------------------------------------
     public void testParse_pivotYear() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd.MM.yy").withPivotYear(2050).withZoneUTC();
-        
+
         DateTime date = dateFormatter.parseDateTime("25.12.15");
         assertEquals(date.getYear(), 2015);
-        
+
         date = dateFormatter.parseDateTime("25.12.00");
         assertEquals(date.getYear(), 2000);
-        
+
         date = dateFormatter.parseDateTime("25.12.99");
         assertEquals(date.getYear(), 2099);
     }
 
     public void testParse_pivotYear_ignored4DigitYear() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd.MM.yyyy").withPivotYear(2050).withZoneUTC();
-        
+
         DateTime date = dateFormatter.parseDateTime("25.12.15");
         assertEquals(date.getYear(), 15);
-        
+
         date = dateFormatter.parseDateTime("25.12.00");
         assertEquals(date.getYear(), 0);
-        
+
         date = dateFormatter.parseDateTime("25.12.99");
         assertEquals(date.getYear(), 99);
     }
@@ -893,7 +907,7 @@ public class TestDateTimeFormat extends TestCase {
     public void testFormatParse_textMonthJanShort_UK() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM yyyy")
             .withLocale(Locale.UK).withZoneUTC();
-        
+
         String str = new DateTime(2007, 1, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
         assertEquals(str, "23 Jan 2007");
         DateTime date = dateFormatter.parseDateTime(str);
@@ -917,7 +931,7 @@ public class TestDateTimeFormat extends TestCase {
     public void testParse_textMonthJanLong_UK() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM yyyy")
             .withLocale(Locale.UK).withZoneUTC();
-        
+
         DateTime date = dateFormatter.parseDateTime("23 January 2007");
         check(date, 2007, 1, 23);
     }
@@ -939,7 +953,7 @@ public class TestDateTimeFormat extends TestCase {
     public void testFormatParse_textMonthJanShort_France() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM yyyy")
             .withLocale(Locale.FRANCE).withZoneUTC();
-        
+
         String str = new DateTime(2007, 1, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
         assertEquals("23 janv. 2007", str);
         DateTime date = dateFormatter.parseDateTime(str);
@@ -949,7 +963,7 @@ public class TestDateTimeFormat extends TestCase {
     public void testFormatParse_textMonthJanLong_France() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM yyyy")
             .withLocale(Locale.FRANCE).withZoneUTC();
-        
+
         DateTime date = dateFormatter.parseDateTime("23 janvier 2007");
         check(date, 2007, 1, 23);
     }
@@ -957,7 +971,7 @@ public class TestDateTimeFormat extends TestCase {
     public void testFormatParse_textMonthApr_France() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM yyyy")
             .withLocale(Locale.FRANCE).withZoneUTC();
-        
+
         String str = new DateTime(2007, 2, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
         assertEquals("23 f\u00E9vr. 2007", str);  // e acute
         DateTime date = dateFormatter.parseDateTime(str);
@@ -967,7 +981,7 @@ public class TestDateTimeFormat extends TestCase {
     public void testFormatParse_textMonthAtEnd_France() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM")
             .withLocale(Locale.FRANCE).withZoneUTC();
-        
+
         String str = new DateTime(2007, 6, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
         assertEquals("23 juin", str);
         DateTime date = dateFormatter.parseDateTime(str);
@@ -977,7 +991,7 @@ public class TestDateTimeFormat extends TestCase {
     public void testFormatParse_textMonthAtEnd_France_withSpecifiedDefault() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM")
             .withLocale(Locale.FRANCE).withZoneUTC().withDefaultYear(1980);
-        
+
         String str = new DateTime(2007, 6, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
         assertEquals("23 juin", str);
         DateTime date = dateFormatter.parseDateTime(str);
@@ -987,7 +1001,7 @@ public class TestDateTimeFormat extends TestCase {
     public void testFormatParse_textMonthApr_Korean() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("EEEE, d MMMM yyyy HH:mm")
             .withLocale(Locale.KOREAN).withZoneUTC();
-        
+
         String str = new DateTime(2007, 3, 8, 22, 0, 0, 0, UTC).toString(dateFormatter);
         DateTime date = dateFormatter.parseDateTime(str);
         assertEquals(new DateTime(2007, 3, 8, 22, 0, 0, 0, UTC), date);
@@ -1004,7 +1018,7 @@ public class TestDateTimeFormat extends TestCase {
             .appendYear(4, 4)
             .toFormatter()
             .withLocale(Locale.UK).withZoneUTC();
-        
+
         String str = new DateTime(2007, 6, 23, 18, 0, 0, 0, UTC).toString(dateFormatter);
         assertEquals("$06-PM-2007", str);
         DateTime date = dateFormatter.parseDateTime(str);
@@ -1021,7 +1035,7 @@ public class TestDateTimeFormat extends TestCase {
             .appendYear(4, 4)
             .toFormatter()
             .withLocale(Locale.FRANCE).withZoneUTC();
-        
+
         String str = new DateTime(2007, 6, 23, 18, 0, 0, 0, UTC).toString(dateFormatter);
         assertEquals("$06-PM-2007", str);
         DateTime date = dateFormatter.parseDateTime(str);
@@ -1036,7 +1050,7 @@ public class TestDateTimeFormat extends TestCase {
             .appendYear(4, 4)
             .toFormatter()
             .withLocale(Locale.UK).withZoneUTC();
-        
+
         String str = new DateTime(2007, 6, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
         assertEquals("$AD2007", str);
         DateTime date = dateFormatter.parseDateTime(str);
@@ -1050,7 +1064,7 @@ public class TestDateTimeFormat extends TestCase {
             .appendYear(4, 4)
             .toFormatter()
             .withLocale(Locale.FRANCE).withZoneUTC();
-        
+
         String str = new DateTime(2007, 6, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
         assertEquals("$ap. J.-C.2007", str);
         DateTime date = dateFormatter.parseDateTime(str);
@@ -1064,7 +1078,7 @@ public class TestDateTimeFormat extends TestCase {
             .appendYear(4, 4)
             .toFormatter()
             .withLocale(Locale.FRANCE).withZoneUTC();
-        
+
         String str = new DateTime(-1, 6, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
         assertEquals("$BC-0001", str);
         DateTime date = dateFormatter.parseDateTime(str);
@@ -1078,7 +1092,7 @@ public class TestDateTimeFormat extends TestCase {
             .appendText(DateTimeFieldType.year())
             .toFormatter()
             .withLocale(Locale.UK).withZoneUTC();
-        
+
         String str = new DateTime(2007, 6, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
         assertEquals("$2007", str);
         try {
@@ -1095,7 +1109,7 @@ public class TestDateTimeFormat extends TestCase {
             .appendText(DateTimeFieldType.year())
             .toFormatter()
             .withLocale(Locale.FRANCE).withZoneUTC();
-        
+
         String str = new DateTime(2007, 6, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
         assertEquals("$2007", str);
         try {
@@ -1115,7 +1129,7 @@ public class TestDateTimeFormat extends TestCase {
             .appendLiteral("HelloWorld")
             .toFormatter()
             .withLocale(Locale.UK).withZoneUTC();
-        
+
         String str = new DateTime(2007, 6, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
         assertEquals("$23JunHelloWorld", str);
         dateFormatter.parseDateTime(str);
@@ -1129,7 +1143,7 @@ public class TestDateTimeFormat extends TestCase {
             .appendDayOfWeekShortText()
             .toFormatter()
             .withLocale(Locale.UK).withZoneUTC();
-        
+
         String str = new DateTime(2007, 6, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
         assertEquals("$23JunSat", str);
         dateFormatter.parseDateTime(str);

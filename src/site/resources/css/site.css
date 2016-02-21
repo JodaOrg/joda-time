@@ -16,6 +16,10 @@ body {
 code, pre {
  color: #444;
 }
+.main-body p b {
+ font-weight: bold;
+ color: #722;
+}
 .dropdown-menu>li>a {
  color: #666;
 }

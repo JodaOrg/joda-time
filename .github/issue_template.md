@@ -1,5 +1,6 @@
 The Joda-Time project has been running for many years now, and the codebase is stable.
-As such, there are few things worthy of being raised as an issue.
+Java SE 8 contains a new date and time library that is the successor to Joda-Time.
+As such Joda-Time is primarily in maintainence mode and there are few things worthy of being raised as an issue.
 
 **As a general rule, you should raise a question at Stack Overflow, not here.**
 

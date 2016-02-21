@@ -14,6 +14,11 @@ This is the same license as all of Apache, plus other open source projects such 
 ** http://www.joda.org/joda-time/related.html **
 
 
+Enhancements in 2.9.3
+------------------
+ - Make DateTimeUtils.SYSTEM_MILLIS_PROVIDER public [#357]
+
+
 Bug fixes in 2.9.2
 ------------------
  - Fix bug in time-zone binary search [#332]

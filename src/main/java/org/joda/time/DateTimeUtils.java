@@ -38,8 +38,11 @@ import org.joda.time.chrono.ISOChronology;
  */
 public class DateTimeUtils {
 
-    /** The singleton instance of the system millisecond provider. */
-    private static final SystemMillisProvider SYSTEM_MILLIS_PROVIDER = new SystemMillisProvider();
+    /**
+     * The singleton instance of the system millisecond provider.
+     */
+    public static final MillisProvider SYSTEM_MILLIS_PROVIDER = new SystemMillisProvider();
+
     /** The millisecond provider currently in use. */
     private static volatile MillisProvider cMillisProvider = SYSTEM_MILLIS_PROVIDER;
     /**

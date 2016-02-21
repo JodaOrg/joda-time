@@ -507,6 +507,8 @@ public abstract class DateTimeFieldType implements Serializable {
                     return chronology.dayOfYear();
                 case MONTH_OF_YEAR:
                     return chronology.monthOfYear();
+                case QUARTER_OF_YEAR:
+                    return chronology.quarterOfYear();
                 case DAY_OF_MONTH:
                     return chronology.dayOfMonth();
                 case WEEKYEAR_OF_CENTURY:

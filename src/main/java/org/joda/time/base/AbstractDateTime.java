@@ -141,6 +141,15 @@ public abstract class AbstractDateTime
     }
 
     /**
+     * Get the quarter of year field value.
+     * 
+     * @return the quarter of year
+     */
+    public int getQuarterOfYear() {
+        return getChronology().quarterOfYear().get(getMillis());
+    }
+
+    /**
      * Get the week of weekyear field value.
      * <p>
      * This field is associated with the "weekyear" via {@link #getWeekyear()}.

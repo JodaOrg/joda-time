@@ -142,6 +142,7 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals(2002, test.get(ISO_DEFAULT.yearOfEra()));
         assertEquals(2002, test.get(ISO_DEFAULT.year()));
         assertEquals(6, test.get(ISO_DEFAULT.monthOfYear()));
+        assertEquals(2, test.get(ISO_DEFAULT.quarterOfYear()));
         assertEquals(9, test.get(ISO_DEFAULT.dayOfMonth()));
         assertEquals(2002, test.get(ISO_DEFAULT.weekyear()));
         assertEquals(23, test.get(ISO_DEFAULT.weekOfWeekyear()));
@@ -172,6 +173,7 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals(2002, test.get(DateTimeFieldType.yearOfEra()));
         assertEquals(2002, test.get(DateTimeFieldType.year()));
         assertEquals(6, test.get(DateTimeFieldType.monthOfYear()));
+        assertEquals(2, test.get(DateTimeFieldType.quarterOfYear()));
         assertEquals(9, test.get(DateTimeFieldType.dayOfMonth()));
         assertEquals(2002, test.get(DateTimeFieldType.weekyear()));
         assertEquals(23, test.get(DateTimeFieldType.weekOfWeekyear()));
@@ -202,6 +204,7 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals(true, test.isSupported(DateTimeFieldType.yearOfEra()));
         assertEquals(true, test.isSupported(DateTimeFieldType.year()));
         assertEquals(true, test.isSupported(DateTimeFieldType.monthOfYear()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.quarterOfYear()));
         assertEquals(true, test.isSupported(DateTimeFieldType.dayOfMonth()));
         assertEquals(true, test.isSupported(DateTimeFieldType.weekyear()));
         assertEquals(true, test.isSupported(DateTimeFieldType.weekOfWeekyear()));
@@ -235,6 +238,7 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals(2002, test.getYearOfEra());
         assertEquals(2002, test.getYear());
         assertEquals(6, test.getMonthOfYear());
+        assertEquals(2, test.getQuarterOfYear());
         assertEquals(9, test.getDayOfMonth());
         assertEquals(2002, test.getWeekyear());
         assertEquals(23, test.getWeekOfWeekyear());

@@ -232,6 +232,7 @@ public class TestISOChronology extends TestCase {
         assertEquals("yearOfEra", iso.yearOfEra().getName());
         assertEquals("year", iso.year().getName());
         assertEquals("monthOfYear", iso.monthOfYear().getName());
+        assertEquals("quarterOfYear", iso.quarterOfYear().getName());
         assertEquals("weekyearOfCentury", iso.weekyearOfCentury().getName());
         assertEquals("weekyear", iso.weekyear().getName());
         assertEquals("weekOfWeekyear", iso.weekOfWeekyear().getName());
@@ -245,6 +246,7 @@ public class TestISOChronology extends TestCase {
         assertEquals(true, iso.yearOfEra().isSupported());
         assertEquals(true, iso.year().isSupported());
         assertEquals(true, iso.monthOfYear().isSupported());
+        assertEquals(true, iso.quarterOfYear().isSupported());
         assertEquals(true, iso.weekyearOfCentury().isSupported());
         assertEquals(true, iso.weekyear().isSupported());
         assertEquals(true, iso.weekOfWeekyear().isSupported());

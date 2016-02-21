@@ -309,6 +309,7 @@ abstract class BasicChronology extends AssembledChronology {
         fields.dayOfMonth = new BasicDayOfMonthDateTimeField(this, fields.days);
         fields.dayOfYear = new BasicDayOfYearDateTimeField(this, fields.days);
         fields.monthOfYear = new GJMonthOfYearDateTimeField(this);
+        fields.quarterOfYear = new BasicQuarterOfYearDateTimeField(this, 2);
         fields.weekyear = new BasicWeekyearDateTimeField(this);
         fields.weekOfWeekyear = new BasicWeekOfWeekyearDateTimeField(this, fields.weeks);
         
@@ -460,6 +461,10 @@ abstract class BasicChronology extends AssembledChronology {
      */
     int getMonthOfYear(long millis) {
         return getMonthOfYear(millis, getYear(millis));
+    }
+
+    int getQuarterOfYear(long millis) {
+        return (getMonthOfYear(millis) - 1) / 3 + 1;
     }
 
     /**

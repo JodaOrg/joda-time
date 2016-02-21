@@ -1945,6 +1945,15 @@ public final class DateTime
     }
 
     /**
+     * Get the quarter of year property which provides access to advanced functionality.
+     *
+     * @return the quarter of year property
+     */
+    public Property quarterOfYear() {
+        return new Property(this, getChronology().quarterOfYear());
+    }
+
+    /**
      * Get the week of a week based year property which provides access to advanced functionality.
      * 
      * @return the week of a week based year property

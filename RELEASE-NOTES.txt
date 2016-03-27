@@ -20,6 +20,8 @@ Changes in 2.9.3
 
  - Make DateTimeUtils.SYSTEM_MILLIS_PROVIDER public [#357]
 
+ - Fix bug when adding months at the maximum limits of integer [#361]
+
  - Add Turkish period translations [#364]
 
 

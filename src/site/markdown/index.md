@@ -129,7 +129,7 @@ Joda-Time is licenced under the business friendly <a href="license.html">Apache 
 
 [Release 2.9.3](download.html) is the current latest release.
 This release is considered stable and worthy of the 2.x tag.
-See the [upgrade notes](upgradeto290.html) for full details.
+See the [upgrade notes](installation.html) for full details.
 
 Joda-Time requires Java SE 5 or later and has [no dependencies](dependencies.html).
 There is a *compile-time* dependency on [Joda-Convert](http://www.joda.org/joda-convert/),

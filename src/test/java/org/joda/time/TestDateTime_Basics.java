@@ -1082,6 +1082,13 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+    public void testPlusMonths_intMax() {
+        DateTime test = new DateTime(2016, 2, 20, 1, 2, 3, 4, ISO_UTC);
+        assertEquals(new DateTime(178958986, 7, 20, 1, 2, 3, 4, ISO_UTC), test.plusMonths(Integer.MAX_VALUE - 2));
+        assertEquals(new DateTime(178958986, 8, 20, 1, 2, 3, 4, ISO_UTC), test.plusMonths(Integer.MAX_VALUE - 1));
+        assertEquals(new DateTime(178958986, 9, 20, 1, 2, 3, 4, ISO_UTC), test.plusMonths(Integer.MAX_VALUE));
+    }
+
     public void testPlusWeeks_int() {
         DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BUDDHIST_DEFAULT);
         DateTime result = test.plusWeeks(1);

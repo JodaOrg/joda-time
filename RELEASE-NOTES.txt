@@ -1,4 +1,4 @@
-Joda-Time version 2.9.2
+Joda-Time version 2.9.3
 -----------------------
 
 Joda-Time is a date and time handling library that seeks to replace the JDK
@@ -14,26 +14,28 @@ This is the same license as all of Apache, plus other open source projects such 
 ** http://www.joda.org/joda-time/related.html **
 
 
-Enhancements in 2.9.3
-------------------
+Changes in 2.9.3
+----------------
+ - DateTimeZone data updated to version 2016c
+
  - Make DateTimeUtils.SYSTEM_MILLIS_PROVIDER public [#357]
 
-- Add Turkish period translations [#364]
+ - Add Turkish period translations [#364]
 
 
-Bug fixes in 2.9.2
-------------------
- - Fix bug in time-zone binary search [#332]
-
+Changes in 2.9.2
+----------------
  - DateTimeZone data updated to version 2016a (version 2.9 had time-zone data 2015g)
+
+ - Fix bug in time-zone binary search [#332]
 
  - Minor fixes to code internals [#339, #326, #344, #350, #343]
  
  - Better document behaviour [#325]
 
 
-Bug fixes in 2.9.1
-------------------
+Changes in 2.9.1
+----------------
 - Fix bug introduced by Long.MIN_VALUE and Long.MAX_VALUE changes [#328]
 
 

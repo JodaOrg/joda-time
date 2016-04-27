@@ -1,4 +1,4 @@
-Joda-Time version 2.9.3
+Joda-Time version 2.9.4
 -----------------------
 
 Joda-Time is a date and time handling library that seeks to replace the JDK
@@ -12,6 +12,10 @@ This is the same license as all of Apache, plus other open source projects such 
 
 **  Please also check out our related projects   **
 ** http://www.joda.org/joda-time/related.html **
+
+Changes in 2.9.4
+----------------
+ - DateTimeZone data updated to version 2016d
 
 
 Changes in 2.9.3

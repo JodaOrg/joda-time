@@ -17,6 +17,7 @@ package org.joda.time;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FilePermission;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Modifier;
@@ -33,6 +34,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -537,6 +539,28 @@ public class TestDateTimeZone extends TestCase {
             fail();
         } catch (SecurityException ex) {
             // ok
+        } finally {
+            System.setSecurityManager(null);
+            Policy.setPolicy(ALLOW);
+        }
+    }
+
+    public void testZoneInfoProviderResourceLoading() {
+        final Set<String> ids = new HashSet<String>(DateTimeZone.getAvailableIDs());
+        ids.remove(DateTimeZone.getDefault().getID());
+        final String id = ids.toArray(new String[ids.size()])[new Random().nextInt(ids.size())];
+        try {
+            Policy.setPolicy(new Policy() {
+                @Override
+                public boolean implies(ProtectionDomain domain, Permission permission) {
+                    return !(permission instanceof FilePermission) && !permission.getName().contains(id);
+                }
+            });
+            System.setSecurityManager(new SecurityManager());
+            // will throw IllegalArgumentException if the resource can
+            // not be loaded
+            final DateTimeZone zone = DateTimeZone.forID(id);
+            assertNotNull(zone);
         } finally {
             System.setSecurityManager(null);
             Policy.setPolicy(ALLOW);

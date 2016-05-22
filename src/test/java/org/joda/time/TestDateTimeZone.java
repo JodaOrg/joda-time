@@ -552,6 +552,15 @@ public class TestDateTimeZone extends TestCase {
         try {
             Policy.setPolicy(new Policy() {
                 @Override
+                public PermissionCollection getPermissions(CodeSource codesource) {
+                    Permissions p = new Permissions();
+                    p.add(new AllPermission());  // enable everything
+                    return p;
+                }
+                @Override
+                public void refresh() {
+                }
+                @Override
                 public boolean implies(ProtectionDomain domain, Permission permission) {
                     return !(permission instanceof FilePermission) && !permission.getName().contains(id);
                 }

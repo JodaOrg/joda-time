@@ -17,6 +17,8 @@ Changes in 2.9.4
 ----------------
  - DateTimeZone data updated to version 2016d
 
+ - Loading time-zone provider now occurs in a priveleged block [#327, #375]
+
 
 Changes in 2.9.3
 ----------------

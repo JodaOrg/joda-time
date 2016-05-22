@@ -198,15 +198,15 @@ public class ZoneInfoProvider implements Provider {
             in = new FileInputStream(new File(iFileDir, name));
         } else {
             final String path = iResourcePath.concat(name);
-            if (iLoader != null) {
-                in = AccessController.doPrivileged(new PrivilegedAction<InputStream>() {
-                    public InputStream run() {
+            in = AccessController.doPrivileged(new PrivilegedAction<InputStream>() {
+                public InputStream run() {
+                    if (iLoader != null) {
                         return iLoader.getResourceAsStream(path);
+                    } else {
+                        return ClassLoader.getSystemResourceAsStream(path);
                     }
-                });
-            } else {
-                in = ClassLoader.getSystemResourceAsStream(path);
-            }
+                }
+            });
             if (in == null) {
                 StringBuilder buf = new StringBuilder(40)
                     .append("Resource not found: \"")

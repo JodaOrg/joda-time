@@ -16,6 +16,7 @@
 package org.joda.time;
 
 import java.io.Serializable;
+import java.math.RoundingMode;
 
 import org.joda.convert.FromString;
 import org.joda.time.base.BaseDuration;
@@ -503,6 +504,24 @@ public final class Duration
             return this;
         }
         return new Duration(FieldUtils.safeDivide(getMillis(), divisor));
+    }
+
+    /**
+     * Returns a new duration with its length divided by the
+     * specified divisor. {@code RoundingMode} can be specified.
+     * This instance is immutable and is not altered.
+     * <p>
+     * If the divisor is one, this instance is returned.
+     *
+     * @param divisor  the divisor to divide this one by
+     * @param roundingMode  the type of rounding desired
+     * @return the new duration instance
+     */
+    public Duration dividedBy(long divisor, RoundingMode roundingMode) {
+        if (divisor == 1) {
+            return this;
+        }
+        return new Duration(FieldUtils.safeDivide(getMillis(), divisor, roundingMode));
     }
 
     /**

@@ -17,6 +17,8 @@ Changes in 2.9.5
 ----------------
  - Add Norwegian period translations [#378]
 
+ - Add Duration.dividedBy(long,RoundingMode) [#69, #379]
+
 
 Changes in 2.9.4
 ----------------

@@ -508,20 +508,20 @@ public final class Duration
 
     /**
      * Returns a new duration with its length divided by the
-     * specified divisor. RoundingMode can be specified
+     * specified divisor. {@code RoundingMode} can be specified.
      * This instance is immutable and is not altered.
      * <p>
      * If the divisor is one, this instance is returned.
      *
-     * @param divisor the divisor to divide this one by
-     * @param roundingMode type of rounding desired
+     * @param divisor  the divisor to divide this one by
+     * @param roundingMode  the type of rounding desired
      * @return the new duration instance
      */
-    public Duration dividedBy(long divisor,RoundingMode roundingMode) {
-        if(divisor==1) {
+    public Duration dividedBy(long divisor, RoundingMode roundingMode) {
+        if (divisor == 1) {
             return this;
         }
-        return new Duration(FieldUtils.safeDivide(getMillis(),divisor,roundingMode));
+        return new Duration(FieldUtils.safeDivide(getMillis(), divisor, roundingMode));
     }
 
     /**

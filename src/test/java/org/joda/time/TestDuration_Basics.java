@@ -709,25 +709,25 @@ public class TestDuration_Basics extends TestCase {
     public void testDividedByRoundingMode_long1() {
         Duration test = new Duration(246L);
         Duration result = test.dividedBy(2L, RoundingMode.UNNECESSARY);
-        assertEquals(123L,result.getMillis());
+        assertEquals(123L, result.getMillis());
     }
 
     public void testDividedByRoundingMode_long2() {
         Duration test = new Duration(123L);
         Duration result = test.dividedBy(2L, RoundingMode.FLOOR);
-        assertEquals(61L,result.getMillis());
+        assertEquals(61L, result.getMillis());
     }
 
     public void testDividedByRoundingMode_long3() {
         Duration test = new Duration(123L);
         Duration result = test.dividedBy(7L, RoundingMode.CEILING);
-        assertEquals(18L,result.getMillis());
+        assertEquals(18L, result.getMillis());
     }
 
     public void testDividedByRoundingMode_long4() {
         Duration test = new Duration(33L);
-        Duration result = test.dividedBy(1L,RoundingMode.FLOOR);
-        assertSame(test,result);
+        Duration result = test.dividedBy(1L, RoundingMode.FLOOR);
+        assertSame(test, result);
     }
 
     //-----------------------------------------------------------------------

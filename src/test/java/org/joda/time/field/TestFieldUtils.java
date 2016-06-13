@@ -323,10 +323,9 @@ public class TestFieldUtils extends TestCase {
         }
     }
 
-    //--------------------------------
-    public void testSafeDivideRoundingModeLong()
-    {
-        assertEquals(3L,FieldUtils.safeDivide(15L, 5L, RoundingMode.UNNECESSARY));
+    //-----------------------------------------------------------------------
+    public void testSafeDivideRoundingModeLong() {
+        assertEquals(3L, FieldUtils.safeDivide(15L, 5L, RoundingMode.UNNECESSARY));
         assertEquals(59L, FieldUtils.safeDivide(179L, 3L, RoundingMode.FLOOR));
         assertEquals(60L, FieldUtils.safeDivide(179L, 3L, RoundingMode.CEILING));
         assertEquals(60L, FieldUtils.safeDivide(179L, 3L, RoundingMode.HALF_UP));
@@ -334,18 +333,18 @@ public class TestFieldUtils extends TestCase {
         assertEquals(60L, FieldUtils.safeDivide(179L, 3L, RoundingMode.HALF_DOWN));
         assertEquals(-60L, FieldUtils.safeDivide(-179L, 3L, RoundingMode.HALF_DOWN));
 
-        assertEquals(Long.MAX_VALUE, FieldUtils.safeDivide(Long.MAX_VALUE, 1L,RoundingMode.UNNECESSARY));
-        assertEquals(Long.MIN_VALUE, FieldUtils.safeDivide(Long.MIN_VALUE, 1L,RoundingMode.UNNECESSARY));
-        assertEquals(-Long.MAX_VALUE, FieldUtils.safeDivide(Long.MAX_VALUE, -1L,RoundingMode.UNNECESSARY));
+        assertEquals(Long.MAX_VALUE, FieldUtils.safeDivide(Long.MAX_VALUE, 1L, RoundingMode.UNNECESSARY));
+        assertEquals(Long.MIN_VALUE, FieldUtils.safeDivide(Long.MIN_VALUE, 1L, RoundingMode.UNNECESSARY));
+        assertEquals(-Long.MAX_VALUE, FieldUtils.safeDivide(Long.MAX_VALUE, -1L, RoundingMode.UNNECESSARY));
 
         try {
-            FieldUtils.safeDivide(Long.MIN_VALUE, -1L,RoundingMode.UNNECESSARY);
+            FieldUtils.safeDivide(Long.MIN_VALUE, -1L, RoundingMode.UNNECESSARY);
             fail();
         } catch (ArithmeticException e) {
         }
 
         try {
-            FieldUtils.safeDivide(1L, 0L,RoundingMode.UNNECESSARY);
+            FieldUtils.safeDivide(1L, 0L, RoundingMode.UNNECESSARY);
             fail();
         } catch (ArithmeticException e) {
         }

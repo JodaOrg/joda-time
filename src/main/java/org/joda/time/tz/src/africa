@@ -346,41 +346,8 @@ Rule	Egypt	2007	only	-	Sep	Thu>=1	24:00	0	-
 # From Steffen Thorsen (2016-04-29):
 # Egypt will have DST from July 7 until the end of October....
 # http://english.ahram.org.eg/NewsContentP/1/204655/Egypt/Daylight-savings-time-returning-to-Egypt-on--July.aspx
-# http://www.nileinternational.net/en/?p=25806
-# ... EgyptAir seems to have assumed DST to start in April (like it previously
-# did in 2010), and therefore this obviously causes problems with the schedules:
-# http://www.egyptair.com/en/about-egyptair/news-and-press/Pages/CANCELLATION%20OF%20DAYLIGHT%20SAVING%20TIME.aspx
-#
-# From Paul Eggert (2016-04-29):
-# For now, guess fall transitions will be October's last Thursday at
-# 24:00 and spring transitions will follow rules used 1995-2010 and be
-# April's last Thursday at 24:00, and guess a switch to standard time at
-# 24:00 the last Thursday before Ramadan, and back to DST at 00:00 the
-# first Friday after Ramadan.  To implement this,
-# transition dates for 2016 through 2068 were determined by running
-# the following program under GNU Emacs 24.5, with the results integrated
-# by hand into the table below.  Ramadan again intrudes on the guessed
-# DST starting in 2069, but that's beyond our somewhat-arbitrary cutoff here.
-# (let ((islamic-year 1437))
-#   (while (< islamic-year 1491)
-#     (let ((a (calendar-islamic-to-absolute (list 9 1 islamic-year)))
-#           (b (calendar-islamic-to-absolute (list 10 1 islamic-year)))
-#           (friday 5))
-#       (while (/= friday (mod a 7))
-#         (setq a (1- a)))
-#       (while (/= friday (mod b 7))
-#         (setq b (1+ b)))
-#       (setq a (1- a))
-#       (setq b (1- b))
-#       (setq a (calendar-gregorian-from-absolute a))
-#       (setq b (calendar-gregorian-from-absolute b))
-#       (insert
-#        (format
-#         (concat "Rule\tEgypt\t%d\tonly\t-\t%s\t%2d\t24:00\t0\t-\n"
-#                 "Rule\tEgypt\t%d\tonly\t-\t%s\t%2d\t24:00\t1:00\tS\n")
-#         (car (cdr (cdr a))) (calendar-month-name (car a) t) (car (cdr a))
-#         (car (cdr (cdr b))) (calendar-month-name (car b) t) (car (cdr b)))))
-#     (setq islamic-year (+ 1 islamic-year))))
+# From Mina Samuel (2016-07-04):
+# Egyptian government took the decision to cancel the DST,
 
 Rule	Egypt	2008	only	-	Aug	lastThu	24:00	0	-
 Rule	Egypt	2009	only	-	Aug	20	24:00	0	-
@@ -391,53 +358,6 @@ Rule	Egypt	2014	only	-	May	15	24:00	1:00	S
 Rule	Egypt	2014	only	-	Jun	26	24:00	0	-
 Rule	Egypt	2014	only	-	Jul	31	24:00	1:00	S
 Rule	Egypt	2014	only	-	Sep	lastThu	24:00	0	-
-Rule	Egypt	2016	only	-	Jul	 7	24:00	1:00	S
-Rule	Egypt	2016	2035	-	Oct	lastThu	24:00	0	-
-Rule	Egypt	2017	2019	-	Apr	lastThu	24:00	1:00	S
-Rule	Egypt	2017	only	-	May	25	24:00	0	-
-Rule	Egypt	2017	only	-	Jun	29	24:00	1:00	S
-Rule	Egypt	2018	only	-	May	10	24:00	0	-
-Rule	Egypt	2018	only	-	Jun	14	24:00	1:00	S
-Rule	Egypt	2019	only	-	May	 2	24:00	0	-
-Rule	Egypt	2019	only	-	Jun	 6	24:00	1:00	S
-Rule	Egypt	2020	only	-	May	28	24:00	1:00	S
-Rule	Egypt	2021	only	-	May	13	24:00	1:00	S
-Rule	Egypt	2022	only	-	May	 5	24:00	1:00	S
-Rule	Egypt	2023	2051	-	Apr	lastThu	24:00	1:00	S
-Rule	Egypt	2036	only	-	Oct	16	24:00	0	-
-Rule	Egypt	2037	only	-	Oct	 8	24:00	0	-
-Rule	Egypt	2038	only	-	Sep	23	24:00	0	-
-Rule	Egypt	2039	only	-	Sep	15	24:00	0	-
-Rule	Egypt	2039	only	-	Oct	20	24:00	1:00	S
-Rule	Egypt	2039	max	-	Oct	lastThu	24:00	0	-
-Rule	Egypt	2040	only	-	Sep	 6	24:00	0	-
-Rule	Egypt	2040	only	-	Oct	11	24:00	1:00	S
-Rule	Egypt	2041	only	-	Aug	22	24:00	0	-
-Rule	Egypt	2041	only	-	Sep	26	24:00	1:00	S
-Rule	Egypt	2042	only	-	Aug	14	24:00	0	-
-Rule	Egypt	2042	only	-	Sep	18	24:00	1:00	S
-Rule	Egypt	2043	only	-	Aug	 6	24:00	0	-
-Rule	Egypt	2043	only	-	Sep	10	24:00	1:00	S
-Rule	Egypt	2044	only	-	Jul	21	24:00	0	-
-Rule	Egypt	2044	only	-	Aug	25	24:00	1:00	S
-Rule	Egypt	2045	only	-	Jul	13	24:00	0	-
-Rule	Egypt	2045	only	-	Aug	17	24:00	1:00	S
-Rule	Egypt	2046	only	-	Jun	28	24:00	0	-
-Rule	Egypt	2046	only	-	Aug	 9	24:00	1:00	S
-Rule	Egypt	2047	only	-	Jun	20	24:00	0	-
-Rule	Egypt	2047	only	-	Jul	25	24:00	1:00	S
-Rule	Egypt	2048	only	-	Jun	11	24:00	0	-
-Rule	Egypt	2048	only	-	Jul	16	24:00	1:00	S
-Rule	Egypt	2049	only	-	May	27	24:00	0	-
-Rule	Egypt	2049	only	-	Jul	 1	24:00	1:00	S
-Rule	Egypt	2050	only	-	May	19	24:00	0	-
-Rule	Egypt	2050	only	-	Jun	23	24:00	1:00	S
-Rule	Egypt	2051	only	-	May	11	24:00	0	-
-Rule	Egypt	2051	only	-	Jun	15	24:00	1:00	S
-Rule	Egypt	2052	only	-	May	30	24:00	1:00	S
-Rule	Egypt	2053	only	-	May	22	24:00	1:00	S
-Rule	Egypt	2054	only	-	May	14	24:00	1:00	S
-Rule	Egypt	2055	max	-	Apr	lastThu	24:00	1:00	S
 
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone	Africa/Cairo	2:05:09 -	LMT	1900 Oct

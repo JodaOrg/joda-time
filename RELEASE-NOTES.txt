@@ -19,14 +19,14 @@ Changes in 2.9.5
 
  - Add Duration.dividedBy(long,RoundingMode) [#69, #379]
 
- - DateTimeZone data updated to version 2016e
+ - DateTimeZone data updated to version 2016f
 
 
 Changes in 2.9.4
 ----------------
  - DateTimeZone data updated to version 2016d
 
- - Loading time-zone provider now occurs in a priveleged block [#327, #375]
+ - Loading time-zone provider now occurs in a privileged block [#327, #375]
 
 
 Changes in 2.9.3

@@ -1,4 +1,4 @@
-Joda-Time version 2.9.4
+Joda-Time version 2.9.5
 -----------------------
 
 Joda-Time is a date and time handling library that seeks to replace the JDK

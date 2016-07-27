@@ -224,7 +224,7 @@ public final class Duration
      * This returns <code>getMillis() / MILLIS_PER_DAY</code>.
      * The result is an integer division, thus excess milliseconds are truncated.
      *
-     * @return the length of the duration in standard seconds
+     * @return the length of the duration in standard days
      * @since 2.0
      */
     public long getStandardDays() {
@@ -242,7 +242,7 @@ public final class Duration
      * This returns <code>getMillis() / MILLIS_PER_HOUR</code>.
      * The result is an integer division, thus excess milliseconds are truncated.
      *
-     * @return the length of the duration in standard seconds
+     * @return the length of the duration in standard hours
      * @since 2.0
      */
     public long getStandardHours() {
@@ -257,10 +257,10 @@ public final class Duration
      * 1000 milliseconds in a second.
      * All currently supplied chronologies use this definition.
      * <p>
-     * This returns <code>getMillis() / 60000</code>.
+     * This returns <code>getMillis() / MILLIS_PER_MINUTE</code>.
      * The result is an integer division, thus excess milliseconds are truncated.
      *
-     * @return the length of the duration in standard seconds
+     * @return the length of the duration in standard minutes
      * @since 2.0
      */
     public long getStandardMinutes() {

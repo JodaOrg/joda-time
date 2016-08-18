@@ -401,12 +401,14 @@ public class DateTimeZoneBuilder {
     private boolean addTransition(ArrayList<Transition> transitions, Transition tr) {
         int size = transitions.size();
         if (size == 0) {
+//            System.out.println("Adding   " + tr);
             transitions.add(tr);
             return true;
         }
 
         Transition last = transitions.get(size - 1);
         if (!tr.isTransitionFrom(last)) {
+//            System.out.println("Rejected " + tr);
             return false;
         }
 
@@ -423,11 +425,15 @@ public class DateTimeZoneBuilder {
 
         if (newLocal != lastLocal) {
             transitions.add(tr);
+//            System.out.println("Adding   " + tr);
             return true;
         }
-
-        transitions.remove(size - 1);
-        return addTransition(transitions, tr);
+        Transition previous = transitions.remove(size - 1);
+        Transition adjusted = tr.withMillis(previous.getMillis());
+//        System.out.println("Current  " + tr);
+//        System.out.println("Previous " + previous);
+//        System.out.println("Adjusted " + adjusted);
+        return addTransition(transitions, adjusted);
     }
 
     /**
@@ -932,6 +938,10 @@ public class DateTimeZoneBuilder {
             return iWallOffset - iStandardOffset;
         }
 
+        public Transition withMillis(long millis) {
+            return new Transition(millis, iNameKey, iWallOffset, iStandardOffset);
+        }
+
         /**
          * There must be a change in the millis, wall offsets or name keys.
          */
@@ -941,7 +951,7 @@ public class DateTimeZoneBuilder {
             }
             return iMillis > other.iMillis &&
                 (iWallOffset != other.iWallOffset ||
-                 //iStandardOffset != other.iStandardOffset ||
+                 iStandardOffset != other.iStandardOffset ||
                  !(iNameKey.equals(other.iNameKey)));
         }
         

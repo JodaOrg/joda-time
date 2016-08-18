@@ -263,6 +263,7 @@ public class ZoneInfoCompiler {
         long end = ISOChronology.getInstanceUTC().year().set(0, 2050);
 
         int offset = tz.getOffset(millis);
+        int stdOffset = tz.getStandardOffset(millis);
         String key = tz.getNameKey(millis);
 
         List<Long> transitions = new ArrayList<Long>();
@@ -276,10 +277,10 @@ public class ZoneInfoCompiler {
             millis = next;
 
             int nextOffset = tz.getOffset(millis);
+            int nextStdOffset = tz.getStandardOffset(millis);
             String nextKey = tz.getNameKey(millis);
 
-            if (offset == nextOffset
-                && key.equals(nextKey)) {
+            if (offset == nextOffset && stdOffset == nextStdOffset && key.equals(nextKey)) {
                 System.out.println("*d* Error in " + tz.getID() + " "
                                    + new DateTime(millis,
                                                   ISOChronology.getInstanceUTC()));

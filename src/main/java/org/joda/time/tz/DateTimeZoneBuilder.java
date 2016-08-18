@@ -642,7 +642,6 @@ public class DateTimeZoneBuilder {
             return false;
         }
 
-        /*
         public String toString() {
             return
                 "[OfYear]\n" + 
@@ -653,7 +652,6 @@ public class DateTimeZoneBuilder {
                 "AdvanceDayOfWeek: " + iAdvance + '\n' +
                 "MillisOfDay: " + iMillisOfDay + '\n';
         }
-        */
 
         public void writeTo(DataOutput out) throws IOException {
             out.writeByte(iMode);
@@ -803,6 +801,11 @@ public class DateTimeZoneBuilder {
         Recurrence renameAppend(String appendNameKey) {
             return rename((iNameKey + appendNameKey).intern());
         }
+        
+        @Override
+        public String toString() {
+            return iOfYear + " named " + iNameKey + " at " + iSaveMillis;
+        }
     }
 
     /**
@@ -874,6 +877,11 @@ public class DateTimeZoneBuilder {
 
             return next;
         }
+        
+        @Override
+        public String toString() {
+            return iFromYear + " to " + iToYear + " using " + iRecurrence;
+        }
     }
 
     private static final class Transition {
@@ -935,6 +943,11 @@ public class DateTimeZoneBuilder {
                 (iWallOffset != other.iWallOffset ||
                  //iStandardOffset != other.iStandardOffset ||
                  !(iNameKey.equals(other.iNameKey)));
+        }
+        
+        @Override
+        public String toString() {
+            return new DateTime(iMillis, DateTimeZone.UTC) + " " + iStandardOffset + " " + iWallOffset;
         }
     }
 
@@ -1159,6 +1172,12 @@ public class DateTimeZoneBuilder {
                 }
             }
             return null;
+        }
+        
+        @Override
+        public String toString() {
+            return iInitialNameKey + " initial: " + iInitialSaveMillis + " std: " + iStandardOffset +
+                    " upper: " + iUpperYear + " " + iUpperOfYear + " " + iRules;
         }
     }
 

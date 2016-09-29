@@ -80,7 +80,7 @@ public abstract class Chronology {
      * @return a version of this chronology that ignores time zones
      */
     public abstract Chronology withUTC();
-    
+
     /**
      * Returns an instance of this Chronology that operates in any time zone.
      *
@@ -227,21 +227,21 @@ public abstract class Chronology {
     //-----------------------------------------------------------------------
     /**
      * Get the millis duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public abstract DurationField millis();
 
     /**
      * Get the millis of second field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public abstract DateTimeField millisOfSecond();
 
     /**
      * Get the millis of day field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public abstract DateTimeField millisOfDay();
@@ -250,21 +250,21 @@ public abstract class Chronology {
     //-----------------------------------------------------------------------
     /**
      * Get the seconds duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public abstract DurationField seconds();
 
     /**
      * Get the second of minute field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public abstract DateTimeField secondOfMinute();
 
     /**
      * Get the second of day field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public abstract DateTimeField secondOfDay();
@@ -273,21 +273,21 @@ public abstract class Chronology {
     //-----------------------------------------------------------------------
     /**
      * Get the minutes duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public abstract DurationField minutes();
 
     /**
      * Get the minute of hour field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public abstract DateTimeField minuteOfHour();
 
     /**
      * Get the minute of day field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public abstract DateTimeField minuteOfDay();
@@ -296,21 +296,21 @@ public abstract class Chronology {
     //-----------------------------------------------------------------------
     /**
      * Get the hours duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public abstract DurationField hours();
 
     /**
      * Get the hour of day (0-23) field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public abstract DateTimeField hourOfDay();
 
     /**
      * Get the hour of day (offset to 1-24) field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public abstract DateTimeField clockhourOfDay();
@@ -319,28 +319,28 @@ public abstract class Chronology {
     //-----------------------------------------------------------------------
     /**
      * Get the halfdays duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public abstract DurationField halfdays();
 
     /**
      * Get the hour of am/pm (0-11) field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public abstract DateTimeField hourOfHalfday();
 
     /**
      * Get the hour of am/pm (offset to 1-12) field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public abstract DateTimeField clockhourOfHalfday();
 
     /**
      * Get the AM(0) PM(1) field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public abstract DateTimeField halfdayOfDay();
@@ -349,7 +349,7 @@ public abstract class Chronology {
     //-----------------------------------------------------------------------
     /**
      * Get the days duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public abstract DurationField days();
@@ -359,21 +359,21 @@ public abstract class Chronology {
      *
      * <p>DayOfWeek values are defined in {@link DateTimeConstants}.
      * They use the ISO definitions, where 1 is Monday and 7 is Sunday.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public abstract DateTimeField dayOfWeek();
 
     /**
      * Get the day of month field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public abstract DateTimeField dayOfMonth();
 
     /**
      * Get the day of year field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public abstract DateTimeField dayOfYear();
@@ -382,14 +382,14 @@ public abstract class Chronology {
     //-----------------------------------------------------------------------
     /**
      * Get the weeks duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public abstract DurationField weeks();
 
     /**
      * Get the week of a week based year field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public abstract DateTimeField weekOfWeekyear();
@@ -398,21 +398,21 @@ public abstract class Chronology {
     //-----------------------------------------------------------------------
     /**
      * Get the weekyears duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public abstract DurationField weekyears();
 
     /**
      * Get the year of a week based year field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public abstract DateTimeField weekyear();
 
     /**
      * Get the year of a week based year in a century field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public abstract  DateTimeField weekyearOfCentury();
@@ -421,44 +421,60 @@ public abstract class Chronology {
     //-----------------------------------------------------------------------
     /**
      * Get the months duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public abstract DurationField months();
 
     /**
      * Get the month of year field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public abstract DateTimeField monthOfYear();
+
+    // Quarter
+    //-----------------------------------------------------------------------
+    /**
+     * Get the quarter duration field for this chronology.
+     *
+     * @return DurationField or UnsupportedDurationField if unsupported
+     */
+    public abstract DurationField quarters();
+
+    /**
+     * Get the quarter of year field for this chronology.
+     *
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
+     */
+    public abstract DateTimeField quarterOfYear();
 
     // Year
     //-----------------------------------------------------------------------
     /**
      * Get the years duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public abstract DurationField years();
 
     /**
      * Get the year field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public abstract DateTimeField year();
 
     /**
      * Get the year of era field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public abstract DateTimeField yearOfEra();
 
     /**
      * Get the year of century field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public abstract DateTimeField yearOfCentury();
@@ -467,14 +483,14 @@ public abstract class Chronology {
     //-----------------------------------------------------------------------
     /**
      * Get the centuries duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public abstract DurationField centuries();
 
     /**
      * Get the century of era field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public abstract DateTimeField centuryOfEra();
@@ -483,14 +499,14 @@ public abstract class Chronology {
     //-----------------------------------------------------------------------
     /**
      * Get the eras duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public abstract DurationField eras();
 
     /**
      * Get the era field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public abstract DateTimeField era();
@@ -498,7 +514,7 @@ public abstract class Chronology {
     //-----------------------------------------------------------------------
     /**
      * Gets a debugging toString.
-     * 
+     *
      * @return a debugging string
      */
     public abstract String toString();

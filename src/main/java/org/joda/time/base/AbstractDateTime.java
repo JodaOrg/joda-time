@@ -29,7 +29,7 @@ import org.joda.time.format.DateTimeFormat;
  * AbstractDateTime provides the common behaviour for datetime classes.
  * <p>
  * This class should generally not be used directly by API users.
- * The {@link ReadableDateTime} interface should be used when different 
+ * The {@link ReadableDateTime} interface should be used when different
  * kinds of date/time objects are to be referenced.
  * <p>
  * Whenever you want to implement <code>ReadableDateTime</code> you should
@@ -73,7 +73,7 @@ public abstract class AbstractDateTime
     //-----------------------------------------------------------------------
     /**
      * Get the era field value.
-     * 
+     *
      * @return the era
      */
     public int getEra() {
@@ -82,7 +82,7 @@ public abstract class AbstractDateTime
 
     /**
      * Get the year of era field value.
-     * 
+     *
      * @return the year of era
      */
     public int getCenturyOfEra() {
@@ -91,7 +91,7 @@ public abstract class AbstractDateTime
 
     /**
      * Get the year of era field value.
-     * 
+     *
      * @return the year of era
      */
     public int getYearOfEra() {
@@ -100,7 +100,7 @@ public abstract class AbstractDateTime
 
     /**
      * Get the year of century field value.
-     * 
+     *
      * @return the year of century
      */
     public int getYearOfCentury() {
@@ -109,7 +109,7 @@ public abstract class AbstractDateTime
 
     /**
      * Get the year field value.
-     * 
+     *
      * @return the year
      */
     public int getYear() {
@@ -124,7 +124,7 @@ public abstract class AbstractDateTime
      * is that in which at least 4 days are in the year. As a result of this
      * definition, day 1 of the first week may be in the previous year.
      * The weekyear allows you to query the effective year for that day.
-     * 
+     *
      * @return the year of a week based year
      */
     public int getWeekyear() {
@@ -133,11 +133,20 @@ public abstract class AbstractDateTime
 
     /**
      * Get the month of year field value.
-     * 
+     *
      * @return the month of year
      */
     public int getMonthOfYear() {
         return getChronology().monthOfYear().get(getMillis());
+    }
+
+    /**
+     * Get the month of year field value.
+     *
+     * @return the month of year
+     */
+    public int getQuarterOfYear() {
+        return getChronology().quarterOfYear().get(getMillis());
     }
 
     /**
@@ -147,7 +156,7 @@ public abstract class AbstractDateTime
      * In the standard ISO8601 week algorithm, the first week of the year
      * is that in which at least 4 days are in the year. As a result of this
      * definition, day 1 of the first week may be in the previous year.
-     * 
+     *
      * @return the week of a week based year
      */
     public int getWeekOfWeekyear() {
@@ -156,7 +165,7 @@ public abstract class AbstractDateTime
 
     /**
      * Get the day of year field value.
-     * 
+     *
      * @return the day of year
      */
     public int getDayOfYear() {
@@ -167,7 +176,7 @@ public abstract class AbstractDateTime
      * Get the day of month field value.
      * <p>
      * The values for the day of month are defined in {@link org.joda.time.DateTimeConstants}.
-     * 
+     *
      * @return the day of month
      */
     public int getDayOfMonth() {
@@ -178,7 +187,7 @@ public abstract class AbstractDateTime
      * Get the day of week field value.
      * <p>
      * The values for the day of week are defined in {@link org.joda.time.DateTimeConstants}.
-     * 
+     *
      * @return the day of week
      */
     public int getDayOfWeek() {
@@ -306,7 +315,7 @@ public abstract class AbstractDateTime
      * This can be confusing, as the equals and hashCode methods use both
      * chronology and time-zone. If two objects are not {@code equal} but have the
      * same {@code toString} then either the chronology or time-zone differs.
-     * 
+     *
      * @return ISO8601 time formatted string, not null
      */
     @ToString

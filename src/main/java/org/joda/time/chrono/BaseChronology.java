@@ -70,7 +70,7 @@ public abstract class BaseChronology
      * @return a version of this chronology that ignores time zones
      */
     public abstract Chronology withUTC();
-    
+
     /**
      * Returns an instance of this Chronology that operates in any time zone.
      *
@@ -332,7 +332,7 @@ public abstract class BaseChronology
     //-----------------------------------------------------------------------
     /**
      * Get the millis duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField millis() {
@@ -341,7 +341,7 @@ public abstract class BaseChronology
 
     /**
      * Get the millis of second field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField millisOfSecond() {
@@ -350,7 +350,7 @@ public abstract class BaseChronology
 
     /**
      * Get the millis of day field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField millisOfDay() {
@@ -361,7 +361,7 @@ public abstract class BaseChronology
     //-----------------------------------------------------------------------
     /**
      * Get the seconds duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField seconds() {
@@ -370,7 +370,7 @@ public abstract class BaseChronology
 
     /**
      * Get the second of minute field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField secondOfMinute() {
@@ -379,7 +379,7 @@ public abstract class BaseChronology
 
     /**
      * Get the second of day field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField secondOfDay() {
@@ -390,7 +390,7 @@ public abstract class BaseChronology
     //-----------------------------------------------------------------------
     /**
      * Get the minutes duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField minutes() {
@@ -399,7 +399,7 @@ public abstract class BaseChronology
 
     /**
      * Get the minute of hour field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField minuteOfHour() {
@@ -408,7 +408,7 @@ public abstract class BaseChronology
 
     /**
      * Get the minute of day field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField minuteOfDay() {
@@ -419,7 +419,7 @@ public abstract class BaseChronology
     //-----------------------------------------------------------------------
     /**
      * Get the hours duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField hours() {
@@ -428,7 +428,7 @@ public abstract class BaseChronology
 
     /**
      * Get the hour of day (0-23) field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField hourOfDay() {
@@ -437,7 +437,7 @@ public abstract class BaseChronology
 
     /**
      * Get the hour of day (offset to 1-24) field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField clockhourOfDay() {
@@ -448,7 +448,7 @@ public abstract class BaseChronology
     //-----------------------------------------------------------------------
     /**
      * Get the halfdays duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField halfdays() {
@@ -457,7 +457,7 @@ public abstract class BaseChronology
 
     /**
      * Get the hour of am/pm (0-11) field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField hourOfHalfday() {
@@ -466,7 +466,7 @@ public abstract class BaseChronology
 
     /**
      * Get the hour of am/pm (offset to 1-12) field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField clockhourOfHalfday() {
@@ -475,7 +475,7 @@ public abstract class BaseChronology
 
     /**
      * Get the AM(0) PM(1) field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField halfdayOfDay() {
@@ -486,7 +486,7 @@ public abstract class BaseChronology
     //-----------------------------------------------------------------------
     /**
      * Get the days duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField days() {
@@ -499,7 +499,7 @@ public abstract class BaseChronology
      * <p>DayOfWeek values are defined in
      * {@link org.joda.time.DateTimeConstants DateTimeConstants}.
      * They use the ISO definitions, where 1 is Monday and 7 is Sunday.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField dayOfWeek() {
@@ -508,7 +508,7 @@ public abstract class BaseChronology
 
     /**
      * Get the day of month field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField dayOfMonth() {
@@ -517,7 +517,7 @@ public abstract class BaseChronology
 
     /**
      * Get the day of year field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField dayOfYear() {
@@ -528,7 +528,7 @@ public abstract class BaseChronology
     //-----------------------------------------------------------------------
     /**
      * Get the weeks duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField weeks() {
@@ -537,7 +537,7 @@ public abstract class BaseChronology
 
     /**
      * Get the week of a week based year field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField weekOfWeekyear() {
@@ -548,7 +548,7 @@ public abstract class BaseChronology
     //-----------------------------------------------------------------------
     /**
      * Get the weekyears duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField weekyears() {
@@ -557,7 +557,7 @@ public abstract class BaseChronology
 
     /**
      * Get the year of a week based year field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField weekyear() {
@@ -566,7 +566,7 @@ public abstract class BaseChronology
 
     /**
      * Get the year of a week based year in a century field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField weekyearOfCentury() {
@@ -577,7 +577,7 @@ public abstract class BaseChronology
     //-----------------------------------------------------------------------
     /**
      * Get the months duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField months() {
@@ -586,18 +586,26 @@ public abstract class BaseChronology
 
     /**
      * Get the month of year field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField monthOfYear() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.monthOfYear(), months());
     }
 
+    public DurationField quarters() {
+        return UnsupportedDurationField.getInstance(DurationFieldType.quarters());
+    }
+
+    public DateTimeField quarterOfYear() {
+        return UnsupportedDateTimeField.getInstance(DateTimeFieldType.quarterOfYear(), quarters());
+    }
+
     // Year
     //-----------------------------------------------------------------------
     /**
      * Get the years duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField years() {
@@ -606,7 +614,7 @@ public abstract class BaseChronology
 
     /**
      * Get the year field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField year() {
@@ -615,7 +623,7 @@ public abstract class BaseChronology
 
     /**
      * Get the year of era field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField yearOfEra() {
@@ -624,7 +632,7 @@ public abstract class BaseChronology
 
     /**
      * Get the year of century field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField yearOfCentury() {
@@ -635,7 +643,7 @@ public abstract class BaseChronology
     //-----------------------------------------------------------------------
     /**
      * Get the centuries duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField centuries() {
@@ -644,7 +652,7 @@ public abstract class BaseChronology
 
     /**
      * Get the century of era field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField centuryOfEra() {
@@ -655,7 +663,7 @@ public abstract class BaseChronology
     //-----------------------------------------------------------------------
     /**
      * Get the eras duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField eras() {
@@ -664,7 +672,7 @@ public abstract class BaseChronology
 
     /**
      * Get the era field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField era() {
@@ -674,7 +682,7 @@ public abstract class BaseChronology
     //-----------------------------------------------------------------------
     /**
      * Gets a debugging toString.
-     * 
+     *
      * @return a debugging string
      */
     public abstract String toString();

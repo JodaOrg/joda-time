@@ -19,10 +19,10 @@ Changes in 2.9.5
 
  - Add Duration.dividedBy(long,RoundingMode) [#69, #379]
 
- - DateTimeZone data updated to version 2016f
- 
+ - DateTimeZone data updated to version 2016g
+
  - Fixed minor issues with historic time-zone data [#373]
- 
+
  - Fix bug in time-zone binary search [#332, #386]
   The fix in v2.9.2 caused problems when the time-zone being parsed
   was not the last element in the input string. New approach uses a
@@ -54,7 +54,7 @@ Changes in 2.9.2
  - Fix bug in time-zone binary search [#332]
 
  - Minor fixes to code internals [#339, #326, #344, #350, #343]
- 
+
  - Better document behaviour [#325]
 
 

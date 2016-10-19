@@ -120,7 +120,7 @@ public abstract class AbstractDuration implements ReadableDuration {
      * Is the length of this duration longer than the duration passed in.
      *
      * @param duration  another duration to compare to, null means zero milliseconds
-     * @return true if this duration is longer than the duration passed in
+     * @return true if this duration is strictly longer than the duration passed in
      */
     public boolean isLongerThan(ReadableDuration duration) {
         if (duration == null) {
@@ -133,7 +133,7 @@ public abstract class AbstractDuration implements ReadableDuration {
      * Is the length of this duration shorter than the duration passed in.
      *
      * @param duration  another duration to compare to, null means zero milliseconds
-     * @return true if this duration is shorter than the duration passed in
+     * @return true if this duration is strictly shorter than the duration passed in
      */
     public boolean isShorterThan(ReadableDuration duration) {
         if (duration == null) {

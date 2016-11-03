@@ -21,6 +21,8 @@ Changes in 2.9.5
 
  - DateTimeZone data updated to version 2016i
 
+ - Fixed bug where clock read twice when comparing two nulls in DateTimeComparator [#404]
+
  - Fixed minor issues with historic time-zone data [#373]
 
  - Fix bug in time-zone binary search [#332, #386]

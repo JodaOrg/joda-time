@@ -770,10 +770,6 @@ public class TestDateTimeFormat extends TestCase {
         DateTimeFormatter f = DateTimeFormat.forPattern("zzzz").withLocale(Locale.ENGLISH);
         assertEquals(dt.toString(), "Coordinated Universal Time", f.print(dt));
         
-        System.out.println("***" + UTC.getName(TEST_TIME_NOW));
-        System.out.println("***" + NEWYORK.getName(TEST_TIME_NOW));
-        System.out.println("***" + TOKYO.getName(TEST_TIME_NOW));
-        
         dt = dt.withZone(NEWYORK);
         assertEquals(dt.toString(), "Eastern Daylight Time", f.print(dt));
         

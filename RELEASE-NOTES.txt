@@ -28,6 +28,8 @@ Changes in 2.9.5
   was not the last element in the input string. New approach uses a
   different approach to the problem.
 
+ - Close buffered reader correctly in zone info compiler [#396]
+
 
 Changes in 2.9.4
 ----------------

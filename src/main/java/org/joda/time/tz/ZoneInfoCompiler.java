@@ -358,9 +358,15 @@ public class ZoneInfoCompiler {
     public Map<String, DateTimeZone> compile(File outputDir, File[] sources) throws IOException {
         if (sources != null) {
             for (int i=0; i<sources.length; i++) {
-                BufferedReader in = new BufferedReader(new FileReader(sources[i]));
-                parseDataFile(in, "backward".equals(sources[i].getName()));
-                in.close();
+                BufferedReader in = null;
+                try {
+                    in = new BufferedReader(new FileReader(sources[i]));
+                    parseDataFile(in, "backward".equals(sources[i].getName()));
+                } finally {
+                    if (in != null) {
+                        in.close();
+                    }
+                }
             }
         }
 

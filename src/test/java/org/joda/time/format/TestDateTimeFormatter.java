@@ -1037,7 +1037,7 @@ public class TestDateTimeFormatter extends TestCase {
         DateTime outDST   = new DateTime(2005, 10, 30, 2, 0, 0, 1, NEWYORK);
         DateTime outDST_2 = new DateTime(2005, 10, 30, 2, 0, 1, 0, NEWYORK);
 
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("yyy-MM-dd HH:mm:ss.S z");
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("yyy-MM-dd HH:mm:ss.S z").withLocale(Locale.ENGLISH);
         assertEquals("2005-10-30 01:00:00.0 EDT", fmt.print(inDST_1));
         assertEquals("2005-10-30 01:59:59.9 EDT", fmt.print(inDST_2));
         assertEquals("2005-10-30 02:00:00.0 EST", fmt.print(onDST));

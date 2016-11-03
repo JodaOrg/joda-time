@@ -30,6 +30,8 @@ Changes in 2.9.5
   was not the last element in the input string. New approach uses a
   different approach to the problem.
 
+ - Update tests for JDK 9 [#394]
+
  - Close buffered reader correctly in zone info compiler [#396]
 
  - Handle locale correctly zone info compiler [#397]

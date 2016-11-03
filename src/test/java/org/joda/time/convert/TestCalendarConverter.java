@@ -123,7 +123,9 @@ public class TestCalendarConverter extends TestCase {
             bc.setTimeZone(TimeZone.getTimeZone("Europe/Moscow"));
             assertEquals(BuddhistChronology.getInstance(PARIS), CalendarConverter.INSTANCE.getChronology(bc, PARIS));
         } catch (ClassNotFoundException ex) {
-            // ignore
+            // ignore not Sun JDK
+        } catch (IllegalAccessException ex) {
+            // ignore JDK 9 modules
         }
     }
 
@@ -154,7 +156,9 @@ public class TestCalendarConverter extends TestCase {
             bc.setTimeZone(TimeZone.getTimeZone("Europe/Moscow"));
             assertEquals(BuddhistChronology.getInstance(MOSCOW), CalendarConverter.INSTANCE.getChronology(bc, (Chronology) null));
         } catch (ClassNotFoundException ex) {
-            // ignore
+            // ignore not Sun JDK
+        } catch (IllegalAccessException ex) {
+            // ignore JDK 9 modules
         }
     }
 

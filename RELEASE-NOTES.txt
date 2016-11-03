@@ -19,7 +19,7 @@ Changes in 2.9.5
 
  - Add Duration.dividedBy(long,RoundingMode) [#69, #379]
 
- - DateTimeZone data updated to version 2016g
+ - DateTimeZone data updated to version 2016i
 
  - Fixed minor issues with historic time-zone data [#373]
 

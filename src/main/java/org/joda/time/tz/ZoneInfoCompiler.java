@@ -192,7 +192,7 @@ public class ZoneInfoCompiler {
     }
 
     static int parseYear(String str, int def) {
-        str = str.toLowerCase();
+        str = str.toLowerCase(Locale.ENGLISH);
         if (str.equals("minimum") || str.equals("min")) {
             return Integer.MIN_VALUE;
         } else if (str.equals("maximum") || str.equals("max")) {

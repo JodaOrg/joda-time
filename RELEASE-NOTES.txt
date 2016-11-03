@@ -30,6 +30,8 @@ Changes in 2.9.5
 
  - Close buffered reader correctly in zone info compiler [#396]
 
+ - Handle locale correctly zone info compiler [#397]
+
 
 Changes in 2.9.4
 ----------------

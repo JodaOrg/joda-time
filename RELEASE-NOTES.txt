@@ -13,6 +13,11 @@ This is the same license as all of Apache, plus other open source projects such 
 **  Please also check out our related projects   **
 ** http://www.joda.org/joda-time/related.html **
 
+Changes in 2.9.6
+----------------
+ - Support conversion of old TimeZone where name has digits other than ASCII [#381]
+
+
 Changes in 2.9.5
 ----------------
  - Add Norwegian period translations [#378]

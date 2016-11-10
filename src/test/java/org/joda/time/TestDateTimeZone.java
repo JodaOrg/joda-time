@@ -394,6 +394,11 @@ public class TestDateTimeZone extends TestCase {
         
         zone = DateTimeZone.forTimeZone(TimeZone.getTimeZone("EST"));
         assertEquals("America/New_York", zone.getID());
+        
+        TimeZone tz = TimeZone.getTimeZone("GMT-08:00");
+        tz.setID("GMT-\u0660\u0668:\u0660\u0660");
+        zone = DateTimeZone.forTimeZone(tz);
+        assertEquals("-08:00", zone.getID());
     }
 
     public void testFromTimeZoneInvalid() throws Exception {

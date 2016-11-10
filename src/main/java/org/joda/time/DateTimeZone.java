@@ -362,6 +362,12 @@ public abstract class DateTimeZone implements Serializable {
             convId = id;
             if (convId.startsWith("GMT+") || convId.startsWith("GMT-")) {
                 convId = convId.substring(3);
+                if (convId.length() > 2) {
+                    char firstDigit = convId.charAt(1);
+                    if (firstDigit > '9' && Character.isDigit(firstDigit)) {
+                        convId = convertToAsciiNumber(convId);
+                    }
+                }
                 int offset = parseOffset(convId);
                 if (offset == 0L) {
                     return DateTimeZone.UTC;
@@ -372,6 +378,18 @@ public abstract class DateTimeZone implements Serializable {
             }
         }
         throw new IllegalArgumentException("The datetime zone id '" + id + "' is not recognised");
+    }
+
+    private static String convertToAsciiNumber(String convId) {
+        StringBuilder buf = new StringBuilder(convId);
+        for (int i = 0; i < buf.length(); i++) {
+            char ch = buf.charAt(i);
+            int digit = Character.digit(ch, 10);
+            if (digit >= 0) {
+                buf.setCharAt(i, (char) ('0' + digit));
+            }
+        }
+        return buf.toString();
     }
 
     //-----------------------------------------------------------------------

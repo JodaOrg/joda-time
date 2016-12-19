@@ -125,7 +125,8 @@
     </menu>
 
     <menu name="Releases">
-      <item name="Release notes" href="installation.html"/>
+      <item name="Release notes" href="changes-report.html"/>
+      <item name="Old release notes" href="installation.html"/>
       <item name="Dependency info" href="dependency-info.html"/>
       <item name="Download" href="download.html"/>
     </menu>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+  <properties>
+    <title>Changes</title>
+    <author>Stephen Colebourne</author>
+  </properties>
+  <body>
+
+    <!-- types are add, fix, remove, update -->
+    <release version="2.9.7" date="2016-12-19" description="v2.9.7">
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2016j.
+      </action>
+    </release>
+
+    <release version="2.9.6" date="2016-11-10" description="v2.9.6">
+      <action dev="jodastephen" type="fix">
+        Support conversion of old TimeZone where name has digits other than ASCII [#381]
+      </action>
+    </release>
+
+    <release version="2.9.5" date="2016-11-03" description="v2.9.5">
+      <action dev="jodastephen" type="add">
+        Add Norwegian period translations [#378]
+      </action>
+      <action dev="jodastephen" type="add">
+        Add Duration.dividedBy(long,RoundingMode) [#69, #379]
+      </action>
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2016i
+      </action>
+      <action dev="jodastephen" type="fix">
+        Fixed bug where clock read twice when comparing two nulls in DateTimeComparator [#404]
+      </action>
+      <action dev="jodastephen" type="fix">
+        Fixed minor issues with historic time-zone data [#373]
+      </action>
+      <action dev="jodastephen" type="fix">
+        Fix bug in time-zone binary search [#332, #386]
+        The fix in v2.9.2 caused problems when the time-zone being parsed
+        was not the last element in the input string. New approach uses a
+        different approach to the problem.
+      </action>
+      <action dev="jodastephen" type="fix">
+        Update tests for JDK 9 [#394]
+      </action>
+      <action dev="jodastephen" type="fix">
+        Close buffered reader correctly in zone info compiler [#396]
+      </action>
+      <action dev="jodastephen" type="fix">
+        Handle locale correctly zone info compiler [#397]
+      </action>
+    </release>
+
+    <release version="2.9.4" date="2016-05-27" description="v2.9.4">
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2016d
+      </action>
+      <action dev="jodastephen" type="fix">
+        Loading time-zone provider now occurs in a privileged block [#327, #375]
+      </action>
+    </release>
+
+    <release version="2.9.3" date="2016-03-27" description="v2.9.3">
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2016c
+      </action>
+      <action dev="jodastephen" type="add">
+        Make DateTimeUtils.SYSTEM_MILLIS_PROVIDER public [#357]
+      </action>
+      <action dev="jodastephen" type="fix">
+        Fix bug when adding months at the maximum limits of integer [#361]
+      </action>
+      <action dev="jodastephen" type="add">
+        Add Turkish period translations [#364]      
+      </action>
+    </release>
+
+    <release version="2.9.2" date="2016-01-28" description="v2.9.2">
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2016a (version 2.9 had time-zone data 2015g)
+      </action>
+      <action dev="jodastephen" type="fix">
+        Fix bug in time-zone binary search [#332]
+      </action>
+      <action dev="jodastephen" type="fix">
+        Minor fixes to code internals [#339, #326, #344, #350, #343]
+      </action>
+      <action dev="jodastephen" type="add">
+        Better document behaviour [#325]
+      </action>
+    </release>
+
+    <release version="2.9.1" date="2015-11-12" description="v2.9.1">
+      <action dev="jodastephen" type="fix">
+        Fix bug introduced by Long.MIN_VALUE and Long.MAX_VALUE changes [#328]
+      </action>
+    </release>
+
+    <release version="2.9" date="2016-10-24" description="v2.9">
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2015g
+      </action>
+      <action dev="jodastephen" type="add">
+        Faster parsing of time-zone identifiers [#282]
+      </action>
+      <action dev="jodastephen" type="add">
+        Added Interval.parseWithOffset(String) [#299, #296]
+        Provides a way to parse the fixed offset in an interval string
+      </action>
+      <action dev="jodastephen" type="add">
+        Add DateTimeFormatter methods for StringBuilder [#298]
+      </action>
+      <action dev="jodastephen" type="add">
+        Add Russian period translations [#320]
+      </action>
+      <action dev="jodastephen" type="add">
+        Add Italian period translations [#312]
+      </action>
+      <action dev="jodastephen" type="add">
+        Add Czech period translations [#313]
+      </action>
+      <action dev="jodastephen" type="add">
+        Clarify that PeriodFormatterBuilder is in an invalid state once built [#309]
+      </action>
+      <action dev="jodastephen" type="add">
+        Allow DateTime and Interval to refer to values at Long.MIN_VALUE and Long.MAX_VALUE [#297, #190]
+        A DateTime may be created with any millisecond value, however at the very edges there may be
+        some undesirable effects, for example always using UTC instead of the time-zone
+      </action>
+      <action dev="jodastephen" type="fix">
+        Better error message for malformed tzdb files [#319]
+      </action>
+      <action dev="jodastephen" type="fix">
+        Better error message for interval constructor [#321]
+      </action>
+      <action dev="jodastephen" type="fix">
+        Fixed to handle JDK 8u60 [#288, #291]
+        Without this fix, formatting a time-zone will print "+00:00" instead of "GMT" for the GMT time-zone
+      </action>
+      <action dev="jodastephen" type="fix">
+        Fix parsing of basic form ISO style where year has unnecessary plus sign [#86]
+        For example, +20151030 will now be correctly parsed as year 2015.
+      </action>
+      <action dev="jodastephen" type="fix">
+        Fix overflow bug in intervals [#315]
+      </action>
+     
+    </release>
+
+  </body>
+</document>

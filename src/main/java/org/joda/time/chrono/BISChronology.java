@@ -81,7 +81,7 @@ public final class BISChronology extends BasicChronology {
     private static final int MAX_YEAR = 2090;
 
     /** The length of the long month. */
-    private static final int LONG_MONTH_LENGTH = 31;
+    private static final int LONG_MONTH_LENGTH = 32;
 
     /** The length of the long month in millis. */
     private static final long MILLIS_PER_MONTH = (long) (30.4166666667 * DateTimeConstants.MILLIS_PER_DAY);
@@ -268,7 +268,8 @@ public final class BISChronology extends BasicChronology {
 
     //-----------------------------------------------------------------------
     long getTotalMillisByYearMonth(int year, int month) {
-        return BISDateUtils.getTotalDaysInYearTillMonth(year, month) * DateTimeConstants.MILLIS_PER_DAY;
+        long totalMillis =  (long) BISDateUtils.getTotalDaysInYearTillMonth(year, month) * DateTimeConstants.MILLIS_PER_DAY;
+        return totalMillis;
     }
 
     //-----------------------------------------------------------------------
@@ -380,8 +381,8 @@ public final class BISChronology extends BasicChronology {
             super.assemble(fields);
 
             fields.era = ERA_FIELD;
-            fields.monthOfYear = new BISDateTimeField(this, 0);
-            fields.months = fields.monthOfYear.getDurationField();
+//            fields.monthOfYear = new BISDateTimeField(this, 0);
+//            fields.months = fields.monthOfYear.getDurationField();
         }
     }
 }

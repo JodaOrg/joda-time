@@ -89,7 +89,7 @@ public class BISDateUtils {
             new int[]{31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30},
             new int[]{31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30},
             new int[]{31, 32, 31, 32, 31, 30, 30, 29, 30, 29, 30, 30},
-            new int[]{31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31},
+            new int[]{31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31},  //2073
             new int[]{31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30},
             new int[]{31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30},
             new int[]{31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30},
@@ -125,8 +125,8 @@ public class BISDateUtils {
         int pos = y - FIRST_BIS_YEAR_SUPPORTED;
         int days = 0;
 
-        for (int j = 0; j < 12; ++j) {
-            if (j == m) break;
+        for (int j = 0; j <= 12; ++j) {
+            if (j == m - 1) break;
             days = days + data[pos][j];
         }
 

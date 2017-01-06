@@ -8,6 +8,13 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
+    <release version="2.9.8" date="SNAPSHOT" description="v2.9.8">
+      <action dev="jodastephen" type="fix">
+        Fix DateTimePrinterInternalPinter that outputs data twice.
+        Fixes #409.
+      </action>
+    </release>
+
     <release version="2.9.7" date="2016-12-19" description="v2.9.7">
       <action dev="jodastephen" type="update">
         DateTimeZone data updated to version 2016j.

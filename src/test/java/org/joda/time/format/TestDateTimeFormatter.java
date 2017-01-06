@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2014 Stephen Colebourne
+ *  Copyright 2001-2016 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 package org.joda.time.format;
 
 import java.io.CharArrayWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -157,6 +159,7 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    @SuppressWarnings("deprecation")
     public void testPrint_bufferMethods() throws Exception {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         StringBuffer buf = new StringBuffer();
@@ -179,6 +182,7 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    @SuppressWarnings("deprecation")
     public void testPrint_builderMethods() throws Exception {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         StringBuilder buf = new StringBuilder();
@@ -201,6 +205,7 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    @SuppressWarnings("deprecation")
     public void testPrint_writerMethods() throws Exception {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         CharArrayWriter out = new CharArrayWriter();
@@ -1043,6 +1048,45 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals("2005-10-30 02:00:00.0 EST", fmt.print(onDST));
         assertEquals("2005-10-30 02:00:00.0 EST", fmt.print(outDST));
         assertEquals("2005-10-30 02:00:01.0 EST", fmt.print(outDST_2));
+    }
+
+    public void testCustomDateTimePrinter() {
+        DateTimePrinter printer = new DateTimeFormatterBuilder()
+                .append(new CustomDateTimePrinter())
+                .appendLiteral(' ')
+                .appendYear(4, 8)
+                .toPrinter();
+
+        StringBuffer buffer = new StringBuffer();
+        long instant = new DateTime(2017, 1, 1, 0, 0, 0, ISO_UTC).getMillis();
+        printer.printTo(buffer, instant, ISO_UTC, 0, UTC, Locale.ENGLISH);
+
+        assertEquals("Hi 2017", buffer.toString());
+    }
+
+    private static class CustomDateTimePrinter implements DateTimePrinter {
+
+        public int estimatePrintedLength() {
+            return 2;
+        }
+
+        public void printTo(StringBuffer buf, long instant, Chronology chrono, int displayOffset,
+                DateTimeZone displayZone, Locale locale) {
+            buf.append("Hi");
+        }
+
+        public void printTo(Writer out, long instant, Chronology chrono, int displayOffset,
+                DateTimeZone displayZone, Locale locale) throws IOException {
+            out.write("Hi");
+        }
+
+        public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
+            buf.append("Hi");
+        }
+
+        public void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException {
+            out.write("Hi");
+        }
     }
 
 }

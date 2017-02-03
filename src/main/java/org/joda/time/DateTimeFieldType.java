@@ -435,7 +435,7 @@ public abstract class DateTimeFieldType implements Serializable {
          * Constructor.
          * 
          * @param name  the name to use
-         * @param ordinal  the byte value for the oridinal index
+         * @param ordinal  the byte value for the ordinal index
          * @param unitType  the unit duration type
          * @param rangeType  the range duration type
          */

@@ -1634,7 +1634,7 @@ public final class DateTime
      * Instead, this method returns a new instance with the value of
      * century of era changed.
      *
-     * @param centuryOfEra  the centurey of era to set
+     * @param centuryOfEra  the century of era to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      * @since 1.3
@@ -2268,7 +2268,7 @@ public final class DateTime
          * may need to call {@link DateTime#withLaterOffsetAtOverlap()} on the result
          * to force the later time during a DST overlap if desired.
          * <p>
-         * From v2.2, this method handles a daylight svaings time gap, setting the
+         * From v2.2, this method handles a daylight savings time gap, setting the
          * time to the last instant before the gap.
          * <p>
          * The DateTime attached to this property is unchanged by this call.
@@ -2297,7 +2297,7 @@ public final class DateTime
          * may need to call {@link DateTime#withEarlierOffsetAtOverlap()} on the result
          * to force the earlier time during a DST overlap if desired.
          * <p>
-         * From v2.2, this method handles a daylight svaings time gap, setting the
+         * From v2.2, this method handles a daylight savings time gap, setting the
          * time to the first instant after the gap.
          * <p>
          * The DateTime attached to this property is unchanged by this call.

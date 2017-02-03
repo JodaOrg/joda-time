@@ -126,7 +126,7 @@ public interface ReadableDuration extends Comparable<ReadableDuration> {
     boolean equals(Object readableDuration);
 
     /**
-     * Gets a hash code for the duration that is compatable with the 
+     * Gets a hash code for the duration that is compatible with the
      * equals method.
      * The following formula must be used:
      * <pre>

@@ -583,7 +583,7 @@ public final class Partial
      * <p>
      * If the addition is zero, then <code>this</code> is returned.
      * The addition will overflow into larger fields (eg. minute to hour).
-     * If the maximum is reached, the addition will wra.
+     * If the maximum is reached, the addition will wrap.
      *
      * @param fieldType  the field type to add to, not null
      * @param amount  the amount to add

@@ -284,7 +284,7 @@ public abstract class BasePeriod
 
     /**
      * Constructor used when we trust ourselves.
-     * Do not expose publically.
+     * Do not expose publicly.
      *
      * @param values  the values to use, not null, not cloned
      * @param type  which set of fields this period supports, not null

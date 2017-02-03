@@ -54,7 +54,7 @@ public final class Weeks extends BaseSingleFieldPeriod {
     /** Constant representing the minimum number of weeks that can be stored in this object. */
     public static final Weeks MIN_VALUE = new Weeks(Integer.MIN_VALUE);
 
-    /** The paser to use for this class. */
+    /** The parser to use for this class. */
     private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.weeks());
     /** Serialization version. */
     private static final long serialVersionUID = 87525275727380866L;

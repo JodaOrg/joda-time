@@ -65,7 +65,7 @@ public abstract class BaseChronology
     /**
      * Returns an instance of this Chronology that operates in the UTC time
      * zone. Chronologies that do not operate in a time zone or are already
-     * UTC must return themself.
+     * UTC must return themselves.
      *
      * @return a version of this chronology that ignores time zones
      */

@@ -70,7 +70,7 @@ public final class FixedDateTimeZone extends DateTimeZone {
     }
 
     /**
-     * Override to return the correct timzone instance.
+     * Override to return the correct timezone instance.
      * @since 1.5
      */
     public java.util.TimeZone toTimeZone() {

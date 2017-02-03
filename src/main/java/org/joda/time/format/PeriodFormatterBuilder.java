@@ -215,7 +215,7 @@ public class PeriodFormatterBuilder {
      * Appends a printer parser pair.
      * <p>
      * Either the printer or the parser may be null, in which case the builder will
-     * be unable to produce a parser or printer repectively.
+     * be unable to produce a parser or printer respectively.
      *
      * @param printer  appends a printer to the builder, null if printing is not supported
      * @param parser  appends a parser to the builder, null if parsing is not supported
@@ -308,7 +308,7 @@ public class PeriodFormatterBuilder {
     }
 
     /**
-     * Print zero values for the next and following appened fields only if the
+     * Print zero values for the next and following appended fields only if the
      * period supports it.
      *
      * @return this PeriodFormatterBuilder

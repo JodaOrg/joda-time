@@ -32,7 +32,7 @@ public class IllegalFieldValueException extends IllegalArgumentException {
      * @param fieldName  the field name
      * @param value  the value rejected
      * @param lowerBound  the lower bound allowed
-     * @param upperBound  the uppe bound allowed
+     * @param upperBound  the upper bound allowed
      * @param explain  an explanation
      * @return the message
      */

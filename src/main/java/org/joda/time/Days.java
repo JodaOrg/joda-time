@@ -62,7 +62,7 @@ public final class Days extends BaseSingleFieldPeriod {
     /** Constant representing the minimum number of days that can be stored in this object. */
     public static final Days MIN_VALUE = new Days(Integer.MIN_VALUE);
 
-    /** The paser to use for this class. */
+    /** The parser to use for this class. */
     private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.days());
     /** Serialization version. */
     private static final long serialVersionUID = 87525275727380865L;
@@ -106,7 +106,7 @@ public final class Days extends BaseSingleFieldPeriod {
     //-----------------------------------------------------------------------
     /**
      * Creates a <code>Days</code> representing the number of whole days
-     * between the two specified datetimes. This method corectly handles
+     * between the two specified datetimes. This method correctly handles
      * any daylight savings time changes that may occur during the interval.
      *
      * @param start  the start instant, must not be null
@@ -144,7 +144,7 @@ public final class Days extends BaseSingleFieldPeriod {
 
     /**
      * Creates a <code>Days</code> representing the number of whole days
-     * in the specified interval. This method corectly handles any daylight
+     * in the specified interval. This method correctly handles any daylight
      * savings time changes that may occur during the interval.
      *
      * @param interval  the interval to extract days from, null returns zero

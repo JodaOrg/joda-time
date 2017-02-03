@@ -103,7 +103,7 @@ public class DateTimeConstants {
     /**
      * Constant (1) representing AD, years after zero (from Calendar).
      * <p>
-     * All new chronologies with differrent Era values should try to assign
+     * All new chronologies with different Era values should try to assign
      * eras as follows. The era that was in force at 1970-01-01 (ISO) is assigned
      * the value 1. Earlier eras are assigned sequentially smaller numbers.
      * Later eras are assigned sequentially greater numbers.
@@ -112,7 +112,7 @@ public class DateTimeConstants {
     /**
      * Alternative constant (1) representing CE, Common Era (secular).
      * <p>
-     * All new chronologies with differrent Era values should try to assign
+     * All new chronologies with different Era values should try to assign
      * eras as follows. The era that was in force at 1970-01-01 (ISO) is assigned
      * the value 1. Earlier eras are assigned sequentially smaller numbers.
      * Later eras are assigned sequentially greater numbers.

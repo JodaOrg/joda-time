@@ -560,7 +560,7 @@ public final class LocalTime
     }
 
     /**
-     * Gets the value of the field at the specifed index.
+     * Gets the value of the field at the specified index.
      * <p>
      * This method is required to support the <code>ReadablePartial</code>
      * interface. The supported fields are HourOfDay, MinuteOfHour,
@@ -1264,7 +1264,7 @@ public final class LocalTime
      * setting the time fields from this instance and the date fields from
      * the current date.
      *
-     * @return this time as a datetime using todays date
+     * @return this time as a datetime using today's date
      */
     public DateTime toDateTimeToday() {
         return toDateTimeToday(null);
@@ -1279,7 +1279,7 @@ public final class LocalTime
      * specified.
      *
      * @param zone  the zone to use, null means default
-     * @return this time as a datetime using todays date
+     * @return this time as a datetime using today's date
      */
     public DateTime toDateTimeToday(DateTimeZone zone) {
         Chronology chrono = getChronology().withZone(zone);

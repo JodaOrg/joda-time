@@ -69,7 +69,7 @@ public abstract class AbstractPartial
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the field type at the specifed index.
+     * Gets the field type at the specified index.
      * 
      * @param index  the index
      * @return the field type
@@ -95,7 +95,7 @@ public abstract class AbstractPartial
     }
 
     /**
-     * Gets the field at the specifed index.
+     * Gets the field at the specified index.
      * 
      * @param index  the index
      * @return the field

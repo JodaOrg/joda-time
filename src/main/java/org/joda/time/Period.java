@@ -285,7 +285,7 @@ public final class Period
      * </pre>
      * Bear in mind that this creates four period instances in total, three of
      * which are immediately discarded.
-     * The alterative is more efficient, but less readable:
+     * The alternative is more efficient, but less readable:
      * <pre>
      * Period = new Period(6, 3, 0, 0, 0, 0, 23, 0);
      * </pre>

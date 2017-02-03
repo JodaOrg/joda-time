@@ -294,7 +294,7 @@ public interface ReadableInterval {
     boolean equals(Object readableInterval);
 
     /**
-     * Gets a hash code for the time interval that is compatable with the 
+     * Gets a hash code for the time interval that is compatible with the
      * equals method.
      * <p>
      * The formula used must be as follows:

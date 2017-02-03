@@ -1259,7 +1259,7 @@ public abstract class DateTimeZone implements Serializable {
     public abstract boolean equals(Object object);
 
     /**
-     * Gets a hash code compatable with equals.
+     * Gets a hash code compatible with equals.
      * 
      * @return suitable hashcode
      */

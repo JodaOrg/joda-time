@@ -126,7 +126,7 @@ public final class Months extends BaseSingleFieldPeriod {
     //-----------------------------------------------------------------------
     /**
      * Creates a <code>Months</code> representing the number of whole months
-     * between the two specified datetimes. This method corectly handles
+     * between the two specified datetimes. This method correctly handles
      * any daylight savings time changes that may occur during the interval.
      * <p>
      * This method calculates by adding months to the start date until the result
@@ -172,7 +172,7 @@ public final class Months extends BaseSingleFieldPeriod {
 
     /**
      * Creates a <code>Months</code> representing the number of whole months
-     * in the specified interval. This method corectly handles any daylight
+     * in the specified interval. This method correctly handles any daylight
      * savings time changes that may occur during the interval.
      *
      * @param interval  the interval to extract months from, null returns zero

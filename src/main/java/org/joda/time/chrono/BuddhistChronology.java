@@ -41,7 +41,7 @@ import org.joda.time.field.UnsupportedDurationField;
  * However, the actual rules for Thailand are much more involved than
  * this class covers. (This class is accurate after 1941-01-01 ISO).
  * <p>
- * This chronlogy is being retained for those who want a same effect
+ * This chronology is being retained for those who want a same effect
  * replacement for the Sun class. It is hoped that community support will
  * enable a more accurate chronology for Thailand, to be developed.
  * <p>

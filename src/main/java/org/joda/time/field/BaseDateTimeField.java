@@ -359,7 +359,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * <p>
      * Partial instants only contain some fields. This may result in a maximum
      * possible value, such as TimeOfDay normally being limited to 23:59:59:999.
-     * If ths limit is reached by the addition, this method will wrap back to
+     * If this limit is reached by the addition, this method will wrap back to
      * 00:00:00.000. In fact, you would generally only use this method for
      * classes that have a limitation such as this.
      * <p>

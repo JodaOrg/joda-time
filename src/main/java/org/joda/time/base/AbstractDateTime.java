@@ -260,7 +260,7 @@ public abstract class AbstractDateTime
      * differ in accuracy. Joda-Time's implementation is generally more up to
      * date and thus more accurate - for example JDK1.3 has no historical data.
      * The effect of this is that the field values of the <code>Calendar</code>
-     * may differ from those of this object, even though the milliseond value
+     * may differ from those of this object, even though the millisecond value
      * is the same. Most of the time this just means that the JDK field values
      * are wrong, as our time zone information is more up to date.
      *
@@ -285,7 +285,7 @@ public abstract class AbstractDateTime
      * differ in accuracy. Joda-Time's implementation is generally more up to
      * date and thus more accurate - for example JDK1.3 has no historical data.
      * The effect of this is that the field values of the <code>Calendar</code>
-     * may differ from those of this object, even though the milliseond value
+     * may differ from those of this object, even though the millisecond value
      * is the same. Most of the time this just means that the JDK field values
      * are wrong, as our time zone information is more up to date.
      *

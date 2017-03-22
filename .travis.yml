@@ -9,6 +9,11 @@ language: java
 jdk:
   - oraclejdk8
   - oraclejdk7
+cache:
+  directories:
+    - "$HOME/.m2/repository"
+before_cache:
+  - rm -rf $HOME/.m2/repository/org/joda/time
 # install
 install:
   - mvn --version
@@ -16,7 +21,7 @@ script:
   - mvn install -e -B
 # deploy
 before_deploy:
-  - mvn site-deploy -e -B --settings .github/maven-settings.xml
+  - travis_wait 40 mvn site-deploy -e -B --settings .github/maven-settings.xml
   - export DIST_FILE1=$(ls target/joda-time-*-dist.tar.gz)
   - export DIST_FILE2=$(ls target/joda-time-*-dist.zip)
 deploy:

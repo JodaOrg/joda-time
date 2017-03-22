@@ -1087,6 +1087,21 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals(new DateTime(178958986, 7, 20, 1, 2, 3, 4, ISO_UTC), test.plusMonths(Integer.MAX_VALUE - 2));
         assertEquals(new DateTime(178958986, 8, 20, 1, 2, 3, 4, ISO_UTC), test.plusMonths(Integer.MAX_VALUE - 1));
         assertEquals(new DateTime(178958986, 9, 20, 1, 2, 3, 4, ISO_UTC), test.plusMonths(Integer.MAX_VALUE));
+
+        assertEquals(new DateTime(178958986, 7, 20, 1, 2, 3, 4, ISO_UTC), test.monthOfYear().addToCopy(Integer.MAX_VALUE - 2));
+        assertEquals(new DateTime(178958986, 8, 20, 1, 2, 3, 4, ISO_UTC), test.monthOfYear().addToCopy(Integer.MAX_VALUE - 1));
+        assertEquals(new DateTime(178958986, 9, 20, 1, 2, 3, 4, ISO_UTC), test.monthOfYear().addToCopy(Integer.MAX_VALUE));
+    }
+
+    public void testPlusMonths_intMin() {
+        DateTime test = new DateTime(2016, 2, 20, 1, 2, 3, 4, ISO_UTC);
+        assertEquals(new DateTime(-178954955, 8, 20, 1, 2, 3, 4, ISO_UTC), test.plusMonths(Integer.MIN_VALUE + 2));
+        assertEquals(new DateTime(-178954955, 7, 20, 1, 2, 3, 4, ISO_UTC), test.plusMonths(Integer.MIN_VALUE + 1));
+        assertEquals(new DateTime(-178954955, 6, 20, 1, 2, 3, 4, ISO_UTC), test.plusMonths(Integer.MIN_VALUE));
+
+        assertEquals(new DateTime(-178954955, 8, 20, 1, 2, 3, 4, ISO_UTC), test.monthOfYear().addToCopy(Integer.MIN_VALUE + 2));
+        assertEquals(new DateTime(-178954955, 7, 20, 1, 2, 3, 4, ISO_UTC), test.monthOfYear().addToCopy(Integer.MIN_VALUE + 1));
+        assertEquals(new DateTime(-178954955, 6, 20, 1, 2, 3, 4, ISO_UTC), test.monthOfYear().addToCopy(Integer.MIN_VALUE));
     }
 
     public void testPlusWeeks_int() {
@@ -1195,6 +1210,20 @@ public class TestDateTime_Basics extends TestCase {
         
         result = test.minusMonths(0);
         assertSame(test, result);
+    }
+
+    public void testMinusMonths_intMax() {
+        DateTime test = new DateTime(2016, 2, 20, 1, 2, 3, 4, ISO_UTC);
+        assertEquals(new DateTime(-178954955, 9, 20, 1, 2, 3, 4, ISO_UTC), test.minusMonths(Integer.MAX_VALUE - 2));
+        assertEquals(new DateTime(-178954955, 8, 20, 1, 2, 3, 4, ISO_UTC), test.minusMonths(Integer.MAX_VALUE - 1));
+        assertEquals(new DateTime(-178954955, 7, 20, 1, 2, 3, 4, ISO_UTC), test.minusMonths(Integer.MAX_VALUE));
+    }
+
+    public void testMinusMonths_intMin() {
+        DateTime test = new DateTime(2016, 2, 20, 1, 2, 3, 4, ISO_UTC);
+        assertEquals(new DateTime(178958986, 8, 20, 1, 2, 3, 4, ISO_UTC), test.minusMonths(Integer.MIN_VALUE + 2));
+        assertEquals(new DateTime(178958986, 9, 20, 1, 2, 3, 4, ISO_UTC), test.minusMonths(Integer.MIN_VALUE + 1));
+        assertEquals(new DateTime(178958986, 10, 20, 1, 2, 3, 4, ISO_UTC), test.minusMonths(Integer.MIN_VALUE));
     }
 
     public void testMinusWeeks_int() {

@@ -12,6 +12,10 @@
       <action dev="jodastephen" type="update">
         DateTimeZone data updated to version 2017b.
       </action>
+      <action dev="jodastephen" type="fix">
+        Handle plus/minus of Integer.MIN_VALUE/MAX_VALUE months correctly.
+        Fixes #418.
+      </action>
       <action dev="sebkur" type="fix">
         Clarify time fields are based on the local time-line.
         Fixes #415.

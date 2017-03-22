@@ -9,6 +9,9 @@
 
     <!-- types are add, fix, remove, update -->
     <release version="2.9.8" date="SNAPSHOT" description="v2.9.8">
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2017b.
+      </action>
       <action dev="sebkur" type="fix">
         Clarify time fields are based on the local time-line.
         Fixes #415.

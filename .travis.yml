@@ -5,9 +5,32 @@
 # For more information, see https://travis-ci.org
 
 sudo: false
-
 language: java
-
-jdk: 
+jdk:
   - oraclejdk8
   - oraclejdk7
+# install
+install:
+  - mvn --version
+script:
+  - mvn install -e -B
+# deploy
+before_deploy:
+  - mvn site-deploy -e -B --settings .github/maven-settings.xml
+  - export DIST_FILE1=$(ls target/joda-time-*-dist.tar.gz)
+  - export DIST_FILE2=$(ls target/joda-time-*-dist.zip)
+deploy:
+  provider: releases
+  api_key:
+    secure: S9aAxkk3ICWqC24GDZK+L6n/xK9OWh4KRWiiSJ4wN4gVoshxLWOvB6aDLMTlQwd5FffzG7RT9aqeYBOihWZWupW4/0xP00yW5WE7dKpURDB0AuOllo1Em1IBL2AlEmhepOss1tn/A/uSApe134Hg8qryOpffAYNWzgzVlYFEM+0=
+  file:
+    - "${DIST_FILE1}"
+    - "${DIST_FILE2}"
+  skip_cleanup: true
+  on:
+    jdk: "oraclejdk7"
+    tags: true
+    condition: "$TRAVIS_TAG =~ ^v.*$"
+env:
+  global:
+    secure: UK9A4eHPOP6XkYbST1kpv3gVEZTBqp79eCF0nqpXejbXihY58MNVZ0aGt8IM/ZThO/UoK+AxWjaSLljE2Neo4ehxvRHsRG0bIhAoCBUjP6f6vuMYTZlRNb9W+NM3RjXvrQGnCM3PTckWaFQ6i5Ny4e1GuETSdh96Yk7WNn6DMJM=

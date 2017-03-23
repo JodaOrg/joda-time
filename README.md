@@ -83,3 +83,12 @@ Please use GitHub issues and Pull Requests for support.
 ### History
 Issue tracking and active development is at GitHub.
 Historically, the project was at [Sourceforge](https://sourceforge.net/projects/joda-time/).
+
+
+### Release process
+
+* Update version (pom.xml, README.md, index.md, MANIFEST.MF, changes.xml)
+* Commit and push
+* `mvn clean deploy -Doss.repo -Dgpg.passphrase=""`
+* Release project in [Nexus](https://oss.sonatype.org)
+* Website will be built and released by Travis

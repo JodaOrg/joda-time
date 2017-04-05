@@ -304,7 +304,7 @@ Although the Chronology is key to the design, it is not key to using the API !!
 For most applications, the Chronology can be ignored as it will default to the
 ISOChronology. This is suitable for most uses.
 You would change it if you need accurate dates before October 15, 1582,
-or whenever the Julian calendar ceased in the territory you're interested in).
+or whenever the Julian calendar ceased in the territory you're interested in.
 You'd also change it if you need a specific calendar like the Coptic calendar illustrated earlier.
 </p>
 </section>
@@ -540,7 +540,7 @@ The property also provides access to other values associated with the field
 such as metadata on the minimum and maximum text size, leap status, related 
 durations, etc. For a complete reference, see the
 <a href="apidocs/org/joda/time/field/AbstractReadableInstantFieldProperty.html">documentation</a>
-for the base class <code>AbstractReadableInstantFieldProperty</code>
+for the base class <code>AbstractReadableInstantFieldProperty</code>.
 </p>
 <p>
 In practice, one would not actually create the intermediate <code>pDoW</code>

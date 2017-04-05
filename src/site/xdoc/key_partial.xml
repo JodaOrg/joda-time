@@ -25,7 +25,7 @@ The new implementations are <code>LocalDate</code>, <code>LocalTime</code> and <
 <p>
 It is not possible to directly interoperate between a partial and an <a href="key_instant.html">instant</a>.
 A partial does not fully specify a single point in the datetime continuum, but instead may match
-multiple points. For example, a <code>LocalTime</code> occurs one per day on the datetime continuum.
+multiple points. For example, a <code>LocalTime</code> occurs once per day on the datetime continuum.
 </p>
 <p>
 A partial can be converted to a full instant by specifying the missing values.

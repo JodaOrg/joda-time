@@ -94,7 +94,7 @@ For earlier versions of Joda-Time the situation is more complex:
 </p>
 <p>
 If your application only uses the major time zones of the US, then you need Joda-Time 1.2 or later.
-If your application also uses the major time zones of the Canada, then you need Joda-Time 1.2.1 or later.
+If your application also uses the major time zones of Canada, then you need Joda-Time 1.2.1 or later.
 If your application uses the minor time zones of the US or Canada, then you need Joda-Time 1.4 or later.
 For Bermuda (Atlantic/Bermuda) you need Joda-Time 1.4 or later.
 For the Bahamas (America/Nassau) you need Joda-Time 1.5.
@@ -142,7 +142,7 @@ designed to operate well with the JDK5 static import facility.
 </p>
 <p>
 If however you want to calculate the number of days, weeks, months and years between
-the two dates, then you need a <a href="apidocs/org/joda/time/Period.html">Period</a>
+the two dates, then you need a <a href="apidocs/org/joda/time/Period.html">Period</a>.
 By default, this will split the difference between the two datetimes into parts,
 such as "1 month, 2 weeks, 4 days and 7 hours".
 <source>
@@ -183,7 +183,7 @@ This can result in the first week of a year starting in the previous year and th
 </p>
 <p>
 The key point about ISO-8601 is that it is a framework for dates not an absolute single definition.
-The most common form is YYYY-MM-DDTHH:MM:SS.SSSZ, in other words year-month-day letter 'T' hour:minute:second and fractions.
+The most common form is YYYY-MM-DDTHH:MM:SS.SSSZ, in other words: year-month-day letter 'T' hour:minute:second fractions letter 'Z'.
 </p>
 </subsection>
 
@@ -219,7 +219,7 @@ A secondary time interface is  <a href="apidocs/org/joda/time/ReadablePartial.ht
 Classes implementing this interface store data in two ways. The 'local' classes, such as <code>LocalDate</code>
 and <code>LocalTime</code> store the number of milliseconds from 1970 without a time zone.
 All other implementations, such as <code>YearMonthDay</code> and <code>TimeOfDay</code>,
-store time as a one int value for each field.
+store time as one int value for each field.
 </p>
 </subsection>
 
@@ -323,10 +323,10 @@ and it might have additional performance costs.
 <subsection name="There are lots of classes, do I need to learn them all?">
 <p>
 No, you only need to learn a small subset of the classes in the API.
-The javadoc clearly indicates which packages contain user classes, and which contain
+The Javadoc clearly indicates which packages contain user classes, and which contain
 implementation classes.
 In addition, there are a large number of package scoped classes, which are hidden
-in the javadoc view anyway.
+in the Javadoc view anyway.
 Most applications will not need to directly import, extend or implement classes in
 the implementation packages.
 Basically, the API consists of the main package, plus the formatting package.

@@ -54,6 +54,15 @@ public class ZoneInfoProvider implements Provider {
     private final Set<String> iZoneInfoKeys;
 
     /**
+     * Search the default classloader resource path for compiled data files.
+     *
+     * @throws IOException if directory or map file cannot be read
+     */
+    public ZoneInfoProvider() throws IOException {
+        this(DateTimeZone.DEFAULT_TZ_DATA_PATH);
+    }
+
+    /**
      * ZoneInfoProvider searches the given directory for compiled data files.
      *
      * @throws IOException if directory or map file cannot be read

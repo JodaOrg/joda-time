@@ -127,6 +127,11 @@ public abstract class DateTimeZone implements Serializable {
      */
     private static final AtomicReference<DateTimeZone> cDefault =
                     new AtomicReference<DateTimeZone>();
+    /**
+     * The default TZ data path
+     * This is the default classpath location containing the compiled data files.
+     */
+    public static final String DEFAULT_TZ_DATA_PATH = "org/joda/time/tz/data";
 
     //-----------------------------------------------------------------------
     /**
@@ -529,7 +534,7 @@ public abstract class DateTimeZone implements Serializable {
         }
         // approach 3
         try {
-            Provider provider = new ZoneInfoProvider("org/joda/time/tz/data");
+            Provider provider = new ZoneInfoProvider(DEFAULT_TZ_DATA_PATH);
             return validateProvider(provider);
         } catch (Exception ex) {
             ex.printStackTrace();

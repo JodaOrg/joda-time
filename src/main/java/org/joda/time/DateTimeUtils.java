@@ -128,12 +128,22 @@ public class DateTimeUtils {
      * @throws SecurityException if the application does not have sufficient security rights
      * @since 2.0
      */
-    public static final void setCurrentMillisProvider(MillisProvider millisProvider) throws SecurityException {
+    public synchronized static final void setCurrentMillisProvider(MillisProvider millisProvider) throws SecurityException {
         if (millisProvider == null) {
             throw new IllegalArgumentException("The MillisProvider must not be null");
         }
         checkPermission();
         cMillisProvider = millisProvider;
+    }
+
+    /**
+     * Gets the provider of current time in use.
+     *
+     * @return the provider of current time in use
+     */
+    public synchronized static final MillisProvider getCurrentMillisProvider() throws SecurityException {
+    	checkPermission();
+    	return cMillisProvider;
     }
 
     /**

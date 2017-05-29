@@ -572,7 +572,7 @@ public class PeriodFormatterBuilder {
     /**
      * Instruct the printer to emit an integer millis field, if supported.
      * <p>
-     * The number of arsed digits can be controlled using {@link #maximumParsedDigits(int)}.
+     * The number of parsed digits can be controlled using {@link #maximumParsedDigits(int)}.
      *
      * @return this PeriodFormatterBuilder
      */

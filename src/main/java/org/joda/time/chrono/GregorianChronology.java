@@ -41,7 +41,7 @@ import org.joda.time.DateTimeZone;
  * @author Brian S O'Neill
  * @since 1.0
  */
-public final class GregorianChronology extends BasicGJChronology {
+public class GregorianChronology extends BasicGJChronology {
 
     /** Serialization lock */
     private static final long serialVersionUID = -861407383323710522L;
@@ -149,14 +149,14 @@ public final class GregorianChronology extends BasicGJChronology {
     /**
      * Restricted constructor
      */
-    private GregorianChronology(Chronology base, Object param, int minDaysInFirstWeek) {
+    protected GregorianChronology(Chronology base, Object param, int minDaysInFirstWeek) {
         super(base, param, minDaysInFirstWeek);
     }
 
     /**
      * Serialization singleton
      */
-    private Object readResolve() {
+    protected Object readResolve() {
         Chronology base = getBase();
         int minDays = getMinimumDaysInFirstWeek();
         minDays = (minDays == 0 ? 4 : minDays);  // handle rename of BaseGJChronology

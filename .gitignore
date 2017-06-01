@@ -9,6 +9,8 @@
 /nbproject/
 .idea
 *.iml
+*.ipr
+*.iws
 
 /build/
 /lib/
@@ -16,3 +18,4 @@
 src/tz-data/
 *TempTest*
 /src/main/resources/org/joda/time/tz/data/
+

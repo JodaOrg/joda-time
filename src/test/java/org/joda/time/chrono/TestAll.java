@@ -48,7 +48,8 @@ public class TestAll extends TestCase {
         suite.addTest(TestISOChronology.suite());
         suite.addTest(TestLenientChronology.suite());
         suite.addTest(TestGJDate.suite());
-        
+        suite.addTest(TestInternationalFixedChronology.suite());
+
         return suite;
     }
 
@@ -56,5 +57,4 @@ public class TestAll extends TestCase {
         FAST = false;
         TestRunner.run(TestAll.suite());
     }
-
 }

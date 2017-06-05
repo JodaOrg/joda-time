@@ -15,6 +15,7 @@
  */
 package org.joda.time.tz;
 
+import java.io.Serializable;
 import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutput;
@@ -483,7 +484,7 @@ public class DateTimeZoneBuilder {
     /**
      * Supports setting fields of year and moving between transitions.
      */
-    private static final class OfYear {
+    private static final class OfYear implements Serializable {
         static OfYear readFrom(DataInput in) throws IOException {
             return new OfYear((char)in.readUnsignedByte(),
                               (int)in.readUnsignedByte(),
@@ -739,7 +740,7 @@ public class DateTimeZoneBuilder {
     /**
      * Extends OfYear with a nameKey and savings.
      */
-    private static final class Recurrence {
+    private static final class Recurrence implements Serializable {
         static Recurrence readFrom(DataInput in) throws IOException {
             return new Recurrence(OfYear.readFrom(in), in.readUTF(), (int)readMillis(in));
         }
@@ -817,7 +818,7 @@ public class DateTimeZoneBuilder {
     /**
      * Extends Recurrence with inclusive year limits.
      */
-    private static final class Rule {
+    private static final class Rule implements Serializable {
         final Recurrence iRecurrence;
         final int iFromYear; // inclusive
         final int iToYear;   // inclusive
@@ -890,7 +891,7 @@ public class DateTimeZoneBuilder {
         }
     }
 
-    private static final class Transition {
+    private static final class Transition implements Serializable {
         private final long iMillis;
         private final String iNameKey;
         private final int iWallOffset;
@@ -961,7 +962,7 @@ public class DateTimeZoneBuilder {
         }
     }
 
-    private static final class RuleSet {
+    private static final class RuleSet implements Serializable {
         private static final int YEAR_LIMIT;
 
         static {

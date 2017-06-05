@@ -8,6 +8,11 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
+    <release version="2.9.10" date="SNAPSHOT" description="v2.9.10">
+      <action dev="mikey-austin" type="update">
+        Add ZoneInfoProvider() constructor.
+      </action>
+    </release>
     <release version="2.9.9" date="2017-03-23" description="v2.9.9">
       <action dev="jodastephen" type="update">
         Optimise release process.

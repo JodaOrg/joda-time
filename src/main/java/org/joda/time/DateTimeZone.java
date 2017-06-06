@@ -537,9 +537,10 @@ public abstract class DateTimeZone implements Serializable {
             Provider provider = new ZoneInfoProvider(DEFAULT_TZ_DATA_PATH);
             return validateProvider(provider);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            // ignored
         }
         // approach 4
+        System.err.println("Couldn't obtain a ZoneInfoProvider so resorting to a UTCProvider");
         return new UTCProvider();
     }
 

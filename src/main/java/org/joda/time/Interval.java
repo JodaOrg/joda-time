@@ -58,7 +58,7 @@ public final class Interval
 
     //-----------------------------------------------------------------------
     /**
-     * Parses a {@code Interval} from the specified string.
+     * Parses an {@code Interval} from the specified string.
      * <p>
      * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}
      * and {@link ISOPeriodFormat#standard()}, and may be 'datetime/datetime',
@@ -76,7 +76,7 @@ public final class Interval
     }
 
     /**
-     * Parses a {@code Interval} from the specified string, using any offset it contains.
+     * Parses an {@code Interval} from the specified string, using any offset it contains.
      * <p>
      * The String formats are described by
      * {@link ISODateTimeFormat#dateTimeParser()}{@code .withOffsetParsed()}

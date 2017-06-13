@@ -75,7 +75,7 @@ public final class Instant
 
     //-----------------------------------------------------------------------
     /**
-     * Parses a {@code Instant} from the specified string.
+     * Parses an {@code Instant} from the specified string.
      * <p>
      * This uses {@link ISODateTimeFormat#dateTimeParser()}.
      * 
@@ -88,7 +88,7 @@ public final class Instant
     }
 
     /**
-     * Parses a {@code Instant} from the specified string using a formatter.
+     * Parses an {@code Instant} from the specified string using a formatter.
      * 
      * @param str  the string to parse, not null
      * @param formatter  the formatter to use, not null

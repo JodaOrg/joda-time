@@ -191,13 +191,13 @@ public class TestMonths extends TestCase {
             Months.parseMonths("P1Y1D");
             fail();
         } catch (IllegalArgumentException ex) {
-            // expeceted
+            // expected
         }
         try {
             Months.parseMonths("P1MT1H");
             fail();
         } catch (IllegalArgumentException ex) {
-            // expeceted
+            // expected
         }
     }
 

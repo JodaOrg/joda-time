@@ -122,7 +122,7 @@ public class TestSeconds extends TestCase {
             Seconds.standardSecondsIn(Period.months(1));
             fail();
         } catch (IllegalArgumentException ex) {
-            // expeceted
+            // expected
         }
     }
 
@@ -137,13 +137,13 @@ public class TestSeconds extends TestCase {
             Seconds.parseSeconds("P1Y1D");
             fail();
         } catch (IllegalArgumentException ex) {
-            // expeceted
+            // expected
         }
         try {
             Seconds.parseSeconds("P1DT1S");
             fail();
         } catch (IllegalArgumentException ex) {
-            // expeceted
+            // expected
         }
     }
 

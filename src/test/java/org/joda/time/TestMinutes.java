@@ -125,7 +125,7 @@ public class TestMinutes extends TestCase {
             Minutes.standardMinutesIn(Period.months(1));
             fail();
         } catch (IllegalArgumentException ex) {
-            // expeceted
+            // expected
         }
     }
 
@@ -140,13 +140,13 @@ public class TestMinutes extends TestCase {
             Minutes.parseMinutes("P1Y1D");
             fail();
         } catch (IllegalArgumentException ex) {
-            // expeceted
+            // expected
         }
         try {
             Minutes.parseMinutes("P1DT1M");
             fail();
         } catch (IllegalArgumentException ex) {
-            // expeceted
+            // expected
         }
     }
 

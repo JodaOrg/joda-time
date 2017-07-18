@@ -238,7 +238,7 @@ public final class Period
      * <p>
      * Calculation by field difference works by extracting the difference
      * one field at a time and not wrapping into other fields.
-     * Thus 2005-06-09/2007-04-12 will yield P1Y-2M3D.
+     * Thus 2005-06-09/2007-04-12 will yield P2Y-2M3D.
      * <p>
      * For example, you have an event that always runs from the 27th of
      * each month to the 2nd of the next month. If you calculate this

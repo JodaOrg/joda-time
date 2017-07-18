@@ -448,7 +448,9 @@ public class DateTimeParserBucket {
             }
             if (resetFields) {
                 for (int i = 0; i < count; i++) {
-                    millis = savedFields[i].set(millis, i == (count - 1));
+                    if (!savedFields[i].iField.isLenient()) {
+                        millis = savedFields[i].set(millis, i == (count - 1));
+                    }
                 }
             }
         } catch (IllegalFieldValueException e) {

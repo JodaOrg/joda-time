@@ -76,4 +76,19 @@ public class TestZoneInfoCompiler extends TestCase {
     assertEquals(Integer.MIN_VALUE, ZoneInfoCompiler.parseYear("minimum", (-1971487955)));
   }
 
+  public void testWriteZoneInfoMapThrowsIllegalArgumentException() throws IOException {
+    Map<String, MockZone> hashMap = new HashMap<String, MockZone>();
+    MockZone mockZone = new MockZone(0L, 3022, 90);
+    hashMap.put("     - ", mockZone);
+    Map<String, DateTimeZone> hashMapTwo = new HashMap<String, DateTimeZone>(hashMap);
+    hashMapTwo.put("H)m^v1(", mockZone);
+
+    try {
+      ZoneInfoCompiler.writeZoneInfoMap(null, hashMapTwo);
+      fail("Expecting exception: IllegalArgumentException");
+    } catch (IllegalArgumentException e) {
+      assertEquals(ZoneInfoCompiler.class.getName(), e.getStackTrace()[0].getClassName());
+    }
+  }
+
 }

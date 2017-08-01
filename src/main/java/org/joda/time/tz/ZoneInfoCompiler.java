@@ -149,6 +149,11 @@ public class ZoneInfoCompiler {
      * @param zimap maps string ids to DateTimeZone objects.
      */
     static void writeZoneInfoMap(DataOutputStream dout, Map<String, DateTimeZone> zimap) throws IOException {
+
+        if ( dout == null ){
+            throw new IllegalArgumentException("DataOutputStream must not be null.");
+        }
+
         // Build the string pool.
         Map<String, Short> idToIndex = new HashMap<String, Short>(zimap.size());
         TreeMap<Short, String> indexToId = new TreeMap<Short, String>();

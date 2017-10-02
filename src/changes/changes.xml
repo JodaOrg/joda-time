@@ -9,6 +9,9 @@
 
     <!-- types are add, fix, remove, update -->
     <release version="2.9.10" date="SNAPSHOT" description="v2.9.10">
+      <action dev="jodastephen" type="add">
+        Add automatic module name for Java SE 9.
+      </action>
       <action dev="jodastephen" type="fix">
         Avoid double addition when using lenient chronology.
         Fixes #432.

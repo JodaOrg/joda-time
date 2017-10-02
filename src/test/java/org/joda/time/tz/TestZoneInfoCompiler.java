@@ -15,15 +15,16 @@
  */
 package org.joda.time.tz;
 
-import junit.framework.TestCase;
-import org.joda.time.DateTimeZone;
-import org.joda.time.MockZone;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.joda.time.DateTimeZone;
+import org.joda.time.MockZone;
+
+import junit.framework.TestCase;
 
 /**
  * Unit tests for class {@link ZoneInfoCompiler}.

@@ -18,14 +18,14 @@ package org.joda.time.format;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
+
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
  * This class is a Junit unit test for PeriodFormatterBuilder.
@@ -73,6 +73,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
@@ -85,6 +86,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         builder = new PeriodFormatterBuilder();
     }
 
+    @Override
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);

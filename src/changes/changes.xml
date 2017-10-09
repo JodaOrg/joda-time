@@ -12,6 +12,10 @@
       <action dev="jodastephen" type="add">
         Add automatic module name for Java SE 9.
       </action>
+      <action dev="jodastephen" type="add">
+        Add Kazakh language translations.
+        Fixes #446
+      </action>
       <action dev="jodastephen" type="fix">
         Avoid double addition when using lenient chronology.
         Fixes #432.

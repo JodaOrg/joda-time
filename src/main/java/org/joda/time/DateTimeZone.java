@@ -90,7 +90,7 @@ import org.joda.time.tz.ZoneInfoProvider;
  * <li>load {@link UTCProvider}
  * </ol>
  * <p>
- * Unless you override the standard behaviour, the default if the third approach.
+ * Unless you override the standard behaviour, the default is the third approach.
  * <p>
  * DateTimeZone is thread-safe and immutable, and all subclasses must be as
  * well.
@@ -1365,13 +1365,13 @@ public abstract class DateTimeZone implements Serializable {
             map.put("ECT", "CET");
             map.put("EET", "EET");
             map.put("MIT", "Pacific/Apia");
-            map.put("HST", "Pacific/Honolulu");  // JDK 1.1 compatible
+            map.put("HST", "HST");
             map.put("AST", "America/Anchorage");
             map.put("PST", "America/Los_Angeles");
-            map.put("MST", "America/Denver");  // JDK 1.1 compatible
+            map.put("MST", "MST");
             map.put("PNT", "America/Phoenix");
             map.put("CST", "America/Chicago");
-            map.put("EST", "America/New_York");  // JDK 1.1 compatible
+            map.put("EST", "EST");
             map.put("IET", "America/Indiana/Indianapolis");
             map.put("PRT", "America/Puerto_Rico");
             map.put("CNT", "America/St_Johns");

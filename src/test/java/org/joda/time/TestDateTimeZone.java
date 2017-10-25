@@ -252,13 +252,13 @@ public class TestDateTimeZone extends TestCase {
         map.put("ECT", "CET");
         map.put("EET", "EET");
         map.put("MIT", "Pacific/Apia");
-        map.put("HST", "Pacific/Honolulu");
+        map.put("HST", "HST");
         map.put("AST", "America/Anchorage");
         map.put("PST", "America/Los_Angeles");
-        map.put("MST", "America/Denver");
+        map.put("MST", "MST");
         map.put("PNT", "America/Phoenix");
         map.put("CST", "America/Chicago");
-        map.put("EST", "America/New_York");
+        map.put("EST", "EST");
         map.put("IET", "America/Indiana/Indianapolis");
         map.put("PRT", "America/Puerto_Rico");
         map.put("CNT", "America/St_Johns");
@@ -393,7 +393,7 @@ public class TestDateTimeZone extends TestCase {
         assertEquals((2L * DateTimeConstants.MILLIS_PER_HOUR), zone.getOffset(TEST_TIME_SUMMER));
         
         zone = DateTimeZone.forTimeZone(TimeZone.getTimeZone("EST"));
-        assertEquals("America/New_York", zone.getID());
+        assertEquals("EST", zone.getID());
         
         TimeZone tz = TimeZone.getTimeZone("GMT-08:00");
         tz.setID("GMT-\u0660\u0668:\u0660\u0660");

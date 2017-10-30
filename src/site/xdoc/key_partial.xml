@@ -45,7 +45,7 @@ In terms of datetime maths, you could write:
 Two classes represent a date in Joda-Time - <code>DateMidnight</code> and <code>LocalDate</code>.
 These have different meanings.
 <code>DateMidnight</code> is a fully specified instant, with a time zone.
-It is defined as the milliseond instant at exactly mignight (00:00) at the start of a day.
+It is defined as the millisecond instant at exactly mignight (00:00) at the start of a day.
 <code>LocalDate</code> defines a day using the year, monthOfYear and dayOfMonth fields and no time zone.
 It can be thought of as a local date that covers the whole of the day from 00:00 to 23:59.
 </p>

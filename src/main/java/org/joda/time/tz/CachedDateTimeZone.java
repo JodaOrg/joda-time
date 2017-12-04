@@ -15,6 +15,8 @@
  */
 package org.joda.time.tz;
 
+import java.time.ZoneId;
+
 import org.joda.time.DateTimeZone;
 
 /**
@@ -80,12 +82,14 @@ public class CachedDateTimeZone extends DateTimeZone {
      */
 
     private final DateTimeZone iZone;
+    private final String iID;
 
     private final transient Info[] iInfoCache = new Info[cInfoCacheMask + 1];
 
     private CachedDateTimeZone(DateTimeZone zone) {
         super(zone.getID());
         iZone = zone;
+        iID = zone.getID();
     }
 
     /**
@@ -166,6 +170,14 @@ public class CachedDateTimeZone extends DateTimeZone {
         return info;
     }
 
+    @Override
+    public java.util.TimeZone toTimeZone() {
+    	if(iID!=null) {
+    		return java.util.TimeZone.getTimeZone(ZoneId.of(iID, ZoneId.SHORT_IDS));
+    	}
+    	return super.toTimeZone();
+    }
+    
     private final static class Info {
         // For first Info in chain, iPeriodStart's lower 32 bits are clear.
         public final long iPeriodStart;

@@ -72,6 +72,26 @@ public final class Instant
     public static Instant now() {
         return new Instant();
     }
+    
+    /**
+     * Obtains an {@code Instant} set to the milliseconds from 1970-01-01T00:00:00Z.
+     * 
+     * @param epochMilli  the milliseconds from 1970-01-01T00:00:00Z
+     * @since 3.0
+     */
+    public static Instant ofEpochMilli(long epochMilli) {
+        return new Instant(epochMilli);
+    }
+    
+    /**
+     * Obtains an {@code Instant} set to the seconds from 1970-01-01T00:00:00Z.
+     * 
+     * @param epochSecond  the seconds from 1970-01-01T00:00:00Z
+     * @since 3.0
+     */
+    public static Instant ofEpochSecond(long epochSecond) {
+        return new Instant(epochSecond * 1000);
+    }
 
     //-----------------------------------------------------------------------
     /**

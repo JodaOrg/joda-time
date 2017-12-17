@@ -509,7 +509,12 @@ public abstract class DateTimeZone implements Serializable {
             String providerClass = System.getProperty("org.joda.time.DateTimeZone.Provider");
             if (providerClass != null) {
                 try {
-                    Provider provider = (Provider) Class.forName(providerClass).newInstance();
+                    // do not initialize the class until the type has been checked
+                    Class<?> cls = Class.forName(providerClass, false, DateTimeZone.class.getClassLoader());
+                    if (!Provider.class.isAssignableFrom(cls)) {
+                        throw new IllegalArgumentException("System property referred to class that does not implement " + Provider.class);
+                    }
+                    Provider provider = cls.asSubclass(Provider.class).getConstructor().newInstance();
                     return validateProvider(provider);
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
@@ -598,7 +603,12 @@ public abstract class DateTimeZone implements Serializable {
             String providerClass = System.getProperty("org.joda.time.DateTimeZone.NameProvider");
             if (providerClass != null) {
                 try {
-                    nameProvider = (NameProvider) Class.forName(providerClass).newInstance();
+                    // do not initialize the class until the type has been checked
+                    Class<?> cls = Class.forName(providerClass, false, DateTimeZone.class.getClassLoader());
+                    if (!NameProvider.class.isAssignableFrom(cls)) {
+                        throw new IllegalArgumentException("System property referred to class that does not implement " + NameProvider.class);
+                    }
+                    nameProvider = cls.asSubclass(NameProvider.class).getConstructor().newInstance();
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }

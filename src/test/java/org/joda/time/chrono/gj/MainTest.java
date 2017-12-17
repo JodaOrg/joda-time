@@ -51,7 +51,7 @@ public class MainTest extends TestCase {
     public static final int GREGORIAN_MODE = 0;
     public static final int JULIAN_MODE = 1;
 
-    private static final long MILLIS_PER_YEAR = (long)365.2425 * 24 * 60 * 60 * 1000;
+    private static final long MILLIS_PER_YEAR = (long) (365.2425 * 24 * 60 * 60 * 1000);
     private static final long _1000_YEARS = 1000 * MILLIS_PER_YEAR;
     private static final long _500_YEARS = 500 * MILLIS_PER_YEAR;
     private static final long MAX_MILLIS = (10000 - 1970) * MILLIS_PER_YEAR;

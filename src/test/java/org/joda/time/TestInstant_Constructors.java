@@ -110,6 +110,25 @@ public class TestInstant_Constructors extends TestCase {
         assertEquals(ISOChronology.getInstanceUTC(), test.getChronology());
         assertEquals(TEST_TIME1, test.getMillis());
     }
+    
+    public void test_ofEpochSecond_zero() throws Throwable {
+        Instant test = Instant.ofEpochSecond(0);
+        assertEquals(0, test.getMillis());
+    }
+    
+    public void test_ofEpochSecond_overflow() throws Throwable {
+        try {
+            Instant.ofEpochSecond(Long.MAX_VALUE);
+            fail();
+        } catch (ArithmeticException ex) {}
+    }
+    
+    public void test_ofEpochSecond_underflow() throws Throwable {
+        try {
+            Instant.ofEpochSecond(Long.MIN_VALUE);
+            fail();
+        } catch (ArithmeticException ex) {}
+    }
 
     //-----------------------------------------------------------------------
     public void testParse_noFormatter() throws Throwable {

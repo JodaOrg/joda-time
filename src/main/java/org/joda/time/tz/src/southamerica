@@ -908,7 +908,15 @@ Rule	Brazil	2007	only	-	Oct	Sun>=8	 0:00	1:00	S
 # [t]he DST period in Brazil now on will be from the 3rd Oct Sunday to the
 # 3rd Feb Sunday. There is an exception on the return date when this is
 # the Carnival Sunday then the return date will be the next Sunday...
-Rule	Brazil	2008	max	-	Oct	Sun>=15	0:00	1:00	S
+Rule	Brazil	2008	2017	-	Oct	Sun>=15	0:00	1:00	S
+# From Marcelo Molina (2017-12-20):
+# According to this decree
+# https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/decreto/d9242.htm
+# [t]he DST period in Brazil now on will be from the 1rd Nov Sunday to the
+# 3rd Feb Sunday. There is an exception on the return date when this is
+# the Carnival Sunday then the return date will be the next Sunday...
+
+Rule	Brazil	2017	max	-	Nov	Sun>=1	0:00	1:00	S
 Rule	Brazil	2008	2011	-	Feb	Sun>=15	0:00	0	-
 Rule	Brazil	2012	only	-	Feb	Sun>=22	0:00	0	-
 Rule	Brazil	2013	2014	-	Feb	Sun>=15	0:00	0	-

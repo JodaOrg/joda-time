@@ -22,6 +22,7 @@ import org.joda.time.base.AbstractInstant;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.InstantConverter;
+import org.joda.time.field.FieldUtils;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
@@ -71,6 +72,27 @@ public final class Instant
      */
     public static Instant now() {
         return new Instant();
+    }
+    
+    /**
+     * Obtains an {@code Instant} set to the milliseconds from 1970-01-01T00:00:00Z.
+     * 
+     * @param epochMilli  the milliseconds from 1970-01-01T00:00:00Z
+     * @since 3.0
+     */
+    public static Instant ofEpochMilli(long epochMilli) {
+        return new Instant(epochMilli);
+    }
+    
+    /**
+     * Obtains an {@code Instant} set to the seconds from 1970-01-01T00:00:00Z.
+     * 
+     * @param epochSecond  the seconds from 1970-01-01T00:00:00Z
+     * @throws ArithmeticException if the new instant exceeds the capacity of a long
+     * @since 3.0
+     */
+    public static Instant ofEpochSecond(long epochSecond) {
+        return new Instant(FieldUtils.safeMultiply(epochSecond, 1000));
     }
 
     //-----------------------------------------------------------------------

@@ -96,6 +96,41 @@ public class TestInstant_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    /**
+     * Test ofEpochMilli() and ofEpochSecond()
+     */
+    public void test_ofEpochMilli() throws Throwable {
+        Instant test = Instant.ofEpochMilli(TEST_TIME1);
+        assertEquals(ISOChronology.getInstanceUTC(), test.getChronology());
+        assertEquals(TEST_TIME1, test.getMillis());
+    }
+    
+    public void test_ofEpochSecond() throws Throwable {
+        Instant test = Instant.ofEpochSecond(TEST_TIME1 / 1000);
+        assertEquals(ISOChronology.getInstanceUTC(), test.getChronology());
+        assertEquals(TEST_TIME1, test.getMillis());
+    }
+    
+    public void test_ofEpochSecond_zero() throws Throwable {
+        Instant test = Instant.ofEpochSecond(0);
+        assertEquals(0, test.getMillis());
+    }
+    
+    public void test_ofEpochSecond_overflow() throws Throwable {
+        try {
+            Instant.ofEpochSecond(Long.MAX_VALUE);
+            fail();
+        } catch (ArithmeticException ex) {}
+    }
+    
+    public void test_ofEpochSecond_underflow() throws Throwable {
+        try {
+            Instant.ofEpochSecond(Long.MIN_VALUE);
+            fail();
+        } catch (ArithmeticException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
     public void testParse_noFormatter() throws Throwable {
         assertEquals(new DateTime(2010, 6, 30, 0, 20, ISOChronology.getInstance(LONDON)).toInstant(), Instant.parse("2010-06-30T01:20+02:00"));
         assertEquals(new DateTime(2010, 1, 2, 14, 50, ISOChronology.getInstance(LONDON)).toInstant(), Instant.parse("2010-002T14:50"));

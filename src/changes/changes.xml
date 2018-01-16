@@ -9,6 +9,10 @@
 
     <!-- types are add, fix, remove, update -->
     <release version="2.9.10" date="SNAPSHOT" description="v2.9.10">
+      <action dev="kluever" type="add">
+        Add Instant.ofEpochMilli(). Add Instant.ofEpochSecond().
+        Fixes #458.
+      </action>
       <action dev="jodastephen" type="add">
         Add automatic module name for Java SE 9.
       </action>

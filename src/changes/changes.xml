@@ -10,6 +10,12 @@
     <!-- types are add, fix, remove, update -->
     <release version="2.9.10" date="SNAPSHOT" description="v2.9.10">
       <action dev="jodastephen" type="add">
+        Handle negative SAVE values in tzdb.
+        Once again, tzdb is the source of problems, with their inability to provide stability.
+        A hack has been added that reverses their latest decision to have negative SAVE values.
+        The hack works so long as a rule set does not mix positive and negative save values.
+      </action>
+      <action dev="jodastephen" type="add">
         Clarify negative durations.
         See #465.
       </action>

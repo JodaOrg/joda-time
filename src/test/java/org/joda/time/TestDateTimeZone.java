@@ -1080,6 +1080,24 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testDublin() {
+        DateTimeZone zone = DateTimeZone.forID("Europe/Dublin");
+        DateTime winter = new DateTime(2018, 1, 1, 0, 0, 0, 0, zone);
+        assertEquals(0, zone.getStandardOffset(winter.getMillis()));
+        assertEquals(0, zone.getOffset(winter.getMillis()));
+        assertEquals(true, zone.isStandardOffset(winter.getMillis()));
+        assertEquals("Greenwich Mean Time", zone.getName(winter.getMillis()));
+        assertEquals("GMT", zone.getNameKey(winter.getMillis()));
+        
+        DateTime summer = winter.plusMonths(6);
+        assertEquals(0, zone.getStandardOffset(summer.getMillis()));
+        assertEquals(3600000, zone.getOffset(summer.getMillis()));
+        assertEquals(false, zone.isStandardOffset(summer.getMillis()));
+        assertEquals(true, zone.getName(summer.getMillis()).startsWith("Irish "));
+        assertEquals("IST", zone.getNameKey(summer.getMillis()));
+    }
+    
+    //-----------------------------------------------------------------------
     public void testSerialization1() throws Exception {
         DateTimeZone zone = DateTimeZone.forID("Europe/Paris");
         

@@ -725,16 +725,16 @@ public class ZoneInfoCompiler {
         /**
          * Adds a recurring savings rule to the builder.
          */
-        public void addRecurring(DateTimeZoneBuilder builder, String nameFormat) {
-            String nameKey = formatName(nameFormat);
-            iDateTimeOfYear.addRecurring
-                (builder, nameKey, iSaveMillis, iFromYear, iToYear);
+        public void addRecurring(DateTimeZoneBuilder builder, int negativeSave, String nameFormat) {
+            int saveMillis = iSaveMillis + -negativeSave;
+            String nameKey = formatName(nameFormat, saveMillis, iLetterS);
+            iDateTimeOfYear.addRecurring(builder, nameKey, saveMillis, iFromYear, iToYear);
         }
 
-        private String formatName(String nameFormat) {
+        private static String formatName(String nameFormat, int saveMillis, String letterS) {
             int index = nameFormat.indexOf('/');
             if (index > 0) {
-                if (iSaveMillis == 0) {
+                if (saveMillis == 0) {
                     // Extract standard name.
                     return nameFormat.substring(0, index).intern();
                 } else {
@@ -748,10 +748,10 @@ public class ZoneInfoCompiler {
             String left = nameFormat.substring(0, index);
             String right = nameFormat.substring(index + 2);
             String name;
-            if (iLetterS == null) {
+            if (letterS == null) {
                 name = left.concat(right);
             } else {
-                name = left + iLetterS + right;
+                name = left + letterS + right;
             }
             return name.intern();
         }
@@ -787,10 +787,34 @@ public class ZoneInfoCompiler {
         /**
          * Adds recurring savings rules to the builder.
          */
-        public void addRecurring(DateTimeZoneBuilder builder, String nameFormat) {
-            for (int i=0; i<iRules.size(); i++) {
+        public void addRecurring(DateTimeZoneBuilder builder, int standardMillis, String nameFormat) {
+            // a hack is necessary to remove negative SAVE values from the input tzdb file
+            // negative save values cause the standard offset to be set in the summer instead of the winter
+            // this causes the wrong name to be chosen from the CLDR data
+
+            // check if the ruleset has negative SAVE values
+            int negativeSave = 0;
+            for (int i = 0; i < iRules.size(); i++) {
                 Rule rule = iRules.get(i);
-                rule.addRecurring(builder, nameFormat);
+                if (rule.iSaveMillis < 0) {
+                    negativeSave = Math.min(negativeSave, rule.iSaveMillis);
+                }
+            }
+            
+            // if negative SAVE values, then patch standard millis and name format
+            if (negativeSave < 0) {
+                standardMillis += negativeSave;
+                int slashPos = nameFormat.indexOf("/");
+                if (slashPos > 0) {
+                    nameFormat = nameFormat.substring(slashPos + 1) + "/" + nameFormat.substring(0, slashPos);
+                }
+            }
+            builder.setStandardOffset(standardMillis);
+            
+            // add each rule, passing through the negative save to alter the actual iSaveMillis value that is used
+            for (int i = 0; i < iRules.size(); i++) {
+                Rule rule = iRules.get(i);
+                rule.addRecurring(builder, negativeSave, nameFormat);
             }
         }
     }
@@ -857,14 +881,14 @@ public class ZoneInfoCompiler {
                                          Map<String, RuleSet> ruleSets)
         {
             for (; zone != null; zone = zone.iNext) {
-                builder.setStandardOffset(zone.iOffsetMillis);
-
                 if (zone.iRules == null) {
+                    builder.setStandardOffset(zone.iOffsetMillis);
                     builder.setFixedSavings(zone.iFormat, 0);
                 } else {
                     try {
                         // Check if iRules actually just refers to a savings.
                         int saveMillis = parseTime(zone.iRules);
+                        builder.setStandardOffset(zone.iOffsetMillis);
                         builder.setFixedSavings(zone.iFormat, saveMillis);
                     }
                     catch (Exception e) {
@@ -873,7 +897,7 @@ public class ZoneInfoCompiler {
                             throw new IllegalArgumentException
                                 ("Rules not found: " + zone.iRules);
                         }
-                        rs.addRecurring(builder, zone.iFormat);
+                        rs.addRecurring(builder, zone.iOffsetMillis, zone.iFormat);
                     }
                 }
 

@@ -14,11 +14,12 @@
 <p>
 A <i>duration</i> in Joda-Time represents a duration of time measured in milliseconds.
 The duration is often obtained from an <a href="key_interval.html">interval</a>.
+It has direction which depends on start and end point order.
 </p>
 <p>
 Durations are a very simple concept, and the implementation is also simple.
 They have no <a href="key_chronology.html">chronology</a> or time zone, and consist
-solely of the millisecond duration.
+solely of the millisecond duration, which can have negative value depending on start and end point ordering.
 </p>
 <p>
 Durations can be added to an <a href="key_instant.html">instant</a>, or to either
@@ -30,6 +31,19 @@ In datetime maths you could say:
 </p>
 <p>
 Durations implement <code>Comparable</code> which compares the lengths of the two durations.
+Be advised that comparing durations with opposite order, yields counterintuitive results:
+<source>
+DateTime start = new DateTime(2004, 12, 25, 0, 0, 0, 0);
+DateTime end = new DateTime(2005, 1, 1, 0, 0, 0, 0);
+
+Duration dur = Duration.standardSeconds(3);
+Duration durForward = new Duration(start, end);
+Duration durBackward = new Duration(end, start);
+
+// durForward.isLongerThan(dur)) == true
+// durBackward.isLongerThan(dur)) == false
+// durForward.equal(durBackward) == false
+</source>
 </p>
 
 </section>

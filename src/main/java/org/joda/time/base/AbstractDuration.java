@@ -82,7 +82,9 @@ public abstract class AbstractDuration implements ReadableDuration {
 
     //-----------------------------------------------------------------------
     /**
-     * Compares this duration with the specified duration based on length.
+     * Compares this duration with the specified duration based on length and direction.
+     * <p>
+     * Returns counterintuitive value when comparing durations with opposite directions.
      *
      * @param other  a duration to check against
      * @return negative value if this is less, 0 if equal, or positive value if greater
@@ -105,6 +107,8 @@ public abstract class AbstractDuration implements ReadableDuration {
 
     /**
      * Is the length of this duration equal to the duration passed in.
+     * <p>
+     * Returns counterintuitive value when comparing durations with opposite directions.
      *
      * @param duration  another duration to compare to, null means zero milliseconds
      * @return true if this duration is equal to than the duration passed in
@@ -118,6 +122,8 @@ public abstract class AbstractDuration implements ReadableDuration {
 
     /**
      * Is the length of this duration longer than the duration passed in.
+     * <p>
+     * Returns counterintuitive value when comparing durations with opposite directions.
      *
      * @param duration  another duration to compare to, null means zero milliseconds
      * @return true if this duration is strictly longer than the duration passed in
@@ -131,6 +137,8 @@ public abstract class AbstractDuration implements ReadableDuration {
 
     /**
      * Is the length of this duration shorter than the duration passed in.
+     * <p>
+     * Returns counterintuitive value when comparing durations with opposite directions.
      *
      * @param duration  another duration to compare to, null means zero milliseconds
      * @return true if this duration is strictly shorter than the duration passed in
@@ -146,6 +154,8 @@ public abstract class AbstractDuration implements ReadableDuration {
     /**
      * Compares this object with the specified object for equality based
      * on the millisecond length. All ReadableDuration instances are accepted.
+     * <p>
+     * Returns counterintuitive value when comparing durations with opposite directions.
      *
      * @param duration  a readable duration to check against
      * @return true if the length of the duration is equal

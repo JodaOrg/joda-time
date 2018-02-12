@@ -754,6 +754,13 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testAbs() {
+        assertEquals(246L, new Duration(246L).abs().getMillis());
+        assertEquals(0L, new Duration(0L).abs().getMillis());
+        assertEquals(246L, new Duration(-246L).abs().getMillis());
+    }
+
+    //-----------------------------------------------------------------------
     public void testWithDurationAdded_RD_int1() {
         Duration test = new Duration(123L);
         Duration result = test.withDurationAdded(new Duration(8000L), 1);

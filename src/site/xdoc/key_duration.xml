@@ -31,7 +31,7 @@ In datetime maths you could say:
 </p>
 <p>
 Durations implement <code>Comparable</code> which compares the lengths of the two durations.
-Be advised that comparing durations with opposite order, yields unexpected results:
+Be advised that comparing durations with opposite order, yields counterintuitive results:
 <source>
 DateTime start = new DateTime(2004, 12, 25, 0, 0, 0, 0);
 DateTime end = new DateTime(2005, 1, 1, 0, 0, 0, 0);

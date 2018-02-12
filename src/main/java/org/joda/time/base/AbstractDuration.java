@@ -82,7 +82,10 @@ public abstract class AbstractDuration implements ReadableDuration {
 
     //-----------------------------------------------------------------------
     /**
-     * Compares this duration with the specified duration based on length.
+     * Compares this duration with the specified duration based on length and direction.
+     * <p>
+     * The comparison takes into account the sign.
+     * As such, a duration of 5 seconds is longer than a duration of <i>minus</i> 7 seconds.
      *
      * @param other  a duration to check against
      * @return negative value if this is less, 0 if equal, or positive value if greater
@@ -105,6 +108,9 @@ public abstract class AbstractDuration implements ReadableDuration {
 
     /**
      * Is the length of this duration equal to the duration passed in.
+     * <p>
+     * The comparison takes into account the sign.
+     * As such, a duration of 5 seconds is not equal to a duration of <i>minus</i> 5 seconds.
      *
      * @param duration  another duration to compare to, null means zero milliseconds
      * @return true if this duration is equal to than the duration passed in
@@ -118,6 +124,9 @@ public abstract class AbstractDuration implements ReadableDuration {
 
     /**
      * Is the length of this duration longer than the duration passed in.
+     * <p>
+     * The comparison takes into account the sign.
+     * As such, a duration of 5 seconds is longer than a duration of <i>minus</i> 7 seconds.
      *
      * @param duration  another duration to compare to, null means zero milliseconds
      * @return true if this duration is strictly longer than the duration passed in
@@ -131,6 +140,9 @@ public abstract class AbstractDuration implements ReadableDuration {
 
     /**
      * Is the length of this duration shorter than the duration passed in.
+     * <p>
+     * The comparison takes into account the sign.
+     * As such, a duration of <i>minus</i> 5 seconds is shorter than a duration of 3 seconds.
      *
      * @param duration  another duration to compare to, null means zero milliseconds
      * @return true if this duration is strictly shorter than the duration passed in
@@ -146,6 +158,9 @@ public abstract class AbstractDuration implements ReadableDuration {
     /**
      * Compares this object with the specified object for equality based
      * on the millisecond length. All ReadableDuration instances are accepted.
+     * <p>
+     * The comparison takes into account the sign.
+     * As such, a duration of 5 seconds is not equal to a duration of <i>minus</i> 5 seconds.
      *
      * @param duration  a readable duration to check against
      * @return true if the length of the duration is equal

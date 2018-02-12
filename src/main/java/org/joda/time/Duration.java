@@ -537,4 +537,18 @@ public final class Duration
         return new Duration(-getMillis());
     }
 
+    /**
+     * Returns a duration that has a positive or zero number of milliseconds.
+     * <p>
+     * This instance is immutable and is not altered.
+     * 
+     * @return the absolute duration instance
+     */
+    public Duration abs() {
+        if (getMillis() < 0) {
+            return negated();
+        }
+        return this;
+    }
+
 }

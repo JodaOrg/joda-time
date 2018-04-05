@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project
-    xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>joda-time</groupId>
@@ -19,14 +16,6 @@
     <url>https://github.com/JodaOrg/joda-time/issues</url>
   </issueManagement>
   <inceptionYear>2002</inceptionYear>
-  <mailingLists>
-    <mailingList>
-      <name>Joda Interest list</name>
-      <subscribe>https://lists.sourceforge.net/lists/listinfo/joda-interest</subscribe>
-      <unsubscribe>https://lists.sourceforge.net/lists/listinfo/joda-interest</unsubscribe>
-      <archive>http://sourceforge.net/mailarchive/forum.php?forum_name=joda-interest</archive>
-    </mailingList>
-  </mailingLists>
 
   <!-- ==================================================================== -->
   <developers>
@@ -320,6 +309,7 @@
     <connection>scm:git:https://github.com/JodaOrg/joda-time.git</connection>
     <developerConnection>scm:git:git@github.com:JodaOrg/joda-time.git</developerConnection>
     <url>https://github.com/JodaOrg/joda-time</url>
+    <tag>HEAD</tag>
   </scm>
   <organization>
     <name>Joda.org</name>
@@ -346,6 +336,27 @@
     </resources>
     <!-- define build -->
     <plugins>
+      <!-- Enforce Maven 3.5.0 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce-maven</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireMavenVersion>
+                  <version>3.5.0</version>
+                </requireMavenVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- Compile TZDB -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
@@ -388,6 +399,7 @@
           </arguments>
         </configuration>
       </plugin>
+      <!-- Setup testing -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -398,6 +410,7 @@
           <!--argLine>-Djava.security.manager -Djava.security.policy=${basedir}/src/test/resources/java.policy</argLine-->
         </configuration>
       </plugin>
+      <!-- Setup Jar file manifest entries -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
@@ -444,6 +457,7 @@
           </archive>
         </configuration>
       </plugin>
+      <!-- Setup Javadoc jar -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -469,6 +483,7 @@
           </execution>
         </executions>
       </plugin>
+      <!-- Setup source jar -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
@@ -502,6 +517,7 @@
           </excludes>
         </configuration>
       </plugin>
+      <!-- Setup site with reflow maven skin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
@@ -521,7 +537,8 @@
           </dependency>
         </dependencies>
       </plugin>
-      <plugin><!-- invoke with mvn site-deploy -->
+      <!-- Setup to deploy site to GitHub, invoked with mvn site-deploy -->
+      <plugin>
         <groupId>com.github.github</groupId>
         <artifactId>site-maven-plugin</artifactId>
         <version>0.12</version>
@@ -544,6 +561,7 @@
           <branch>refs/heads/master</branch>
         </configuration>
       </plugin>
+      <!-- Compatibility check -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>clirr-maven-plugin</artifactId>
@@ -593,6 +611,11 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
           <version>${maven-dependency-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>${maven-enforcer-plugin.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -669,6 +692,18 @@
           <artifactId>maven-toolchains-plugin</artifactId>
           <version>${maven-toolchains-plugin.version}</version>
         </plugin>
+        <!-- Setup release -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>${maven-release-plugin.version}</version>
+          <configuration>
+            <arguments>-Doss.repo</arguments>
+            <autoVersionSubmodules>true</autoVersionSubmodules>
+            <tagNameFormat>v@{project.version}</tagNameFormat>
+            <localCheckout>true</localCheckout>
+          </configuration>
+        </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
@@ -694,7 +729,7 @@
                     </goals>
                   </pluginExecutionFilter>
                   <action>
-                    <ignore></ignore>
+                    <ignore />
                   </action>
                 </pluginExecution>
               </pluginExecutions>
@@ -706,9 +741,6 @@
   </build>
 
   <!-- ==================================================================== -->
-  <prerequisites>
-    <maven>3.0.4</maven>
-  </prerequisites>
   <dependencies>
     <dependency>
       <groupId>org.joda</groupId>
@@ -728,6 +760,7 @@
   <!-- ==================================================================== -->
   <reporting>
     <plugins>
+      <!-- Setup standard project info reports -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
@@ -739,7 +772,6 @@
               <report>dependency-info</report>
               <report>issue-tracking</report>
               <report>license</report>
-              <report>mailing-list</report>
               <report>project-team</report>
               <report>scm</report>
               <report>summary</report>
@@ -747,6 +779,7 @@
           </reportSet>
         </reportSets>
       </plugin>
+      <!-- Setup Javadoc report -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -759,6 +792,7 @@
           </reportSet>
         </reportSets>
       </plugin>
+      <!-- Setup Surefire report -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-report-plugin</artifactId>
@@ -767,6 +801,7 @@
           <showSuccess>true</showSuccess>
         </configuration>
       </plugin>
+      <!-- Setup changes (release notes) -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
@@ -802,21 +837,33 @@
 
   <!-- ==================================================================== -->
   <profiles>
+    <!-- Need earlier surefire plugin for Java 5 support -->
     <profile>
-      <id>java8</id>
+      <id>java5to7</id>
       <activation>
-        <jdk>1.8</jdk>
+        <jdk>[1.5,1.8]</jdk>
       </activation>
       <properties>
+        <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
+      </properties>
+    </profile>
+    <!-- Add doclint -->
+    <profile>
+      <id>java8plus</id>
+      <activation>
+        <jdk>[1.8,)</jdk>
+      </activation>
+      <properties>
+        <maven-surefire-plugin.version>2.21.0</maven-surefire-plugin.version>
         <additionalparam>-Xdoclint:none</additionalparam>
       </properties>
     </profile>
+    <!-- Base deployment profile, activated by -Doss.repo -->
     <profile>
       <id>repo-sign-artifacts</id>
       <activation>
         <property>
           <name>oss.repo</name>
-          <value>true</value>
         </property>
       </activation>
       <build>
@@ -907,10 +954,23 @@
               </execution>
             </executions>
           </plugin>
+          <!-- Use nexus plugin to directly release -->
+          <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <version>${nexus-staging-maven-plugin.version}</version>
+            <extensions>true</extensions>
+            <configuration>
+              <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+              <serverId>sonatype-joda-staging</serverId>
+              <description>Releasing ${project.groupId}:${project.artifactId}:${project.version}</description>
+              <autoReleaseAfterClose>false</autoReleaseAfterClose>
+            </configuration>
+          </plugin>
         </plugins>
       </build>
       <properties>
-        <additionalparam></additionalparam>
+        <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
       </properties>
     </profile>
     <profile>
@@ -954,28 +1014,31 @@
   <properties>
     <!-- Plugin version numbers -->
     <build-helper-maven-plugin.version>1.12</build-helper-maven-plugin.version>
-    <maven-assembly-plugin.version>2.5.5</maven-assembly-plugin.version>
-    <maven-changes-plugin.version>2.11</maven-changes-plugin.version>
-    <maven-checkstyle-plugin.version>2.16</maven-checkstyle-plugin.version>
-    <maven-clean-plugin.version>2.6.1</maven-clean-plugin.version>
-    <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
+    <maven-assembly-plugin.version>3.1.0</maven-assembly-plugin.version>
+    <maven-changes-plugin.version>2.12.1</maven-changes-plugin.version>
+    <maven-checkstyle-plugin.version>2.17</maven-checkstyle-plugin.version>
+    <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
+    <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
     <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
-    <maven-dependency-plugin.version>2.10</maven-dependency-plugin.version>
+    <maven-dependency-plugin.version>3.0.2</maven-dependency-plugin.version>
+    <maven-enforcer-plugin.version>3.0.0-M1</maven-enforcer-plugin.version>
     <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
     <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
-    <maven-jar-plugin.version>2.6</maven-jar-plugin.version>
-    <maven-javadoc-plugin.version>2.10.3</maven-javadoc-plugin.version>
+    <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
+    <maven-javadoc-plugin.version>3.0.0-M1</maven-javadoc-plugin.version>
     <maven-jxr-plugin.version>2.5</maven-jxr-plugin.version>
-    <maven-plugin-plugin.version>3.4</maven-plugin-plugin.version>
-    <maven-pmd-plugin.version>3.5</maven-pmd-plugin.version>
-    <maven-project-info-reports-plugin.version>2.8</maven-project-info-reports-plugin.version>
+    <maven-plugin-plugin.version>3.5.1</maven-plugin-plugin.version>
+    <maven-pmd-plugin.version>3.9.0</maven-pmd-plugin.version>
+    <maven-project-info-reports-plugin.version>2.9</maven-project-info-reports-plugin.version>
+    <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
     <maven-repository-plugin.version>2.4</maven-repository-plugin.version>
-    <maven-resources-plugin.version>2.7</maven-resources-plugin.version>
+    <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
+    <!-- v3.6 doesn't work with theme -->
     <maven-site-plugin.version>3.4</maven-site-plugin.version>
-    <maven-source-plugin.version>2.4</maven-source-plugin.version>
-    <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
-    <maven-surefire-report-plugin.version>2.18.1</maven-surefire-report-plugin.version>
+    <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
+    <maven-surefire-report-plugin.version>2.21.0</maven-surefire-report-plugin.version>
     <maven-toolchains-plugin.version>1.1</maven-toolchains-plugin.version>
+    <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
     <!-- Properties for maven-compiler-plugin -->
     <maven.compiler.compilerVersion>1.5</maven.compiler.compilerVersion>
     <maven.compiler.source>1.5</maven.compiler.source>
@@ -989,7 +1052,8 @@
     <author>false</author>
     <notimestamp>true</notimestamp>
     <!-- Properties for maven-checkstyle-plugin -->
-    <checkstyle.config.location>${project.basedir}/src/main/checkstyle/checkstyle.xml</checkstyle.config.location>
+    <checkstyle.config.location>src/main/checkstyle/checkstyle.xml</checkstyle.config.location>
+    <linkXRef>false</linkXRef>
     <!-- Other properties -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

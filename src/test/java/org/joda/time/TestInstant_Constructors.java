@@ -87,7 +87,16 @@ public class TestInstant_Constructors extends TestCase {
 
     //-----------------------------------------------------------------------
     /**
-     * Test now ()
+     * Test EPOCH
+     */
+    public void test_epoch() throws Throwable {
+        Instant test = Instant.EPOCH;
+        assertEquals(ISOChronology.getInstanceUTC(), test.getChronology());
+        assertEquals(0L, test.getMillis());
+    }
+
+    /**
+     * Test now()
      */
     public void test_now() throws Throwable {
         Instant test = Instant.now();

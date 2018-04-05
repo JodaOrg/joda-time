@@ -57,6 +57,11 @@ public final class Instant
         extends AbstractInstant
         implements ReadableInstant, Serializable {
 
+    /**
+     * The Java epoch of 1970-01-01T00:00:00Z.
+     */
+    public static final Instant EPOCH = new Instant(0L);
+
     /** Serialization lock */
     private static final long serialVersionUID = 3299096530934209741L;
 

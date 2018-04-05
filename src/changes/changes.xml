@@ -19,6 +19,10 @@
         The hack works so long as a rule set does not mix positive and negative save values.
       </action>
       <action dev="jodastephen" type="add">
+        Add Instant.EPOCH.
+        See #472.
+      </action>
+      <action dev="jodastephen" type="add">
         Clarify negative durations.
         See #465.
       </action>

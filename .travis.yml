@@ -1,8 +1,4 @@
-# This file enables the Travis continuous integration system, which
-# automatically builds and tests joda-time for each GitHub commit or 
-# pull request on three separate JDKs.
-#
-# For more information, see https://travis-ci.org
+# build does not work on Java 9 or later as Java 5 is not a valid target
 
 sudo: false
 language: java
@@ -18,9 +14,9 @@ before_cache:
 install:
   - mvn --version
 script:
-  - mvn install -e -B
+  - mvn install site -e -B
 after_success:
-  - if [[ $TRAVIS_TAG =~ ^v.*$ ]] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_JDK_VERSION" == "oraclejdk8" ]; then travis_wait 40 mvn site-deploy -e -B --settings .github/maven-settings.xml; fi
+  - if [[ $TRAVIS_TAG =~ ^v.*$ ]] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_JDK_VERSION" == "oraclejdk8" ]; then travis_wait 40 mvn clean install site-deploy -e -B --settings .github/maven-settings.xml; fi
 # secure keys for GITHUB_TOKEN
 env:
   global:

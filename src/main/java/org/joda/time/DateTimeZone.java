@@ -75,7 +75,7 @@ import org.joda.time.tz.ZoneInfoProvider;
  * </ul>
  * <p>
  * Unlike the Java TimeZone class, DateTimeZone is immutable. It also only
- * supports long format time zone ids. Thus EST and ECT are not accepted.
+ * supports long format time zone ids. Thus PST and ECT are not accepted.
  * However, the factory that accepts a TimeZone will attempt to convert from
  * the old short id to a suitable long id.
  * <p>

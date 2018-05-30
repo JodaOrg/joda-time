@@ -861,6 +861,7 @@
       </properties>
     </profile>
     <!-- Base deployment profile, activated by -Doss.repo -->
+    <!-- Release should be performed using a Java 8 JVM -->
     <profile>
       <id>repo-sign-artifacts</id>
       <activation>
@@ -870,27 +871,6 @@
       </activation>
       <build>
         <plugins>
-          <!-- Use Java 5 -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-toolchains-plugin</artifactId>
-            <executions>
-              <execution>
-                <phase>validate</phase>
-                <goals>
-                  <goal>toolchain</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <toolchains>
-                <jdk>
-                  <version>1.5</version>
-                  <vendor>sun</vendor>
-                </jdk>
-              </toolchains>
-            </configuration>
-          </plugin>
           <!-- Sign artifacts -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>

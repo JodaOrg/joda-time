@@ -543,6 +543,7 @@ public final class Duration
      * This instance is immutable and is not altered.
      * 
      * @return the absolute duration instance
+     * @since 2.10
      */
     public Duration abs() {
         if (getMillis() < 0) {

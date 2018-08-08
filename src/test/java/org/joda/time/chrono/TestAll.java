@@ -48,7 +48,8 @@ public class TestAll extends TestCase {
         suite.addTest(TestISOChronology.suite());
         suite.addTest(TestLenientChronology.suite());
         suite.addTest(TestGJDate.suite());
-        
+        suite.addTest(TestBISChronology.suite());
+
         return suite;
     }
 

@@ -61,7 +61,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Stephen Colebourne
  * @since 1.2
  */
-public final class BISChronology extends BasicChronology {
+public final class BikramSambatChronology extends BasicChronology {
 
     /** Serialization lock */
     private static final long serialVersionUID = -3663823829888L;
@@ -93,10 +93,10 @@ public final class BISChronology extends BasicChronology {
     private static final long MILLIS_YEAR_1 = -843177600000L;
 
     /** Cache of zone to chronology arrays */
-    private static final ConcurrentHashMap<DateTimeZone, BISChronology> cCache = new ConcurrentHashMap<DateTimeZone, BISChronology>();
+    private static final ConcurrentHashMap<DateTimeZone, BikramSambatChronology> cCache = new ConcurrentHashMap<DateTimeZone, BikramSambatChronology>();
 
     /** Singleton instance of a UTC IslamicChronology */
-    private static final BISChronology INSTANCE_UTC;
+    private static final BikramSambatChronology INSTANCE_UTC;
     static {
         // init after static fields
         INSTANCE_UTC = getInstance(DateTimeZone.UTC);
@@ -109,7 +109,7 @@ public final class BISChronology extends BasicChronology {
      *
      * @return a singleton UTC instance of the chronology
      */
-    public static BISChronology getInstanceUTC() {
+    public static BikramSambatChronology getInstanceUTC() {
         return INSTANCE_UTC;
     }
 
@@ -118,7 +118,7 @@ public final class BISChronology extends BasicChronology {
      *
      * @return a chronology in the default time zone
      */
-    public static BISChronology getInstance() {
+    public static BikramSambatChronology getInstance() {
         return getInstance(DateTimeZone.getDefault());
     }
 
@@ -128,22 +128,22 @@ public final class BISChronology extends BasicChronology {
      * @param zone  the time zone to get the chronology in, null is default
      * @return a chronology in the specified time zone
      */
-    public static BISChronology getInstance(DateTimeZone zone) {
+    public static BikramSambatChronology getInstance(DateTimeZone zone) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
-        BISChronology chrono = cCache.get(zone);
+        BikramSambatChronology chrono = cCache.get(zone);
         if (chrono == null) {
 //            if (zone == DateTimeZone.UTC) {
                         //First create without a lower limit.
-                        chrono = new BISChronology(null, null);
+                        chrono = new BikramSambatChronology(null, null);
                         // Impose lower limit and make another IslamicChronology.
                         DateTime lowerLimit = new DateTime(MIN_YEAR, 1, 1, 0, 0, 0, 0, chrono);
-                        chrono = new BISChronology(
+                        chrono = new BikramSambatChronology(
                                 LimitChronology.getInstance(chrono, lowerLimit, null), null);
 //                    } else {
 //                        chrono = getInstance(DateTimeZone.UTC);
-//                        chrono = new BISChronology
+//                        chrono = new BikramSambatChronology
 //                                (ZonedChronology.getInstance(chrono, zone), null);
 //                    }
 //            if (oldChrono != null) {
@@ -158,7 +158,7 @@ public final class BISChronology extends BasicChronology {
     /**
      * Restricted constructor.
      */
-    private BISChronology(Chronology base, Object param) {
+    private BikramSambatChronology(Chronology base, Object param) {
         super(base, param, 2);
     }
 
@@ -227,7 +227,7 @@ public final class BISChronology extends BasicChronology {
         long millisNepali = instant - MILLIS_YEAR_1;
         int year = MIN_YEAR;
         for (int i = MIN_YEAR; i <= MAX_YEAR; i++) {
-            long millisInYear = (long) BISDateUtils.getTotalDaysInYear(i) * DateTimeConstants.MILLIS_PER_DAY;
+            long millisInYear = (long) BikramSambatDateUtils.getTotalDaysInYear(i) * DateTimeConstants.MILLIS_PER_DAY;
             if (millisNepali > millisInYear){
                 millisNepali -= millisInYear;
                 year++;
@@ -268,7 +268,7 @@ public final class BISChronology extends BasicChronology {
 
     //-----------------------------------------------------------------------
     long getTotalMillisByYearMonth(int year, int month) {
-        long totalMillis =  (long) BISDateUtils.getTotalDaysInYearTillMonth(year, month) * DateTimeConstants.MILLIS_PER_DAY;
+        long totalMillis =  (long) BikramSambatDateUtils.getTotalDaysInYearTillMonth(year, month) * DateTimeConstants.MILLIS_PER_DAY;
         return totalMillis;
     }
 
@@ -278,7 +278,7 @@ public final class BISChronology extends BasicChronology {
         int year = getYear(millis);
         int doy = getDayOfYear(millis);
 
-        return BISDateUtils.getDayOfMonth(year, doy);
+        return BikramSambatDateUtils.getDayOfMonth(year, doy);
     }
 
     //-----------------------------------------------------------------------
@@ -297,13 +297,13 @@ public final class BISChronology extends BasicChronology {
 
     //-----------------------------------------------------------------------
     int getDaysInYear(int year) {
-        return BISDateUtils.getTotalDaysInYear(year);
+        return BikramSambatDateUtils.getTotalDaysInYear(year);
     }
 
     //-----------------------------------------------------------------------
     int getDaysInYearMonth(int year, int month) {
 //        System.out.println("getTotalDaysInYearsMonth m> "+ month+" y> " +year+" result > "+DateUtils.getTotalDaysInYearsMonth(year, month));
-        return BISDateUtils.getTotalDaysInYearsMonth(year, month);
+        return BikramSambatDateUtils.getTotalDaysInYearsMonth(year, month);
     }
 
     //-----------------------------------------------------------------------
@@ -319,7 +319,7 @@ public final class BISChronology extends BasicChronology {
     //-----------------------------------------------------------------------
     int getMonthOfYear(long millis, int year) {
         int doyZeroBased = (int) ((millis - getYearMillis(year)) / DateTimeConstants.MILLIS_PER_DAY);
-        return BISDateUtils.getMonthByYearDays(year, doyZeroBased);
+        return BikramSambatDateUtils.getMonthByYearDays(year, doyZeroBased);
     }
 
     //-----------------------------------------------------------------------
@@ -353,7 +353,7 @@ public final class BISChronology extends BasicChronology {
         year--;
         long millis = MILLIS_YEAR_1;
         for (int i = MIN_YEAR; i <= year; i++) {
-            millis += (long) BISDateUtils.getTotalDaysInYear(i) * DateTimeConstants.MILLIS_PER_DAY;
+            millis += (long) BikramSambatDateUtils.getTotalDaysInYear(i) * DateTimeConstants.MILLIS_PER_DAY;
         }
 
         return millis;
@@ -381,7 +381,7 @@ public final class BISChronology extends BasicChronology {
             super.assemble(fields);
 
             fields.era = ERA_FIELD;
-//            fields.monthOfYear = new BISDateTimeField(this, 0);
+//            fields.monthOfYear = new BikramSambatDateTimeField(this, 0);
 //            fields.months = fields.monthOfYear.getDurationField();
         }
     }

@@ -5,7 +5,7 @@ import java.util.Locale;
 /**
  * Created by Bishwash Adhikari on 08/12/2016.
  */
-public class BISDateTimeField extends BasicMonthOfYearDateTimeField {
+public class BikramSambatDateTimeField extends BasicMonthOfYearDateTimeField {
 
     private static String FULL_MONTHS[] = {"Baishak", "Jesth", "Ashar", "Shrawan", "Bhadra", "Ashoj", "Kartik", "Mangshir", "Poush", "Magh", "Falgun", "Chaitra"};
     private static String SHORT_MONTHS[] = {"BAI", "JES", "ASHA", "SHR", "BHA", "ASHO", "KAR", "MAN", "POU", "MAG", "FAL", "CHA"};
@@ -15,7 +15,7 @@ public class BISDateTimeField extends BasicMonthOfYearDateTimeField {
      *
      * @param leapMonth the month of year that leaps
      */
-    BISDateTimeField(BasicChronology chronology, int leapMonth) {
+    BikramSambatDateTimeField(BasicChronology chronology, int leapMonth) {
         super(chronology, leapMonth);
     }
 

@@ -22,10 +22,10 @@ import org.joda.time.DateTime;
 
 import static junit.framework.Assert.assertEquals;
 
-public class TestBISChronology {
+public class TestBikramSambatChronology {
 
     private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
-    private static final Chronology BIKRAM_SAMBAT_UTC = BISChronology.getInstanceUTC();
+    private static final Chronology BIKRAM_SAMBAT_UTC = BikramSambatChronology.getInstanceUTC();
 
     // Test results confirmed using online converters:
     // http://nepalicalendar.rat32.com/index.php?dowhat=nepali-calendar-horoscope-game-download-unicode-new-year-mobile-calendar&view=851ddf5058cf22df63d3344ad89919cf#date-conversion
@@ -63,6 +63,6 @@ public class TestBISChronology {
     }
 
     public static TestSuite suite() {
-        return new TestSuite(TestBISChronology.class);
+        return new TestSuite(TestBikramSambatChronology.class);
     }
 }

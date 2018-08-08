@@ -3,7 +3,7 @@ package org.joda.time.chrono;
 /**
  * Nepali date conversion utilities and database.
  */
-public class BISDateUtils {
+public class BikramSambatDateUtils {
     private static final int FIRST_BIS_YEAR_SUPPORTED = 2000;
 
     /**

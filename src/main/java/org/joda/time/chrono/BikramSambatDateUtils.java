@@ -12,8 +12,8 @@ public class BikramSambatDateUtils {
      * Basically, this is an array of arrays. Each sub-array represents a year. Each year contains
      * number of days in each month as array of integers.
      *
-     * Start BIS Date : 2000 / 1 / 1
-     * Start AD Date : 1943 / 4 / 14
+     * Start BIS Date : 2000/1/1
+     * Start AD Date : 1943/4/14
      */
     public final static int[][] data = new int[][]{
             new int[]{30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31},
@@ -89,7 +89,7 @@ public class BikramSambatDateUtils {
             new int[]{31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30},
             new int[]{31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30},
             new int[]{31, 32, 31, 32, 31, 30, 30, 29, 30, 29, 30, 30},
-            new int[]{31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31},  //2073
+            new int[]{31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31},
             new int[]{31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30},
             new int[]{31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30},
             new int[]{31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30},

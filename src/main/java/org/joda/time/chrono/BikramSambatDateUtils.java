@@ -5,6 +5,7 @@ package org.joda.time.chrono;
  */
 public class BikramSambatDateUtils {
     private static final int FIRST_BIS_YEAR_SUPPORTED = 2000;
+    private static final int NUMBER_OF_MONTHS = 12;
 
     /**
      * Date Database useful for converting from/to Nepali/English dates.
@@ -14,9 +15,12 @@ public class BikramSambatDateUtils {
      *
      * Start BIS Date : 2000/1/1
      * Start AD Date : 1943/4/14
+     *
+     * End BIS Date : 2090/1/1
+     * End AD Date : 2033/4/14
      */
     public final static int[][] data = new int[][]{
-            new int[]{30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31},
+            new int[]{30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31}, // 2000 Birkram Sambat
             new int[]{31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30},
             new int[]{31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30},
             new int[]{31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31},
@@ -106,62 +110,61 @@ public class BikramSambatDateUtils {
             new int[]{31, 31, 32, 31, 31, 31, 30, 30, 29, 30, 30, 30},
             new int[]{30, 31, 32, 32, 30, 31, 30, 30, 29, 30, 30, 30},
             new int[]{30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30},
-            new int[]{30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30},
+            new int[]{30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30}, // 2090 Birkram Sambat
     };
 
-    static int getTotalDaysInYear(int y) {
-        int pos = y - FIRST_BIS_YEAR_SUPPORTED;
+    static int getTotalDaysInYear(int year) {
+        int pos = year - FIRST_BIS_YEAR_SUPPORTED;
         int days = 0;
 
-        for (int j = 0; j < 12; ++j) {
-            days = days + data[pos][j];
+        for (int j = 0; j < NUMBER_OF_MONTHS; j++) {
+            days += data[pos][j];
         }
 
         return days;
     }
 
-    // 0 for first month
-    static int getTotalDaysInYearTillMonth(int y, int m) {
-        int pos = y - FIRST_BIS_YEAR_SUPPORTED;
-        int days = 0;
+    static int getTotalDaysInYearTillMonth(int year, int month) {
+        int pos = year - FIRST_BIS_YEAR_SUPPORTED;
+        int days = 0; // 0 for first month
 
-        for (int j = 0; j <= 12; ++j) {
-            if (j == m - 1) break;
-            days = days + data[pos][j];
+        for (int j = 0; j <= NUMBER_OF_MONTHS; j++) {
+            if (j == month - 1) {
+                break;
+            }
+            days += data[pos][j];
         }
 
         return days;
     }
 
-    static int getTotalDaysInYearsMonth(int y, int m) {
-        int pos = y - FIRST_BIS_YEAR_SUPPORTED;
-
-        return data[pos][m-1];
+    static int getTotalDaysInYearsMonth(int year, int month) {
+        return data[year - FIRST_BIS_YEAR_SUPPORTED][month - 1];
     }
 
-    static int getMonthByYearDays(int y, int d){
-        int pos = y - FIRST_BIS_YEAR_SUPPORTED;
+    static int getMonthByYearDays(int year, int day){
+        int pos = year - FIRST_BIS_YEAR_SUPPORTED;
         int days = 0;
 
-        for (int j = 0; j < 12; ++j) {
-            days = days + data[pos][j];
-            if (d < days){
+        for (int j = 0; j < NUMBER_OF_MONTHS; j++) {
+            days += data[pos][j];
+            if (day < days){
                 return j + 1;
             }
         }
         return 1;
     }
 
-    public static int getDayOfMonth(int y, int doy){
-        int pos = y - FIRST_BIS_YEAR_SUPPORTED;
+    public static int getDayOfMonth(int year, int doy){
+        int pos = year - FIRST_BIS_YEAR_SUPPORTED;
         int dayOfMonth = 1;
 
-        for (int j = 0; j < 12; ++j) {
+        for (int j = 0; j < NUMBER_OF_MONTHS; j++) {
             if (doy <= data[pos][j]){
                 dayOfMonth = doy;
                 break;
             }
-            doy = doy - data[pos][j];
+            doy -= data[pos][j];
         }
         return dayOfMonth;
     }

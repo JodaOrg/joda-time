@@ -7,8 +7,24 @@ import java.util.Locale;
  */
 public class BikramSambatDateTimeField extends BasicMonthOfYearDateTimeField {
 
-    private static String FULL_MONTHS[] = {"Baishak", "Jesth", "Ashar", "Shrawan", "Bhadra", "Ashoj", "Kartik", "Mangshir", "Poush", "Magh", "Falgun", "Chaitra"};
-    private static String SHORT_MONTHS[] = {"BAI", "JES", "ASHA", "SHR", "BHA", "ASHO", "KAR", "MAN", "POU", "MAG", "FAL", "CHA"};
+    private static String FULL_MONTHS[] = {
+            "Baishak",
+            "Jesth",
+            "Ashar",
+            "Shrawan",
+            "Bhadra",
+            "Ashoj",
+            "Kartik",
+            "Mangshir",
+            "Poush",
+            "Magh",
+            "Falgun",
+            "Chaitra"
+    };
+
+    private static String SHORT_MONTHS[] = {
+            "BAI", "JES", "ASHA", "SHR", "BHA", "ASHO", "KAR", "MAN", "POU", "MAG", "FAL", "CHA"
+    };
 
     /**
      * Restricted constructor.
@@ -22,12 +38,12 @@ public class BikramSambatDateTimeField extends BasicMonthOfYearDateTimeField {
     @Override
     public String getAsText(long instant, Locale locale) {
         String value = super.getAsText(instant, locale);
-        return FULL_MONTHS[Integer.parseInt(value) - 1 ];
+        return FULL_MONTHS[Integer.parseInt(value) - 1];
     }
 
     @Override
     public String getAsShortText(long instant, Locale locale) {
         String value = super.getAsText(instant, locale);
-        return SHORT_MONTHS[Integer.parseInt(value) - 1 ];
+        return SHORT_MONTHS[Integer.parseInt(value) - 1];
     }
 }

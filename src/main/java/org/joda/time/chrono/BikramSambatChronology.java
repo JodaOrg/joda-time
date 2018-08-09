@@ -97,21 +97,16 @@ public final class BikramSambatChronology extends BasicChronology {
         }
         BikramSambatChronology chrono = cCache.get(zone);
         if (chrono == null) {
-//            if (zone == DateTimeZone.UTC) {
-                        //First create without a lower limit.
-                        chrono = new BikramSambatChronology(null, null);
-                        // Impose lower limit and make another BikramSambatChronology.
-                        DateTime lowerLimit = new DateTime(MIN_YEAR, 1, 1, 0, 0, 0, 0, chrono);
-                        chrono = new BikramSambatChronology(
-                                LimitChronology.getInstance(chrono, lowerLimit, null), null);
-//                    } else {
-//                        chrono = getInstance(DateTimeZone.UTC);
-//                        chrono = new BikramSambatChronology
-//                                (ZonedChronology.getInstance(chrono, zone), null);
-//                    }
-//            if (oldChrono != null) {
-//                chrono = chrono;
-//            }
+            if (zone == DateTimeZone.UTC) {
+                //First create without a lower limit.
+                chrono = new BikramSambatChronology(null, null);
+                // Impose lower limit and make another BikramSambatChronology.
+                DateTime lowerLimit = new DateTime(MIN_YEAR, 1, 1, 0, 0, 0, 0, chrono);
+                chrono = new BikramSambatChronology(LimitChronology.getInstance(chrono, lowerLimit, null), null);
+            } else {
+                chrono = getInstance(DateTimeZone.UTC);
+                chrono = new BikramSambatChronology(ZonedChronology.getInstance(chrono, zone), null);
+            }
         }
         return chrono;
     }
@@ -286,8 +281,6 @@ public final class BikramSambatChronology extends BasicChronology {
             super.assemble(fields);
 
             fields.era = ERA_FIELD;
-//            fields.monthOfYear = new BikramSambatDateTimeField(this, 0);
-//            fields.months = fields.monthOfYear.getDurationField();
         }
     }
 }

@@ -156,28 +156,6 @@ public final class BikramSambatChronology extends BasicChronology {
         return getInstance(zone);
     }
 
-    /**
-     * Checks if this chronology instance equals another.
-     *
-     * @param obj the object to compare to
-     * @return true if equal
-     */
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * A suitable hash code for the chronology.
-     *
-     * @return the hash code
-     */
-    public int hashCode() {
-        return super.hashCode() * 13;
-    }
-
     int getYear(long instant) {
         long millisNepali = instant - MILLIS_YEAR_1;
         int year = MIN_YEAR;

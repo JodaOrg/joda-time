@@ -199,8 +199,7 @@ public final class BikramSambatChronology extends BasicChronology {
     }
 
     long getTotalMillisByYearMonth(int year, int month) {
-        long totalMillis = (long) BikramSambatDateUtils.getTotalDaysInYearTillMonth(year, month) * DateTimeConstants.MILLIS_PER_DAY;
-        return totalMillis;
+        return (long) BikramSambatDateUtils.getTotalDaysInYearTillMonth(year, month) * DateTimeConstants.MILLIS_PER_DAY;
     }
 
     int getDayOfMonth(long millis) {

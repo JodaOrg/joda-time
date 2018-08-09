@@ -70,7 +70,6 @@ public final class BikramSambatChronology extends BasicChronology {
 
     /** Singleton instance of a UTC BikramSambatChronology */
     private static final BikramSambatChronology INSTANCE_UTC;
-
     static {
         // init after static fields
         INSTANCE_UTC = getInstance(DateTimeZone.UTC);
@@ -84,15 +83,6 @@ public final class BikramSambatChronology extends BasicChronology {
      */
     public static BikramSambatChronology getInstanceUTC() {
         return INSTANCE_UTC;
-    }
-
-    /**
-     * Gets an instance of the BikramSambatChronology in the default time zone.
-     *
-     * @return a chronology in the default time zone
-     */
-    public static BikramSambatChronology getInstance() {
-        return getInstance(DateTimeZone.getDefault());
     }
 
     /**

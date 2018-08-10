@@ -16,13 +16,14 @@
 
 package org.joda.time.chrono;
 
+import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 
 import static junit.framework.Assert.assertEquals;
 
-public class TestBikramSambatChronology {
+public class TestBikramSambatChronology extends TestCase {
 
     private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
     private static final Chronology BIKRAM_SAMBAT_UTC = BikramSambatChronology.getInstanceUTC();

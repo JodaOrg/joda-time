@@ -100,6 +100,7 @@ public final class BikramSambatChronology extends BasicChronology {
             if (zone == DateTimeZone.UTC) {
                 //First create without a lower limit.
                 chrono = new BikramSambatChronology(null, null);
+                cCache.putIfAbsent(zone, chrono);
                 // Impose lower limit and make another BikramSambatChronology.
                 DateTime lowerLimit = new DateTime(MIN_YEAR, 1, 1, 0, 0, 0, 0, chrono);
                 chrono = new BikramSambatChronology(LimitChronology.getInstance(chrono, lowerLimit, null), null);
@@ -254,9 +255,8 @@ public final class BikramSambatChronology extends BasicChronology {
             throw new ArithmeticException("Year is too small: " + year + " < " + MIN_YEAR);
         }
 
-        year--;
         long millis = MILLIS_YEAR_1;
-        for (int i = MIN_YEAR; i <= year; i++) {
+        for (int i = MIN_YEAR; i < year; i++) {
             millis += (long) BikramSambatDateUtils.getTotalDaysInYear(i) * DateTimeConstants.MILLIS_PER_DAY;
         }
 

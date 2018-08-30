@@ -17,6 +17,7 @@ These projects are independent - no guarantees of quality are given!
 * [Humanize](https://github.com/mfornos/humanize) - Human stylized text for date and time.
 * [Joda-Time for Android](https://github.com/dlew/joda-time-android) -
 Version for Android.
+* [Gson serialisers](https://github.com/gkopff/gson-jodatime-serialisers) - Gson converters for many Joda-Time types.
 
 If your open source library provides a value added feature on top of Joda-Time,
 then let us know! Just send a pull request to edit this page.

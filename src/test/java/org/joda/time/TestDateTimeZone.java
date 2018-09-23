@@ -1098,6 +1098,25 @@ public class TestDateTimeZone extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+    public void testWindhoek() {
+        DateTimeZone zone = DateTimeZone.forID("Africa/Windhoek");
+        DateTime dtDec1990 = new DateTime(1990, 12, 1, 0, 0, 0, 0, zone);
+        assertEquals(3600000, zone.getStandardOffset(dtDec1990.getMillis()));
+        assertEquals(7200000, zone.getOffset(dtDec1990.getMillis()));
+        assertEquals(false, zone.isStandardOffset(dtDec1990.getMillis()));
+        
+        DateTime dtDec1994 = new DateTime(1994, 12, 1, 0, 0, 0, 0, zone);
+        assertEquals(3600000, zone.getStandardOffset(dtDec1994.getMillis()));
+        assertEquals(7200000, zone.getOffset(dtDec1994.getMillis()));
+        assertEquals(false, zone.isStandardOffset(dtDec1994.getMillis()));
+        
+        DateTime dtJun1995 = new DateTime(1995, 6, 1, 0, 0, 0, 0, zone);
+        assertEquals(3600000, zone.getStandardOffset(dtJun1995.getMillis()));
+        assertEquals(3600000, zone.getOffset(dtJun1995.getMillis()));
+        assertEquals(true, zone.isStandardOffset(dtJun1995.getMillis()));
+    }
+    
+    //-----------------------------------------------------------------------
     public void testSerialization1() throws Exception {
         DateTimeZone zone = DateTimeZone.forID("Europe/Paris");
         

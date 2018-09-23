@@ -722,6 +722,17 @@ public class ZoneInfoCompiler {
             iLetterS = parseOptional(st.nextToken());
         }
 
+        // creates a rule to go before the specified rule
+        Rule(Rule after) {
+            iName = after.iName;
+            iFromYear = 1800;
+            iToYear = after.iFromYear;
+            iType = null;
+            iDateTimeOfYear = after.iDateTimeOfYear;  // does not matter
+            iSaveMillis = 0;
+            iLetterS = after.iLetterS;
+        }
+
         /**
          * Adds a recurring savings rule to the builder.
          */
@@ -800,9 +811,10 @@ public class ZoneInfoCompiler {
                     negativeSave = Math.min(negativeSave, rule.iSaveMillis);
                 }
             }
-            
+
             // if negative SAVE values, then patch standard millis and name format
             if (negativeSave < 0) {
+                System.out.println("Fixed negative save values for rule '" + iRules.get(0).iName + "'");
                 standardMillis += negativeSave;
                 int slashPos = nameFormat.indexOf("/");
                 if (slashPos > 0) {
@@ -810,7 +822,13 @@ public class ZoneInfoCompiler {
                 }
             }
             builder.setStandardOffset(standardMillis);
-            
+
+            // add a fake rule that predates all other rules to ensure standard=summer (see Namibia)
+            if (negativeSave < 0) {
+                Rule rule = new Rule(iRules.get(0));
+                rule.addRecurring(builder, negativeSave, nameFormat);
+            }
+
             // add each rule, passing through the negative save to alter the actual iSaveMillis value that is used
             for (int i = 0; i < iRules.size(); i++) {
                 Rule rule = iRules.get(i);
@@ -892,6 +910,7 @@ public class ZoneInfoCompiler {
                         builder.setFixedSavings(zone.iFormat, saveMillis);
                     }
                     catch (Exception e) {
+                        // Zone is using a RuleSet for this segment of the timeline
                         RuleSet rs = ruleSets.get(zone.iRules);
                         if (rs == null) {
                             throw new IllegalArgumentException

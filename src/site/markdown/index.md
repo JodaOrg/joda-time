@@ -5,7 +5,7 @@ Joda-Time provides a quality replacement for the Java date and time classes.
 Joda-Time is the *de facto* standard date and time library for Java prior to Java SE 8.
 Users are now asked to migrate to `java.time` (JSR-310).
 
-Joda-Time is licensed under the business-friendly [Apache 2.0 licence](license.html).
+Joda-Time is licensed under the business-friendly [Apache 2.0 licence](licenses.html).
 
 
 ## <i></i> Features
@@ -60,17 +60,20 @@ public boolean isAfterPayDay(<a href="apidocs/org/joda/time/DateTime.html"><b>Da
   }
   return datetime.getDayOfMonth() > 28;
 }
-
+</pre>
+<pre>
 public <a href="apidocs/org/joda/time/Days.html"><b>Days</b></a> daysToNewYear(<a href="apidocs/org/joda/time/LocalDate.html"><b>LocalDate</b></a> fromDate) {
   <a href="apidocs/org/joda/time/LocalDate.html"><b>LocalDate</b></a> newYear = fromDate.plusYears(1).withDayOfYear(1);
   return <a href="apidocs/org/joda/time/Days.html"><b>Days</b></a>.daysBetween(fromDate, newYear);
 }
-
+</pre>
+<pre>
 public boolean isRentalOverdue(<a href="apidocs/org/joda/time/DateTime.html"><b>DateTime</b></a> datetimeRented) {
   <a href="apidocs/org/joda/time/Period.html"><b>Period</b></a> rentalPeriod = new <a href="apidocs/org/joda/time/Period.html"><b>Period</b></a>().withDays(2).withHours(12);
   return datetimeRented.plus(rentalPeriod).isBeforeNow();
 }
-
+</pre>
+<pre>
 public String getBirthMonthText(<a href="apidocs/org/joda/time/LocalDate.html"><b>LocalDate</b></a> dateOfBirth) {
   return dateOfBirth.monthOfYear().getAsText(Locale.ENGLISH);
 }
@@ -121,7 +124,7 @@ The library has been under active development since 2002.
 It is a mature and reliable code base.
 A number of <a href="related.html">related projects</a> are now available.
 * <b>Open Source</b>.
-Joda-Time is licenced under the business friendly <a href="license.html">Apache License Version 2.0</a>.
+Joda-Time is licenced under the business friendly <a href="licenses.html">Apache License Version 2.0</a>.
 
 ---
 

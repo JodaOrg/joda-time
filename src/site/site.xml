@@ -5,9 +5,9 @@
   <googleAnalyticsAccountId>UA-1425975-4</googleAnalyticsAccountId>
 
   <skin>
-    <groupId>lt.velykis.maven.skins</groupId>
+    <groupId>org.joda.external</groupId>
     <artifactId>reflow-maven-skin</artifactId>
-    <version>1.1.1</version>
+    <version>1.2</version>
   </skin>
 
   <custom>
@@ -79,8 +79,9 @@
 
   <body>
     <head>
-      <link href="http://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css" rel="stylesheet"/>
-      <link rel="author" href="https://plus.google.com/113137868744510231215"/>
+      <![CDATA[
+        <link href="http://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css" rel="stylesheet"/>
+        <link rel="author" href="https://plus.google.com/113137868744510231215"/>]]>
     </head>
 
     <menu name="Documentation">
@@ -109,7 +110,7 @@
       </item>
       <item name="FAQ" href="faq.html"/>
       <item name="Javadoc" href="apidocs/index.html"/>
-      <item name="License" href="license.html"/>
+      <item name="License" href="licenses.html"/>
     </menu>
 
     <menu name="Information">
@@ -119,7 +120,7 @@
       <item name="FAQ" href="faq.html"/>
       <item name="Related projects" href="related.html"/>
       <item name="Javadoc" href="apidocs/index.html"/>
-      <item name="License" href="license.html"/>
+      <item name="License" href="licenses.html"/>
       <item name="Key concepts" href="key.html"/>
       <item name="Chronologies" href="cal.html"/>
     </menu>

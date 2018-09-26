@@ -519,50 +519,6 @@
           </excludes>
         </configuration>
       </plugin>
-      <!-- Setup site with reflow maven skin -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <configuration>
-          <skipDeploy>true</skipDeploy>
-        </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>lt.velykis.maven.skins</groupId>
-            <artifactId>reflow-velocity-tools</artifactId>
-            <version>1.1.1</version>
-          </dependency>
-          <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity</artifactId>
-            <version>1.7</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-      <!-- Setup to deploy site to GitHub, invoked with mvn site-deploy -->
-      <plugin>
-        <groupId>com.github.github</groupId>
-        <artifactId>site-maven-plugin</artifactId>
-        <version>0.12</version>
-        <executions>
-          <execution>
-            <id>github-site</id>
-            <goals>
-              <goal>site</goal>
-            </goals>
-            <phase>site-deploy</phase>
-          </execution>
-        </executions>
-        <configuration>
-          <message>Create website for ${project.artifactId} v${project.version}</message>
-          <path>${project.artifactId}</path>
-          <merge>true</merge>
-          <server>github</server>
-          <repositoryOwner>JodaOrg</repositoryOwner>
-          <repositoryName>jodaorg.github.io</repositoryName>
-          <branch>refs/heads/master</branch>
-        </configuration>
-      </plugin>
       <!-- Compatibility check -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -671,11 +627,6 @@
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-site-plugin</artifactId>
-          <version>${maven-site-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
           <version>${maven-source-plugin.version}</version>
         </plugin>
@@ -710,6 +661,22 @@
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
           <version>${build-helper-maven-plugin.version}</version>
+        </plugin>
+        <!-- Setup site with reflow maven skin -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>${maven-site-plugin.version}</version>
+          <configuration>
+            <skipDeploy>true</skipDeploy>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>org.joda.external</groupId>
+              <artifactId>reflow-velocity-tools</artifactId>
+              <version>1.2</version>
+            </dependency>
+          </dependencies>
         </plugin>
         <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
         <plugin>
@@ -766,15 +733,16 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>${maven-project-info-plugin.version}</version>
+        <version>${maven-project-info-reports-plugin.version}</version>
         <reportSets>
           <reportSet>
             <reports>
+              <report>ci-management</report>
               <report>dependencies</report>
               <report>dependency-info</report>
-              <report>issue-tracking</report>
-              <report>license</report>
-              <report>project-team</report>
+              <report>issue-management</report>
+              <report>licenses</report>
+              <report>team</report>
               <report>scm</report>
               <report>summary</report>
             </reports>
@@ -1011,12 +979,11 @@
     <maven-jxr-plugin.version>2.5</maven-jxr-plugin.version>
     <maven-plugin-plugin.version>3.5.1</maven-plugin-plugin.version>
     <maven-pmd-plugin.version>3.9.0</maven-pmd-plugin.version>
-    <maven-project-info-reports-plugin.version>2.9</maven-project-info-reports-plugin.version>
+    <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
     <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
     <maven-repository-plugin.version>2.4</maven-repository-plugin.version>
     <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
-    <!-- v3.6 doesn't work with theme -->
-    <maven-site-plugin.version>3.4</maven-site-plugin.version>
+    <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
     <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
     <maven-surefire-report-plugin.version>2.21.0</maven-surefire-report-plugin.version>
     <maven-toolchains-plugin.version>1.1</maven-toolchains-plugin.version>

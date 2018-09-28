@@ -56,7 +56,7 @@ The <a href="changes-report.html">release notes</a> for upgraders can be found h
 </p>
 <p>
 If you want to build Joda-Time from source you will need
-<a href="http://maven.apache.org">Apache Maven</a>.
+<a href="https://maven.apache.org">Apache Maven</a>.
 </p>
 </section>
 </body>

@@ -52,7 +52,7 @@ Various documentation is available:
 This release is considered stable and worthy of the 2.x tag.
 It depends on JDK 1.5 or later.
 
-Available in the [Maven Central repository](http://search.maven.org/#artifactdetails|joda-time|joda-time|2.10|jar)
+Available in the [Maven Central repository](https://search.maven.org/search?q=g:joda-time%20AND%20a:joda-time&core=gav)
 
 **Maven configuration:**
 ```xml

@@ -52,7 +52,7 @@ import org.joda.time.format.ISODateTimeFormat;
  * <p>
  * Although this tool is similar to zic, the binary formats are not
  * compatible. The latest IANA time zone database files may be obtained
- * <a href="http://www.iana.org/time-zones">here</a>.
+ * <a href="https://www.iana.org/time-zones">here</a>.
  * <p>
  * ZoneInfoCompiler is mutable and not thread-safe, although the main method
  * may be safely invoked by multiple threads.

@@ -37,7 +37,7 @@ import org.joda.time.field.SkipDateTimeField;
  * <p>
  * JulianChronology is thread-safe and immutable.
  *
- * @see <a href="http://en.wikipedia.org/wiki/Julian_calendar">Wikipedia</a>
+ * @see <a href="https://en.wikipedia.org/wiki/Julian_calendar">Wikipedia</a>
  * @see GregorianChronology
  * @see GJChronology
  *

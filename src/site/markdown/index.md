@@ -100,7 +100,7 @@ calculations. It already provides out-of-the-box features, such as support for o
 date formats, which are difficult to replicate with the JDK.
 * <b>Up-to-date Time Zone calculations</b>.
 The <a href="timezones.html">time zone implementation</a> is based on
-the public <a href="http://www.iana.org/time-zones">tz database</a>, which is
+the public <a href="https://www.iana.org/time-zones">tz database</a>, which is
 updated several times a year. New Joda-Time releases incorporate all changes
 made to this database. Should the changes be needed earlier,
 <a href="tz_update.html">manually updating the zone data</a> is easy.
@@ -135,10 +135,10 @@ This release is considered stable and worthy of the 2.x tag.
 See the [change notes](changes-report.html) for full details.
 
 Joda-Time requires Java SE 5 or later and has [no dependencies](dependencies.html).
-There is a *compile-time* dependency on [Joda-Convert](http://www.joda.org/joda-convert/),
+There is a *compile-time* dependency on [Joda-Convert](/joda-convert/),
 but this is not required at runtime thanks to the magic of annotations.
 
-Available in [Maven Central](http://search.maven.org/#artifactdetails%7Cjoda-time%7Cjoda-time%7C2.10%7Cjar).
+Available in [Maven Central](https://search.maven.org/search?q=g:joda-time%20AND%20a:joda-time&core=gav).
 
 ```xml
 <dependency>

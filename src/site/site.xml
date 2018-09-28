@@ -34,6 +34,7 @@
       <toc>false</toc>
       <breadcrumbs>false</breadcrumbs>
       <markPageHeader>false</markPageHeader>
+      <protocolRelativeURLs>true</protocolRelativeURLs>
       <highlightJs>false</highlightJs>
       <pages>
         <index>
@@ -80,7 +81,7 @@
   <body>
     <head>
       <![CDATA[
-        <link href="http://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css" rel="stylesheet"/>
+        <link href="https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css" rel="stylesheet"/>
         <link rel="author" href="https://plus.google.com/113137868744510231215"/>]]>
     </head>
 
@@ -140,16 +141,16 @@
 
     <menu name="Related">
       <item name="Related projects" href="related.html"/>
-      <item name="JSP tags" href="http://www.joda.org/joda-time-jsptags/"/>
-      <item name="Hibernate" href="http://www.joda.org/joda-time-hibernate/"/>
-      <item name="I18N" href="http://www.joda.org/joda-time-i18n/"/>
+      <item name="JSP tags" href="/joda-time-jsptags/"/>
+      <item name="Hibernate" href="/joda-time-hibernate/"/>
+      <item name="I18N" href="/joda-time-i18n/"/>
     </menu>
 
     <menu name="Joda">
-      <item name="Home" href="http://www.joda.org"/>
-      <item name="Beans" href="http://www.joda.org/joda-beans/"/>
-      <item name="Convert" href="http://www.joda.org/joda-convert/"/>
-      <item name="Money" href="http://www.joda.org/joda-money/"/>
+      <item name="Home" href="/"/>
+      <item name="Beans" href="/joda-beans/"/>
+      <item name="Convert" href="/joda-convert/"/>
+      <item name="Money" href="/joda-money/"/>
     </menu>
 
     <menu name="Reports" ref="reports"/>

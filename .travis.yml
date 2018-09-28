@@ -16,6 +16,7 @@ install:
 script:
   - mvn install site -e -B
 after_success:
+  - if [[ $TRAVIS_TAG =~ ^website.*$ ]] && [ "$TRAVIS_JDK_VERSION" == "oraclejdk8" ]; then chmod +x ./.github/website.sh; .github/website.sh; fi
   - if [[ $TRAVIS_TAG =~ ^v.*$ ]] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_JDK_VERSION" == "oraclejdk8" ]; then chmod +x ./.github/website.sh; .github/website.sh; fi
 # secure keys for GITHUB_TOKEN
 env:

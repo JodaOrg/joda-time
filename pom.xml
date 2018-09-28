@@ -303,7 +303,7 @@
   <licenses>
     <license>
       <name>Apache 2</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
@@ -792,17 +792,17 @@
     <repository>
       <id>sonatype-joda-staging</id>
       <name>Sonatype OSS staging repository</name>
-      <url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
       <layout>default</layout>
     </repository>
     <snapshotRepository>
       <uniqueVersion>false</uniqueVersion>
       <id>sonatype-joda-snapshot</id>
       <name>Sonatype OSS snapshot repository</name>
-      <url>http://oss.sonatype.org/content/repositories/joda-snapshots</url>
+      <url>https://oss.sonatype.org/content/repositories/joda-snapshots</url>
       <layout>default</layout>
     </snapshotRepository>
-    <downloadUrl>http://oss.sonatype.org/content/repositories/joda-releases</downloadUrl>
+    <downloadUrl>https://oss.sonatype.org/content/repositories/joda-releases</downloadUrl>
   </distributionManagement>
 
   <!-- ==================================================================== -->

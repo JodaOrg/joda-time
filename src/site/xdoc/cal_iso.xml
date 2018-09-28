@@ -20,7 +20,6 @@ The ISO8601 standard was created by the International Organization for Standards
 It aims to eliminate the risk of misinterpretting dates and times when representations
 are passed between systems and across national boundaries.
 We are unable to provide a direct link to the standard as it is a paid-for document.
-However some <a href="http://www.exit109.com/~ghealton/.dates.html#@Standards.ISO.8601.Commentary.Links">ISO8601 links</a> may be useful.
 </p>
 <p>
 The ISO8601 standard is based on the <i>proleptic Gregorian calendar</i>.
@@ -38,8 +37,7 @@ year month day, year dayOfYear and year week dayOfWeek.
 References
 <ul>
 <li>Calendrical Calculations - Millenium Edition - ISBN 0521777526</li>
-<li><a href="http://www.exit109.com/~ghealton/.dates.html#@Standards.ISO.8601.Commentary.Links">ISO8601 links</a></li>
-<li><a href="http://en.wikipedia.org/wiki/ISO8601">Wikipedia - ISO Calendar</a></li>
+<li><a href="https://en.wikipedia.org/wiki/ISO8601">Wikipedia - ISO Calendar</a></li>
 </ul>
 </p>
 

@@ -115,7 +115,7 @@ It is important to keep both up to date and in sync if you want to compare the o
 </p>
 <p>
 The second reason affects date-times before the modern time-zone system was introduced.
-The time-zone data is obtained from the <a href="http://www.iana.org/time-zones">time-zone database</a>.
+The time-zone data is obtained from the <a href="https://www.iana.org/time-zones">time-zone database</a>.
 The database contains information on "Local Mean Time" (LMT) which is the local time that would have been
 observed at the location following the Sun's movements.
 </p>
@@ -358,8 +358,8 @@ It is not an acronym.
 <a name="pronounce" />
 <subsection name="How do you pronounce 'joda'?">
 <p>
-The 'J' in 'Joda' is pronounced the same as the 'J' in <a href="http://dictionary.reference.com/browse/Java">'Java'</a>.
-The project is not capable of wielding a <a href="http://en.wikipedia.org/wiki/Yoda">light saber</a> and is thus pronounced differently.
+The 'J' in 'Joda' is pronounced the same as the 'J' in <a href="https://www.dictionary.com/browse/java">'Java'</a>.
+The project is not capable of wielding a <a href="https://en.wikipedia.org/wiki/Yoda">light saber</a> and is thus pronounced differently.
 </p>
 <p>
 <br />

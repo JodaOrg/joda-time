@@ -11,7 +11,7 @@
 
 <section name="Available Time Zones">
 <p>
-Time zone data is provided by the public IANA <a href="http://www.iana.org/time-zones">time zone database</a>.
+Time zone data is provided by the public IANA <a href="https://www.iana.org/time-zones">time zone database</a>.
 The following table shows all the time zones supported by Joda-Time, using version 2013d
 of the database.
 It is also possible to update to a <a href="tz_update.html">later version of the database</a>.

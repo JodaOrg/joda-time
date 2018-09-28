@@ -460,7 +460,7 @@ public class DateTimeUtils {
     /**
      * Calculates the astronomical Julian Day for an instant.
      * <p>
-     * The <a href="http://en.wikipedia.org/wiki/Julian_day">Julian day</a> is a well-known
+     * The <a href="https://en.wikipedia.org/wiki/Julian_day">Julian day</a> is a well-known
      * system of time measurement for scientific use by the astronomy community.
      * It expresses the interval of time in days and fractions of a day since
      * January 1, 4713 BC (Julian) Greenwich noon.
@@ -476,7 +476,7 @@ public class DateTimeUtils {
      */
     public static final double toJulianDay(long epochMillis) {
         // useful links
-        // http://en.wikipedia.org/wiki/Julian_day#cite_note-13 - Wikipedia
+        // https://en.wikipedia.org/wiki/Julian_day#cite_note-13 - Wikipedia
         // http://aa.usno.navy.mil/data/docs/JulianDate.php" - USNO
         // http://users.zoominternet.net/~matto/Java/Julian%20Date%20Converter.htm - Julian Date Converter by Matt Oltersdorf
         // http://ssd.jpl.nasa.gov/tc.cgi#top - CalTech

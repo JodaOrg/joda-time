@@ -10,13 +10,13 @@ Joda-Time is licensed under the business-friendly Apache License Version 2.
 This is the same license as all of Apache, plus other open source projects such as Spring.
 
 **  Please also check out our related projects   **
-** http://www.joda.org/joda-time/related.html **
+** https://www.joda.org/joda-time/related.html **
 
 
 Release notes
 -------------
 From v2.9.7, Joda-Time release notes are found here:
-http://www.joda.org/joda-time/changes-report.html
+https://www.joda.org/joda-time/changes-report.html
 
 
 Scala
@@ -32,4 +32,4 @@ Feedback is best received using GitHub issues and Pull Requests.
 https://github.com/JodaOrg/joda-time/
 
 The Joda team
-http://www.joda.org/joda-time/
+https://www.joda.org/joda-time/

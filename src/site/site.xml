@@ -141,16 +141,16 @@
 
     <menu name="Related">
       <item name="Related projects" href="related.html"/>
-      <item name="JSP tags" href="http://www.joda.org/joda-time-jsptags/"/>
-      <item name="Hibernate" href="http://www.joda.org/joda-time-hibernate/"/>
-      <item name="I18N" href="http://www.joda.org/joda-time-i18n/"/>
+      <item name="JSP tags" href="https://www.joda.org/joda-time-jsptags/"/>
+      <item name="Hibernate" href="https://www.joda.org/joda-time-hibernate/"/>
+      <item name="I18N" href="https://www.joda.org/joda-time-i18n/"/>
     </menu>
 
     <menu name="Joda">
-      <item name="Home" href="http://www.joda.org/"/>
-      <item name="Beans" href="http://www.joda.org/joda-beans/"/>
-      <item name="Convert" href="http://www.joda.org/joda-convert/"/>
-      <item name="Money" href="http://www.joda.org/joda-money/"/>
+      <item name="Home" href="https://www.joda.org/"/>
+      <item name="Beans" href="https://www.joda.org/joda-beans/"/>
+      <item name="Convert" href="https://www.joda.org/joda-convert/"/>
+      <item name="Money" href="https://www.joda.org/joda-money/"/>
     </menu>
 
     <menu name="Reports" ref="reports"/>

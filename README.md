@@ -37,21 +37,21 @@ public String getBirthMonthText(LocalDate dateOfBirth) {
 }
 ```
 
-Joda-Time is licensed under the business-friendly [Apache 2.0 licence](http://www.joda.org/joda-time/license.html).
+Joda-Time is licensed under the business-friendly [Apache 2.0 licence](https://www.joda.org/joda-time/licenses.html).
 
 
 ### Documentation
 Various documentation is available:
 
-* The [home page](http://www.joda.org/joda-time/)
-* Two user guides - [quick](http://www.joda.org/joda-time/quickstart.html) and [full](http://www.joda.org/joda-time/userguide.html)
-* The [Javadoc](http://www.joda.org/joda-time/apidocs/index.html)
-* The [FAQ](http://www.joda.org/joda-time/faq.html) list
-* Information on [downloading and installing](http://www.joda.org/joda-time/installation.html) Joda-Time including release notes
+* The [home page](https://www.joda.org/joda-time/)
+* Two user guides - [quick](https://www.joda.org/joda-time/quickstart.html) and [full](https://www.joda.org/joda-time/userguide.html)
+* The [Javadoc](https://www.joda.org/joda-time/apidocs/index.html)
+* The [FAQ](https://www.joda.org/joda-time/faq.html) list
+* Information on [downloading and installing](https://www.joda.org/joda-time/installation.html) Joda-Time including release notes
 
 
 ### Releases
-[Release 2.10](http://www.joda.org/joda-time/download.html) is the current latest release.
+[Release 2.10](https://www.joda.org/joda-time/download.html) is the current latest release.
 This release is considered stable and worthy of the 2.x tag.
 It depends on JDK 1.5 or later.
 
@@ -78,7 +78,7 @@ Related projects at GitHub:
 - https://github.com/JodaOrg/joda-time-i18n
 
 Other related projects:
-- http://www.joda.org/joda-time/related.html
+- https://www.joda.org/joda-time/related.html
 
 
 ### Support

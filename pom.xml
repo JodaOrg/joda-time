@@ -10,7 +10,7 @@
   <name>Joda-Time</name>
   <version>2.10</version>
   <description>Date and time library to replace JDK date handling</description>
-  <url>http://www.joda.org/joda-time/</url>
+  <url>https://www.joda.org/joda-time/</url>
 
   <!-- ==================================================================== -->
   <issueManagement>
@@ -315,7 +315,7 @@
   </scm>
   <organization>
     <name>Joda.org</name>
-    <url>http://www.joda.org</url>
+    <url>https://www.joda.org</url>
   </organization>
 
   <!-- ==================================================================== -->
@@ -881,7 +881,7 @@
             <version>1.1.1</version>
             <configuration>
               <releaseName>Release v${project.version}</releaseName>
-              <description>See the [change notes](http://www.joda.org/joda-time/changes-report.html) for more information.</description>
+              <description>See the [change notes](https://www.joda.org/joda-time/changes-report.html) for more information.</description>
               <tag>v${project.version}</tag>
               <overwriteArtifact>true</overwriteArtifact>
               <fileSets>

@@ -32,6 +32,7 @@ import java.util.Set;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Period;
@@ -584,6 +585,8 @@ public class DateTimeZoneBuilder {
                     next = setDayOfWeek(chrono, next);
                 }
             }
+            next = chrono.millisOfDay().set(next, 0);
+            next = chrono.millisOfDay().add(next, iMillisOfDay);
 
             // Convert from local time to UTC.
             return next - offset;
@@ -626,6 +629,8 @@ public class DateTimeZoneBuilder {
                     prev = setDayOfWeek(chrono, prev);
                 }
             }
+            prev = chrono.millisOfDay().set(prev, 0);
+            prev = chrono.millisOfDay().add(prev, iMillisOfDay);
 
             // Convert from local time to UTC.
             return prev - offset;

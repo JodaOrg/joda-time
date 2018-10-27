@@ -27,6 +27,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
 import org.joda.time.tz.ZoneInfoCompiler.DateTimeOfYear;
 
@@ -268,6 +269,15 @@ public class TestCompiler extends TestCase {
         DateTime dt = new DateTime(2006, 3, 1, 0, 0, zone);
         long next = zone.nextTransition(dt.getMillis());
         assertEquals(next, new DateTime(2006, 3, 31, 0, 0, DateTimeZone.forOffsetHours(2)).getMillis());
+    }
+
+    public void test_Tokyo_1949() {
+        DateTimeZone zone = DateTimeZone.forID("Asia/Tokyo");
+        DateTime dt = new DateTime(1949, 9, 7, 0, 0, zone);
+        long next = zone.nextTransition(dt.getMillis());
+        DateTime expected = new DateTime(1949, 9, 11, 0, 0, DateTimeZone.forOffsetHours(9));
+        assertEquals(DateTimeConstants.SUNDAY, expected.getDayOfWeek());
+        assertEquals(expected.getMillis(), next);
     }
 
 }

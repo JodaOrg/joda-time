@@ -9,9 +9,15 @@
 
     <!-- types are add, fix, remove, update -->
     <release version="2.10.1" date="SNAPSHOT" description="v2.10.1">
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2018g.
+      </action>
       <action dev="jodastephen" type="fix">
         Fix time-zone compiler for Namibia. Oh I do love tzdb.
         Fixes #485.
+      </action>
+      <action dev="jodastephen" type="fix">
+        Fix time-zone compiler for Tokyo. Oh I do love tzdb.
       </action>
     </release>
     <release version="2.10" date="2018-05-30" description="v2.10">

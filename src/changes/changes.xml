@@ -8,7 +8,7 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
-    <release version="2.10.1" date="SNAPSHOT" description="v2.10.1">
+    <release version="2.10.1" date="2018-10-27" description="v2.10.1">
       <action dev="jodastephen" type="update">
         DateTimeZone data updated to version 2018g.
       </action>

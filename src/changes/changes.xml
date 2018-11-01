@@ -13,6 +13,10 @@
         Fix calculation of DateTime.withTimeAtStartOfDay() when DST is at midnight.
         Fixes #488.
       </action>
+      <action dev="antonqiu" type="fix">
+        Fix Period.years() factory method internal implementation.
+        Fixes #487.
+      </action>
     </release>
     <release version="2.10.1" date="2018-10-27" description="v2.10.1">
       <action dev="jodastephen" type="update">

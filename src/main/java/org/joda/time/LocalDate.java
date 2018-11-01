@@ -730,7 +730,7 @@ public final class LocalDate
         long localMillis = getLocalMillis() + 6L * DateTimeConstants.MILLIS_PER_HOUR;
         long instant = zone.convertLocalToUTC(localMillis, false);
         instant = chrono.dayOfMonth().roundFloor(instant);
-        return new DateTime(instant, chrono);
+        return new DateTime(instant, chrono).withEarlierOffsetAtOverlap();
     }
 
     //-----------------------------------------------------------------------

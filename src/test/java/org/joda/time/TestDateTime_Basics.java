@@ -911,6 +911,12 @@ public class TestDateTime_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
     
+    public void testWithTimeAtStartOfDay() {
+        DateTime test = new DateTime(2018, 10, 28, 0, 0, DateTimeZone.forID("Atlantic/Azores"));
+        DateTime result = test.withTimeAtStartOfDay();
+        assertEquals(test, result);
+    }
+    
     @SuppressWarnings("deprecation")
     public void testWithFields_RPartial() {
         DateTime test = new DateTime(2004, 5, 6, 7, 8, 9, 0);

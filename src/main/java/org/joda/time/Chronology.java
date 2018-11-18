@@ -415,7 +415,7 @@ public abstract class Chronology {
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    public abstract  DateTimeField weekyearOfCentury();
+    public abstract DateTimeField weekyearOfCentury();
 
     // Month
     //-----------------------------------------------------------------------

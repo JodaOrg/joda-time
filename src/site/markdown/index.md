@@ -165,13 +165,15 @@ the last release to support Java SE 4 and the last v1.x release.
 
 ### Support
 
-Support on bugs, library usage or enhancement requests is available on a best efforts basis.
-
-To suggest enhancements or contribute, please [fork the source code](https://github.com/JodaOrg/joda-time)
-on GitHub and send a Pull Request.
+Please use [Stack Overflow](https://stackoverflow.com/questions/tagged/jodatime) for general usage questions.
+GitHub [issues](https://github.com/JodaOrg/joda-time/issues) and [pull requests](https://github.com/JodaOrg/joda-time/pulls)
+should be used when you want to help advance the project.
+Commercial support is available via the
+[Tidelift subscription](https://tidelift.com/subscription/pkg/maven-joda-time-joda-time?utm_source=maven-joda-time-joda-time&utm_medium=referral&utm_campaign=website).
 
 Note that Joda-Time is considered to be a largely "finished" project.
 No major enhancements are planned.
 If using Java SE 8, please migrate to `java.time` (JSR-310).
 
-Alternatively, use GitHub [issues](https://github.com/JodaOrg/joda-time/issues).
+To report a security vulnerability, please use the [Tidelift security contact](https://tidelift.com/security).
+Tidelift will coordinate the fix and disclosure.

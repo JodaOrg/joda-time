@@ -17,6 +17,9 @@
         Fix Period.years() factory method internal implementation.
         Fixes #487.
       </action>
+      <action dev="jodastephen" type="add">
+        Add Tidelift commercial support and security policy.
+      </action>
     </release>
     <release version="2.10.1" date="2018-10-27" description="v2.10.1">
       <action dev="jodastephen" type="update">

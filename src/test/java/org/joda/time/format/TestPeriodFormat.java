@@ -38,6 +38,8 @@ public class TestPeriodFormat extends TestCase {
     private static final Locale DA = new Locale("da");
     private static final Locale JA = new Locale("ja");
     private static final Locale PL = new Locale("pl");
+    private static final Locale BG = new Locale("bg");
+    private static final Locale CS = new Locale("cs");
 
     private Locale originalLocale = null;
 
@@ -571,6 +573,22 @@ public class TestPeriodFormat extends TestCase {
         assertEquals("2225 milisekund", pf.print(Period.millis(2225)));
     }
     
+    // -----------------------------------------------------------------------
+    // wordBased(new Locale("bg")
+    // -----------------------------------------------------------------------
+    public void test_wordBased_bg_formatStandard() {
+        Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
+        assertEquals("1 ден, 5 часа, 6 минути, 7 секунди и 8 милисекунди", PeriodFormat.wordBased(BG).print(p));
+    }
+
+    // -----------------------------------------------------------------------
+    // wordBased(new Locale("cs")
+    // -----------------------------------------------------------------------
+    public void test_wordBased_cs_formatStandard() {
+        Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
+        assertEquals("1 den, 5 hodin, 6 minut, 7 sekund a 8 milisekund", PeriodFormat.wordBased(CS).print(p));
+    }
+
     //-----------------------------------------------------------------------
     // Cross check languages
     //-----------------------------------------------------------------------

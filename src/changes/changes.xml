@@ -17,6 +17,10 @@
         Fix Period.years() factory method internal implementation.
         Fixes #487.
       </action>
+      <action dev="alshopov" type="add">
+        Add Bulgarian translation of periods.
+        Fixes #496.
+      </action>
       <action dev="jodastephen" type="add">
         Add Tidelift commercial support and security policy.
       </action>

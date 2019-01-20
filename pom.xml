@@ -889,7 +889,7 @@
             <version>1.1.1</version>
             <configuration>
               <releaseName>Release v${project.version}</releaseName>
-              <description>See the [change notes](https://www.joda.org/joda-time/changes-report.html) for more information.</description>
+              <description>See the [change notes](https://www.joda.org/joda-time/changes-report.html#a${project.version}) for more information.</description>
               <tag>v${project.version}</tag>
               <overwriteArtifact>true</overwriteArtifact>
               <fileSets>

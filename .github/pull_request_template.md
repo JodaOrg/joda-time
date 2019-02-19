@@ -1,6 +1,6 @@
 The Joda-Time project has been running for many years now, and the codebase is stable.
 Java SE 8 contains a new date and time library that is the successor to Joda-Time.
-As such Joda-Time is primarily in maintainence mode and few pull requests are likely to be merged.
+As such Joda-Time is primarily in maintenance mode and few pull requests are likely to be merged.
 
 **As a general rule, most enhancement PRs will now be rejected.**
 

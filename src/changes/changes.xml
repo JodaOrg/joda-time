@@ -9,6 +9,9 @@
 
     <!-- types are add, fix, remove, update -->
     <release version="2.10.2" date="SNAPSHOT" description="v2.10.2">
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2019a.
+      </action>
       <action dev="jodastephen" type="fix">
         Fix calculation of DateTime.withTimeAtStartOfDay() when DST is at midnight.
         Fixes #488.

@@ -1006,7 +1006,7 @@
     <maven.compiler.source>1.5</maven.compiler.source>
     <maven.compiler.target>1.5</maven.compiler.target>
     <maven.compiler.fork>true</maven.compiler.fork>
-    <maven.compiler.verbose>true</maven.compiler.verbose>
+    <maven.compiler.verbose>false</maven.compiler.verbose>
     <maven.compiler.optimize>true</maven.compiler.optimize>
     <maven.compiler.debug>true</maven.compiler.debug>
     <maven.compiler.debuglevel>lines,source</maven.compiler.debuglevel>

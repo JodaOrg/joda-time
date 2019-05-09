@@ -21,6 +21,10 @@
         Add Bulgarian translation of periods.
         Fixes #496.
       </action>
+      <action dev="niklasf" type="fix">
+        Fix Czech translation of periods.
+        Fixes #504.
+      </action>
       <action dev="jodastephen" type="add">
         Add Tidelift commercial support and security policy.
       </action>

@@ -1080,6 +1080,7 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    // rule with negative SAVE value
     public void testDublin() {
         DateTimeZone zone = DateTimeZone.forID("Europe/Dublin");
         DateTime winter = new DateTime(2018, 1, 1, 0, 0, 0, 0, zone);
@@ -1192,6 +1193,20 @@ public class TestDateTimeZone extends TestCase {
         assertEquals(-5 * 3600000, zone.getOffset(winter1933.getMillis()));
         assertEquals(new LocalDate(1933, 10, 1), winter1933.toLocalDate());
         assertEquals(DateTimeConstants.SUNDAY, winter1933.getDayOfWeek());
+    }
+
+    //-----------------------------------------------------------------------
+    // rule of style "Fri <= 1"
+    public void testJerusalem() {
+        DateTimeZone zone = DateTimeZone.forID("Asia/Jerusalem");
+        DateTime winter = new DateTime(2006, 1, 1, 0, 0, 0, 0, zone);
+        assertEquals(true, zone.isStandardOffset(winter.getMillis()));
+
+        DateTime cutover = new DateTime(zone.nextTransition(winter.getMillis()), zone);
+        assertEquals(false, zone.isStandardOffset(cutover.getMillis()));
+        assertEquals(5, cutover.getDayOfWeek());
+        assertEquals(31, cutover.getDayOfMonth());
+        assertEquals(3, cutover.getMonthOfYear());
     }
 
     //-----------------------------------------------------------------------

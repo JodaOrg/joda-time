@@ -83,6 +83,14 @@ Related projects at GitHub:
 Other related projects:
 - https://www.joda.org/joda-time/related.html
 
+### For enterprise
+Available as part of the Tidelift Subscription.
+
+Joda and the maintainers of thousands of other packages are working with Tidelift to deliver one enterprise subscription that covers all of the open source you use.
+
+If you want the flexibility of open source and the confidence of commercial-grade software, this is for you.
+
+[Learn more](https://tidelift.com/subscription/pkg/maven-joda-time-joda-time?utm_source=maven-joda-time-joda-time&utm_medium=github)
 
 ### Support
 Please use [Stack Overflow](https://stackoverflow.com/questions/tagged/jodatime) for general usage questions.

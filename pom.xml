@@ -930,7 +930,8 @@
               <nexusUrl>https://oss.sonatype.org/</nexusUrl>
               <serverId>sonatype-joda-staging</serverId>
               <description>Releasing ${project.groupId}:${project.artifactId}:${project.version}</description>
-              <autoReleaseAfterClose>false</autoReleaseAfterClose>
+              <keepStagingRepositoryOnCloseRuleFailure>true</keepStagingRepositoryOnCloseRuleFailure>
+              <autoReleaseAfterClose>true</autoReleaseAfterClose>
             </configuration>
           </plugin>
         </plugins>

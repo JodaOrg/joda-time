@@ -1,10 +1,8 @@
 # build does not work on Java 9 or later as Java 5 is not a valid target
 
-sudo: false
 language: java
 jdk:
-  - oraclejdk8
-  - openjdk7
+  - openjdk8
 cache:
   directories:
     - "$HOME/.m2/repository"

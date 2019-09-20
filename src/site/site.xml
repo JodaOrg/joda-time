@@ -21,7 +21,7 @@
         <name>Joda-Time</name>
         <href>index.html</href>
       </brand>
-      <topNav>Documentation|Releases|Development|Related|Joda</topNav>
+      <topNav>Documentation|Releases|Development|Related|Joda|For Enterprise</topNav>
       <bottomNav>
         <column>Information</column>
         <column>Releases|Related</column>
@@ -151,6 +151,10 @@
       <item name="Beans" href="https://www.joda.org/joda-beans/"/>
       <item name="Convert" href="https://www.joda.org/joda-convert/"/>
       <item name="Money" href="https://www.joda.org/joda-money/"/>
+    </menu>
+
+    <menu name="For Enterprise">
+      <item name="Tidelift" href="https://tidelift.com/subscription/pkg/maven-joda-time-joda-time?utm_source=maven-joda-time-joda-time&amp;utm_medium=referral&amp;utm_campaign=nav"/>
     </menu>
 
     <menu name="Reports" ref="reports"/>

@@ -79,6 +79,8 @@ public class ISODateTimeFormat {
      * formatter that best fits. This can be useful for outputting
      * less-common ISO styles, such as YearMonth (YYYY-MM) or MonthDay (--MM-DD).
      * <p>
+     * Note that parsing is often not supported by the resulting formatter, especially in basic mode.
+     * <p>
      * The list provided may have overlapping fields, such as dayOfWeek and
      * dayOfMonth. In this case, the style is chosen based on the following
      * list, thus in the example, the calendar style is chosen as dayOfMonth

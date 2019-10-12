@@ -154,7 +154,7 @@
     </menu>
 
     <menu name="For Enterprise">
-      <item name="Tidelift" href="https://tidelift.com/subscription/pkg/maven-joda-time-joda-time?utm_source=maven-joda-time-joda-time&amp;utm_medium=referral&amp;utm_campaign=nav"/>
+      <item name="Tidelift" href="enterprise.html"/>
     </menu>
 
     <menu name="Reports" ref="reports"/>

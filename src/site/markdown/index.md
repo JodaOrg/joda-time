@@ -180,6 +180,8 @@ Please use [Stack Overflow](https://stackoverflow.com/questions/tagged/jodatime)
 GitHub [issues](https://github.com/JodaOrg/joda-time/issues) and [pull requests](https://github.com/JodaOrg/joda-time/pulls)
 should be used when you want to help advance the project.
 
+Any donations to support the project are accepted via [OpenCollective](https://opencollective.com/joda).
+
 Note that Joda-Time is considered to be a largely "finished" project.
 No major enhancements are planned.
 If using Java SE 8, please migrate to `java.time` (JSR-310).

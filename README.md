@@ -83,6 +83,7 @@ Related projects at GitHub:
 Other related projects:
 - https://www.joda.org/joda-time/related.html
 
+
 ### For enterprise
 Available as part of the Tidelift Subscription.
 
@@ -92,12 +93,13 @@ If you want the flexibility of open source and the confidence of commercial-grad
 
 [Learn more](https://tidelift.com/subscription/pkg/maven-joda-time-joda-time?utm_source=maven-joda-time-joda-time&utm_medium=github)
 
+
 ### Support
 Please use [Stack Overflow](https://stackoverflow.com/questions/tagged/jodatime) for general usage questions.
 GitHub [issues](https://github.com/JodaOrg/joda-time/issues) and [pull requests](https://github.com/JodaOrg/joda-time/pulls)
 should be used when you want to help advance the project.
-Commercial support is available via the
-[Tidelift subscription](https://tidelift.com/subscription/pkg/maven-joda-time-joda-time?utm_source=maven-joda-time-joda-time&utm_medium=referral&utm_campaign=readme).
+
+Any donations to support the project are accepted via [OpenCollective](https://opencollective.com/joda).
 
 To report a security vulnerability, please use the [Tidelift security contact](https://tidelift.com/security).
 Tidelift will coordinate the fix and disclosure.

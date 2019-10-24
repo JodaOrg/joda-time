@@ -160,6 +160,7 @@ including information on the corner cases that are not compatible.
 The ancient release [1.6.2](https://sourceforge.net/projects/joda-time/files/joda-time/1.6.2/) was
 the last release to support Java SE 4 and the last v1.x release.
 
+Java module name: `org.joda.time`.
 
 ---
 

@@ -51,7 +51,7 @@ Various documentation is available:
 
 
 ### Releases
-[Release 2.10.4](https://www.joda.org/joda-time/download.html) is the current latest release.
+[Release 2.10.5](https://www.joda.org/joda-time/download.html) is the current latest release.
 This release is considered stable and worthy of the 2.x tag.
 It depends on JDK 1.5 or later.
 
@@ -62,13 +62,13 @@ Available in the [Maven Central repository](https://search.maven.org/search?q=g:
 <dependency>
   <groupId>joda-time</groupId>
   <artifactId>joda-time</artifactId>
-  <version>2.10.4</version>
+  <version>2.10.5</version>
 </dependency>
 ```
 
 **Gradle configuration:**
 ```groovy
-compile 'joda-time:joda-time:2.10.4'
+compile 'joda-time:joda-time:2.10.5'
 ```
 
 ![Tidelift dependency check](https://tidelift.com/badges/github/JodaOrg/joda-time)
@@ -111,5 +111,4 @@ Tidelift will coordinate the fix and disclosure.
 * Commit and push
 * Ensure on Java SE 8
 * `mvn clean deploy -Doss.repo -Dgpg.passphrase=""`
-* Release project in [Nexus](https://oss.sonatype.org)
 * Website will be built and released by Travis

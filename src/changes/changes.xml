@@ -8,6 +8,11 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
+    <release version="2.10.5" date="2019-10-24" description="v2.10.5">
+      <action dev="jodastephen" type="update">
+        Updated Joda-Convert version.
+      </action>
+    </release>
     <release version="2.10.4" date="2019-09-20" description="v2.10.4">
       <action dev="bradarndt" type="update">
         DateTimeZone data updated to version 2019c.

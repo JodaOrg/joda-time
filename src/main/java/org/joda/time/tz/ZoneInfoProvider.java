@@ -23,8 +23,10 @@ import java.io.InputStream;
 import java.lang.ref.SoftReference;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
@@ -157,7 +159,18 @@ public class ZoneInfoProvider implements Provider {
             return null;
         }
 
-        if (obj instanceof SoftReference<?>) {
+        if (obj instanceof Entry) {
+            // If this point is reached, mapping must link to another.
+            @SuppressWarnings("unchecked")
+            Entry<String, SoftReference<DateTimeZone>> entry = (Entry<String, SoftReference<DateTimeZone>>) obj;
+            SoftReference<DateTimeZone> ref = entry.getValue();
+            DateTimeZone tz = ref.get();
+            if (tz != null) {
+                return tz;
+            }
+            // Reference cleared; load data again.
+            return loadZoneData(entry.getKey(), id);
+        } else if (obj instanceof SoftReference<?>) {
             @SuppressWarnings("unchecked")
             SoftReference<DateTimeZone> ref = (SoftReference<DateTimeZone>) obj;
             DateTimeZone tz = ref.get();
@@ -165,14 +178,14 @@ public class ZoneInfoProvider implements Provider {
                 return tz;
             }
             // Reference cleared; load data again.
-            return loadZoneData(id);
+            return loadZoneData(id, id);
         } else if (id.equals(obj)) {
             // Load zone data for the first time.
-            return loadZoneData(id);
+            return loadZoneData(id, id);
         }
 
         // If this point is reached, mapping must link to another.
-        return getZone((String)obj);
+        return loadZoneData((String) obj, id);
     }
 
     /**
@@ -231,15 +244,20 @@ public class ZoneInfoProvider implements Provider {
     /**
      * Loads the time zone data for one id.
      * 
-     * @param id  the id to load
+     * @param dataId the id of the time zone in the time zone data base (for renamed time zones this is the new one)
+     * @param id  the id of the time zone in the returned object (for renamed time zones this is the old one)
      * @return the zone
      */
-    private DateTimeZone loadZoneData(String id) {
+    private DateTimeZone loadZoneData(String dataId, String id) {
         InputStream in = null;
         try {
-            in = openResource(id);
+            in = openResource(dataId);
             DateTimeZone tz = DateTimeZoneBuilder.readFrom(in, id);
-            iZoneInfoMap.put(id, new SoftReference<DateTimeZone>(tz));
+            if (!dataId.equals(id)) {
+                iZoneInfoMap.put(id, new SimpleEntry<String, SoftReference<DateTimeZone>>(dataId, new SoftReference<DateTimeZone>(tz)));
+            } else {
+                iZoneInfoMap.put(id, new SoftReference<DateTimeZone>(tz));
+            }
             return tz;
         } catch (IOException ex) {
             uncaughtException(ex);

@@ -491,7 +491,7 @@ public class TestDateTimeFormatterBuilder extends TestCase {
         DateTimeFormatter f = bld.toFormatter();
 
         DateTime dt = new DateTime(2007, 3, 4, 12, 30, 0, DateTimeZone.forID("GMT"));
-        assertEquals("2007-03-04 12:30 Etc/GMT", f.print(dt));
+        assertEquals("2007-03-04 12:30 GMT", f.print(dt));
         assertEquals(dt, f.parseDateTime("2007-03-04 12:30 GMT"));
     }
 
@@ -501,7 +501,7 @@ public class TestDateTimeFormatterBuilder extends TestCase {
         DateTimeFormatter f = bld.toFormatter();
 
         DateTime dt = new DateTime(2007, 3, 4, 12, 30, 0, DateTimeZone.forID("GMT"));
-        assertEquals("2007-03-04 12:30 Etc/GMT]", f.print(dt));
+        assertEquals("2007-03-04 12:30 GMT]", f.print(dt));
         assertEquals(dt, f.parseDateTime("2007-03-04 12:30 GMT]"));
     }
 

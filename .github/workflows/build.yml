@@ -1,0 +1,50 @@
+# build does not work on Java 9 or later as Java 5 is not a valid target
+
+name: Build
+
+on: 
+  push:
+    branches:
+      - '*'
+    tags:
+      - 'v*'
+      - 'website*'
+  pull_request:
+    branches:
+      - 'master'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Set up JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Maven cache
+      uses: actions/cache@v1
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ matrix.java }}-${{ hashFiles('**/pom.xml') }}-${{ hashFiles('.github/workflows/build.yml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+    - name: Maven version
+      run: |
+        mkdir -p ./.mvn
+        echo '-e -B -DtrimStackTrace=false' > ./.mvn/maven.config
+        mvn --version
+        mkdir -p target
+    - name: Maven build
+      run: |
+        mvn install site
+
+    - name: Website
+      if: github.event_name == 'push' && (startsWith(github.ref, 'refs/tags/website') || startsWith(github.ref, 'refs/tags/v'))
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_PERSONAL_TOKEN }}
+      run: |
+        chmod +x ./.github/website.sh
+        .github/website.sh

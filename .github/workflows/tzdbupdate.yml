@@ -1,0 +1,99 @@
+name: TZDB check
+
+on:
+  schedule:
+    - cron:  '0 3 * * 1,3,5'
+
+jobs:
+  tzdbcheck:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.GITHUB_PERSONAL_TOKEN }}
+    - name: Maven cache
+      uses: actions/cache@v1
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-${{ hashFiles('.github/workflows/tzdbupdate.yml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Maven version
+      run: |
+        mkdir -p ./.mvn
+        echo '-e -B -DtrimStackTrace=false' > ./.mvn/maven.config
+        mvn --version
+        mkdir -p target
+
+    - name: Get current version
+      run: |
+        CURRENT_TZDB=$(mvn help:evaluate -Dexpression=tz.database.version -q -DforceStdout)
+        echo "current: $CURRENT_TZDB"
+        echo "::set-env name=CURRENT_TZDB::$CURRENT_TZDB"
+    - name: Get latest version
+      working-directory: target
+      run: |
+        git clone https://github.com/eggert/tz.git
+        cd tz
+        LATEST_TZDB=$(git describe --abbrev=0 --tags)
+        echo "latest: $LATEST_TZDB"
+        echo "::set-env name=LATEST_TZDB::$LATEST_TZDB"
+    - name: Compare versions
+      run: |
+        echo "current: $CURRENT_TZDB"
+        echo "latest:  $LATEST_TZDB"
+        if [ "$CURRENT_TZDB" == "$LATEST_TZDB" ]; then echo "::set-env name=NOOP::true"; fi
+
+    - name: Checkout tzdb release
+      if: env.NOOP != 'true'
+      working-directory: target/tz
+      run: |
+        git checkout master
+        git reset --hard ${LATEST_TZDB} --
+        git status
+    - name: Copy files
+      if: env.NOOP != 'true'
+      run: |
+        ls -l target/tz
+        \cp target/tz/africa src/main/java/org/joda/time/tz/src
+        \cp target/tz/antarctica src/main/java/org/joda/time/tz/src
+        \cp target/tz/asia src/main/java/org/joda/time/tz/src
+        \cp target/tz/australasia src/main/java/org/joda/time/tz/src
+        \cp target/tz/backward src/main/java/org/joda/time/tz/src
+        \cp target/tz/etcetera src/main/java/org/joda/time/tz/src
+        \cp target/tz/europe src/main/java/org/joda/time/tz/src
+        \cp target/tz/northamerica src/main/java/org/joda/time/tz/src
+        \cp target/tz/pacificnew src/main/java/org/joda/time/tz/src
+        \cp target/tz/southamerica src/main/java/org/joda/time/tz/src
+        \cp target/tz/systemv src/main/java/org/joda/time/tz/src
+        ls -l src/main/java/org/joda/time/tz/src
+    - name: Update build with new tzdb
+      if: env.NOOP != 'true'
+      run: |
+        sed -i 's/$CURRENT_TZDB/${LATEST_TZDB}/g' src/main/java/org/joda/time/tz/src/Readme.txt
+        mvn versions:set-property -DnewVersion=${LATEST_TZDB} -Dproperty=tz.database.version -DgenerateBackupPoms=false
+        mvn install
+
+    - name: Create Pull Request
+      if: env.NOOP != 'true'
+      id: createpr
+      uses: peter-evans/create-pull-request@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_PERSONAL_TOKEN }}
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: 'Update TZDB to ${{ env.LATEST_TZDB }}'
+        committer: Stephen Colebourne (CI) <scolebourne@joda.org>
+        author: Stephen Colebourne (CI) <scolebourne@joda.org>
+        title: 'Update TZDB to ${{ env.LATEST_TZDB }}'
+        body: 'Updates TZDB data to ${{ env.LATEST_TZDB }}'
+        assignees: jodastephen
+        labels: TZDB
+        branch: bot/update-tzdb

@@ -9,6 +9,9 @@
 
     <!-- types are add, fix, remove, update -->
     <release version="2.10.6" date="SNAPSHOT" description="v2.10.6">
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2020a.
+      </action>
       <action dev="stari4ek" type="add">
         Add localization for Ukraine.
         Fixes #523.

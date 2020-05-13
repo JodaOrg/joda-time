@@ -9,6 +9,10 @@
 
     <!-- types are add, fix, remove, update -->
     <release version="2.10.7" date="SNAPSHOT" description="v2.10.7">
+      <action dev="AlexMe951" type="fix">
+        Fix localization for Russia.
+        Fixes #533.
+      </action>
 	</release>
     <release version="2.10.6" date="2020-04-24" description="v2.10.6">
       <action dev="jodastephen" type="update">

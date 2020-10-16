@@ -526,32 +526,46 @@ public class TestLocalDate_Constructors extends TestCase {
         try {
             new LocalDate(Integer.MIN_VALUE, 6, 9);
             fail();
-        } catch (IllegalArgumentException ex) {}
+        } catch (IllegalArgumentException ex) {
+            assertEquals("Value -2147483648 for year must be in the range [-292275055,292278994]", ex.getMessage());
+        }
         try {
             new LocalDate(Integer.MAX_VALUE, 6, 9);
             fail();
-        } catch (IllegalArgumentException ex) {}
+        } catch (IllegalArgumentException ex) {
+            assertEquals("Value 2147483647 for year must be in the range [-292275055,292278994]", ex.getMessage());
+        }
         try {
             new LocalDate(1970, 0, 9);
             fail();
-        } catch (IllegalArgumentException ex) {}
+        } catch (IllegalArgumentException ex) {
+            assertEquals("Value 0 for monthOfYear must be in the range [1,12]", ex.getMessage());
+        }
         try {
             new LocalDate(1970, 13, 9);
             fail();
-        } catch (IllegalArgumentException ex) {}
+        } catch (IllegalArgumentException ex) {
+            assertEquals("Value 13 for monthOfYear must be in the range [1,12]", ex.getMessage());
+        }
         try {
             new LocalDate(1970, 6, 0);
             fail();
-        } catch (IllegalArgumentException ex) {}
+        } catch (IllegalArgumentException ex) {
+            assertEquals("Value 0 for dayOfMonth must be in the range [1,30]: year: 1970 month: 6", ex.getMessage());
+        }
         try {
             new LocalDate(1970, 6, 31);
             fail();
-        } catch (IllegalArgumentException ex) {}
+        } catch (IllegalArgumentException ex) {
+            assertEquals("Value 31 for dayOfMonth must be in the range [1,30]: year: 1970 month: 6", ex.getMessage());
+        }
         new LocalDate(1970, 7, 31);
         try {
             new LocalDate(1970, 7, 32);
             fail();
-        } catch (IllegalArgumentException ex) {}
+        } catch (IllegalArgumentException ex) {
+            assertEquals("Value 32 for dayOfMonth must be in the range [1,31]: year: 1970 month: 7", ex.getMessage());
+        }
     }
 
     public void testConstructor_int_int_int_Chronology() throws Throwable {

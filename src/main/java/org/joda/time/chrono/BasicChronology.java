@@ -24,6 +24,7 @@ import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
+import org.joda.time.IllegalFieldValueException;
 import org.joda.time.field.DividedDateTimeField;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.field.MillisDurationField;
@@ -629,7 +630,16 @@ abstract class BasicChronology extends AssembledChronology {
     long getDateMidnightMillis(int year, int monthOfYear, int dayOfMonth) {
         FieldUtils.verifyValueBounds(DateTimeFieldType.year(), year, getMinYear() - 1, getMaxYear() + 1);
         FieldUtils.verifyValueBounds(DateTimeFieldType.monthOfYear(), monthOfYear, 1, getMaxMonth(year));
-        FieldUtils.verifyValueBounds(DateTimeFieldType.dayOfMonth(), dayOfMonth, 1, getDaysInYearMonth(year, monthOfYear));
+        // avoid FieldUtils to get better error message
+        int upperBound = getDaysInYearMonth(year, monthOfYear);
+        if ((dayOfMonth < 1) || (dayOfMonth > upperBound)) {
+            throw new IllegalFieldValueException(
+                    DateTimeFieldType.dayOfMonth(), 
+                    Integer.valueOf(dayOfMonth),
+                    Integer.valueOf(1), 
+                    Integer.valueOf(upperBound),
+                    "year: " + year + " month: " + monthOfYear);
+        }
         long instant = getYearMonthDayMillis(year, monthOfYear, dayOfMonth);
         // check for limit caused by min/max year +1/-1
         if (instant < 0 && year == getMaxYear() + 1) {

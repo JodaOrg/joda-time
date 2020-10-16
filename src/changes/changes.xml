@@ -9,6 +9,10 @@
 
     <!-- types are add, fix, remove, update -->
     <release version="2.10.7" date="SNAPSHOT" description="v2.10.7">
+      <action dev="jodastephen" type="add">
+        Better error message for year-month-day.
+        Fixes #540.
+      </action>
       <action dev="AlexMe951" type="fix">
         Fix localization for Russia.
         Fixes #533.

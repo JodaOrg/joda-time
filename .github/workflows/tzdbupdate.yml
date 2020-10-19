@@ -70,9 +70,7 @@ jobs:
         \cp target/tz/etcetera src/main/java/org/joda/time/tz/src
         \cp target/tz/europe src/main/java/org/joda/time/tz/src
         \cp target/tz/northamerica src/main/java/org/joda/time/tz/src
-        \cp target/tz/pacificnew src/main/java/org/joda/time/tz/src
         \cp target/tz/southamerica src/main/java/org/joda/time/tz/src
-        \cp target/tz/systemv src/main/java/org/joda/time/tz/src
         ls -l src/main/java/org/joda/time/tz/src
     - name: Update build with new tzdb
       if: env.NOOP != 'true'

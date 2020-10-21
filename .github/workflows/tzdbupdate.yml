@@ -36,7 +36,7 @@ jobs:
       run: |
         CURRENT_TZDB=$(mvn help:evaluate -Dexpression=tz.database.version -q -DforceStdout)
         echo "current: $CURRENT_TZDB"
-        echo "::set-env name=CURRENT_TZDB::$CURRENT_TZDB"
+        echo "CURRENT_TZDB=$CURRENT_TZDB" >> $GITHUB_ENV
     - name: Get latest version
       working-directory: target
       run: |
@@ -44,12 +44,12 @@ jobs:
         cd tz
         LATEST_TZDB=$(git describe --abbrev=0 --tags)
         echo "latest: $LATEST_TZDB"
-        echo "::set-env name=LATEST_TZDB::$LATEST_TZDB"
+        echo "LATEST_TZDB=$LATEST_TZDB" >> $GITHUB_ENV
     - name: Compare versions
       run: |
         echo "current: $CURRENT_TZDB"
         echo "latest:  $LATEST_TZDB"
-        if [ "$CURRENT_TZDB" == "$LATEST_TZDB" ]; then echo "::set-env name=NOOP::true"; fi
+        if [ "$CURRENT_TZDB" == "$LATEST_TZDB" ]; then echo "NOOP=true" >> $GITHUB_ENV; fi
 
     - name: Checkout tzdb release
       if: env.NOOP != 'true'

@@ -110,7 +110,7 @@ public final class StrictChronology extends AssembledChronology {
         fields.halfdayOfDay = convertField(fields.halfdayOfDay);
     }
 
-    private static final DateTimeField convertField(DateTimeField field) {
+    private static DateTimeField convertField(DateTimeField field) {
         return StrictDateTimeField.getInstance(field);
     }
 

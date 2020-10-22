@@ -1283,7 +1283,7 @@ public class DateTimeFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
-    static abstract class NumberFormatter
+    abstract static class NumberFormatter
             implements InternalPrinter, InternalParser {
         protected final DateTimeFieldType iFieldType;
         protected final int iMaxParsedDigits;
@@ -2311,7 +2311,7 @@ public class DateTimeFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
-    static enum TimeZoneId
+    enum TimeZoneId
             implements InternalPrinter, InternalParser {
 
         INSTANCE;

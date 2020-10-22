@@ -55,14 +55,14 @@ public class PeriodType implements Serializable {
     /** Cache of all the known types. */
     private static final Map<PeriodType, Object> cTypes = new HashMap<PeriodType, Object>(32);
 
-    static int YEAR_INDEX = 0;
-    static int MONTH_INDEX = 1;
-    static int WEEK_INDEX = 2;
-    static int DAY_INDEX = 3;
-    static int HOUR_INDEX = 4;
-    static int MINUTE_INDEX = 5;
-    static int SECOND_INDEX = 6;
-    static int MILLI_INDEX = 7;
+    static int yearIndex = 0;
+    static int monthIndex = 1;
+    static int weekIndex = 2;
+    static int dayIndex = 3;
+    static int hourIndex = 4;
+    static int minuteIndex = 5;
+    static int secondIndex = 6;
+    static int milliIndex = 7;
     
     private static PeriodType cStandard;
     private static PeriodType cYMDTime;

@@ -83,13 +83,13 @@ public final class ConverterManager {
     /**
      * Singleton instance, lazily loaded to avoid class loading.
      */
-    private static ConverterManager INSTANCE;
+    private static ConverterManager instance;
 
     public static ConverterManager getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new ConverterManager();
+        if (instance == null) {
+            instance = new ConverterManager();
         }
-        return INSTANCE;
+        return instance;
     }
     
     private ConverterSet iInstantConverters;

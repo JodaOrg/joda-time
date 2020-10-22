@@ -166,7 +166,7 @@ public class CachedDateTimeZone extends DateTimeZone {
         return info;
     }
 
-    private final static class Info {
+    private static final class Info {
         // For first Info in chain, iPeriodStart's lower 32 bits are clear.
         public final long iPeriodStart;
         public final DateTimeZone iZoneRef;

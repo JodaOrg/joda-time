@@ -743,7 +743,7 @@ public class MutablePeriod
      * @return the number of years in the period, zero if unsupported
      */
     public int getYears() {
-        return getPeriodType().getIndexedField(this, PeriodType.YEAR_INDEX);
+        return getPeriodType().getIndexedField(this, PeriodType.yearIndex);
     }
 
     /**
@@ -752,7 +752,7 @@ public class MutablePeriod
      * @return the number of months in the period, zero if unsupported
      */
     public int getMonths() {
-        return getPeriodType().getIndexedField(this, PeriodType.MONTH_INDEX);
+        return getPeriodType().getIndexedField(this, PeriodType.monthIndex);
     }
 
     /**
@@ -761,7 +761,7 @@ public class MutablePeriod
      * @return the number of weeks in the period, zero if unsupported
      */
     public int getWeeks() {
-        return getPeriodType().getIndexedField(this, PeriodType.WEEK_INDEX);
+        return getPeriodType().getIndexedField(this, PeriodType.weekIndex);
     }
 
     /**
@@ -770,7 +770,7 @@ public class MutablePeriod
      * @return the number of days in the period, zero if unsupported
      */
     public int getDays() {
-        return getPeriodType().getIndexedField(this, PeriodType.DAY_INDEX);
+        return getPeriodType().getIndexedField(this, PeriodType.dayIndex);
     }
 
     //-----------------------------------------------------------------------
@@ -780,7 +780,7 @@ public class MutablePeriod
      * @return the number of hours in the period, zero if unsupported
      */
     public int getHours() {
-        return getPeriodType().getIndexedField(this, PeriodType.HOUR_INDEX);
+        return getPeriodType().getIndexedField(this, PeriodType.hourIndex);
     }
 
     /**
@@ -789,7 +789,7 @@ public class MutablePeriod
      * @return the number of minutes in the period, zero if unsupported
      */
     public int getMinutes() {
-        return getPeriodType().getIndexedField(this, PeriodType.MINUTE_INDEX);
+        return getPeriodType().getIndexedField(this, PeriodType.minuteIndex);
     }
 
     /**
@@ -798,7 +798,7 @@ public class MutablePeriod
      * @return the number of seconds in the period, zero if unsupported
      */
     public int getSeconds() {
-        return getPeriodType().getIndexedField(this, PeriodType.SECOND_INDEX);
+        return getPeriodType().getIndexedField(this, PeriodType.secondIndex);
     }
 
     /**
@@ -807,7 +807,7 @@ public class MutablePeriod
      * @return the number of millis in the period, zero if unsupported
      */
     public int getMillis() {
-        return getPeriodType().getIndexedField(this, PeriodType.MILLI_INDEX);
+        return getPeriodType().getIndexedField(this, PeriodType.milliIndex);
     }
 
     //-----------------------------------------------------------------------

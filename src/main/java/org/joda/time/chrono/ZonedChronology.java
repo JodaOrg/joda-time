@@ -525,11 +525,11 @@ public final class ZonedChronology extends AssembledChronology {
                  subtrahendInstant + offset);
         }
 
-        public final DurationField getDurationField() {
+        public DurationField getDurationField() {
             return iDurationField;
         }
 
-        public final DurationField getRangeDurationField() {
+        public DurationField getRangeDurationField() {
             return iRangeDurationField;
         }
 
@@ -543,7 +543,7 @@ public final class ZonedChronology extends AssembledChronology {
             return iField.getLeapAmount(localInstant);
         }
 
-        public final DurationField getLeapDurationField() {
+        public DurationField getLeapDurationField() {
             return iLeapDurationField;
         }
 

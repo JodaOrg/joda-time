@@ -75,7 +75,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
     // Design note: Simple Accessors return a suitable value, but methods
     // intended to perform calculations throw an UnsupportedOperationException.
 
-    public final DurationFieldType getType() {
+    public DurationFieldType getType() {
         return iType;
     }
 

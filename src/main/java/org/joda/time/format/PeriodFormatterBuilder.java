@@ -927,7 +927,7 @@ public class PeriodFormatterBuilder {
      * Defines a formatted field's prefix or suffix text.
      * This can be used for fields such as 'n hours' or 'nH' or 'Hour:n'.
      */
-    static interface PeriodFieldAffix {
+    interface PeriodFieldAffix {
         int calculatePrintedLength(int value);
         
         void printTo(StringBuffer buf, int value);
@@ -966,7 +966,7 @@ public class PeriodFormatterBuilder {
     /**
      * An affix that can be ignored.
      */
-    static abstract class IgnorableAffix implements PeriodFieldAffix {
+    abstract static class IgnorableAffix implements PeriodFieldAffix {
         private volatile String[] iOtherAffixes;
 
         public void finish(Set<PeriodFieldAffix> periodFieldAffixesToIgnore) {

@@ -124,7 +124,7 @@ abstract class BasicChronology extends AssembledChronology {
     private static final int CACHE_SIZE = 1 << 10;
     private static final int CACHE_MASK = CACHE_SIZE - 1;
 
-    private transient final YearInfo[] iYearInfoCache = new YearInfo[CACHE_SIZE];
+    private final transient YearInfo[] iYearInfoCache = new YearInfo[CACHE_SIZE];
 
     private final int iMinDaysInFirstWeek;
 

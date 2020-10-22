@@ -123,7 +123,7 @@ public class TestConverterManager extends TestCase {
         assertEquals(1, cls.getDeclaredConstructors().length);
         assertEquals(true, Modifier.isProtected(con.getModifiers()));
         
-        Field fld = cls.getDeclaredField("INSTANCE");
+        Field fld = cls.getDeclaredField("instance");
         assertEquals(true, Modifier.isPrivate(fld.getModifiers()));
     }
 

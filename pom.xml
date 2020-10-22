@@ -8,7 +8,7 @@
   <artifactId>joda-time</artifactId>
   <packaging>jar</packaging>
   <name>Joda-Time</name>
-  <version>2.10.8-SNAPSHOT</version>
+  <version>2.10.8</version>
   <description>Date and time library to replace JDK date handling</description>
   <url>https://www.joda.org/joda-time/</url>
 
@@ -320,6 +320,10 @@
     <contributor>
       <name>Alex</name>
       <url>https://github.com/nyrk</url>
+    </contributor>
+    <contributor>
+      <name>Jesus Peon Lopez</name>
+      <url>https://github.com/jesuspeon</url>
     </contributor>
   </contributors>
 
@@ -1030,6 +1034,6 @@
     <!-- Other properties -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <tz.database.version>2020c</tz.database.version>
+    <tz.database.version>2020d</tz.database.version>
   </properties>
 </project>

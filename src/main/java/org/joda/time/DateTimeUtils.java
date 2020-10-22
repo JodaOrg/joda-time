@@ -524,7 +524,7 @@ public class DateTimeUtils {
      * @author Stephen Colebourne
      * @since 2.0 (previously private)
      */
-    public static interface MillisProvider {
+    public interface MillisProvider {
         /**
          * Gets the current time.
          * <p>

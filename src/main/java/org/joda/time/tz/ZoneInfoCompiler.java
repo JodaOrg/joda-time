@@ -908,8 +908,7 @@ public class ZoneInfoCompiler {
                         int saveMillis = parseTime(zone.iRules);
                         builder.setStandardOffset(zone.iOffsetMillis);
                         builder.setFixedSavings(zone.iFormat, saveMillis);
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         // Zone is using a RuleSet for this segment of the timeline
                         RuleSet rs = ruleSets.get(zone.iRules);
                         if (rs == null) {

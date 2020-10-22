@@ -26,7 +26,7 @@ final class UTCDateTimeZone extends DateTimeZone {
     static final DateTimeZone INSTANCE = new UTCDateTimeZone();
     private static final long serialVersionUID = -3513011772763289092L;
 
-    public UTCDateTimeZone() {
+    UTCDateTimeZone() {
         super("UTC");
     }
 

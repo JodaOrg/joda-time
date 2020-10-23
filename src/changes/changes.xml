@@ -8,6 +8,12 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
+    <release version="2.10.8" date="2020-10-23" description="v2.10.8">
+      <action dev="jodastephen" type="fix">
+        DateTimeZone data updated to version 2020d.
+        Remove systemv and pacificnew time zones as per TZDB changes.
+      </action>
+    </release>
     <release version="2.10.7" date="2020-10-21" description="v2.10.7">
       <action dev="jodastephen" type="fix">
         DateTimeZone data updated to version 2020c.

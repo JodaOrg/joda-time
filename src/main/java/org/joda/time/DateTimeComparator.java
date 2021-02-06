@@ -193,6 +193,12 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
         Chronology lhsChrono = conv.getChronology(lhsObj, (Chronology) null);
         long lhsMillis = conv.getInstantMillis(lhsObj, lhsChrono);
         
+        // handle null==null and other cases where objects are the same
+        // but only do this after checking the input is valid
+        if (lhsObj == rhsObj) {
+            return 0;
+        }
+        
         conv = ConverterManager.getInstance().getInstantConverter(rhsObj);
         Chronology rhsChrono = conv.getChronology(rhsObj, (Chronology) null);
         long rhsMillis = conv.getInstantMillis(rhsObj, rhsChrono);

@@ -28,6 +28,8 @@ import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.chrono.GJChronology;
+import org.joda.time.tz.DefaultNameProvider;
+import org.joda.time.tz.NameProvider;
 
 /**
  * This class is a Junit unit test for DateTime Formating.
@@ -638,13 +640,13 @@ public class TestDateTimeFormat extends TestCase {
     public void testFormat_halfdayOfDay() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("a").withLocale(Locale.UK);
-        assertEquals(dt.toString(), "AM", f.print(dt));
+        assertEquals(dt.toString(), "AM", f.print(dt).toUpperCase(Locale.ENGLISH));
         
         dt = dt.withZone(NEWYORK);
-        assertEquals(dt.toString(), "AM", f.print(dt));
+        assertEquals(dt.toString(), "AM", f.print(dt).toUpperCase(Locale.ENGLISH));
         
         dt = dt.withZone(TOKYO);
-        assertEquals(dt.toString(), "PM", f.print(dt));
+        assertEquals(dt.toString(), "PM", f.print(dt).toUpperCase(Locale.ENGLISH));
     }
 
     //-----------------------------------------------------------------------
@@ -766,7 +768,7 @@ public class TestDateTimeFormat extends TestCase {
     //-----------------------------------------------------------------------
     public void testFormat_zoneText() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        DateTimeFormatter f = DateTimeFormat.forPattern("z").withLocale(Locale.UK);
+        DateTimeFormatter f = DateTimeFormat.forPattern("z").withLocale(Locale.ENGLISH);
         assertEquals(dt.toString(), "UTC", f.print(dt));
         
         dt = dt.withZone(NEWYORK);
@@ -778,7 +780,7 @@ public class TestDateTimeFormat extends TestCase {
 
     public void testFormat_zoneLongText() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        DateTimeFormatter f = DateTimeFormat.forPattern("zzzz").withLocale(Locale.UK);
+        DateTimeFormatter f = DateTimeFormat.forPattern("zzzz").withLocale(Locale.ENGLISH);
         assertEquals(dt.toString(), "Coordinated Universal Time", f.print(dt));
         
         dt = dt.withZone(NEWYORK);
@@ -1019,7 +1021,7 @@ public class TestDateTimeFormat extends TestCase {
             .withLocale(Locale.UK).withZoneUTC();
         
         String str = new DateTime(2007, 6, 23, 18, 0, 0, 0, UTC).toString(dateFormatter);
-        assertEquals("$06-PM-2007", str);
+        assertEquals("$06-PM-2007", str.toUpperCase(Locale.ENGLISH));
         DateTime date = dateFormatter.parseDateTime(str);
         check(date, 2007, 1, 1);
     }
@@ -1079,7 +1081,7 @@ public class TestDateTimeFormat extends TestCase {
             .withLocale(Locale.FRANCE).withZoneUTC();
         
         String str = new DateTime(-1, 6, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
-        assertEquals("$BC-0001", str);
+        assertTrue(str.equals("$BC-0001") || str.equals("$av. J.-C.-0001"));
         DateTime date = dateFormatter.parseDateTime(str);
         check(date, -1, 1, 1);
     }

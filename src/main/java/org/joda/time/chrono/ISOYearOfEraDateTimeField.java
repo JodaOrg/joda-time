@@ -23,7 +23,7 @@ import org.joda.time.field.DecoratedDateTimeField;
 import org.joda.time.field.FieldUtils;
 
 /**
- * This field is not publicy exposed by ISOChronology, but rather it is used to
+ * This field is not publicly exposed by ISOChronology, but rather it is used to
  * build the yearOfCentury and centuryOfEra fields. It merely drops the sign of
  * the year.
  *

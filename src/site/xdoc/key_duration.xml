@@ -63,6 +63,24 @@ The interface only contains the core subset of the operations.
 Instead, you should usually refer directly to the implementation class in your APIs.
 </p>
 
+<subsection name="Directionality">
+<p>
+Joda-Time durations can be negative.
+For example, the duration between 14:00 and 15:00 on the same day is 1 hour (PT1H), but the duration
+between 15:00 and 14:00 is minus 1 hour (PT-1H).
+</p>
+<p>
+Negative durations will affect the results of comparisons.
+The <code>equals</code>, <code>hashCode</code>, <code>compareTo</code>, <code>isLongerThan</code>,
+<code>isShorterThan</code> and <code>isEqualTo</code> methods all take the sign of the duration into account.
+As such, a duration of minus 2 hours (PT-2H) is shorter than a duration of 1 hour (PT1H).
+</p>
+<p>
+The <code>Duration</code> class has an <code>abs</code> method that will convert a negative
+duration to a position one if desired.
+</p>
+</subsection>
+
 <subsection name="Nulls">
 <p>
 Joda-Time defines a null duration as zero length.

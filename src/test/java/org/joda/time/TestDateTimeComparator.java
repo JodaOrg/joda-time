@@ -214,6 +214,7 @@ public class TestDateTimeComparator extends TestCase {
         c = DateTimeComparator.getInstance(null);
         assertSame(DateTimeComparator.getInstance(), c);
     }
+
     public void testStaticGetInstanceLowerUpper() {
         DateTimeComparator c = DateTimeComparator.getInstance(DateTimeFieldType.hourOfDay(), DateTimeFieldType.dayOfYear());
         assertEquals(DateTimeFieldType.hourOfDay(), c.getLowerLimit());
@@ -233,6 +234,15 @@ public class TestDateTimeComparator extends TestCase {
         
         c = DateTimeComparator.getInstance(null, DateTimeFieldType.dayOfYear());
         assertSame(DateTimeComparator.getTimeOnlyInstance(), c);
+    }
+    
+    public void testNullNowCheckedOnce() {
+        // checks a race condition against the system clock, issue #404
+        for (int i = 0; i < 10000; i++) {
+            if (DateTimeComparator.getInstance().compare(null, null) != 0) {
+                fail("Comparing (null, null) should always return 0");
+            }
+        }
     }
     
     //-----------------------------------------------------------------------

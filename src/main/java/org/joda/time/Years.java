@@ -54,7 +54,7 @@ public final class Years extends BaseSingleFieldPeriod {
     /** Constant representing the minimum number of years that can be stored in this object. */
     public static final Years MIN_VALUE = new Years(Integer.MIN_VALUE);
 
-    /** The paser to use for this class. */
+    /** The parser to use for this class. */
     private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.years());
     /** Serialization version. */
     private static final long serialVersionUID = 87525275727380868L;
@@ -90,7 +90,7 @@ public final class Years extends BaseSingleFieldPeriod {
     //-----------------------------------------------------------------------
     /**
      * Creates a <code>Years</code> representing the number of whole years
-     * between the two specified datetimes. This method corectly handles
+     * between the two specified datetimes. This method correctly handles
      * any daylight savings time changes that may occur during the interval.
      *
      * @param start  the start instant, must not be null
@@ -128,7 +128,7 @@ public final class Years extends BaseSingleFieldPeriod {
 
     /**
      * Creates a <code>Years</code> representing the number of whole years
-     * in the specified interval. This method corectly handles any daylight
+     * in the specified interval. This method correctly handles any daylight
      * savings time changes that may occur during the interval.
      *
      * @param interval  the interval to extract years from, null returns zero

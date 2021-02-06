@@ -40,7 +40,7 @@ public abstract class BaseDurationField extends DurationField implements Seriali
     /** Serialization lock. */
     private static final long serialVersionUID = -2554245107589433218L;
 
-    /** A desriptive name for the field. */
+    /** A descriptive name for the field. */
     private final DurationFieldType iType;
 
     protected BaseDurationField(DurationFieldType type) {

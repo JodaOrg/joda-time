@@ -60,22 +60,35 @@ import org.joda.time.tz.ZoneInfoProvider;
  * obtained from UTC by adding -08:00, that is, by subtracting 8 hours.
  * <p>
  * The offset differs in the summer because of daylight saving time, or DST.
- * The following definitions of time are generally used:
+ * The following definitions are helpful:
  * <ul>
  * <li>UTC - The reference time.
- * <li>Standard Time - The local time without a daylight saving time offset.
- * For example, in Paris, standard time is UTC+01:00.
- * <li>Daylight Saving Time - The local time with a daylight saving time 
- * offset. This offset is typically one hour, but not always. It is typically
- * used in most countries away from the equator.  In Paris, daylight saving 
- * time is UTC+02:00.
- * <li>Wall Time - This is what a local clock on the wall reads. This will be
- * either Standard Time or Daylight Saving Time depending on the time of year
- * and whether the location uses Daylight Saving Time.
+ * <li>Offset - The amount of time a zone differs from UTC. This can vary during the year.
+ * <li>Daylight Saving - The process of having two offsets each year, one in winter and one in summer.
+ * <li>Raw offset - The base offset of the zone.
+ * <li>Additional offset - The additional offset on top of the raw offset.
+ *   This is typically zero in winter and one hour in summer in zones that apply DST.
+ * <li>Actual offset - The actual offset that applies, which is the combination of the raw offset and additional offset.
  * </ul>
  * <p>
+ * For example, in 2018 Greece applied daylight saving.
+ * Throughout the whole year, the raw offset was +02:00.
+ * In winter, the additional offset was zero, while in summer the additional offset was one hour.
+ * Thus, the actual offset was +02:00 in winter and +03:00 in summer.
+ * <p>
+ * Note: Some governments, most notably Ireland, define daylight saving by describing
+ * a "standard" time in summer and a <i>negative</i> DST offset in winter.
+ * Joda-Time, like the JDK, follows a model for time-zone data where there is a
+ * raw offset all year round and a <i>positive</i> additional offset.
+ * As such, callers cannot assume that the raw offset is that defined by law for the zone.
+ * <p>
+ * Note: Some governments define a daylight saving time that applies for two separate periods.
+ * For example, the year might be winter time, then summer time, then a special time equal
+ * to winter time, then back to summer time before finally dropping back to winter time.
+ * As such, callers cannot assume that the raw and DST offsets directly correlate to summer and winter.
+ * <p>
  * Unlike the Java TimeZone class, DateTimeZone is immutable. It also only
- * supports long format time zone ids. Thus EST and ECT are not accepted.
+ * supports long format time zone ids. Thus PST and ECT are not accepted.
  * However, the factory that accepts a TimeZone will attempt to convert from
  * the old short id to a suitable long id.
  * <p>
@@ -127,6 +140,11 @@ public abstract class DateTimeZone implements Serializable {
      */
     private static final AtomicReference<DateTimeZone> cDefault =
                     new AtomicReference<DateTimeZone>();
+    /**
+     * The default TZ data path
+     * This is the default classpath location containing the compiled data files.
+     */
+    public static final String DEFAULT_TZ_DATA_PATH = "org/joda/time/tz/data";
 
     //-----------------------------------------------------------------------
     /**
@@ -362,6 +380,12 @@ public abstract class DateTimeZone implements Serializable {
             convId = id;
             if (convId.startsWith("GMT+") || convId.startsWith("GMT-")) {
                 convId = convId.substring(3);
+                if (convId.length() > 2) {
+                    char firstDigit = convId.charAt(1);
+                    if (firstDigit > '9' && Character.isDigit(firstDigit)) {
+                        convId = convertToAsciiNumber(convId);
+                    }
+                }
                 int offset = parseOffset(convId);
                 if (offset == 0L) {
                     return DateTimeZone.UTC;
@@ -372,6 +396,18 @@ public abstract class DateTimeZone implements Serializable {
             }
         }
         throw new IllegalArgumentException("The datetime zone id '" + id + "' is not recognised");
+    }
+
+    private static String convertToAsciiNumber(String convId) {
+        StringBuilder buf = new StringBuilder(convId);
+        for (int i = 0; i < buf.length(); i++) {
+            char ch = buf.charAt(i);
+            int digit = Character.digit(ch, 10);
+            if (digit >= 0) {
+                buf.setCharAt(i, (char) ('0' + digit));
+            }
+        }
+        return buf.toString();
     }
 
     //-----------------------------------------------------------------------
@@ -486,7 +522,12 @@ public abstract class DateTimeZone implements Serializable {
             String providerClass = System.getProperty("org.joda.time.DateTimeZone.Provider");
             if (providerClass != null) {
                 try {
-                    Provider provider = (Provider) Class.forName(providerClass).newInstance();
+                    // do not initialize the class until the type has been checked
+                    Class<?> cls = Class.forName(providerClass, false, DateTimeZone.class.getClassLoader());
+                    if (!Provider.class.isAssignableFrom(cls)) {
+                        throw new IllegalArgumentException("System property referred to class that does not implement " + Provider.class);
+                    }
+                    Provider provider = cls.asSubclass(Provider.class).getConstructor().newInstance();
                     return validateProvider(provider);
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
@@ -511,7 +552,7 @@ public abstract class DateTimeZone implements Serializable {
         }
         // approach 3
         try {
-            Provider provider = new ZoneInfoProvider("org/joda/time/tz/data");
+            Provider provider = new ZoneInfoProvider(DEFAULT_TZ_DATA_PATH);
             return validateProvider(provider);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -575,7 +616,12 @@ public abstract class DateTimeZone implements Serializable {
             String providerClass = System.getProperty("org.joda.time.DateTimeZone.NameProvider");
             if (providerClass != null) {
                 try {
-                    nameProvider = (NameProvider) Class.forName(providerClass).newInstance();
+                    // do not initialize the class until the type has been checked
+                    Class<?> cls = Class.forName(providerClass, false, DateTimeZone.class.getClassLoader());
+                    if (!NameProvider.class.isAssignableFrom(cls)) {
+                        throw new IllegalArgumentException("System property referred to class that does not implement " + NameProvider.class);
+                    }
+                    nameProvider = cls.asSubclass(NameProvider.class).getConstructor().newInstance();
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
@@ -789,6 +835,10 @@ public abstract class DateTimeZone implements Serializable {
 
     /**
      * Gets the millisecond offset to add to UTC to get local time.
+     * <p>
+     * This returns the actual offset from UTC for the zone at the specified instant.
+     * If the method is called with a different instant, the offset returned may be different
+     * as a result of daylight saving or other government rule changes.
      * 
      * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the offset for
      * @return the millisecond offset to add to UTC to get local time
@@ -797,6 +847,10 @@ public abstract class DateTimeZone implements Serializable {
 
     /**
      * Gets the millisecond offset to add to UTC to get local time.
+     * <p>
+     * This returns the actual offset from UTC for the zone at the specified instant.
+     * If the method is called with a different instant, the offset returned may be different
+     * as a result of daylight saving or other government rule changes.
      * 
      * @param instant  instant to get the offset for, null means now
      * @return the millisecond offset to add to UTC to get local time
@@ -809,8 +863,16 @@ public abstract class DateTimeZone implements Serializable {
     }
 
     /**
-     * Gets the standard millisecond offset to add to UTC to get local time,
-     * when standard time is in effect.
+     * Gets the raw millisecond offset to add to UTC.
+     * <p>
+     * This should be treated as an implementation detail.
+     * End-users should use {@link #getOffset(long)}.
+     * <p>
+     * This returns the raw offset from UTC for the zone at the specified instant, effectively ignoring DST.
+     * If the method is called with a different instant, the offset returned may be different
+     * as a result of government rule changes.
+     * <p>
+     * This method should be named {@code getRawOffset()} but cannot be renamed for compatibility reasons.
      * 
      * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the offset for
      * @return the millisecond offset to add to UTC to get local time
@@ -818,18 +880,20 @@ public abstract class DateTimeZone implements Serializable {
     public abstract int getStandardOffset(long instant);
 
     /**
-     * Checks whether, at a particular instant, the offset is standard or not.
+     * Checks whether, at a particular instant, the offset is raw or not.
      * <p>
-     * This method can be used to determine whether Summer Time (DST) applies.
-     * As a general rule, if the offset at the specified instant is standard,
-     * then either Winter time applies, or there is no Summer Time. If the
-     * instant is not standard, then Summer Time applies.
+     * This method can be used to estimate whether Summer Time (DST) applies at the specified instant.
+     * As a general rule, if the actual offset equals the raw offset at the specified instant
+     * then either winter time applies or the zone does not have DST rules.
+     * If the actual offset does not equal the raw offset, then some form of Summer Time applies.
      * <p>
      * The implementation of the method is simply whether {@link #getOffset(long)}
      * equals {@link #getStandardOffset(long)} at the specified instant.
+     * <p>
+     * This method should be named {@code isRawOffsetInUse()} but cannot be renamed for compatibility reasons.
      * 
      * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the offset for
-     * @return true if the offset at the given instant is the standard offset
+     * @return true if the offset at the given instant is the same as the raw offset
      * @since 1.5
      */
     public boolean isStandardOffset(long instant) {
@@ -912,7 +976,7 @@ public abstract class DateTimeZone implements Serializable {
     }
 
     /**
-     * Converts a standard UTC instant to a local instant with the same
+     * Converts an actual UTC instant to a local instant with the same
      * local time. This conversion is used before performing a calculation
      * so that the calculation can be done using a simple local zone.
      *
@@ -932,7 +996,7 @@ public abstract class DateTimeZone implements Serializable {
     }
 
     /**
-     * Converts a local instant to a standard UTC instant with the same
+     * Converts a local instant to an actual UTC instant with the same
      * local time attempting to use the same offset as the original.
      * <p>
      * This conversion is used after performing a calculation
@@ -959,7 +1023,7 @@ public abstract class DateTimeZone implements Serializable {
     }
 
     /**
-     * Converts a local instant to a standard UTC instant with the same
+     * Converts a local instant to an actual UTC instant with the same
      * local time. This conversion is used after performing a calculation
      * where the calculation was done using a simple local zone.
      *
@@ -1034,107 +1098,11 @@ public abstract class DateTimeZone implements Serializable {
         return newZone.convertLocalToUTC(instantLocal, false, oldInstant);
     }
 
-//    //-----------------------------------------------------------------------
-//    /**
-//     * Checks if the given {@link LocalDateTime} is within an overlap.
-//     * <p>
-//     * When switching from Daylight Savings Time to standard time there is
-//     * typically an overlap where the same clock hour occurs twice. This
-//     * method identifies whether the local datetime refers to such an overlap.
-//     * 
-//     * @param localDateTime  the time to check, not null
-//     * @return true if the given datetime refers to an overlap
-//     */
-//    public boolean isLocalDateTimeOverlap(LocalDateTime localDateTime) {
-//        if (isFixed()) {
-//            return false;
-//        }
-//        long instantLocal = localDateTime.toDateTime(DateTimeZone.UTC).getMillis();
-//        // get the offset at instantLocal (first estimate)
-//        int offsetLocal = getOffset(instantLocal);
-//        // adjust instantLocal using the estimate and recalc the offset
-//        int offset = getOffset(instantLocal - offsetLocal);
-//        // if the offsets differ, we must be near a DST boundary
-//        if (offsetLocal != offset) {
-//            long nextLocal = nextTransition(instantLocal - offsetLocal);
-//            long nextAdjusted = nextTransition(instantLocal - offset);
-//            if (nextLocal != nextAdjusted) {
-//                // in DST gap
-//                return false;
-//            }
-//            long diff = Math.abs(offset - offsetLocal);
-//            DateTime dateTime = localDateTime.toDateTime(this);
-//            DateTime adjusted = dateTime.plus(diff);
-//            if (dateTime.getHourOfDay() == adjusted.getHourOfDay() &&
-//                    dateTime.getMinuteOfHour() == adjusted.getMinuteOfHour() &&
-//                    dateTime.getSecondOfMinute() == adjusted.getSecondOfMinute()) {
-//                return true;
-//            }
-//            adjusted = dateTime.minus(diff);
-//            if (dateTime.getHourOfDay() == adjusted.getHourOfDay() &&
-//                    dateTime.getMinuteOfHour() == adjusted.getMinuteOfHour() &&
-//                    dateTime.getSecondOfMinute() == adjusted.getSecondOfMinute()) {
-//                return true;
-//            }
-//            return false;
-//        }
-//        return false;
-//    }
-//        
-//        
-//        DateTime dateTime = null;
-//        try {
-//            dateTime = localDateTime.toDateTime(this);
-//        } catch (IllegalArgumentException ex) {
-//            return false;  // it is a gap, not an overlap
-//        }
-//        long offset1 = Math.abs(getOffset(dateTime.getMillis() + 1) - getStandardOffset(dateTime.getMillis() + 1));
-//        long offset2 = Math.abs(getOffset(dateTime.getMillis() - 1) - getStandardOffset(dateTime.getMillis() - 1));
-//        long offset = Math.max(offset1, offset2);
-//        if (offset == 0) {
-//            return false;
-//        }
-//        DateTime adjusted = dateTime.plus(offset);
-//        if (dateTime.getHourOfDay() == adjusted.getHourOfDay() &&
-//                dateTime.getMinuteOfHour() == adjusted.getMinuteOfHour() &&
-//                dateTime.getSecondOfMinute() == adjusted.getSecondOfMinute()) {
-//            return true;
-//        }
-//        adjusted = dateTime.minus(offset);
-//        if (dateTime.getHourOfDay() == adjusted.getHourOfDay() &&
-//                dateTime.getMinuteOfHour() == adjusted.getMinuteOfHour() &&
-//                dateTime.getSecondOfMinute() == adjusted.getSecondOfMinute()) {
-//            return true;
-//        }
-//        return false;
-        
-//        long millis = dateTime.getMillis();
-//        long nextTransition = nextTransition(millis);
-//        long previousTransition = previousTransition(millis);
-//        long deltaToPreviousTransition = millis - previousTransition;
-//        long deltaToNextTransition = nextTransition - millis;
-//        if (deltaToNextTransition < deltaToPreviousTransition) {
-//            int offset = getOffset(nextTransition);
-//            int standardOffset = getStandardOffset(nextTransition);
-//            if (Math.abs(offset - standardOffset) >= deltaToNextTransition) {
-//                return true;
-//            }
-//        } else  {
-//            int offset = getOffset(previousTransition);
-//            int standardOffset = getStandardOffset(previousTransition);
-//            if (Math.abs(offset - standardOffset) >= deltaToPreviousTransition) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-
     /**
      * Checks if the given {@link LocalDateTime} is within a gap.
      * <p>
-     * When switching from standard time to Daylight Savings Time there is
-     * typically a gap where a clock hour is missing. This method identifies
-     * whether the local datetime refers to such a gap.
+     * When switching into Daylight Savings Time there is typically a gap where a clock hour is missing.
+     * This method identifies whether the local datetime refers to such a gap.
      * 
      * @param localDateTime  the time to check, not null
      * @return true if the given datetime refers to a gap
@@ -1241,7 +1209,7 @@ public abstract class DateTimeZone implements Serializable {
     public abstract boolean equals(Object object);
 
     /**
-     * Gets a hash code compatable with equals.
+     * Gets a hash code compatible with equals.
      * 
      * @return suitable hashcode
      */

@@ -16,6 +16,7 @@
 package org.joda.time;
 
 import java.io.Serializable;
+import java.math.RoundingMode;
 
 import org.joda.convert.FromString;
 import org.joda.time.base.BaseDuration;
@@ -223,7 +224,7 @@ public final class Duration
      * This returns <code>getMillis() / MILLIS_PER_DAY</code>.
      * The result is an integer division, thus excess milliseconds are truncated.
      *
-     * @return the length of the duration in standard seconds
+     * @return the length of the duration in standard days
      * @since 2.0
      */
     public long getStandardDays() {
@@ -241,7 +242,7 @@ public final class Duration
      * This returns <code>getMillis() / MILLIS_PER_HOUR</code>.
      * The result is an integer division, thus excess milliseconds are truncated.
      *
-     * @return the length of the duration in standard seconds
+     * @return the length of the duration in standard hours
      * @since 2.0
      */
     public long getStandardHours() {
@@ -256,10 +257,10 @@ public final class Duration
      * 1000 milliseconds in a second.
      * All currently supplied chronologies use this definition.
      * <p>
-     * This returns <code>getMillis() / 60000</code>.
+     * This returns <code>getMillis() / MILLIS_PER_MINUTE</code>.
      * The result is an integer division, thus excess milliseconds are truncated.
      *
-     * @return the length of the duration in standard seconds
+     * @return the length of the duration in standard minutes
      * @since 2.0
      */
     public long getStandardMinutes() {
@@ -506,6 +507,24 @@ public final class Duration
     }
 
     /**
+     * Returns a new duration with its length divided by the
+     * specified divisor. {@code RoundingMode} can be specified.
+     * This instance is immutable and is not altered.
+     * <p>
+     * If the divisor is one, this instance is returned.
+     *
+     * @param divisor  the divisor to divide this one by
+     * @param roundingMode  the type of rounding desired
+     * @return the new duration instance
+     */
+    public Duration dividedBy(long divisor, RoundingMode roundingMode) {
+        if (divisor == 1) {
+            return this;
+        }
+        return new Duration(FieldUtils.safeDivide(getMillis(), divisor, roundingMode));
+    }
+
+    /**
      * Returns a new duration with this length negated.
      * This instance is immutable and is not altered.
      * 
@@ -516,6 +535,21 @@ public final class Duration
             throw new ArithmeticException("Negation of this duration would overflow");
         }
         return new Duration(-getMillis());
+    }
+
+    /**
+     * Returns a duration that has a positive or zero number of milliseconds.
+     * <p>
+     * This instance is immutable and is not altered.
+     * 
+     * @return the absolute duration instance
+     * @since 2.10
+     */
+    public Duration abs() {
+        if (getMillis() < 0) {
+            return negated();
+        }
+        return this;
     }
 
 }

@@ -40,7 +40,7 @@ class BasicYearDateTimeField extends ImpreciseDateTimeField {
     /**
      * Restricted constructor.
      * 
-     * @param chronology  the chronology this field belogs to
+     * @param chronology  the chronology this field belongs to
      */
     BasicYearDateTimeField(BasicChronology chronology) {
         super(DateTimeFieldType.year(), chronology.getAverageMillisPerYear());

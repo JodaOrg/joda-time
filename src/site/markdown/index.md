@@ -1,11 +1,11 @@
 ## <i></i> About
 
-**Joda-Time** provides a quality replacement for the Java date and time classes.
+Joda-Time provides a quality replacement for the Java date and time classes.
 
-Joda-Time is the *de facto* standard date and time library for Java.
-From Java SE 8 onwards, users are asked to migrate to `java.time` (JSR-310).
+Joda-Time is the *de facto* standard date and time library for Java prior to Java SE 8.
+Users are now asked to migrate to `java.time` (JSR-310).
 
-Joda-Time is licensed under the business-friendly [Apache 2.0 licence](license.html).
+Joda-Time is licensed under the business-friendly [Apache 2.0 licence](licenses.html).
 
 
 ## <i></i> Features
@@ -31,7 +31,7 @@ Various documentation is available:
 * The [key concepts](key.html) and [chronology](cal.html) guides
 * The [Javadoc](apidocs/index.html)
 * The list of [FAQ](faq.html)s.
-* The [change notes](installation.html) for each release
+* The [change notes](changes-report.html) for each release
 * The [GitHub](https://github.com/JodaOrg/joda-time) source repository
 
 
@@ -40,8 +40,10 @@ Various documentation is available:
 ## <i></i> Why Joda Time?
 
 The standard date and time classes prior to Java SE 8 are poor.
-By tackling this problem head-on, Joda-Time has become the de facto standard date and time library for Java.
-Note that from Java SE 8 onwards, users are asked to migrate to `java.time` (JSR-310).
+By tackling this problem head-on, Joda-Time became
+the de facto standard date and time library for Java prior to Java SE 8.
+**Note that from Java SE 8 onwards, users are asked to migrate to `java.time` (JSR-310) -
+a core part of the JDK which replaces this project.**
 
 The design allows for multiple calendar systems, while still providing a simple API.
 The "default" calendar is the [ISO8601](cal_iso.html) standard which is used by many other standards.
@@ -58,17 +60,20 @@ public boolean isAfterPayDay(<a href="apidocs/org/joda/time/DateTime.html"><b>Da
   }
   return datetime.getDayOfMonth() > 28;
 }
-
+</pre>
+<pre>
 public <a href="apidocs/org/joda/time/Days.html"><b>Days</b></a> daysToNewYear(<a href="apidocs/org/joda/time/LocalDate.html"><b>LocalDate</b></a> fromDate) {
   <a href="apidocs/org/joda/time/LocalDate.html"><b>LocalDate</b></a> newYear = fromDate.plusYears(1).withDayOfYear(1);
   return <a href="apidocs/org/joda/time/Days.html"><b>Days</b></a>.daysBetween(fromDate, newYear);
 }
-
+</pre>
+<pre>
 public boolean isRentalOverdue(<a href="apidocs/org/joda/time/DateTime.html"><b>DateTime</b></a> datetimeRented) {
   <a href="apidocs/org/joda/time/Period.html"><b>Period</b></a> rentalPeriod = new <a href="apidocs/org/joda/time/Period.html"><b>Period</b></a>().withDays(2).withHours(12);
   return datetimeRented.plus(rentalPeriod).isBeforeNow();
 }
-
+</pre>
+<pre>
 public String getBirthMonthText(<a href="apidocs/org/joda/time/LocalDate.html"><b>LocalDate</b></a> dateOfBirth) {
   return dateOfBirth.monthOfYear().getAsText(Locale.ENGLISH);
 }
@@ -95,7 +100,7 @@ calculations. It already provides out-of-the-box features, such as support for o
 date formats, which are difficult to replicate with the JDK.
 * <b>Up-to-date Time Zone calculations</b>.
 The <a href="timezones.html">time zone implementation</a> is based on
-the public <a href="http://www.iana.org/time-zones">tz database</a>, which is
+the public <a href="https://www.iana.org/time-zones">tz database</a>, which is
 updated several times a year. New Joda-Time releases incorporate all changes
 made to this database. Should the changes be needed earlier,
 <a href="tz_update.html">manually updating the zone data</a> is easy.
@@ -119,27 +124,27 @@ The library has been under active development since 2002.
 It is a mature and reliable code base.
 A number of <a href="related.html">related projects</a> are now available.
 * <b>Open Source</b>.
-Joda-Time is licenced under the business friendly <a href="license.html">Apache License Version 2.0</a>.
+Joda-Time is licenced under the business friendly <a href="licenses.html">Apache License Version 2.0</a>.
 
 ---
 
 ## <i></i> Releases
 
-[Release 2.9.2](download.html) is the current latest release.
+[Release 2.10.3](download.html) is the current latest release.
 This release is considered stable and worthy of the 2.x tag.
-See the [upgrade notes](upgradeto290.html) for full details.
+See the [change notes](changes-report.html) for full details.
 
 Joda-Time requires Java SE 5 or later and has [no dependencies](dependencies.html).
-There is a *compile-time* dependency on [Joda-Convert](http://www.joda.org/joda-convert/),
+There is a *compile-time* dependency on [Joda-Convert](/joda-convert/),
 but this is not required at runtime thanks to the magic of annotations.
 
-Available in [Maven Central](http://search.maven.org/#artifactdetails%7Cjoda-time%7Cjoda-time%7C2.9.2%7Cjar).
+Available in [Maven Central](https://search.maven.org/search?q=g:joda-time%20AND%20a:joda-time&core=gav).
 
 ```xml
 <dependency>
   <groupId>joda-time</groupId>
   <artifactId>joda-time</artifactId>
-  <version>2.9.2</version>
+  <version>2.10.3</version>
 </dependency>
 ```
 
@@ -160,13 +165,15 @@ the last release to support Java SE 4 and the last v1.x release.
 
 ### Support
 
-Support on bugs, library usage or enhancement requests is available on a best efforts basis.
-
-To suggest enhancements or contribute, please [fork the source code](https://github.com/JodaOrg/joda-time)
-on GitHub and send a Pull Request.
+Please use [Stack Overflow](https://stackoverflow.com/questions/tagged/jodatime) for general usage questions.
+GitHub [issues](https://github.com/JodaOrg/joda-time/issues) and [pull requests](https://github.com/JodaOrg/joda-time/pulls)
+should be used when you want to help advance the project.
+Commercial support is available via the
+[Tidelift subscription](https://tidelift.com/subscription/pkg/maven-joda-time-joda-time?utm_source=maven-joda-time-joda-time&utm_medium=referral&utm_campaign=website).
 
 Note that Joda-Time is considered to be a largely "finished" project.
 No major enhancements are planned.
 If using Java SE 8, please migrate to `java.time` (JSR-310).
 
-Alternatively, use GitHub [issues](https://github.com/JodaOrg/joda-time/issues).
+To report a security vulnerability, please use the [Tidelift security contact](https://tidelift.com/security).
+Tidelift will coordinate the fix and disclosure.

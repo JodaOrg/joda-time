@@ -147,7 +147,7 @@ public class TestBaseSingleFieldPeriod extends TestCase {
             Single.standardPeriodIn(Period.months(1), DateTimeConstants.MILLIS_PER_DAY);
             fail();
         } catch (IllegalArgumentException ex) {
-            // expeceted
+            // expected
         }
     }
 

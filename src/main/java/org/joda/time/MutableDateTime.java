@@ -801,6 +801,8 @@ public class MutableDateTime
     //-----------------------------------------------------------------------
     /**
      * Set the minute of the day to the specified value.
+     * <p>
+     * Setting this will replace the values of minute-of-hour and hour-of-day.
      *
      * @param minuteOfDay  the minute of day
      * @throws IllegalArgumentException if the value is invalid
@@ -834,6 +836,8 @@ public class MutableDateTime
     //-----------------------------------------------------------------------
     /**
      * Set the second of the day to the specified value.
+     * <p>
+     * Setting this will replace the values of second-of-minute, minute-of-hour and hour-of-day.
      *
      * @param secondOfDay  the second of day
      * @throws IllegalArgumentException if the value is invalid
@@ -867,6 +871,8 @@ public class MutableDateTime
     //-----------------------------------------------------------------------
     /**
      * Set the millis of the day to the specified value.
+     * <p>
+     * Setting this will replace the values of milli-of-second, second-of-minute, minute-of-hour and hour-of-day.
      *
      * @param millisOfDay  the millis of day
      * @throws IllegalArgumentException if the value is invalid
@@ -1162,6 +1168,9 @@ public class MutableDateTime
 
     /**
      * Get the minute of day property
+     * <p>
+     * Calling a setter on the property will replace the values of
+     * minute-of-hour and hour-of-day.
      * 
      * @return the minute of day property
      */
@@ -1180,6 +1189,9 @@ public class MutableDateTime
 
     /**
      * Get the second of day property
+     * <p>
+     * Calling a setter on the property will replace the values of
+     * second-of-minute, minute-of-hour and hour-of-day.
      * 
      * @return the second of day property
      */
@@ -1198,6 +1210,9 @@ public class MutableDateTime
 
     /**
      * Get the millis of day property
+     * <p>
+     * Calling a setter on the property will replace the values of
+     * milli-of-second, second-of-minute, minute-of-hour and hour-of-day.
      * 
      * @return the millis of day property
      */

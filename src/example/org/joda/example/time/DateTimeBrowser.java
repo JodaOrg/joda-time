@@ -51,7 +51,7 @@ import javax.swing.table.TableColumnModel;
 
 import org.joda.time.DateTime;
 
-/** DateTimeBrowser is a Java Swing application which reads a file contining
+/** DateTimeBrowser is a Java Swing application which reads a file containing
  * strings and displays DateTime values in a JTable.<p>
  * The input strings must be suitable for instantiation
  * of DateTime objects.  The file is read, and an attempt is made

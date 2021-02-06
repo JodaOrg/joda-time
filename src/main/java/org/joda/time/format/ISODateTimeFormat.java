@@ -127,7 +127,7 @@ public class ISODateTimeFormat {
      * -20-.040      -20-.040    minute/milli *
      *   plus datetime formats like {date}T{time}
      * </pre>
-     * * indiates that this is not an official ISO format and can be excluded
+     * * indicates that this is not an official ISO format and can be excluded
      * by passing in <code>strictISO</code> as <code>true</code>.
      * <p>
      * This method can side effect the input collection of fields.

@@ -3,7 +3,7 @@
 <document>
 
  <properties>
-  <title>Java date and time API - Coptic calendar system</title>
+  <title>Java date and time API - Ethiopic calendar system</title>
   <author>Stephen Colebourne</author>
  </properties>
 
@@ -33,7 +33,7 @@ We also prevent the entry of dates before year 1.
 References
 <ul>
 <li>Calendrical Calculations - Millenium Edition - ISBN 0521777526</li>
-<li><a href="http://en.wikipedia.org/wiki/Ethiopian_calendar">Wikipedia - Ethiopic Calendar</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Ethiopian_calendar">Wikipedia - Ethiopic Calendar</a></li>
 </ul>
 </p>
 </section>

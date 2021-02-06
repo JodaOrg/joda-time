@@ -107,7 +107,7 @@ public final class Period
      * @return the period
      */
     public static Period years(int years) {
-        return new Period(new int[] {years, 0, 0, 0, 0, 0, 0, 0, 0}, PeriodType.standard());
+        return new Period(new int[] {years, 0, 0, 0, 0, 0, 0, 0}, PeriodType.standard());
     }
 
     /**
@@ -238,7 +238,7 @@ public final class Period
      * <p>
      * Calculation by field difference works by extracting the difference
      * one field at a time and not wrapping into other fields.
-     * Thus 2005-06-09/2007-04-12 will yield P1Y-2M3D.
+     * Thus 2005-06-09/2007-04-12 will yield P2Y-2M3D.
      * <p>
      * For example, you have an event that always runs from the 27th of
      * each month to the 2nd of the next month. If you calculate this
@@ -285,7 +285,7 @@ public final class Period
      * </pre>
      * Bear in mind that this creates four period instances in total, three of
      * which are immediately discarded.
-     * The alterative is more efficient, but less readable:
+     * The alternative is more efficient, but less readable:
      * <pre>
      * Period = new Period(6, 3, 0, 0, 0, 0, 23, 0);
      * </pre>

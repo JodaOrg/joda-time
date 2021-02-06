@@ -170,6 +170,10 @@ public abstract class DateTimeFieldType implements Serializable {
 
     /**
      * Get the millis of day field type.
+     * <p>
+     * This measures the milliseconds from the start of the day on the <b>local</b> time-line.
+     * On a daylight saving date, this means that some values will be missed (in spring)
+     * or duplicated (in autumn/fall).
      * 
      * @return the DateTimeFieldType constant
      */
@@ -188,6 +192,10 @@ public abstract class DateTimeFieldType implements Serializable {
 
     /**
      * Get the second of day field type.
+     * <p>
+     * This measures the seconds from the start of the day on the <b>local</b> time-line.
+     * On a daylight saving date, this means that some values will be missed (in spring)
+     * or duplicated (in autumn/fall).
      * 
      * @return the DateTimeFieldType constant
      */
@@ -206,6 +214,10 @@ public abstract class DateTimeFieldType implements Serializable {
 
     /**
      * Get the minute of day field type.
+     * <p>
+     * This measures the minutes from the start of the day on the <b>local</b> time-line.
+     * On a daylight saving date, this means that some values will be missed (in spring)
+     * or duplicated (in autumn/fall).
      * 
      * @return the DateTimeFieldType constant
      */
@@ -448,7 +460,7 @@ public abstract class DateTimeFieldType implements Serializable {
          * Constructor.
          * 
          * @param name  the name to use
-         * @param ordinal  the byte value for the oridinal index
+         * @param ordinal  the byte value for the ordinal index
          * @param unitType  the unit duration type
          * @param rangeType  the range duration type
          */

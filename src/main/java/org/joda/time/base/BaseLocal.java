@@ -53,7 +53,7 @@ public abstract class BaseLocal
      * Gets the local milliseconds from the Java epoch
      * of 1970-01-01T00:00:00 (not fixed to any specific time zone).
      * <p>
-     * This method is useful in certain circustances for high performance
+     * This method is useful in certain circumstances for high performance
      * access to the datetime fields.
      * 
      * @return the number of milliseconds since 1970-01-01T00:00:00

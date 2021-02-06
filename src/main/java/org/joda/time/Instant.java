@@ -22,6 +22,7 @@ import org.joda.time.base.AbstractInstant;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.InstantConverter;
+import org.joda.time.field.FieldUtils;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
@@ -56,6 +57,12 @@ public final class Instant
         extends AbstractInstant
         implements ReadableInstant, Serializable {
 
+    /**
+     * The Java epoch of 1970-01-01T00:00:00Z.
+     * @since 2.10
+     */
+    public static final Instant EPOCH = new Instant(0L);
+
     /** Serialization lock */
     private static final long serialVersionUID = 3299096530934209741L;
 
@@ -72,10 +79,31 @@ public final class Instant
     public static Instant now() {
         return new Instant();
     }
+    
+    /**
+     * Obtains an {@code Instant} set to the milliseconds from 1970-01-01T00:00:00Z.
+     * 
+     * @param epochMilli  the milliseconds from 1970-01-01T00:00:00Z
+     * @since 2.10
+     */
+    public static Instant ofEpochMilli(long epochMilli) {
+        return new Instant(epochMilli);
+    }
+    
+    /**
+     * Obtains an {@code Instant} set to the seconds from 1970-01-01T00:00:00Z.
+     * 
+     * @param epochSecond  the seconds from 1970-01-01T00:00:00Z
+     * @throws ArithmeticException if the new instant exceeds the capacity of a long
+     * @since 2.10
+     */
+    public static Instant ofEpochSecond(long epochSecond) {
+        return new Instant(FieldUtils.safeMultiply(epochSecond, 1000));
+    }
 
     //-----------------------------------------------------------------------
     /**
-     * Parses a {@code Instant} from the specified string.
+     * Parses an {@code Instant} from the specified string.
      * <p>
      * This uses {@link ISODateTimeFormat#dateTimeParser()}.
      * 
@@ -88,7 +116,7 @@ public final class Instant
     }
 
     /**
-     * Parses a {@code Instant} from the specified string using a formatter.
+     * Parses an {@code Instant} from the specified string using a formatter.
      * 
      * @param str  the string to parse, not null
      * @param formatter  the formatter to use, not null
@@ -149,6 +177,10 @@ public final class Instant
      * Gets a copy of this instant with different millis.
      * <p>
      * The returned object will be either be a new Instant or <code>this</code>.
+     * <p>
+     * Note that this replaces the entire state of the <code>Instant</code>.
+     * To manage the sub-second part of the instant, use {@link #toDateTime()}
+     * and {@link DateTime#withMillisOfSecond(int)}.
      *
      * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
      * @return a copy of this instant with different millis

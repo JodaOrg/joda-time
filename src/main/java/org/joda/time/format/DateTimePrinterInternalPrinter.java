@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2014 Stephen Colebourne
+ *  Copyright 2001-2016 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -62,28 +62,28 @@ class DateTimePrinterInternalPrinter implements InternalPrinter {
         if (appendable instanceof StringBuffer) {
             StringBuffer buf = (StringBuffer) appendable;
             underlying.printTo(buf, instant, chrono, displayOffset, displayZone, locale);
-        }
-        if (appendable instanceof Writer) {
+        } else if (appendable instanceof Writer) {
             Writer out = (Writer) appendable;
             underlying.printTo(out, instant, chrono, displayOffset, displayZone, locale);
+        } else {
+            StringBuffer buf = new StringBuffer(estimatePrintedLength());
+            underlying.printTo(buf, instant, chrono, displayOffset, displayZone, locale);
+            appendable.append(buf);
         }
-        StringBuffer buf = new StringBuffer(estimatePrintedLength());
-        underlying.printTo(buf, instant, chrono, displayOffset, displayZone, locale);
-        appendable.append(buf);
     }
 
     public void printTo(Appendable appendable, ReadablePartial partial, Locale locale) throws IOException {
         if (appendable instanceof StringBuffer) {
             StringBuffer buf = (StringBuffer) appendable;
             underlying.printTo(buf, partial, locale);
-        }
-        if (appendable instanceof Writer) {
+        } else if (appendable instanceof Writer) {
             Writer out = (Writer) appendable;
             underlying.printTo(out, partial, locale);
+        } else {
+            StringBuffer buf = new StringBuffer(estimatePrintedLength());
+            underlying.printTo(buf, partial, locale);
+            appendable.append(buf);
         }
-        StringBuffer buf = new StringBuffer(estimatePrintedLength());
-        underlying.printTo(buf, partial, locale);
-        appendable.append(buf);
     }
 
 }

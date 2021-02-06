@@ -1108,7 +1108,7 @@ public final class TimeOfDay
          * Smaller fields are unaffected.
          * <p>
          * If the result would be too large (beyond 23:59:59:999) or too
-         * small (less than 00:00:00.000) then an Execption is thrown.
+         * small (less than 00:00:00.000) then an Exception is thrown.
          * For the alternate behaviour which wraps to the next 'day',
          * see {@link #addToCopy(int)}.
          * <p>

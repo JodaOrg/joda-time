@@ -57,7 +57,7 @@ import org.joda.time.DateTimeZone;
  * <p>
  * IslamicChronology is thread-safe and immutable.
  *
- * @see <a href="http://en.wikipedia.org/wiki/Islamic_calendar">Wikipedia</a>
+ * @see <a href="https://en.wikipedia.org/wiki/Islamic_calendar">Wikipedia</a>
  *
  * @author Stephen Colebourne
  * @since 1.2

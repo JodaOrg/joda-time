@@ -75,7 +75,7 @@ public abstract class Chronology {
     /**
      * Returns an instance of this Chronology that operates in the UTC time
      * zone. Chronologies that do not operate in a time zone or are already
-     * UTC must return themself.
+     * UTC must return themselves.
      *
      * @return a version of this chronology that ignores time zones
      */
@@ -415,7 +415,7 @@ public abstract class Chronology {
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    public abstract  DateTimeField weekyearOfCentury();
+    public abstract DateTimeField weekyearOfCentury();
 
     // Month
     //-----------------------------------------------------------------------

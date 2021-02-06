@@ -121,6 +121,28 @@ public class IllegalFieldValueException extends IllegalArgumentException {
      * 
      * @param fieldType  type of field being set
      * @param value  illegal value being set
+     * @param lowerBound  lower legal field value, or null if not applicable
+     * @param upperBound  upper legal field value, or null if not applicable
+     * @param explain  an explanation message
+     */
+    public IllegalFieldValueException(DateTimeFieldType fieldType,
+                                      Number value, Number lowerBound, Number upperBound, String explain) {
+        super(createMessage(fieldType.getName(), value, lowerBound, upperBound, explain));
+        iDateTimeFieldType = fieldType;
+        iDurationFieldType = null;
+        iFieldName = fieldType.getName();
+        iNumberValue = value;
+        iStringValue = null;
+        iLowerBound = lowerBound;
+        iUpperBound = upperBound;
+        iMessage = super.getMessage();
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param fieldType  type of field being set
+     * @param value  illegal value being set
      * @param explain  an explanation
      * @since 1.5
      */

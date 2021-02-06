@@ -55,3 +55,35 @@ h2#Why_Joda_Time i:before {
 h2#Rationale i:before {
  content: "\f0eb";
 }
+
+/* Enterprise page */
+h2#Joda-Time_for_Enterprise~div > p:last-child {
+ text-align: center;
+ margin-top: 1.1em;
+ margin-bottom: 1.2em;
+}
+button.btn-learnmore, button.btn-requestdemo {
+ width: 14em;
+ font-size: 1.2em;
+ text-align: center;
+ padding-top: 0.3em;
+ padding-bottom: 0.3em;
+ border-radius: 3px;
+ border-style: solid;
+}
+button.btn-learnmore {
+ color: #f6914d;
+ background-color: white;
+ border-color: #f6914d;
+}
+button.btn-learnmore a {
+ color: #f6914d;
+}
+button.btn-requestdemo {
+ color: white;
+ background-color: #f6914d;
+ border-color: #f6914d;
+}
+button.btn-requestdemo a {
+ color: white;
+}

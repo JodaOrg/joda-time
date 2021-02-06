@@ -40,6 +40,7 @@ public class TestPeriodFormat extends TestCase {
     private static final Locale PL = new Locale("pl");
     private static final Locale BG = new Locale("bg");
     private static final Locale CS = new Locale("cs");
+    private static final Locale RU = new Locale("ru");
 
     private Locale originalLocale = null;
 
@@ -587,6 +588,257 @@ public class TestPeriodFormat extends TestCase {
     public void test_wordBased_cs_formatStandard() {
         Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
         assertEquals("1 den, 5 hodin, 6 minut, 7 sekund a 8 milisekund", PeriodFormat.wordBased(CS).print(p));
+    }
+
+    // -----------------------------------------------------------------------
+    // wordBased(new Locale("ru")
+    // -----------------------------------------------------------------------
+    public void test_wordBased_ru_formatStandard() {
+        Period p = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+        assertEquals("1 год, 2 месяца, 3 недели, 4 дня, 5 часов, 6 минут, 7 секунд и 8 миллисекунд", PeriodFormat.wordBased(RU).print(p));
+    }
+
+    // -----------------------------------------------------------------------
+    public void test_wordBased_ru_FormatOneField() {
+        Period p = Period.days(2);
+        assertEquals("2 дня", PeriodFormat.wordBased(RU).print(p));
+    }
+
+    // -----------------------------------------------------------------------
+    public void test_wordBased_ru_formatTwoFields() {
+        Period p = Period.years(1).withMonths(2);
+        assertEquals("1 год и 2 месяца", PeriodFormat.wordBased(RU).print(p));
+    }
+
+    // -----------------------------------------------------------------------
+    public void test_wordBased_ru_parseOneField() {
+        Period p = Period.years(1);
+        assertEquals(p, PeriodFormat.wordBased(RU).parsePeriod("1 год"));
+    }
+
+    // -----------------------------------------------------------------------
+    public void test_wordBased_ru_parseTwoFields() {
+        Period p = Period.hours(1).withMillis(5);
+        assertEquals(p, PeriodFormat.wordBased(RU).parsePeriod("1 час и 5 миллисекунд"));
+    }
+
+    // -----------------------------------------------------------------------
+    public void test_wordBased_ru_checkRedundantSeparator() {
+        try {
+            PeriodFormat.wordBased(RU).parsePeriod("2 дня and 5 минут");
+            fail("No exception was caught");
+        } catch (Exception e) {
+            assertEquals(IllegalArgumentException.class, e.getClass());
+        }
+    }
+
+    // -----------------------------------------------------------------------
+    public void test_wordBased_ru_cached() {
+        assertSame(PeriodFormat.wordBased(RU), PeriodFormat.wordBased(RU));
+    }
+
+    // -----------------------------------------------------------------------
+    public void test_wordBased_ru_regEx() {
+        PeriodFormatter pf = PeriodFormat.wordBased(RU);
+        assertEquals("1 год", pf.print(Period.years(1)));
+        assertEquals("11 лет", pf.print(Period.years(11)));
+        assertEquals("21 год", pf.print(Period.years(21)));
+        assertEquals("101 год", pf.print(Period.years(101)));
+        assertEquals("111 лет", pf.print(Period.years(111)));
+        assertEquals("121 год", pf.print(Period.years(121)));
+        assertEquals("2001 год", pf.print(Period.years(2001)));
+        assertEquals("2 года", pf.print(Period.years(2)));
+        assertEquals("3 года", pf.print(Period.years(3)));
+        assertEquals("4 года", pf.print(Period.years(4)));
+        assertEquals("12 лет", pf.print(Period.years(12)));
+        assertEquals("13 лет", pf.print(Period.years(13)));
+        assertEquals("14 лет", pf.print(Period.years(14)));
+        assertEquals("22 года", pf.print(Period.years(22)));
+        assertEquals("23 года", pf.print(Period.years(23)));
+        assertEquals("24 года", pf.print(Period.years(24)));
+        assertEquals("102 года", pf.print(Period.years(102)));
+        assertEquals("112 лет", pf.print(Period.years(112)));
+        assertEquals("124 года", pf.print(Period.years(124)));
+        assertEquals("5 лет", pf.print(Period.years(5)));
+        assertEquals("15 лет", pf.print(Period.years(15)));
+        assertEquals("25 лет", pf.print(Period.years(25)));
+        assertEquals("105 лет", pf.print(Period.years(105)));
+        assertEquals("1005 лет", pf.print(Period.years(1005)));
+
+        assertEquals("1 месяц", pf.print(Period.months(1)));
+        assertEquals("11 месяцев", pf.print(Period.months(11)));
+        assertEquals("21 месяц", pf.print(Period.months(21)));
+        assertEquals("101 месяц", pf.print(Period.months(101)));
+        assertEquals("111 месяцев", pf.print(Period.months(111)));
+        assertEquals("121 месяц", pf.print(Period.months(121)));
+        assertEquals("2001 месяц", pf.print(Period.months(2001)));
+        assertEquals("2 месяца", pf.print(Period.months(2)));
+        assertEquals("3 месяца", pf.print(Period.months(3)));
+        assertEquals("4 месяца", pf.print(Period.months(4)));
+        assertEquals("12 месяцев", pf.print(Period.months(12)));
+        assertEquals("13 месяцев", pf.print(Period.months(13)));
+        assertEquals("14 месяцев", pf.print(Period.months(14)));
+        assertEquals("22 месяца", pf.print(Period.months(22)));
+        assertEquals("23 месяца", pf.print(Period.months(23)));
+        assertEquals("24 месяца", pf.print(Period.months(24)));
+        assertEquals("102 месяца", pf.print(Period.months(102)));
+        assertEquals("112 месяцев", pf.print(Period.months(112)));
+        assertEquals("124 месяца", pf.print(Period.months(124)));
+        assertEquals("5 месяцев", pf.print(Period.months(5)));
+        assertEquals("15 месяцев", pf.print(Period.months(15)));
+        assertEquals("25 месяцев", pf.print(Period.months(25)));
+        assertEquals("105 месяцев", pf.print(Period.months(105)));
+        assertEquals("1005 месяцев", pf.print(Period.months(1005)));
+
+        assertEquals("1 неделя", pf.print(Period.weeks(1)));
+        assertEquals("11 недель", pf.print(Period.weeks(11)));
+        assertEquals("21 неделя", pf.print(Period.weeks(21)));
+        assertEquals("101 неделя", pf.print(Period.weeks(101)));
+        assertEquals("111 недель", pf.print(Period.weeks(111)));
+        assertEquals("121 неделя", pf.print(Period.weeks(121)));
+        assertEquals("2001 неделя", pf.print(Period.weeks(2001)));
+        assertEquals("2 недели", pf.print(Period.weeks(2)));
+        assertEquals("3 недели", pf.print(Period.weeks(3)));
+        assertEquals("4 недели", pf.print(Period.weeks(4)));
+        assertEquals("12 недель", pf.print(Period.weeks(12)));
+        assertEquals("13 недель", pf.print(Period.weeks(13)));
+        assertEquals("14 недель", pf.print(Period.weeks(14)));
+        assertEquals("22 недели", pf.print(Period.weeks(22)));
+        assertEquals("23 недели", pf.print(Period.weeks(23)));
+        assertEquals("24 недели", pf.print(Period.weeks(24)));
+        assertEquals("102 недели", pf.print(Period.weeks(102)));
+        assertEquals("112 недель", pf.print(Period.weeks(112)));
+        assertEquals("124 недели", pf.print(Period.weeks(124)));
+        assertEquals("5 недель", pf.print(Period.weeks(5)));
+        assertEquals("15 недель", pf.print(Period.weeks(15)));
+        assertEquals("25 недель", pf.print(Period.weeks(25)));
+        assertEquals("105 недель", pf.print(Period.weeks(105)));
+        assertEquals("1005 недель", pf.print(Period.weeks(1005)));
+
+        assertEquals("1 день", pf.print(Period.days(1)));
+        assertEquals("11 дней", pf.print(Period.days(11)));
+        assertEquals("21 день", pf.print(Period.days(21)));
+        assertEquals("101 день", pf.print(Period.days(101)));
+        assertEquals("111 дней", pf.print(Period.days(111)));
+        assertEquals("121 день", pf.print(Period.days(121)));
+        assertEquals("2001 день", pf.print(Period.days(2001)));
+        assertEquals("2 дня", pf.print(Period.days(2)));
+        assertEquals("3 дня", pf.print(Period.days(3)));
+        assertEquals("4 дня", pf.print(Period.days(4)));
+        assertEquals("12 дней", pf.print(Period.days(12)));
+        assertEquals("13 дней", pf.print(Period.days(13)));
+        assertEquals("14 дней", pf.print(Period.days(14)));
+        assertEquals("22 дня", pf.print(Period.days(22)));
+        assertEquals("23 дня", pf.print(Period.days(23)));
+        assertEquals("24 дня", pf.print(Period.days(24)));
+        assertEquals("102 дня", pf.print(Period.days(102)));
+        assertEquals("112 дней", pf.print(Period.days(112)));
+        assertEquals("124 дня", pf.print(Period.days(124)));
+        assertEquals("5 дней", pf.print(Period.days(5)));
+        assertEquals("15 дней", pf.print(Period.days(15)));
+        assertEquals("25 дней", pf.print(Period.days(25)));
+        assertEquals("105 дней", pf.print(Period.days(105)));
+        assertEquals("1005 дней", pf.print(Period.days(1005)));
+
+        assertEquals("1 час", pf.print(Period.hours(1)));
+        assertEquals("11 часов", pf.print(Period.hours(11)));
+        assertEquals("21 час", pf.print(Period.hours(21)));
+        assertEquals("101 час", pf.print(Period.hours(101)));
+        assertEquals("111 часов", pf.print(Period.hours(111)));
+        assertEquals("121 час", pf.print(Period.hours(121)));
+        assertEquals("2001 час", pf.print(Period.hours(2001)));
+        assertEquals("2 часа", pf.print(Period.hours(2)));
+        assertEquals("3 часа", pf.print(Period.hours(3)));
+        assertEquals("4 часа", pf.print(Period.hours(4)));
+        assertEquals("12 часов", pf.print(Period.hours(12)));
+        assertEquals("13 часов", pf.print(Period.hours(13)));
+        assertEquals("14 часов", pf.print(Period.hours(14)));
+        assertEquals("22 часа", pf.print(Period.hours(22)));
+        assertEquals("23 часа", pf.print(Period.hours(23)));
+        assertEquals("24 часа", pf.print(Period.hours(24)));
+        assertEquals("102 часа", pf.print(Period.hours(102)));
+        assertEquals("112 часов", pf.print(Period.hours(112)));
+        assertEquals("124 часа", pf.print(Period.hours(124)));
+        assertEquals("5 часов", pf.print(Period.hours(5)));
+        assertEquals("15 часов", pf.print(Period.hours(15)));
+        assertEquals("25 часов", pf.print(Period.hours(25)));
+        assertEquals("105 часов", pf.print(Period.hours(105)));
+        assertEquals("1005 часов", pf.print(Period.hours(1005)));
+
+        assertEquals("1 минута", pf.print(Period.minutes(1)));
+        assertEquals("11 минут", pf.print(Period.minutes(11)));
+        assertEquals("21 минута", pf.print(Period.minutes(21)));
+        assertEquals("101 минута", pf.print(Period.minutes(101)));
+        assertEquals("111 минут", pf.print(Period.minutes(111)));
+        assertEquals("121 минута", pf.print(Period.minutes(121)));
+        assertEquals("2001 минута", pf.print(Period.minutes(2001)));
+        assertEquals("2 минуты", pf.print(Period.minutes(2)));
+        assertEquals("3 минуты", pf.print(Period.minutes(3)));
+        assertEquals("4 минуты", pf.print(Period.minutes(4)));
+        assertEquals("12 минут", pf.print(Period.minutes(12)));
+        assertEquals("13 минут", pf.print(Period.minutes(13)));
+        assertEquals("14 минут", pf.print(Period.minutes(14)));
+        assertEquals("22 минуты", pf.print(Period.minutes(22)));
+        assertEquals("23 минуты", pf.print(Period.minutes(23)));
+        assertEquals("24 минуты", pf.print(Period.minutes(24)));
+        assertEquals("102 минуты", pf.print(Period.minutes(102)));
+        assertEquals("112 минут", pf.print(Period.minutes(112)));
+        assertEquals("124 минуты", pf.print(Period.minutes(124)));
+        assertEquals("5 минут", pf.print(Period.minutes(5)));
+        assertEquals("15 минут", pf.print(Period.minutes(15)));
+        assertEquals("25 минут", pf.print(Period.minutes(25)));
+        assertEquals("105 минут", pf.print(Period.minutes(105)));
+        assertEquals("1005 минут", pf.print(Period.minutes(1005)));
+
+        assertEquals("1 секунда", pf.print(Period.seconds(1)));
+        assertEquals("11 секунд", pf.print(Period.seconds(11)));
+        assertEquals("21 секунда", pf.print(Period.seconds(21)));
+        assertEquals("101 секунда", pf.print(Period.seconds(101)));
+        assertEquals("111 секунд", pf.print(Period.seconds(111)));
+        assertEquals("121 секунда", pf.print(Period.seconds(121)));
+        assertEquals("2001 секунда", pf.print(Period.seconds(2001)));
+        assertEquals("2 секунды", pf.print(Period.seconds(2)));
+        assertEquals("3 секунды", pf.print(Period.seconds(3)));
+        assertEquals("4 секунды", pf.print(Period.seconds(4)));
+        assertEquals("12 секунд", pf.print(Period.seconds(12)));
+        assertEquals("13 секунд", pf.print(Period.seconds(13)));
+        assertEquals("14 секунд", pf.print(Period.seconds(14)));
+        assertEquals("22 секунды", pf.print(Period.seconds(22)));
+        assertEquals("23 секунды", pf.print(Period.seconds(23)));
+        assertEquals("24 секунды", pf.print(Period.seconds(24)));
+        assertEquals("102 секунды", pf.print(Period.seconds(102)));
+        assertEquals("112 секунд", pf.print(Period.seconds(112)));
+        assertEquals("124 секунды", pf.print(Period.seconds(124)));
+        assertEquals("5 секунд", pf.print(Period.seconds(5)));
+        assertEquals("15 секунд", pf.print(Period.seconds(15)));
+        assertEquals("25 секунд", pf.print(Period.seconds(25)));
+        assertEquals("105 секунд", pf.print(Period.seconds(105)));
+        assertEquals("1005 секунд", pf.print(Period.seconds(1005)));
+
+        assertEquals("1 миллисекунда", pf.print(Period.millis(1)));
+        assertEquals("11 миллисекунд", pf.print(Period.millis(11)));
+        assertEquals("21 миллисекунда", pf.print(Period.millis(21)));
+        assertEquals("101 миллисекунда", pf.print(Period.millis(101)));
+        assertEquals("111 миллисекунд", pf.print(Period.millis(111)));
+        assertEquals("121 миллисекунда", pf.print(Period.millis(121)));
+        assertEquals("2001 миллисекунда", pf.print(Period.millis(2001)));
+        assertEquals("2 миллисекунды", pf.print(Period.millis(2)));
+        assertEquals("3 миллисекунды", pf.print(Period.millis(3)));
+        assertEquals("4 миллисекунды", pf.print(Period.millis(4)));
+        assertEquals("12 миллисекунд", pf.print(Period.millis(12)));
+        assertEquals("13 миллисекунд", pf.print(Period.millis(13)));
+        assertEquals("14 миллисекунд", pf.print(Period.millis(14)));
+        assertEquals("22 миллисекунды", pf.print(Period.millis(22)));
+        assertEquals("23 миллисекунды", pf.print(Period.millis(23)));
+        assertEquals("24 миллисекунды", pf.print(Period.millis(24)));
+        assertEquals("102 миллисекунды", pf.print(Period.millis(102)));
+        assertEquals("112 миллисекунд", pf.print(Period.millis(112)));
+        assertEquals("124 миллисекунды", pf.print(Period.millis(124)));
+        assertEquals("5 миллисекунд", pf.print(Period.millis(5)));
+        assertEquals("15 миллисекунд", pf.print(Period.millis(15)));
+        assertEquals("25 миллисекунд", pf.print(Period.millis(25)));
+        assertEquals("105 миллисекунд", pf.print(Period.millis(105)));
+        assertEquals("1005 миллисекунд", pf.print(Period.millis(1005)));
     }
 
     //-----------------------------------------------------------------------

@@ -568,7 +568,10 @@ public class DateTimeZoneBuilder {
             long next = chrono.monthOfYear().set(instant, iMonthOfYear);
             // Be lenient with millisOfDay.
             next = chrono.millisOfDay().set(next, 0);
-            next = chrono.millisOfDay().add(next, iMillisOfDay);
+            // avoid going into the next day, as that can change the month and cause setDayOfMonthNext to fail
+            // this is not a particularly good solution to the problem (it is vital to use iMillisOfDay
+            // as otherwise the logic doesn't find the correct *next* occurrence)
+            next = chrono.millisOfDay().add(next, Math.min(iMillisOfDay, DateTimeConstants.MILLIS_PER_DAY - 1));
             next = setDayOfMonthNext(chrono, next);
 
             if (iDayOfWeek == 0) {

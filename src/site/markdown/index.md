@@ -130,7 +130,7 @@ Joda-Time is licenced under the business friendly <a href="licenses.html">Apache
 
 ## <i></i> Releases
 
-[Release 2.10.3](download.html) is the current latest release.
+[Release 2.10.10](download.html) is the current latest release.
 This release is considered stable and worthy of the 2.x tag.
 See the [change notes](changes-report.html) for full details.
 
@@ -144,7 +144,7 @@ Available in [Maven Central](https://search.maven.org/search?q=g:joda-time%20AND
 <dependency>
   <groupId>joda-time</groupId>
   <artifactId>joda-time</artifactId>
-  <version>2.10.3</version>
+  <version>2.10.10</version>
 </dependency>
 ```
 
@@ -160,16 +160,28 @@ including information on the corner cases that are not compatible.
 The ancient release [1.6.2](https://sourceforge.net/projects/joda-time/files/joda-time/1.6.2/) was
 the last release to support Java SE 4 and the last v1.x release.
 
+Java module name: `org.joda.time`.
 
 ---
+
+### For Enterprise
+
+[Available as part of the Tidelift Subscription](https://tidelift.com/subscription/pkg/maven-joda-time-joda-time?utm_source=maven-joda-time-joda-time&utm_medium=referral&utm_campaign=enterprise).
+
+Joda and the maintainers of thousands of other packages are working with Tidelift to deliver one
+enterprise subscription that covers all of the open source you use.
+
+If you want the flexibility of open source and the confidence of commercial-grade software, this is for you.
+[Learn more](https://tidelift.com/subscription/pkg/maven-joda-time-joda-time?utm_source=maven-joda-time-joda-time&utm_medium=referral&utm_campaign=enterprise).
+
 
 ### Support
 
 Please use [Stack Overflow](https://stackoverflow.com/questions/tagged/jodatime) for general usage questions.
 GitHub [issues](https://github.com/JodaOrg/joda-time/issues) and [pull requests](https://github.com/JodaOrg/joda-time/pulls)
 should be used when you want to help advance the project.
-Commercial support is available via the
-[Tidelift subscription](https://tidelift.com/subscription/pkg/maven-joda-time-joda-time?utm_source=maven-joda-time-joda-time&utm_medium=referral&utm_campaign=website).
+
+Any donations to support the project are accepted via [OpenCollective](https://opencollective.com/joda).
 
 Note that Joda-Time is considered to be a largely "finished" project.
 No major enhancements are planned.

@@ -8,6 +8,56 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
+    <release version="2.10.10" date="2020-02-05" description="v2.10.10">
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2021a.
+      </action>
+    </release>
+    <release version="2.10.9" date="2020-12-29" description="v2.10.9">
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2020e.
+        Fix to time-zone compiler.
+      </action>
+    </release>
+    <release version="2.10.8" date="2020-10-23" description="v2.10.8">
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2020d.
+        Remove systemv and pacificnew time zones as per TZDB changes.
+      </action>
+    </release>
+    <release version="2.10.7" date="2020-10-21" description="v2.10.7">
+      <action dev="jodastephen" type="fix">
+        DateTimeZone data updated to version 2020c.
+        Remove systemv and pacificnew time zones as per TZDB changes.
+      </action>
+      <action dev="jodastephen" type="add">
+        Better error message for year-month-day.
+        Fixes #540.
+      </action>
+      <action dev="AlexMe951" type="fix">
+        Fix localization for Russia.
+        Fixes #533.
+      </action>
+	</release>
+    <release version="2.10.6" date="2020-04-24" description="v2.10.6">
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2020a.
+      </action>
+      <action dev="stari4ek" type="add">
+        Add localization for Ukraine.
+        Fixes #523.
+      </action>
+    </release>
+    <release version="2.10.5" date="2019-10-24" description="v2.10.5">
+      <action dev="jodastephen" type="update">
+        Updated Joda-Convert version.
+      </action>
+    </release>
+    <release version="2.10.4" date="2019-09-20" description="v2.10.4">
+      <action dev="bradarndt" type="update">
+        DateTimeZone data updated to version 2019c.
+      </action>
+    </release>
     <release version="2.10.3" date="2019-07-04" description="v2.10.3">
       <action dev="bradarndt" type="update">
         DateTimeZone data updated to version 2019b.

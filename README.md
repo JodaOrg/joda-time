@@ -51,7 +51,7 @@ Various documentation is available:
 
 
 ### Releases
-[Release 2.10.3](https://www.joda.org/joda-time/download.html) is the current latest release.
+[Release 2.10.10](https://www.joda.org/joda-time/download.html) is the current latest release.
 This release is considered stable and worthy of the 2.x tag.
 It depends on JDK 1.5 or later.
 
@@ -62,13 +62,13 @@ Available in the [Maven Central repository](https://search.maven.org/search?q=g:
 <dependency>
   <groupId>joda-time</groupId>
   <artifactId>joda-time</artifactId>
-  <version>2.10.3</version>
+  <version>2.10.10</version>
 </dependency>
 ```
 
 **Gradle configuration:**
 ```groovy
-compile 'joda-time:joda-time:2.10.3'
+compile 'joda-time:joda-time:2.10.10'
 ```
 
 ![Tidelift dependency check](https://tidelift.com/badges/github/JodaOrg/joda-time)
@@ -84,12 +84,22 @@ Other related projects:
 - https://www.joda.org/joda-time/related.html
 
 
+### For enterprise
+Available as part of the Tidelift Subscription.
+
+Joda and the maintainers of thousands of other packages are working with Tidelift to deliver one enterprise subscription that covers all of the open source you use.
+
+If you want the flexibility of open source and the confidence of commercial-grade software, this is for you.
+
+[Learn more](https://tidelift.com/subscription/pkg/maven-joda-time-joda-time?utm_source=maven-joda-time-joda-time&utm_medium=github)
+
+
 ### Support
 Please use [Stack Overflow](https://stackoverflow.com/questions/tagged/jodatime) for general usage questions.
 GitHub [issues](https://github.com/JodaOrg/joda-time/issues) and [pull requests](https://github.com/JodaOrg/joda-time/pulls)
 should be used when you want to help advance the project.
-Commercial support is available via the
-[Tidelift subscription](https://tidelift.com/subscription/pkg/maven-joda-time-joda-time?utm_source=maven-joda-time-joda-time&utm_medium=referral&utm_campaign=readme).
+
+Any donations to support the project are accepted via [OpenCollective](https://opencollective.com/joda).
 
 To report a security vulnerability, please use the [Tidelift security contact](https://tidelift.com/security).
 Tidelift will coordinate the fix and disclosure.
@@ -101,5 +111,4 @@ Tidelift will coordinate the fix and disclosure.
 * Commit and push
 * Ensure on Java SE 8
 * `mvn clean deploy -Doss.repo -Dgpg.passphrase=""`
-* Release project in [Nexus](https://oss.sonatype.org)
-* Website will be built and released by Travis
+* Website will be built and released by GitHub Actions

@@ -72,6 +72,7 @@ public abstract class AssembledChronology extends BaseChronology {
     private transient DateTimeField iWeekyear;
     private transient DateTimeField iWeekyearOfCentury;
     private transient DateTimeField iMonthOfYear;
+    private transient DateTimeField iQuarterOfYear;
     private transient DateTimeField iYear;
     private transient DateTimeField iYearOfEra;
     private transient DateTimeField iYearOfCentury;
@@ -260,6 +261,10 @@ public abstract class AssembledChronology extends BaseChronology {
         return iMonthOfYear;
     }
 
+    public final DateTimeField quarterOfYear() {
+        return iQuarterOfYear;
+    }
+
     public final DurationField years() {
         return iYears;
     }
@@ -358,6 +363,7 @@ public abstract class AssembledChronology extends BaseChronology {
             iWeekyear           = (f = fields.weekyear)           != null ? f : super.weekyear();
             iWeekyearOfCentury  = (f = fields.weekyearOfCentury)  != null ? f : super.weekyearOfCentury();
             iMonthOfYear        = (f = fields.monthOfYear)        != null ? f : super.monthOfYear();
+            iQuarterOfYear      = (f = fields.quarterOfYear)      != null ? f : super.quarterOfYear();
             iYear               = (f = fields.year)               != null ? f : super.year();
             iYearOfEra          = (f = fields.yearOfEra)          != null ? f : super.yearOfEra();
             iYearOfCentury      = (f = fields.yearOfCentury)      != null ? f : super.yearOfCentury();
@@ -427,6 +433,7 @@ public abstract class AssembledChronology extends BaseChronology {
         public DateTimeField weekyear;
         public DateTimeField weekyearOfCentury;
         public DateTimeField monthOfYear;
+        public DateTimeField quarterOfYear;
         public DateTimeField year;
         public DateTimeField yearOfEra;
         public DateTimeField yearOfCentury;
@@ -535,6 +542,9 @@ public abstract class AssembledChronology extends BaseChronology {
                 }
                 if (isSupported(f = chrono.monthOfYear())) {
                     monthOfYear = f;
+                }
+                if (isSupported(f = chrono.quarterOfYear())) {
+                    quarterOfYear = f;
                 }
                 if (isSupported(f = chrono.year())) {
                     year = f;

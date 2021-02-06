@@ -593,6 +593,14 @@ public abstract class BaseChronology
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.monthOfYear(), months());
     }
 
+    public DurationField quarters() {
+        return UnsupportedDurationField.getInstance(DurationFieldType.quarters());
+    }
+
+    public DateTimeField quarterOfYear() {
+        return UnsupportedDateTimeField.getInstance(DateTimeFieldType.quarterOfYear(), quarters());
+    }
+
     // Year
     //-----------------------------------------------------------------------
     /**

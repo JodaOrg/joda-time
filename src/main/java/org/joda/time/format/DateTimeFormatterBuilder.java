@@ -819,6 +819,16 @@ public class DateTimeFormatterBuilder {
     }
 
     /**
+     * Instructs the printer to emit a numeric quarterOfYear field.
+     *
+     * @param minDigits  minimum number of digits to print
+     * @return this DateTimeFormatterBuilder, for chaining
+     */
+    public DateTimeFormatterBuilder appendQuarterOfYear(int minDigits) {
+        return appendDecimal(DateTimeFieldType.quarterOfYear(), minDigits, 1);
+    }
+
+    /**
      * Instructs the printer to emit a numeric year field.
      *
      * @param minDigits  minimum number of digits to <i>print</i>
@@ -984,7 +994,7 @@ public class DateTimeFormatterBuilder {
      *
      * @return this DateTimeFormatterBuilder, for chaining
      */
-    public DateTimeFormatterBuilder appendMonthOfYearText() { 
+    public DateTimeFormatterBuilder appendMonthOfYearText() {
         return appendText(DateTimeFieldType.monthOfYear());
     }
 
@@ -1314,7 +1324,7 @@ public class DateTimeFormatterBuilder {
                     positive = c == '+';
 
                     // Next character must be a digit.
-                    if (length + 1 >= limit || 
+                    if (length + 1 >= limit ||
                         (c = text.charAt(position + length + 1)) < '0' || c > '9') {
                         break;
                     }

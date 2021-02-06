@@ -433,6 +433,22 @@ public abstract class Chronology {
      */
     public abstract DateTimeField monthOfYear();
 
+    // Quarter
+    //-----------------------------------------------------------------------
+    /**
+     * Get the quarter duration field for this chronology.
+     *
+     * @return DurationField or UnsupportedDurationField if unsupported
+     */
+    public abstract DurationField quarters();
+
+    /**
+     * Get the quarter of year field for this chronology.
+     *
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
+     */
+    public abstract DateTimeField quarterOfYear();
+
     // Year
     //-----------------------------------------------------------------------
     /**

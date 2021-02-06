@@ -611,6 +611,19 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testFormat_quarterOfYear() {
+        DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
+        DateTimeFormatter f = DateTimeFormat.forPattern("Q").withLocale(Locale.UK);
+        assertEquals(dt.toString(), "2", f.print(dt));
+
+        dt = dt.withZone(NEWYORK);
+        assertEquals(dt.toString(), "2", f.print(dt));
+
+        dt = dt.withZone(TOKYO);
+        assertEquals(dt.toString(), "2", f.print(dt));
+    }
+
+    //-----------------------------------------------------------------------
     public void testFormat_dayOfMonth() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("d").withLocale(Locale.UK);

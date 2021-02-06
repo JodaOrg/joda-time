@@ -54,7 +54,8 @@ public abstract class DurationFieldType implements Serializable {
         HOURS = 9,
         MINUTES = 10,
         SECONDS = 11,
-        MILLIS = 12;
+        MILLIS = 12,
+        QUARTERS = 13;
 
     /** The eras field type. */
     static final DurationFieldType ERAS_TYPE = new StandardDurationFieldType("eras", ERAS);
@@ -80,6 +81,8 @@ public abstract class DurationFieldType implements Serializable {
     static final DurationFieldType SECONDS_TYPE = new StandardDurationFieldType("seconds", SECONDS);
     /** The millis field type. */
     static final DurationFieldType MILLIS_TYPE = new StandardDurationFieldType("millis", MILLIS);
+    /** The quarters field type. */
+    static final DurationFieldType QUARTERS_TYPE = new StandardDurationFieldType("quarters", QUARTERS);
 
     /** The name of the field type. */
     private final String iName;
@@ -205,6 +208,16 @@ public abstract class DurationFieldType implements Serializable {
         return ERAS_TYPE;
     }
 
+    /**
+     * Get the quarters field type.
+     *
+     * @return the DurationFieldType constant
+     */
+    public static DurationFieldType quarters() {
+        return QUARTERS_TYPE;
+    }
+
+
     //-----------------------------------------------------------------------
     /**
      * Get the name of the field.
@@ -306,6 +319,8 @@ public abstract class DurationFieldType implements Serializable {
                     return chronology.seconds();
                 case MILLIS:
                     return chronology.millis();
+                case QUARTERS:
+                    return chronology.quarters();
                 default:
                     // Shouldn't happen.
                     throw new InternalError();
@@ -343,6 +358,8 @@ public abstract class DurationFieldType implements Serializable {
                     return SECONDS_TYPE;
                 case MILLIS:
                     return MILLIS_TYPE;
+                case QUARTERS:
+                    return QUARTERS_TYPE;
                 default:
                     // Shouldn't happen.
                     return this;

@@ -67,7 +67,8 @@ public abstract class DateTimeFieldType implements Serializable {
         SECOND_OF_DAY = 20,
         SECOND_OF_MINUTE = 21,
         MILLIS_OF_DAY = 22,
-        MILLIS_OF_SECOND = 23;
+        MILLIS_OF_SECOND = 23,
+        QUARTER_OF_YEAR = 24;
 
     /** The era field type. */
     private static final DateTimeFieldType ERA_TYPE = new StandardDateTimeFieldType(
@@ -139,6 +140,9 @@ public abstract class DateTimeFieldType implements Serializable {
     /** The millisOfSecond field type. */
     private static final DateTimeFieldType MILLIS_OF_SECOND_TYPE = new StandardDateTimeFieldType(
         "millisOfSecond", MILLIS_OF_SECOND, DurationFieldType.millis(), DurationFieldType.seconds());
+    /** The quarterOfYear field type. */
+    private static final DateTimeFieldType QUARTER_OF_YEAR_TYPE = new StandardDateTimeFieldType(
+        "quarterOfYear", QUARTER_OF_YEAR, DurationFieldType.quarters(), DurationFieldType.years());
 
     /** The name of the field. */
     private final String iName;
@@ -331,6 +335,15 @@ public abstract class DateTimeFieldType implements Serializable {
     }
 
     /**
+     * Get the quarter of year field type.
+     *
+     * @return the DateTimeFieldType constant
+     */
+    public static DateTimeFieldType quarterOfYear() {
+        return QUARTER_OF_YEAR_TYPE;
+    }
+
+    /**
      * Get the year field type.
      * 
      * @return the DateTimeFieldType constant
@@ -506,6 +519,8 @@ public abstract class DateTimeFieldType implements Serializable {
                     return chronology.dayOfYear();
                 case MONTH_OF_YEAR:
                     return chronology.monthOfYear();
+                case QUARTER_OF_YEAR:
+                    return chronology.quarterOfYear();
                 case DAY_OF_MONTH:
                     return chronology.dayOfMonth();
                 case WEEKYEAR_OF_CENTURY:
@@ -597,6 +612,8 @@ public abstract class DateTimeFieldType implements Serializable {
                     return MILLIS_OF_DAY_TYPE;
                 case MILLIS_OF_SECOND:
                     return MILLIS_OF_SECOND_TYPE;
+                case QUARTER_OF_YEAR:
+                    return QUARTER_OF_YEAR_TYPE;
                 default:
                     // Shouldn't happen.
                     return this;

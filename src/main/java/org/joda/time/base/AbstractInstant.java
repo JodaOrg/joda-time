@@ -313,32 +313,32 @@ public abstract class AbstractInstant implements ReadableInstant {
 
     //-----------------------------------------------------------------------
     /**
-     * Is this instant after the millisecond instant passed in
+     * Is this instant strictly after the millisecond instant passed in
      * comparing solely by millisecond.
      *
      * @param instant  a millisecond instant to check against
-     * @return true if this instant is after the instant passed in
+     * @return true if this instant is strictly after the instant passed in
      */
     public boolean isAfter(long instant) {
         return (getMillis() > instant);
     }
 
     /**
-     * Is this instant after the current instant
+     * Is this instant strictly after the current instant
      * comparing solely by millisecond.
      * 
-     * @return true if this instant is after the current instant
+     * @return true if this instant is strictly after the current instant
      */
     public boolean isAfterNow() {
         return isAfter(DateTimeUtils.currentTimeMillis());
     }
 
     /**
-     * Is this instant after the instant passed in
+     * Is this instant strictly after the instant passed in
      * comparing solely by millisecond.
      *
      * @param instant  an instant to check against, null means now
-     * @return true if the instant is after the instant passed in
+     * @return true if the instant is strictly after the instant passed in
      */
     public boolean isAfter(ReadableInstant instant) {
         long instantMillis = DateTimeUtils.getInstantMillis(instant);
@@ -347,32 +347,32 @@ public abstract class AbstractInstant implements ReadableInstant {
 
     //-----------------------------------------------------------------------
     /**
-     * Is this instant before the millisecond instant passed in
+     * Is this instant strictly before the millisecond instant passed in
      * comparing solely by millisecond.
      *
      * @param instant  a millisecond instant to check against
-     * @return true if this instant is before the instant passed in
+     * @return true if this instant is strictly before the instant passed in
      */
     public boolean isBefore(long instant) {
         return (getMillis() < instant);
     }
 
     /**
-     * Is this instant before the current instant
+     * Is this instant strictly before the current instant
      * comparing solely by millisecond.
      * 
-     * @return true if this instant is before the current instant
+     * @return true if this instant is strictly before the current instant
      */
     public boolean isBeforeNow() {
         return isBefore(DateTimeUtils.currentTimeMillis());
     }
 
     /**
-     * Is this instant before the instant passed in
+     * Is this instant strictly before the instant passed in
      * comparing solely by millisecond.
      *
      * @param instant  an instant to check against, null means now
-     * @return true if the instant is before the instant passed in
+     * @return true if the instant is strictly before the instant passed in
      */
     public boolean isBefore(ReadableInstant instant) {
         long instantMillis = DateTimeUtils.getInstantMillis(instant);

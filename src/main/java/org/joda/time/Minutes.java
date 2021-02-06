@@ -54,7 +54,7 @@ public final class Minutes extends BaseSingleFieldPeriod {
     /** Constant representing the minimum number of minutes that can be stored in this object. */
     public static final Minutes MIN_VALUE = new Minutes(Integer.MIN_VALUE);
 
-    /** The paser to use for this class. */
+    /** The parser to use for this class. */
     private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.minutes());
     /** Serialization version. */
     private static final long serialVersionUID = 87525275727380863L;

@@ -677,6 +677,13 @@ public class TestLocalDate_Basics extends TestCase {
         assertEquals(new DateTime(2007, 4, 1, 1, 0, 0, 0, MOCK_GAZA), test);
     }
 
+    public void testToDateTimeAtStartOfDay_handleMidnightDST() {
+        LocalDate test = new LocalDate(2018, 10, 28);
+        DateTime result = test.toDateTimeAtStartOfDay(DateTimeZone.forID("Atlantic/Azores"));
+        DateTime expected = new DateTime(2018, 10, 28, 0, 0, DateTimeZone.forID("Atlantic/Azores"));
+        assertEquals(expected, result);
+    }
+    
     //-----------------------------------------------------------------------
     public void testToDateTimeAtStartOfDay_Zone() {
         LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS);

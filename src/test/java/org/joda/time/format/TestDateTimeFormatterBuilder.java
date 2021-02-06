@@ -425,6 +425,26 @@ public class TestDateTimeFormatterBuilder extends TestCase {
         assertEquals(dt, f.withOffsetParsed().parseDateTime("2007-03-04 12:30 Europe/Paris"));
     }
 
+    public void test_printParseZoneDawson() {  // clashes with shorter Dawson
+        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
+            .appendPattern("yyyy-MM-dd HH:mm ").appendTimeZoneId();
+        DateTimeFormatter f = bld.toFormatter();
+        
+        DateTime dt = new DateTime(2007, 3, 4, 12, 30, 0, DateTimeZone.forID("America/Dawson"));
+        assertEquals("2007-03-04 12:30 America/Dawson", f.print(dt));
+        assertEquals(dt, f.parseDateTime("2007-03-04 12:30 America/Dawson"));
+    }
+
+    public void test_printParseZoneDawson_suffix() {  // clashes with shorter Dawson
+        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
+            .appendPattern("yyyy-MM-dd HH:mm ").appendTimeZoneId().appendLiteral(']');
+        DateTimeFormatter f = bld.toFormatter();
+        
+        DateTime dt = new DateTime(2007, 3, 4, 12, 30, 0, DateTimeZone.forID("America/Dawson"));
+        assertEquals("2007-03-04 12:30 America/Dawson]", f.print(dt));
+        assertEquals(dt, f.parseDateTime("2007-03-04 12:30 America/Dawson]"));
+    }
+
     public void test_printParseZoneDawsonCreek() {  // clashes with shorter Dawson
         DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
             .appendPattern("yyyy-MM-dd HH:mm ").appendTimeZoneId();
@@ -433,6 +453,16 @@ public class TestDateTimeFormatterBuilder extends TestCase {
         DateTime dt = new DateTime(2007, 3, 4, 12, 30, 0, DateTimeZone.forID("America/Dawson_Creek"));
         assertEquals("2007-03-04 12:30 America/Dawson_Creek", f.print(dt));
         assertEquals(dt, f.parseDateTime("2007-03-04 12:30 America/Dawson_Creek"));
+    }
+
+    public void test_printParseZoneDawsonCreek_suffix() {  // clashes with shorter Dawson
+        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
+            .appendPattern("yyyy-MM-dd HH:mm ").appendTimeZoneId().appendLiteral(']');
+        DateTimeFormatter f = bld.toFormatter();
+        
+        DateTime dt = new DateTime(2007, 3, 4, 12, 30, 0, DateTimeZone.forID("America/Dawson_Creek"));
+        assertEquals("2007-03-04 12:30 America/Dawson_Creek]", f.print(dt));
+        assertEquals(dt, f.parseDateTime("2007-03-04 12:30 America/Dawson_Creek]"));
     }
 
     public void test_printParseZoneEtcGMT() {
@@ -445,6 +475,16 @@ public class TestDateTimeFormatterBuilder extends TestCase {
         assertEquals(dt, f.parseDateTime("2007-03-04 12:30 Etc/GMT"));
     }
 
+    public void test_printParseZoneEtcGMT_suffix() {
+        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
+                .appendPattern("yyyy-MM-dd HH:mm ZZZ").appendLiteral(']');
+        DateTimeFormatter f = bld.toFormatter();
+
+        DateTime dt = new DateTime(2007, 3, 4, 12, 30, 0, DateTimeZone.forID("Etc/GMT"));
+        assertEquals("2007-03-04 12:30 Etc/GMT]", f.print(dt));
+        assertEquals(dt, f.parseDateTime("2007-03-04 12:30 Etc/GMT]"));
+    }
+
     public void test_printParseZoneGMT() {
         DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
                 .appendPattern("yyyy-MM-dd HH:mm ZZZ");
@@ -455,6 +495,16 @@ public class TestDateTimeFormatterBuilder extends TestCase {
         assertEquals(dt, f.parseDateTime("2007-03-04 12:30 GMT"));
     }
 
+    public void test_printParseZoneGMT_suffix() {
+        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
+                .appendPattern("yyyy-MM-dd HH:mm ZZZ").appendLiteral(']');
+        DateTimeFormatter f = bld.toFormatter();
+
+        DateTime dt = new DateTime(2007, 3, 4, 12, 30, 0, DateTimeZone.forID("GMT"));
+        assertEquals("2007-03-04 12:30 Etc/GMT]", f.print(dt));
+        assertEquals(dt, f.parseDateTime("2007-03-04 12:30 GMT]"));
+    }
+
     public void test_printParseZoneEtcGMT1() {
         DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
                 .appendPattern("yyyy-MM-dd HH:mm ZZZ");
@@ -463,6 +513,56 @@ public class TestDateTimeFormatterBuilder extends TestCase {
         DateTime dt = new DateTime(2007, 3, 4, 12, 30, 0, DateTimeZone.forID("Etc/GMT+1"));
         assertEquals("2007-03-04 12:30 Etc/GMT+1", f.print(dt));
         assertEquals(dt, f.parseDateTime("2007-03-04 12:30 Etc/GMT+1"));
+    }
+
+    public void test_printParseZoneEtcGMT1_suffix() {
+        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
+                .appendPattern("yyyy-MM-dd HH:mm ZZZ").appendLiteral(']');
+        DateTimeFormatter f = bld.toFormatter();
+
+        DateTime dt = new DateTime(2007, 3, 4, 12, 30, 0, DateTimeZone.forID("Etc/GMT+1"));
+        assertEquals("2007-03-04 12:30 Etc/GMT+1]", f.print(dt));
+        assertEquals(dt, f.parseDateTime("2007-03-04 12:30 Etc/GMT+1]"));
+    }
+
+    public void test_printParseZoneEtcGMT10() {
+        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
+                .appendPattern("yyyy-MM-dd HH:mm ZZZ");
+        DateTimeFormatter f = bld.toFormatter();
+
+        DateTime dt = new DateTime(2007, 3, 4, 12, 30, 0, DateTimeZone.forID("Etc/GMT+10"));
+        assertEquals("2007-03-04 12:30 Etc/GMT+10", f.print(dt));
+        assertEquals(dt, f.parseDateTime("2007-03-04 12:30 Etc/GMT+10"));
+    }
+
+    public void test_printParseZoneEtcGMT10_suffix() {
+        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
+                .appendPattern("yyyy-MM-dd HH:mm ZZZ").appendLiteral(']');
+        DateTimeFormatter f = bld.toFormatter();
+
+        DateTime dt = new DateTime(2007, 3, 4, 12, 30, 0, DateTimeZone.forID("Etc/GMT+10"));
+        assertEquals("2007-03-04 12:30 Etc/GMT+10]", f.print(dt));
+        assertEquals(dt, f.parseDateTime("2007-03-04 12:30 Etc/GMT+10]"));
+    }
+
+    public void test_printParseZoneMET() {
+        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
+                .appendPattern("yyyy-MM-dd HH:mm ZZZ");
+        DateTimeFormatter f = bld.toFormatter();
+
+        DateTime dt = new DateTime(2007, 3, 4, 12, 30, 0, DateTimeZone.forID("MET"));
+        assertEquals("2007-03-04 12:30 MET", f.print(dt));
+        assertEquals(dt, f.parseDateTime("2007-03-04 12:30 MET"));
+    }
+
+    public void test_printParseZoneMET_suffix() {
+        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
+                .appendPattern("yyyy-MM-dd HH:mm ZZZ").appendLiteral(']');
+        DateTimeFormatter f = bld.toFormatter();
+
+        DateTime dt = new DateTime(2007, 3, 4, 12, 30, 0, DateTimeZone.forID("MET"));
+        assertEquals("2007-03-04 12:30 MET]", f.print(dt));
+        assertEquals(dt, f.parseDateTime("2007-03-04 12:30 MET]"));
     }
 
     public void test_printParseZoneBahiaBanderas() {

@@ -509,7 +509,7 @@ public final class LocalDate
     }
 
     /**
-     * Gets the value of the field at the specifed index.
+     * Gets the value of the field at the specified index.
      * <p>
      * This method is required to support the <code>ReadablePartial</code>
      * interface. The supported fields are Year, MonthOfYear and DayOfMonth.
@@ -730,7 +730,7 @@ public final class LocalDate
         long localMillis = getLocalMillis() + 6L * DateTimeConstants.MILLIS_PER_HOUR;
         long instant = zone.convertLocalToUTC(localMillis, false);
         instant = chrono.dayOfMonth().roundFloor(instant);
-        return new DateTime(instant, chrono);
+        return new DateTime(instant, chrono).withEarlierOffsetAtOverlap();
     }
 
     //-----------------------------------------------------------------------
@@ -1567,7 +1567,7 @@ public final class LocalDate
      * Instead, this method returns a new instance with the value of
      * century of era changed.
      *
-     * @param centuryOfEra  the centurey of era to set
+     * @param centuryOfEra  the century of era to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      */

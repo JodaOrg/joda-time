@@ -122,13 +122,13 @@ public class TestYears extends TestCase {
             Years.parseYears("P1M1D");
             fail();
         } catch (IllegalArgumentException ex) {
-            // expeceted
+            // expected
         }
         try {
             Years.parseYears("P1YT1H");
             fail();
         } catch (IllegalArgumentException ex) {
-            // expeceted
+            // expected
         }
     }
 

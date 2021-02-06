@@ -108,14 +108,24 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
         // Do not refactor without careful consideration.
         // Order of calculation is important.
         //
-        int yearToUse;
+        int yearToUse = thisYear;;
         // Initially, monthToUse is zero-based
         int monthToUse = thisMonth - 1 + months;
+        if (thisMonth > 0 && monthToUse < 0) {
+            if (Math.signum(months + iMax) == Math.signum(months)) {
+                yearToUse--;
+                months += iMax;
+            } else {
+                yearToUse++;
+                months -= iMax;
+            }
+            monthToUse = thisMonth - 1 + months;
+        }
         if (monthToUse >= 0) {
-            yearToUse = thisYear + (monthToUse / iMax);
+            yearToUse = yearToUse + (monthToUse / iMax);
             monthToUse = (monthToUse % iMax) + 1;
         } else {
-            yearToUse = thisYear + (monthToUse / iMax) - 1;
+            yearToUse = yearToUse + (monthToUse / iMax) - 1;
             monthToUse = Math.abs(monthToUse);
             int remMonthToUse = monthToUse % iMax;
             // Take care of the boundary condition

@@ -28,7 +28,7 @@ There are also methods to obtain the <a href="key_duration.html">duration</a> an
 <a href="key_period.html">period</a> of the interval.
 </p>
 <p>
-You cannot compare intervals for order (ie. they do not implement <code>Comparable</code>.
+You cannot compare intervals for order (i.e., they do not implement <code>Comparable</code>).
 If you want to compare the length of intervals you must obtain the duration of each and compare those.
 </p>
 

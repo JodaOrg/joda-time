@@ -1,87 +1,22 @@
-Joda-Time version 2.9.2
+Joda-Time release notes
 -----------------------
 
 Joda-Time is a date and time handling library that seeks to replace the JDK
 Date and Calendar classes. For Java SE 8 and later, please use java.time instead.
 
-This release contains one bug fix, a time-zone update and some minor internal changes.
 The release runs on JDK 5 or later.
 
 Joda-Time is licensed under the business-friendly Apache License Version 2.
 This is the same license as all of Apache, plus other open source projects such as Spring.
 
 **  Please also check out our related projects   **
-** http://www.joda.org/joda-time/related.html **
+** https://www.joda.org/joda-time/related.html **
 
 
-Bug fixes in 2.9.2
-------------------
- - Fix bug in time-zone binary search [#332]
-
- - DateTimeZone data updated to version 2016a (version 2.9 had time-zone data 2015g)
-
- - Minor fixes to code internals [#339, #326, #344, #350, #343]
- 
- - Better document behaviour [#325]
-
-
-Bug fixes in 2.9.1
-------------------
-- Fix bug introduced by Long.MIN_VALUE and Long.MAX_VALUE changes [#328]
-
-
-Enhancements in 2.9
--------------------
-- Faster parsing of time-zone identifiers [#282]
-
-- Added Interval.parseWithOffset(String) [#299, #296]
-  Provides a way to parse the fixed offset in an interval string
-
-- Add DateTimeFormatter methods for StringBuilder [#298]
-
-- Add Russian period translations [#320]
-
-- Add Italian period translations [#312]
-
-- Add Czech period translations [#313]
-
-- Clarify that PeriodFormatterBuilder is in an invalid state once built [#309]
-
-- Allow DateTime and Interval to refer to values at Long.MIN_VALUE and Long.MAX_VALUE [#297, #190]
-  A DateTime may be created with any millisecond value, however at the very edges there may be
-  some undesirable effects, for example always using UTC instead of the time-zone
-
-- Better error message for malformed tzdb files [#319]
-
-- Better error message for interval constructor [#321]
-
-
-Compatibility between 2.8 and 2.9
----------------------------------
-Build system - Yes
-
-Binary compatible - Yes
-
-Source compatible - Yes
-
-Serialization compatible - Yes
-
-Data compatible - Yes
- - DateTimeZone data updated to version 2015g
-
-Semantic compatible - Yes
-
-
-Bug fixes in 2.9
-----------------
-- Fixed to handle JDK 8u60 [#288, #291]
-  Without this fix, formatting a time-zone will print "+00:00" instead of "GMT" for the GMT time-zone
-
-- Fix parsing of basic form ISO style where year has unnecessary plus sign [#86]
-  For example, +20151030 will now be correctly parsed as year 2015.
-
-- Fix overflow bug in intervals [#315]
-
+Release notes
+-------------
+From v2.9.7, Joda-Time release notes are found here:
+https://www.joda.org/joda-time/changes-report.html
 
 
 Scala
@@ -97,4 +32,4 @@ Feedback is best received using GitHub issues and Pull Requests.
 https://github.com/JodaOrg/joda-time/
 
 The Joda team
-http://www.joda.org/joda-time/
+https://www.joda.org/joda-time/

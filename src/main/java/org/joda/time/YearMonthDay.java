@@ -89,7 +89,7 @@ public final class YearMonthDay
      * <p>
      * Each field is queried from the Calendar and assigned to the YearMonthDay.
      * This is useful if you have been using the Calendar as a local date,
-     * ignoing the zone.
+     * ignoring the zone.
      * <p>
      * This factory method ignores the type of the calendar and always
      * creates a YearMonthDay with ISO chronology. It is expected that you
@@ -119,7 +119,7 @@ public final class YearMonthDay
      * <p>
      * Each field is queried from the Date and assigned to the YearMonthDay.
      * This is useful if you have been using the Date as a local date,
-     * ignoing the zone.
+     * ignoring the zone.
      * <p>
      * This factory method always creates a YearMonthDay with ISO chronology.
      *
@@ -222,7 +222,7 @@ public final class YearMonthDay
      * The chronology used will be derived from the object, defaulting to ISO.
      * <p>
      * NOTE: Prior to v1.3 the string format was described by
-     * {@link ISODateTimeFormat#dateTimeParser()}. Time ony strings are now rejected.
+     * {@link ISODateTimeFormat#dateTimeParser()}. Time only strings are now rejected.
      *
      * @param instant  the datetime object, null means now
      * @throws IllegalArgumentException if the instant is invalid

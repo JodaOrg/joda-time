@@ -64,7 +64,7 @@ public final class Hours extends BaseSingleFieldPeriod {
     /** Constant representing the minimum number of hours that can be stored in this object. */
     public static final Hours MIN_VALUE = new Hours(Integer.MIN_VALUE);
 
-    /** The paser to use for this class. */
+    /** The parser to use for this class. */
     private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.hours());
     /** Serialization version. */
     private static final long serialVersionUID = 87525275727380864L;

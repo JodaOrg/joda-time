@@ -87,12 +87,56 @@ public class TestInstant_Constructors extends TestCase {
 
     //-----------------------------------------------------------------------
     /**
-     * Test now ()
+     * Test EPOCH
+     */
+    public void test_epoch() throws Throwable {
+        Instant test = Instant.EPOCH;
+        assertEquals(ISOChronology.getInstanceUTC(), test.getChronology());
+        assertEquals(0L, test.getMillis());
+    }
+
+    /**
+     * Test now()
      */
     public void test_now() throws Throwable {
         Instant test = Instant.now();
         assertEquals(ISOChronology.getInstanceUTC(), test.getChronology());
         assertEquals(TEST_TIME_NOW, test.getMillis());
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Test ofEpochMilli() and ofEpochSecond()
+     */
+    public void test_ofEpochMilli() throws Throwable {
+        Instant test = Instant.ofEpochMilli(TEST_TIME1);
+        assertEquals(ISOChronology.getInstanceUTC(), test.getChronology());
+        assertEquals(TEST_TIME1, test.getMillis());
+    }
+    
+    public void test_ofEpochSecond() throws Throwable {
+        Instant test = Instant.ofEpochSecond(TEST_TIME1 / 1000);
+        assertEquals(ISOChronology.getInstanceUTC(), test.getChronology());
+        assertEquals(TEST_TIME1, test.getMillis());
+    }
+    
+    public void test_ofEpochSecond_zero() throws Throwable {
+        Instant test = Instant.ofEpochSecond(0);
+        assertEquals(0, test.getMillis());
+    }
+    
+    public void test_ofEpochSecond_overflow() throws Throwable {
+        try {
+            Instant.ofEpochSecond(Long.MAX_VALUE);
+            fail();
+        } catch (ArithmeticException ex) {}
+    }
+    
+    public void test_ofEpochSecond_underflow() throws Throwable {
+        try {
+            Instant.ofEpochSecond(Long.MIN_VALUE);
+            fail();
+        } catch (ArithmeticException ex) {}
     }
 
     //-----------------------------------------------------------------------

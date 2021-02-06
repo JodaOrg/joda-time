@@ -10,7 +10,7 @@
 
 <section name="Upgrade">
 <p>
-These are the release notes and advice for upgrading Joda-Time from version 2.8 to version 2.9.
+These are the release notes and advice for upgrading Joda-Time from version 2.8 to version 2.9.2.
 <source>
 Joda-Time version 2.9.2
 -----------------------
@@ -25,7 +25,7 @@ Joda-Time is licensed under the business-friendly Apache License Version 2.
 This is the same license as all of Apache, plus other open source projects such as Spring.
 
 **  Please also check out our related projects   **
-** http://www.joda.org/joda-time/related.html **
+** https://www.joda.org/joda-time/related.html **
 
 
 Bug fixes in 2.9.2

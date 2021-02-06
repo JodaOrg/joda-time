@@ -5,9 +5,9 @@
   <googleAnalyticsAccountId>UA-1425975-4</googleAnalyticsAccountId>
 
   <skin>
-    <groupId>lt.velykis.maven.skins</groupId>
+    <groupId>org.joda.external</groupId>
     <artifactId>reflow-maven-skin</artifactId>
-    <version>1.1.1</version>
+    <version>1.2</version>
   </skin>
 
   <custom>
@@ -34,6 +34,7 @@
       <toc>false</toc>
       <breadcrumbs>false</breadcrumbs>
       <markPageHeader>false</markPageHeader>
+      <protocolRelativeURLs>true</protocolRelativeURLs>
       <highlightJs>false</highlightJs>
       <pages>
         <index>
@@ -79,8 +80,9 @@
 
   <body>
     <head>
-      <link href="http://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css" rel="stylesheet"/>
-      <link rel="author" href="https://plus.google.com/113137868744510231215"/>
+      <![CDATA[
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"/>
+        <link rel="author" href="https://plus.google.com/113137868744510231215"/>]]>
     </head>
 
     <menu name="Documentation">
@@ -109,7 +111,7 @@
       </item>
       <item name="FAQ" href="faq.html"/>
       <item name="Javadoc" href="apidocs/index.html"/>
-      <item name="License" href="license.html"/>
+      <item name="License" href="licenses.html"/>
     </menu>
 
     <menu name="Information">
@@ -119,13 +121,14 @@
       <item name="FAQ" href="faq.html"/>
       <item name="Related projects" href="related.html"/>
       <item name="Javadoc" href="apidocs/index.html"/>
-      <item name="License" href="license.html"/>
+      <item name="License" href="licenses.html"/>
       <item name="Key concepts" href="key.html"/>
       <item name="Chronologies" href="cal.html"/>
     </menu>
 
     <menu name="Releases">
-      <item name="Release notes" href="installation.html"/>
+      <item name="Release notes" href="changes-report.html"/>
+      <item name="Old release notes" href="installation.html"/>
       <item name="Dependency info" href="dependency-info.html"/>
       <item name="Download" href="download.html"/>
     </menu>
@@ -138,16 +141,16 @@
 
     <menu name="Related">
       <item name="Related projects" href="related.html"/>
-      <item name="JSP tags" href="http://www.joda.org/joda-time-jsptags/"/>
-      <item name="Hibernate" href="http://www.joda.org/joda-time-hibernate/"/>
-      <item name="I18N" href="http://www.joda.org/joda-time-i18n/"/>
+      <item name="JSP tags" href="https://www.joda.org/joda-time-jsptags/"/>
+      <item name="Hibernate" href="https://www.joda.org/joda-time-hibernate/"/>
+      <item name="I18N" href="https://www.joda.org/joda-time-i18n/"/>
     </menu>
 
     <menu name="Joda">
-      <item name="Home" href="http://www.joda.org"/>
-      <item name="Beans" href="http://www.joda.org/joda-beans/"/>
-      <item name="Convert" href="http://www.joda.org/joda-convert/"/>
-      <item name="Money" href="http://www.joda.org/joda-money/"/>
+      <item name="Home" href="https://www.joda.org/"/>
+      <item name="Beans" href="https://www.joda.org/joda-beans/"/>
+      <item name="Convert" href="https://www.joda.org/joda-convert/"/>
+      <item name="Money" href="https://www.joda.org/joda-money/"/>
     </menu>
 
     <menu name="Reports" ref="reports"/>

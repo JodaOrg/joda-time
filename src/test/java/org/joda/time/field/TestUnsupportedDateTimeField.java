@@ -72,7 +72,7 @@ public class TestUnsupportedDateTimeField extends TestCase {
      * different duration fields
      * 
      * Then the field returned in the first invocation should not be equal to
-     * the field returned by the second invocation. In otherwords, the generated
+     * the field returned by the second invocation. In other words, the generated
      * instance should be the same for a unique pairing of
      * DateTimeFieldType/DurationField
      */

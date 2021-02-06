@@ -46,7 +46,7 @@ public final class SkipUndoDateTimeField extends DelegatedDateTimeField {
     /**
      * Constructor that reinserts zero.
      * 
-     * @param chronology  the chronoogy to use
+     * @param chronology  the chronology to use
      * @param field  the field to skip zero on
      */
     public SkipUndoDateTimeField(Chronology chronology, DateTimeField field) {
@@ -56,7 +56,7 @@ public final class SkipUndoDateTimeField extends DelegatedDateTimeField {
     /**
      * Constructor.
      * 
-     * @param chronology  the chronoogy to use
+     * @param chronology  the chronology to use
      * @param field  the field to skip zero on
      * @param skip  the value to skip
      */

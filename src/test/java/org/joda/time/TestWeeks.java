@@ -124,7 +124,7 @@ public class TestWeeks extends TestCase {
             Weeks.standardWeeksIn(Period.months(1));
             fail();
         } catch (IllegalArgumentException ex) {
-            // expeceted
+            // expected
         }
     }
 
@@ -139,13 +139,13 @@ public class TestWeeks extends TestCase {
             Weeks.parseWeeks("P1Y1D");
             fail();
         } catch (IllegalArgumentException ex) {
-            // expeceted
+            // expected
         }
         try {
             Weeks.parseWeeks("P1WT1H");
             fail();
         } catch (IllegalArgumentException ex) {
-            // expeceted
+            // expected
         }
     }
 

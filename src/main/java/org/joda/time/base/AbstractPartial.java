@@ -69,7 +69,7 @@ public abstract class AbstractPartial
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the field type at the specifed index.
+     * Gets the field type at the specified index.
      * 
      * @param index  the index
      * @return the field type
@@ -95,7 +95,7 @@ public abstract class AbstractPartial
     }
 
     /**
-     * Gets the field at the specifed index.
+     * Gets the field at the specified index.
      * 
      * @param index  the index
      * @return the field
@@ -341,7 +341,7 @@ public abstract class AbstractPartial
      * a time zone to accurately determine the current date.
      *
      * @param partial  a partial to check against, must not be null
-     * @return true if this date is after the date passed in
+     * @return true if this date is strictly after the date passed in
      * @throws IllegalArgumentException if the specified partial is null
      * @throws ClassCastException if the partial has field types that don't match
      * @since 1.1
@@ -363,7 +363,7 @@ public abstract class AbstractPartial
      * a time zone to accurately determine the current date.
      *
      * @param partial  a partial to check against, must not be null
-     * @return true if this date is before the date passed in
+     * @return true if this date is strictly before the date passed in
      * @throws IllegalArgumentException if the specified partial is null
      * @throws ClassCastException if the partial has field types that don't match
      * @since 1.1

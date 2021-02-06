@@ -219,7 +219,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
     }
 
     /**
-     * Always returns zero, indicating that sort order is not relevent.
+     * Always returns zero, indicating that sort order is not relevant.
      *
      * @return zero always
      */

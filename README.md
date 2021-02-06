@@ -4,8 +4,13 @@ Joda-Time
 Joda-Time provides a quality replacement for the Java date and time classes.
 The design allows for multiple calendar systems, while still providing a simple API.
 The 'default' calendar is the ISO8601 standard which is used by XML.
-The Gregorian, Julian, Buddhist, Coptic, Ethiopic and Islamic systems are also included, and we welcome further additions.
+The Gregorian, Julian, Buddhist, Coptic, Ethiopic and Islamic systems are also included.
 Supporting classes include time zone, duration, format and parsing. 
+
+**Joda-time is no longer in active development except to keep timezone data up to date.**
+From Java SE 8 onwards, users are asked to migrate to `java.time` (JSR-310) - a core part of the JDK which replaces this project.
+For Android users, `java.time` is [added in API 26+](https://developer.android.com/reference/java/time/package-summary).
+Projects needing to support lower API levels can use [the ThreeTenABP library](https://github.com/JakeWharton/ThreeTenABP).
 
 As a flavour of Joda-Time, here's some example code:
 
@@ -32,39 +37,42 @@ public String getBirthMonthText(LocalDate dateOfBirth) {
 }
 ```
 
-Joda-Time is licensed under the business-friendly [Apache 2.0 licence](http://www.joda.org/joda-time/license.html).
+Joda-Time is licensed under the business-friendly [Apache 2.0 licence](https://www.joda.org/joda-time/licenses.html).
 
 
 ### Documentation
 Various documentation is available:
 
-* The [home page](http://www.joda.org/joda-time/)
-* Two user guides - [quick](http://www.joda.org/joda-time/quickstart.html) and [full](http://www.joda.org/joda-time/userguide.html)
-* The [Javadoc](http://www.joda.org/joda-time/apidocs/index.html)
-* The [FAQ](http://www.joda.org/joda-time/faq.html) list
-* Information on [downloading and installing](http://www.joda.org/joda-time/installation.html) Joda-Time including release notes
+* The [home page](https://www.joda.org/joda-time/)
+* Two user guides - [quick](https://www.joda.org/joda-time/quickstart.html) and [full](https://www.joda.org/joda-time/userguide.html)
+* The [Javadoc](https://www.joda.org/joda-time/apidocs/index.html)
+* The [FAQ](https://www.joda.org/joda-time/faq.html) list
+* Information on [downloading and installing](https://www.joda.org/joda-time/installation.html) Joda-Time including release notes
 
 
 ### Releases
-[Release 2.9.2](http://www.joda.org/joda-time/download.html) is the current latest release.
+[Release 2.10.3](https://www.joda.org/joda-time/download.html) is the current latest release.
 This release is considered stable and worthy of the 2.x tag.
 It depends on JDK 1.5 or later.
 
-Available in the [Maven Central repository](http://search.maven.org/#artifactdetails|joda-time|joda-time|2.9.2|jar)
+Available in the [Maven Central repository](https://search.maven.org/search?q=g:joda-time%20AND%20a:joda-time&core=gav)
 
 **Maven configuration:**
 ```xml
 <dependency>
   <groupId>joda-time</groupId>
   <artifactId>joda-time</artifactId>
-  <version>2.9.2</version>
+  <version>2.10.3</version>
 </dependency>
 ```
 
 **Gradle configuration:**
 ```groovy
-compile 'joda-time:joda-time:2.9.2'
+compile 'joda-time:joda-time:2.10.3'
 ```
+
+![Tidelift dependency check](https://tidelift.com/badges/github/JodaOrg/joda-time)
+
 
 ### Related projects
 Related projects at GitHub:
@@ -73,13 +81,55 @@ Related projects at GitHub:
 - https://github.com/JodaOrg/joda-time-i18n
 
 Other related projects:
-- http://www.joda.org/joda-time/related.html
+- https://www.joda.org/joda-time/related.html
 
 
 ### Support
-Please use GitHub issues and Pull Requests for support.
+Please use [Stack Overflow](https://stackoverflow.com/questions/tagged/jodatime) for general usage questions.
+GitHub [issues](https://github.com/JodaOrg/joda-time/issues) and [pull requests](https://github.com/JodaOrg/joda-time/pulls)
+should be used when you want to help advance the project.
+Commercial support is available via the
+[Tidelift subscription](https://tidelift.com/subscription/pkg/maven-joda-time-joda-time?utm_source=maven-joda-time-joda-time&utm_medium=referral&utm_campaign=readme).
+
+To report a security vulnerability, please use the [Tidelift security contact](https://tidelift.com/security).
+Tidelift will coordinate the fix and disclosure.
 
 
-### History
-Issue tracking and active development is at GitHub.
-Historically, the project was at [Sourceforge](https://sourceforge.net/projects/joda-time/).
+### Release process
+
+* Update version (pom.xml, README.md, index.md, MANIFEST.MF, changes.xml)
+* Commit and push
+* Ensure on Java SE 8
+* `mvn clean deploy -Doss.repo -Dgpg.passphrase=""`
+* Release project in [Nexus](https://oss.sonatype.org)
+* Website will be built and released by Travis
+
+## Contributors
+
+### Code Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="https://github.com/JodaOrg/joda-time/graphs/contributors"><img src="https://opencollective.com/joda/contributors.svg?width=890&button=false" /></a>
+
+### Financial Contributors
+
+Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/joda/contribute)]
+
+#### Individuals
+
+<a href="https://opencollective.com/joda"><img src="https://opencollective.com/joda/individuals.svg?width=890"></a>
+
+#### Organizations
+
+Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/joda/contribute)]
+
+<a href="https://opencollective.com/joda/organization/0/website"><img src="https://opencollective.com/joda/organization/0/avatar.svg"></a>
+<a href="https://opencollective.com/joda/organization/1/website"><img src="https://opencollective.com/joda/organization/1/avatar.svg"></a>
+<a href="https://opencollective.com/joda/organization/2/website"><img src="https://opencollective.com/joda/organization/2/avatar.svg"></a>
+<a href="https://opencollective.com/joda/organization/3/website"><img src="https://opencollective.com/joda/organization/3/avatar.svg"></a>
+<a href="https://opencollective.com/joda/organization/4/website"><img src="https://opencollective.com/joda/organization/4/avatar.svg"></a>
+<a href="https://opencollective.com/joda/organization/5/website"><img src="https://opencollective.com/joda/organization/5/avatar.svg"></a>
+<a href="https://opencollective.com/joda/organization/6/website"><img src="https://opencollective.com/joda/organization/6/avatar.svg"></a>
+<a href="https://opencollective.com/joda/organization/7/website"><img src="https://opencollective.com/joda/organization/7/avatar.svg"></a>
+<a href="https://opencollective.com/joda/organization/8/website"><img src="https://opencollective.com/joda/organization/8/avatar.svg"></a>
+<a href="https://opencollective.com/joda/organization/9/website"><img src="https://opencollective.com/joda/organization/9/avatar.svg"></a>

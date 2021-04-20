@@ -44,7 +44,7 @@ jobs:
     - name: Website
       if: github.event_name == 'push' && (startsWith(github.ref, 'refs/tags/website') || startsWith(github.ref, 'refs/tags/v'))
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_PERSONAL_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN_GH }}
       run: |
         chmod +x ./.github/website.sh
         .github/website.sh

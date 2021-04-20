@@ -12,7 +12,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
       with:
-        token: ${{ secrets.GITHUB_PERSONAL_TOKEN }}
+        token: ${{ secrets.PERSONAL_TOKEN_GH }}
     - name: Maven cache
       uses: actions/cache@v1
       with:
@@ -84,7 +84,7 @@ jobs:
       id: createpr
       uses: peter-evans/create-pull-request@v2
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_PERSONAL_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN_GH }}
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         commit-message: 'Update TZDB to ${{ env.LATEST_TZDB }}'

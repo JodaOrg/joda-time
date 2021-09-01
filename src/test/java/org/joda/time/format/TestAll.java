@@ -50,7 +50,7 @@ public class TestAll extends TestCase {
         suite.addTest(TestISOPeriodFormatParsing.suite());
         suite.addTest(TestPeriodFormatParsing.suite());
         suite.addTest(TestPeriodFormatterBuilder.suite());
-
+        
         suite.addTest(TestTextFields.suite());
 
         return suite;

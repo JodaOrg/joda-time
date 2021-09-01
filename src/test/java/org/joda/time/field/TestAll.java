@@ -53,6 +53,7 @@ public class TestAll extends TestCase {
         suite.addTest(TestPreciseDurationField.suite());
         suite.addTest(TestScaledDurationField.suite());
         suite.addTest(TestUnsupportedDateTimeField.suite());
+        
         return suite;
     }
 

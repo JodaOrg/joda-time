@@ -41,17 +41,15 @@ def demo(){
 	String repl = result.replaceAll("(\\r|\\n|\\r\\n|\\r|,)+", "\\\\n")
 	
 	def result1 = bat (script: "@git diff $firstCommit $secondCommit",returnStdout: true).trim()
-	//WritableCellFormat cellFormat = new WritableCellFormat();
-	//cellFormat.setWrap(true);
 	
-    println(repl)
+    	println(repl)
 	println(result1)
 
     String diff = result.toString().toLowerCase()
     String[] diffArray = null;
-	String[] keywords = ["Runtime", "New", "gc", "System"];
-	      
-	int count =0;
+    String[] keywords = ["Runtime", "New", "gc", "System"];
+    int count =0;
+	
 	        diffArray = diff.split(" ");
 	        for(int i=0 ;i< diffArray.length ;i++) {
 	        	for(int j=0 ;j < keywords.length ; j++ )
@@ -65,10 +63,7 @@ def demo(){
 	
 //CSV code start
     def newFile = new File("D:\\TestDemo.csv")
-  //  def newFile_txt = new File("D:\\TestDemo.txt")
-	//newFile_txt = result
     def exists = fileExists 'D:\\TestDemo.csv'
-    //println exists
 
 if (!exists) {
     newFile.append("HashCode, Random HashCode 1, Random HashCode 2, Diff. between two commits, Code change category, Test case type,Total no. of test cases, No. of succeeed test, No. of failed tests, \n")
@@ -89,26 +84,26 @@ def currentHashcode = bat (script: '@git log -1 --pretty=%%H',returnStdout: true
 		codeChangeCategory = "Functional"
 		testCaseType = "Functional Test"
 	}
-	//newFile_txt.append(result)
-	newFile.append("${currentHashcode}, ${firstCommit}, ${secondCommit}, ~ ${repl}, ${codeChangeCategory}, ${testCaseType}")
+	newFile.append("\n")
+	newFile.append("${currentHashcode}, ${firstCommit}, ${secondCommit}, ${repl}, ${codeChangeCategory}, ${testCaseType}")
 	//csv code end
 	
 	        if(count > 0) {
 	         bat "mvn -Dsuite=PerformanceTests test"
-                        post{
+                       /* post{
                             always{
-                                junit "**/target/surefire-reports/TEST-org.joda.time.TestAllPackages.xml"
+                                junit "**/ /*target/surefire-reports/TEST-org.joda.time.TestAllPackages.xml"
                               
                                  }
-                            }	
+                            }	*/
 	        }
 	        else{
                 bat "mvn -Dsuite=FunctionalTests test"
-                        post{
+                      /*  post{
                             always{
-                                junit "**/target/surefire-reports/TEST-org.joda.time.TestAllPackages.xml"
+                                junit "**/ /*target/surefire-reports/TEST-org.joda.time.TestAllPackages.xml"
                                
                                   }
-                            }
+                            }*/
             }        
 	}

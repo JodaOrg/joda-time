@@ -130,6 +130,7 @@ public class TestAll extends TestCase {
         suite.addTest(TestSerialization.suite());
         suite.addTest(TestIllegalFieldValueException.suite());
         suite.addTest(TestMinMaxLong.suite());
+
         return suite;
     }
 

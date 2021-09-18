@@ -27,21 +27,51 @@ import junit.framework.TestSuite;
  */
 public class TestAllPackages extends TestCase {
 
-    public TestAllPackages(String testName) {
+	public TestAllPackages(String testName) {
         super(testName);
     }
 
     public static Test suite() {
+    	
         TestSuite suite = new TestSuite();
+        if(System.getProperty("suite")!=null)
+        {
+        		String suiteName = System.getProperty("suite"); 
+        		
+        	 if(suiteName.equalsIgnoreCase("PerformanceTests")) {
+             	
+             	suite.addTest(org.joda.time.PerformanceTestAll.suite());
+                 return suite;
+             }
+             if(suiteName.equalsIgnoreCase("FunctionalTests")) {
+             	
+             	 suite.addTest(org.joda.time.TestAll.suite());
+                  suite.addTest(org.joda.time.chrono.TestAll.suite());
+                 suite.addTest(org.joda.time.chrono.gj.TestAll.suite());
+                  suite.addTest(org.joda.time.convert.TestAll.suite());
+                  suite.addTest(org.joda.time.field.TestAll.suite());
+                  suite.addTest(org.joda.time.format.TestAll.suite());
+                  suite.addTest(org.joda.time.tz.TestAll.suite());
+                  
+                  return suite;
+             }
+        	
+        }
+       
+        
+        
         suite.addTest(org.joda.time.TestAll.suite());
         suite.addTest(org.joda.time.chrono.TestAll.suite());
-        suite.addTest(org.joda.time.chrono.gj.TestAll.suite());
+       suite.addTest(org.joda.time.chrono.gj.TestAll.suite());
         suite.addTest(org.joda.time.convert.TestAll.suite());
         suite.addTest(org.joda.time.field.TestAll.suite());
         suite.addTest(org.joda.time.format.TestAll.suite());
         suite.addTest(org.joda.time.tz.TestAll.suite());
+        suite.addTest(org.joda.time.PerformanceTestAll.suite());
         return suite;
     }
+
+
 
     public static void main(String args[]) {
         // setup a time zone other than one tester is in

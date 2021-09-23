@@ -38,14 +38,14 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.tz.DefaultNameProvider;
 import org.joda.time.tz.NameProvider;
 import org.joda.time.tz.Provider;
 import org.joda.time.tz.UTCProvider;
 import org.joda.time.tz.ZoneInfoProvider;
+
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
  * This class is a JUnit test for DateTimeZone.
@@ -106,13 +106,16 @@ public class TestDateTimeZone extends TestCase {
     static {
         // don't call Policy.getPolicy()
         RESTRICT = new Policy() {
+            @Override
             public PermissionCollection getPermissions(CodeSource codesource) {
                 Permissions p = new Permissions();
                 p.add(new AllPermission());  // enable everything
                 return p;
             }
+            @Override
             public void refresh() {
             }
+            @Override
             public boolean implies(ProtectionDomain domain, Permission permission) {
                 if (permission instanceof JodaTimePermission) {
                     return false;
@@ -122,11 +125,13 @@ public class TestDateTimeZone extends TestCase {
             }
         };
         ALLOW = new Policy() {
+            @Override
             public PermissionCollection getPermissions(CodeSource codesource) {
                 Permissions p = new Permissions();
                 p.add(new AllPermission());  // enable everything
                 return p;
             }
+            @Override
             public void refresh() {
             }
         };
@@ -147,12 +152,14 @@ public class TestDateTimeZone extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         locale = Locale.getDefault();
         zone = DateTimeZone.getDefault();
         Locale.setDefault(Locale.UK);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         Locale.setDefault(locale);
         DateTimeZone.setDefault(zone);
@@ -241,6 +248,12 @@ public class TestDateTimeZone extends TestCase {
             DateTimeZone.forID("+0");
             fail();
         } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testForID_ensureTzdb() {
+      assertEquals("Europe/Oslo", DateTimeZone.forID("Europe/Oslo").getID());
+      assertEquals("Europe/Stockholm", DateTimeZone.forID("Europe/Stockholm").getID());
+      assertEquals("Europe/Amsterdam", DateTimeZone.forID("Europe/Amsterdam").getID());
     }
 
     public void testForID_String_old() {
@@ -706,24 +719,31 @@ public class TestDateTimeZone extends TestCase {
         assertTrue(Modifier.isProtected(DateTimeZone.class.getDeclaredConstructors()[0].getModifiers()));
         try {
             new DateTimeZone(null) {
+                @Override
                 public String getNameKey(long instant) {
                     return null;
                 }
+                @Override
                 public int getOffset(long instant) {
                     return 0;
                 }
+                @Override
                 public int getStandardOffset(long instant) {
                     return 0;
                 }
+                @Override
                 public boolean isFixed() {
                     return false;
                 }
+                @Override
                 public long nextTransition(long instant) {
                     return 0;
                 }
+                @Override
                 public long previousTransition(long instant) {
                     return 0;
                 }
+                @Override
                 public boolean equals(Object object) {
                     return false;
                 }
@@ -845,24 +865,31 @@ public class TestDateTimeZone extends TestCase {
         public MockDateTimeZone(String id) {
             super(id);
         }
+        @Override
         public String getNameKey(long instant) {
             return null;  // null
         }
+        @Override
         public int getOffset(long instant) {
             return 0;
         }
+        @Override
         public int getStandardOffset(long instant) {
             return 0;
         }
+        @Override
         public boolean isFixed() {
             return false;
         }
+        @Override
         public long nextTransition(long instant) {
             return 0;
         }
+        @Override
         public long previousTransition(long instant) {
             return 0;
         }
+        @Override
         public boolean equals(Object object) {
             return false;
         }

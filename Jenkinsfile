@@ -55,7 +55,7 @@ def log(){
 	    println "ATT1 = ${XMLDATA.attribute("errors")}"
 	     println "ATT1 = ${XMLDATA.attribute("failures")}"
 	    
-	    def newFile = new File("D:\\TestDemo.csv")
+	    def newFile = new File("D:\\Test.csv")
 	    newFile.append(",${XMLDATA.attribute("tests")}, ${XMLDATA.attribute("failures")}")
 }
 }
@@ -78,8 +78,9 @@ def demo(){
     def firstCommit = hashCode[n1+1]
     def secondCommit = hashCode[n2+1]
 	
-	def result = bat (script: "git diff -u $firstCommit $secondCommit | grep -E '^\\+'",returnStdout: true).trim()
-	String repl = result.replaceAll("(\\r|\\n|\\r\\n|\\r|,)+", "\\\\n")
+	//def result = bat (script: "git diff -u $firstCommit $secondCommit | grep -E '^\\+'",returnStdout: true).trim()
+	def result = bat (script: "git diff -a $firstCommit $secondCommit",returnStdout: true).trim()
+	//String repl = result.replaceAll("(\\r|\\n|\\r\\n|\\r|,)+", "\\\\n")
 	
 	def result1 = bat (script: "@git diff $firstCommit $secondCommit",returnStdout: true).trim()
 	

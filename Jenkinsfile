@@ -55,7 +55,8 @@ def log(){
 	    println "ATT1 = ${XMLDATA.attribute("errors")}"
 	     println "ATT1 = ${XMLDATA.attribute("failures")}"
 	    
-	    def newFile = new File("D:\\Test.csv")
+	    def newFile = new File("D:\\TestDemo.csv")
+																														 
 	    newFile.append(",${XMLDATA.attribute("tests")}, ${XMLDATA.attribute("failures")}")
 }
 }
@@ -79,11 +80,14 @@ def demo(){
     def secondCommit = hashCode[n2+1]
 	
 	//def result = bat (script: "git diff -u $firstCommit $secondCommit | grep -E '^\\+'",returnStdout: true).trim()
-	def result = bat (script: "git diff -a -u $firstCommit $secondCommit",returnStdout: true).trim()
+	def result = bat (script: "git diff -a -m $firstCommit $secondCommit",returnStdout: true).trim()
 	
 	String repl = result.replaceAll("(\\r|\\n|\\r\\n|\\r|,)+", "\\\\n")
 	
+																							   
+ 
 	println(repl)
+				   
 
     String diff = result.toString().toLowerCase()
     String[] diffArray = null;
@@ -91,7 +95,7 @@ def demo(){
     int count =0;
 	
 	        diffArray = diff.split(" ");
-	        for(int i=0 ;i< diffArray.length ;i++) {
+	        for(int i=5 ;i< diffArray.length ;i++) {
 	        	for(int j=0 ;j < keywords.length ; j++ )
 	        	{
 	        	 if((diffArray[i].contains(keywords[j])))
@@ -102,8 +106,8 @@ def demo(){
 	        }
 	
 //CSV code start
-    def newFile = new File("D:\\Test.csv")
-    def exists = fileExists 'D:\\Test.csv'
+    def newFile = new File("D:\\TestDemo.csv")
+    def exists = fileExists 'D:\\TestDemo.csv'
 
 if (!exists) {
     newFile.append("HashCode, Random HashCode 1, Random HashCode 2, Diff. between two commits, Code change category, Test case type,Total no. of test cases, No. of failed tests, \n")
@@ -125,7 +129,7 @@ def currentHashcode = bat (script: '@git log -1 --pretty=%%H',returnStdout: true
 		testCaseType = "Functional Test"
 	}
 	newFile.append("\n")
-	newFile.append("${currentHashcode}, ${firstCommit}, ${secondCommit}, ${result}, ${codeChangeCategory}, ${testCaseType}")
+	newFile.append("${currentHashcode}, ${firstCommit}, ${secondCommit}, ${repl}, ${codeChangeCategory}, ${testCaseType}")
 	//csv code end
 	       return count
 }

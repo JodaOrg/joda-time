@@ -82,7 +82,7 @@ def demo(){
 	//def result = bat (script: "git diff -u $firstCommit $secondCommit | grep -E '^\\+'",returnStdout: true).trim()
 	def result = bat (script: "git diff -a -m $firstCommit $secondCommit",returnStdout: true).trim()
 	
-	String repl = result.replaceAll("(\\r|\\n|\\r\\n|\\r|,)+", "\\\\n")
+	String repl = result.replaceAll("(\\r|\\n|\\r\\n|\\r|,|\\r\n)+", "\\\\n")
 	
 																							   
  

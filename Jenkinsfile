@@ -89,7 +89,7 @@ def demo(){
 
     String diff = result.toString().toLowerCase()
     String[] diffArray = null;
-    String[] keywords = ["Runtime", "New", "gc", "System"];
+    String[] keywords = ["runtime", "new", "gc", "system"];
     int count =5;
 	
 	        diffArray = diff.split(" ");

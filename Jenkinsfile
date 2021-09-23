@@ -104,8 +104,8 @@ def demo(){
 	        }
 	
 //CSV code start
-    def newFile = new File("D:\\TestDemo.csv")
-    def exists = fileExists 'D:\\TestDemo.csv'
+    def newFile = new File("D:\\Test.csv")
+    def exists = fileExists 'D:\\Test.csv'
 
 if (!exists) {
     newFile.append("HashCode, Random HashCode 1, Random HashCode 2, Diff. between two commits, Code change category, Test case type,Total no. of test cases, No. of failed tests, \n")

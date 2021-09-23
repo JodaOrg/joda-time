@@ -79,19 +79,16 @@ def demo(){
     def secondCommit = hashCode[n2+1]
 	
 	//def result = bat (script: "git diff -u $firstCommit $secondCommit | grep -E '^\\+'",returnStdout: true).trim()
-	def result = bat (script: "git diff -a $firstCommit $secondCommit",returnStdout: true).trim()
+	def result = bat (script: "git diff -a -u $firstCommit $secondCommit",returnStdout: true).trim()
 	
-	//String repl = result.replaceAll("(\\r|\\n|\\r\\n|\\r|,)+", "\\\\n")
+	String repl = result.replaceAll("(\\r|\\n|\\r\\n|\\r|,)+", "\\\\n")
 	
-	def result1 = bat (script: "@git diff $firstCommit $secondCommit",returnStdout: true).trim()
-	
-    	//println(repl)
-	println(result1)
+	println(repl)
 
     String diff = result.toString().toLowerCase()
     String[] diffArray = null;
     String[] keywords = ["runtime", "new", "gc", "system"];
-    int count =5;
+    int count =0;
 	
 	        diffArray = diff.split(" ");
 	        for(int i=0 ;i< diffArray.length ;i++) {

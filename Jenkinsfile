@@ -80,11 +80,12 @@ def demo(){
 	
 	//def result = bat (script: "git diff -u $firstCommit $secondCommit | grep -E '^\\+'",returnStdout: true).trim()
 	def result = bat (script: "git diff -a $firstCommit $secondCommit",returnStdout: true).trim()
+	
 	//String repl = result.replaceAll("(\\r|\\n|\\r\\n|\\r|,)+", "\\\\n")
 	
 	def result1 = bat (script: "@git diff $firstCommit $secondCommit",returnStdout: true).trim()
 	
-    	println(repl)
+    	//println(repl)
 	println(result1)
 
     String diff = result.toString().toLowerCase()
@@ -127,7 +128,7 @@ def currentHashcode = bat (script: '@git log -1 --pretty=%%H',returnStdout: true
 		testCaseType = "Functional Test"
 	}
 	newFile.append("\n")
-	newFile.append("${currentHashcode}, ${firstCommit}, ${secondCommit}, ${repl}, ${codeChangeCategory}, ${testCaseType}")
+	newFile.append("${currentHashcode}, ${firstCommit}, ${secondCommit}, ${result}, ${codeChangeCategory}, ${testCaseType}")
 	//csv code end
 	       return count
 }

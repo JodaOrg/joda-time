@@ -251,6 +251,7 @@ public class TestDateTimeZone extends TestCase {
     }
 
     public void testForID_ensureTzdb() {
+      // if these tests fail, check https://github.com/JodaOrg/joda-time/issues/566 for more info
       assertEquals("Europe/Oslo", DateTimeZone.forID("Europe/Oslo").getID());
       assertEquals("Europe/Stockholm", DateTimeZone.forID("Europe/Stockholm").getID());
       assertEquals("Europe/Amsterdam", DateTimeZone.forID("Europe/Amsterdam").getID());

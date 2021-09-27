@@ -40,7 +40,7 @@ jobs:
     - name: Get latest version
       working-directory: target
       run: |
-        git clone https://github.com/eggert/tz.git
+        git clone https://github.com/JodaOrg/tz.git
         cd tz
         LATEST_TZDB=$(git describe --abbrev=0 --tags)
         echo "latest: $LATEST_TZDB"

@@ -30,9 +30,6 @@
 # Milne J. Civil time. Geogr J. 1899 Feb;13(2):173-94.
 # https://www.jstor.org/stable/1774359
 #
-# A reliable and entertaining source about time zones is
-# Derek Howse, Greenwich time and longitude, Philip Wilson Publishers (1997).
-#
 # European-style abbreviations are commonly used along the Mediterranean.
 # For sub-Saharan Africa abbreviations were less standardized.
 # Previous editions of this database used WAT, CAT, SAT, and EAT
@@ -732,7 +729,7 @@ Zone Indian/Mauritius	3:50:00 -	LMT	1907 # Port Louis
 # See Africa/Nairobi.
 
 # Morocco
-# See the 'europe' file for Spanish Morocco (Africa/Ceuta).
+# See Africa/Ceuta for Spanish Morocco.
 
 # From Alex Krivenyshev (2008-05-09):
 # Here is an article that Morocco plan to introduce Daylight Saving Time between
@@ -1397,8 +1394,6 @@ Link Africa/Lagos Africa/Porto-Novo  # Benin
 Zone	Indian/Reunion	3:41:52 -	LMT	1911 Jun # Saint-Denis
 			4:00	-	+04
 #
-# Crozet Islands also observes Réunion time; see the 'antarctica' file.
-#
 # Scattered Islands (Îles Éparses) administered from Réunion are as follows.
 # The following information about them is taken from
 # Îles Éparses (<http://www.outre-mer.gouv.fr/domtom/ile.htm>, 1997-07-22,
@@ -1527,12 +1522,13 @@ Zone	Africa/Khartoum	2:10:08 -	LMT	1931
 			3:00	-	EAT	2017 Nov  1
 			2:00	-	CAT
 
+# South Sudan
+
 # From Steffen Thorsen (2021-01-18):
 # "South Sudan will change its time zone by setting the clock back 1
 # hour on February 1, 2021...."
 # from https://eyeradio.org/south-sudan-adopts-new-time-zone-makuei/
 
-# South Sudan
 # Zone	NAME		STDOFF	RULES	FORMAT	[UNTIL]
 Zone	Africa/Juba	2:06:28 -	LMT	1931
 			2:00	Sudan	CA%sT	2000 Jan 15 12:00
@@ -1637,7 +1633,7 @@ Rule	Tunisia	2005	only	-	Sep	30	 1:00s	0	-
 Rule	Tunisia	2006	2008	-	Mar	lastSun	 2:00s	1:00	S
 Rule	Tunisia	2006	2008	-	Oct	lastSun	 2:00s	0	-
 
-# See Europe/Paris for PMT-related transitions.
+# See Europe/Paris commentary for PMT-related transitions.
 # Zone	NAME		STDOFF	RULES	FORMAT	[UNTIL]
 Zone	Africa/Tunis	0:40:44 -	LMT	1881 May 12
 			0:09:21	-	PMT	1911 Mar 11 # Paris Mean Time

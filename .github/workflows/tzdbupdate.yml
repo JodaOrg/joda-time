@@ -2,7 +2,7 @@ name: TZDB check
 
 on:
   schedule:
-    - cron:  '8 * * * 1,2,3,5'
+    - cron:  '25 * * * 1,2,3,5'
 
 jobs:
   tzdbcheck:

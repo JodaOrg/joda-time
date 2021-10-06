@@ -13,7 +13,7 @@ pipeline {
 		steps {
 			script {
 				def count = demo()
-				println "count above"+count
+				//println "count above"+count
 				
 				if(count > 0) 
 				{
@@ -50,11 +50,6 @@ def log(){
     else
     {
         //Read and parse XML file and store it into a variable
-	    println "file exists"  
-	    println "ATT1 = ${XMLDATA.attribute("tests")}"
-	    println "ATT1 = ${XMLDATA.attribute("errors")}"
-	     println "ATT1 = ${XMLDATA.attribute("failures")}"
-	    
 	    int total= XMLDATA.attribute("tests")
 	    int fail = XMLDATA.attribute("failures")
 	    int success = (total - fail)
@@ -68,7 +63,7 @@ def demo(){
     String[] hashCode = null;
 
     hashCode = commitCode.split("\n")
-    println Arrays.toString(hashCode)
+    //println Arrays.toString(hashCode)
 
     Random r = new Random()
     int n1 = r.nextInt(hashCode.size())
@@ -76,8 +71,8 @@ def demo(){
     int n2 = n1+1
     println n2
     
-    println "First hashcode"+hashCode[n1+1] 
-    println "Second hashcode"+hashCode[n2+1]
+   //println "First hashcode"+hashCode[n1+1] 
+    //println "Second hashcode"+hashCode[n2+1]
 
     def firstCommit = hashCode[n1+1]
     def secondCommit = hashCode[n2+1]
@@ -85,10 +80,7 @@ def demo(){
 	//def result = bat (script: "git diff -u $firstCommit $secondCommit | grep -E '^\\+'",returnStdout: true).trim()
 	def result = bat (script: "git diff -a -m $firstCommit $secondCommit",returnStdout: true).trim()
 	
-	String repl = result.replaceAll("(\\r|\\n|\\r\\n|\\r|,|\\r\n)+", "\\\\n")
-	
-																							   
- 
+	String repl = result.replaceAll("(\\r|\\n|\\r\\n|\\r|,|\\r\n)+", "\\\\n")																						   
 	println(repl)
 				   
 

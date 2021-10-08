@@ -82,7 +82,7 @@ def demo(){
 	
 	String repl = result.replaceAll("(\\r|\\n|\\r\\n|\\r|,|\\r\n)+", "\\\\n")																						   
 	println(repl)
-	String s = Regex.Replace(repl, @"[^0-9a-zA-Z:,]+", "")  
+	def s = Regex.Replace(repl, @"[^0-9a-zA-Z:,]+", "")  
 				   
 
     String diff = result.toString().toLowerCase()

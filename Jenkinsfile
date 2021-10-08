@@ -82,7 +82,8 @@ def demo(){
 	
 	String repl = result.replaceAll("(\\r|\\n|\\r\\n|\\r|,|\\r\n)+", "\\\\n")																						   
 	println(repl)
-	def s = Regex.Replace(repl, "[^0-9a-zA-Z:,]+", "")  
+	def s = Regex.Replace(repl, "[^0-9a-zA-Z:,]+", "")
+	println s
 	//tmp =   Regex.Replace(n, "[^0-9a-zA-Z]+", "");
 
     String diff = result.toString().toLowerCase()
@@ -125,7 +126,7 @@ def currentHashcode = bat (script: '@git log -1 --pretty=%%H',returnStdout: true
 		testCaseType = "Functional Test"
 	}
 	newFile.append("\n")
-	newFile.append("${currentHashcode}, ${firstCommit}, ${secondCommit}, ${repl}, ${s}, ${codeChangeCategory}, ${testCaseType}")
+	newFile.append("${currentHashcode}, ${firstCommit}, ${secondCommit}, ${repl}, ${codeChangeCategory}, ${testCaseType}")
 	//csv code end
 	       return count
 }

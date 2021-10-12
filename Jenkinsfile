@@ -80,10 +80,10 @@ def demo(){
 	//def result = bat (script: "git diff -u $firstCommit $secondCommit | grep -E '^\\+'",returnStdout: true).trim()
 	def result = bat (script: "git diff -a -m $firstCommit $secondCommit",returnStdout: true).trim()
 	
-	String repl = result.replaceAll("(\\r|\\n|\\r\\n|\\r|,|\\r\n)+", "\\\\n")																						   
-	println(repl)
+	//String repl = result.replaceAll("(\\r|\\n|\\r\\n|\\r|,|\\r\n)+", "\\\\n")																						   
+	//println(repl)
 	//String s = Regex.Replace(result, "[^0-9a-zA-Z:,]+", "")
-	def s = result.replaceAll("[^a-zA-Z0-9 ]+"," ")
+	def s = result.replaceAll("[^a-zA-Z0-9 ]+","")
 	println(s)
 	
 
@@ -127,7 +127,7 @@ def currentHashcode = bat (script: '@git log -1 --pretty=%%H',returnStdout: true
 		testCaseType = "Functional Test"
 	}
 	newFile.append("\n")
-	newFile.append("${currentHashcode}, ${firstCommit}, ${secondCommit}, ${repl}, ${codeChangeCategory}, ${testCaseType}")
+	newFile.append("${currentHashcode}, ${firstCommit}, ${secondCommit}, ${s}, ${codeChangeCategory}, ${testCaseType}")
 	//csv code end
 	       return count
 }

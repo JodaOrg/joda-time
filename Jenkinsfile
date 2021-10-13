@@ -12,8 +12,9 @@ pipeline {
                 stage('Testing Stage') {
 		steps {
 			script {
-				def count = demo()
+				String count = demo()
 				//println "count above"+count
+				// new comment
 				
 				if(count > 0) 
 				{

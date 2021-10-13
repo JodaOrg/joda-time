@@ -79,7 +79,8 @@ def demo(){
 	
     def result = bat (script: "git diff -a -m $firstCommit $secondCommit",returnStdout: true).trim()
 	
-	def s = result.replaceAll("[^a-zA-Z0-9 ]+"," ")
+	def a = result.replaceAll("//.*|/\\*((.|\\n)(?!=*/))+\\*/", ""));
+	def s = a.replaceAll("[^a-zA-Z0-9 ]+"," ")
 	def t = s.replaceAll(/\s+/, ' ')
 	
     String diff = result.toString().toLowerCase()

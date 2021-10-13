@@ -248,6 +248,36 @@ public abstract class DateTimeZone implements Serializable {
     }
 
     /**
+     * Same as {@link #forID(String) forID} but does not mapping of deprecated time zones.
+     * 
+     * @param id  the ID of the datetime zone, null means default
+     * @return the DateTimeZone object for the ID
+     * @throws IllegalArgumentException if the ID is not recognised
+     */
+    public static DateTimeZone forExactID(String id) {
+        if (id == null) {
+            return getDefault();
+        }
+        if (id.equals("UTC")) {
+            return DateTimeZone.UTC;
+        }
+        DateTimeZone zone = getProvider().getExactZone(id);
+        if (zone != null) {
+            return zone;
+        }
+        if (id.startsWith("+") || id.startsWith("-")) {
+            int offset = parseOffset(id);
+            if (offset == 0L) {
+                return DateTimeZone.UTC;
+            } else {
+                id = printOffset(offset);
+                return fixedOffsetZone(id, offset);
+            }
+        }
+        throw new IllegalArgumentException("The datetime zone id '" + id + "' is not recognised");
+    }
+
+    /**
      * Gets a time zone instance for the specified offset to UTC in hours.
      * This method assumes standard length hours.
      * <p>
@@ -1261,7 +1291,7 @@ public abstract class DateTimeZone implements Serializable {
         }
 
         private Object readResolve() throws ObjectStreamException {
-            return forID(iID);
+            return forExactID(iID);
         }
     }
 

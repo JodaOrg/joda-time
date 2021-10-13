@@ -163,6 +163,45 @@ public class ZoneInfoProvider implements Provider {
             // If this point is reached, mapping must link to another.
             @SuppressWarnings("unchecked")
             Entry<String, SoftReference<DateTimeZone>> entry = (Entry<String, SoftReference<DateTimeZone>>) obj;
+            return getZone(entry.getKey());
+        } else if (obj instanceof SoftReference<?>) {
+            @SuppressWarnings("unchecked")
+            SoftReference<DateTimeZone> ref = (SoftReference<DateTimeZone>) obj;
+            DateTimeZone tz = ref.get();
+            if (tz != null) {
+                return tz;
+            }
+            // Reference cleared; load data again.
+            return loadZoneData(id, id);
+        } else if (id.equals(obj)) {
+            // Load zone data for the first time.
+            return loadZoneData(id, id);
+        }
+
+        // If this point is reached, mapping must link to another.
+        return getZone((String) obj);
+    }
+
+    /**
+     * Returns a DateTimeZone object for the the id, that includes the exact id as provided, no mapping of deprecated zone ids is done as in {@code getZone}.
+     * 
+     * @param id  the id to load
+     * @return the loaded zone
+     */
+    public DateTimeZone getExactZone(String id) {
+        if (id == null) {
+            return null;
+        }
+
+        Object obj = iZoneInfoMap.get(id);
+        if (obj == null) {
+            return null;
+        }
+
+        if (obj instanceof Entry) {
+            // If this point is reached, mapping must link to another.
+            @SuppressWarnings("unchecked")
+            Entry<String, SoftReference<DateTimeZone>> entry = (Entry<String, SoftReference<DateTimeZone>>) obj;
             SoftReference<DateTimeZone> ref = entry.getValue();
             DateTimeZone tz = ref.get();
             if (tz != null) {

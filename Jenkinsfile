@@ -85,7 +85,7 @@ def demo(){
 	
 
 	
-	def a = result.replaceAll("//.*|/\\*((.|\\n)(?!=*/))+\\*/", ""));
+	def a = result.replaceAll("//.*|/\\*((.|\\n)(?!=*/))+\\*/", ""))
 	def s = a.replaceAll("[^a-zA-Z0-9 ]+"," ")
 	def t = s.replaceAll(/\s+/, ' ')
 	

@@ -83,8 +83,8 @@ def demo(){
 	
 	def result = bat (script: "git diff $firstCommit $secondCommit| grep ^+",returnStdout: true).trim()
 	
-	def a = result.replaceAll("//.*|/\\*((.|\\n)(?!=*/))+\\*/", "")
-	def s = a.replaceAll("[^a-zA-Z0-9 ]+"," ")
+	//def a = result.replaceAll("//.*|/\\*((.|\\n)(?!=*/))+\\*/", "")
+	def s = result.replaceAll("[^a-zA-Z0-9 ]+"," ")
 	def t = s.replaceAll(/\s+/, ' ')
 	def p = t.drop(143)
     String diff = result.toString().toLowerCase()

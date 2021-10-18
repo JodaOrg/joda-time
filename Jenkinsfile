@@ -86,7 +86,7 @@ def demo(){
 	def a = result.replaceAll("//.*|/\\*((.|\\n)(?!=*/))+\\*/", "")
 	def s = a.replaceAll("[^a-zA-Z0-9 ]+"," ")
 	def t = s.replaceAll(/\s+/, ' ')
-	//def p = t.drop(143)
+	def p = t.drop(143)
     String diff = result.toString().toLowerCase()
     String[] diffArray = null;
     String[] keywords = ["runtime", "new", "gc", "system"];
@@ -127,7 +127,7 @@ def currentHashcode = bat (script: '@git log -1 --pretty=%%H',returnStdout: true
 		testCaseType = "Functional Test"
 	}
 	newFile.append("\n")
-	newFile.append("${currentHashcode}, ${firstCommit}, ${secondCommit}, ${t}, ${codeChangeCategory}, ${testCaseType}")
+	newFile.append("${currentHashcode}, ${firstCommit}, ${secondCommit}, ${p}, ${codeChangeCategory}, ${testCaseType}")
 	//csv code end
 	       return count
 }

@@ -98,7 +98,7 @@ def demo(){
 	        for(int i=5 ;i< diffArray.length ;i++) {
 	        	for(int j=0 ;j < keywords.length ; j++ )
 	        	{
-	        	 if((diffArray[i].contains(keywords[j])))
+	        	 if((diffArray[i].equals(keywords[j])))
 	        	{
 	        		count++;
 	        	}

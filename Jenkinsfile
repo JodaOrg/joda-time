@@ -84,7 +84,7 @@ def demo(){
 	//def result = bat (script: "git diff $firstCommit $secondCommit| grep ^+",returnStdout: true).trim()
 	def result = bat (script: "git diff dde345ffa530ce7cc38b857aa2de743a5cedd307 e26260ea16f14947592b9345101213384d77f359| grep ^+",returnStdout: true).trim()
 	
-	def knew
+	
 	def a = result.replaceAll("//.*|/\\*((.|\\n)(?!=*/))+\\*/", "")
 	def s = a.replaceAll("[^a-zA-Z0-9 ]+"," ")
 	def t = s.replaceAll(/\s+/, ' ')

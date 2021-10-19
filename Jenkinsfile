@@ -84,18 +84,17 @@ def demo(){
 	def result = bat (script: "git diff $firstCommit $secondCommit| grep ^+",returnStdout: true).trim()
 	//def result = bat (script: "git diff 5e2e7318e25d473ea8e955b15ec482b4f7f375ca 2c424a416e7f6f67525899c7430054b684935fb7| grep ^+",returnStdout: true).trim()
 	
-	def knew
 	def a = result.replaceAll("//.*|/\\*((.|\\n)(?!=*/))+\\*/", "")
 	def s = a.replaceAll("[^a-zA-Z0-9 ]+"," ")
 	def t = s.replaceAll(/\s+/, ' ')
 	def p = t.drop(143)
-    String diff = result.toString().toLowerCase()
+    String diff = p.toString().toLowerCase()
     String[] diffArray = null;
     String[] keywords = ["runtime", "new", "gc", "system"];
     int count =0;
 	
 	        diffArray = diff.split(" ");
-	        for(int i=5 ;i< diffArray.length ;i++) {
+	        for(int i=0 ;i< diffArray.length ;i++) {
 	        	for(int j=0 ;j < keywords.length ; j++ )
 	        	{
 	        	 if((diffArray[i].equals(keywords[j])))

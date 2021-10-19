@@ -16,14 +16,14 @@ pipeline {
 				println "count above"+count
 				// new comment
 				
-				if(count >= 1) 
+				if(count == 0) 
 				{
-					bat "mvn -Dsuite=PerformanceTests test"
+					bat "mvn -Dsuite=FunctionalTests test"
 					
                    		 }
 				else
 				{
-					bat "mvn -Dsuite=FunctionalTests test"
+					bat "mvn -Dsuite=PerformanceTests test"
 					
 				}
 			}
@@ -117,15 +117,16 @@ def currentHashcode = bat (script: '@git log -1 --pretty=%%H',returnStdout: true
 	// for print code change category
 	def codeChangeCategory 
 	def testCaseType
-	if(count >= 1)
-	{
-		codeChangeCategory = "Memory Management"
-		testCaseType = "Performance Test"
-	}
-	else
+	if(count == 0)
 	{
 		codeChangeCategory = "Functional"
 		testCaseType = "Functional Test"
+		
+	}
+	else
+	{
+		codeChangeCategory = "Memory Management"
+		testCaseType = "Performance Test"
 	}
 	newFile.append("\n")
 	newFile.append("${currentHashcode}, ${firstCommit}, ${secondCommit}, ${p}, ${codeChangeCategory}, ${testCaseType}")

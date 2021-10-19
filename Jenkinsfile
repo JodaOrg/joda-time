@@ -81,8 +81,8 @@ def demo(){
     //def result = bat (script: "git diff -a -m $firstCommit $secondCommit",returnStdout: true).trim()
       //def result = bat (script: "git diff -a -m 47fe165bd9096bbc33b474488e3e655724dd0277 aa2ab2187857d0e4dca7b3ae78d7a9279cdccbc5",returnStdout: true).trim()
 	
-	//def result = bat (script: "git diff $firstCommit $secondCommit| grep ^+",returnStdout: true).trim()
-	def result = bat (script: "git diff 5e2e7318e25d473ea8e955b15ec482b4f7f375ca 2c424a416e7f6f67525899c7430054b684935fb7| grep ^+",returnStdout: true).trim()
+	def result = bat (script: "git diff $firstCommit $secondCommit| grep ^+",returnStdout: true).trim()
+	//def result = bat (script: "git diff 5e2e7318e25d473ea8e955b15ec482b4f7f375ca 2c424a416e7f6f67525899c7430054b684935fb7| grep ^+",returnStdout: true).trim()
 	
 	def knew
 	def a = result.replaceAll("//.*|/\\*((.|\\n)(?!=*/))+\\*/", "")

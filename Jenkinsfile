@@ -13,7 +13,7 @@ pipeline {
 		steps {
 			script {
 				String count = demo()
-				//println "count above"+count
+				println "count above"+count
 				// new comment
 				
 				if(count >= 1) 
@@ -131,5 +131,6 @@ def currentHashcode = bat (script: '@git log -1 --pretty=%%H',returnStdout: true
 	newFile.append("\n")
 	newFile.append("${currentHashcode}, ${firstCommit}, ${secondCommit}, ${p}, ${codeChangeCategory}, ${testCaseType}")
 	//csv code end
+	println "count below"+count
 	       return count
 }

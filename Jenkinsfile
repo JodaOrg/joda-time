@@ -23,8 +23,7 @@ pipeline {
                    		 }
 				else
 				{
-					//bat "mvn -Dsuite=PerformanceTests test"
-					bat "mvn -Dsuite=FunctionalTests test"
+					bat "mvn -Dsuite=PerformanceTests test"
 					
 				}
 			}

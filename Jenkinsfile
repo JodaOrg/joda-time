@@ -16,14 +16,15 @@ pipeline {
 				println "count above"+count
 				// new comment
 				
-				if(count == 0) 
+				if(count >= 1) 
 				{
-					bat "mvn -Dsuite=FunctionalTests test"
+					
+					bat "mvn -Dsuite=PerformanceTests test"
 					
                    		 }
 				else
 				{
-					bat "mvn -Dsuite=PerformanceTests test"
+					bat "mvn -Dsuite=FunctionalTests test"
 					
 				}
 			}

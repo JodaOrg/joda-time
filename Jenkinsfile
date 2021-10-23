@@ -19,16 +19,17 @@ pipeline {
 				
 				if(count == 0) 
 				{
+					bat "mvn -Dsuite=FunctionalTests test"
+					//println "Functionalcount= "+ count
+					//println "Functional Test"
 					
-					//bat "mvn -Dsuite=PerformanceTests test"
-					println "Performancecount= "+ count
-					println "Performance Test"
                    		 }
 				else
 				{
-					//bat "mvn -Dsuite=FunctionalTests test"
-					println "Functionalcount= "+ count
-					println "Functional Test"
+					bat "mvn -Dsuite=PerformanceTests test"
+					//println "Performancecount= "+ count
+					//println "Performance Test"
+					
 				}
 			}
 			

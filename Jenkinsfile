@@ -15,7 +15,7 @@ pipeline {
 				//String count = demo()
 				//println "count above"+count
 				// new comment
-				def coiunt = 0
+				def count = 0
 				
 				if(count == 0) 
 				{

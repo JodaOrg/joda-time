@@ -16,7 +16,7 @@ pipeline {
 				println "count above"+count
 				// new comment
 				
-				if(count == 0) 
+				if(count = 0) 
 				{
 					
 					//bat "mvn -Dsuite=PerformanceTests test"

@@ -16,27 +16,28 @@ pipeline {
 				println "count above"+count
 				// new comment
 				
-				if(count >= 1) 
+				if(count == 0) 
 				{
 					
-					bat "mvn -Dsuite=PerformanceTests test"
+					//bat "mvn -Dsuite=FunctionalTests test"
+					println "Functional Test"
 					
                    		 }
 				else
 				{
-					bat "mvn -Dsuite=FunctionalTests test"
-					
+					//bat "mvn -Dsuite=PerformanceTests test"
+					println "Performance Test"
 				}
 			}
 			
 		}
-		post{
+		/*post{
                           always{
                               	junit "**/target/surefire-reports/TEST-org.joda.time.TestAllPackages.xml"
 				log()
                         
                                 }
-                     }
+                     }*/
 	}
     }
 }

@@ -20,12 +20,14 @@ pipeline {
 				{
 					
 					//bat "mvn -Dsuite=FunctionalTests test"
+					println "Functionalcount= "+ count
 					println "Functional Test"
 					
                    		 }
 				else
 				{
 					//bat "mvn -Dsuite=PerformanceTests test"
+					println "Performancecount= "+ count
 					println "Performance Test"
 				}
 			}

@@ -31,13 +31,13 @@ pipeline {
 			}
 			
 		}
-		/*post{
-                          always{
-                              	junit "**/target/surefire-reports/TEST-org.joda.time.TestAllPackages.xml"
-				log()
+		//post{
+                          //always{
+                              	//junit "**/target/surefire-reports/TEST-org.joda.time.TestAllPackages.xml"
+				//log()
                         
-                                }
-                     }*/
+                                //}
+                    // }
 	}
     }
 }

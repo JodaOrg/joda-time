@@ -12,11 +12,12 @@ pipeline {
                 stage('Testing Stage') {
 		steps {
 			script {
-				String count = demo()
-				println "count above"+count
+				//String count = demo()
+				//println "count above"+count
 				// new comment
+				def coiunt = 0
 				
-				if(count = 0) 
+				if(count == 0) 
 				{
 					
 					//bat "mvn -Dsuite=PerformanceTests test"

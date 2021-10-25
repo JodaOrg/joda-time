@@ -4006,6 +4006,16 @@ Link	Europe/Istanbul	Asia/Istanbul	# Istanbul is in both continents.
 
 # Ukraine
 #
+# According to the Ukrainian local and international law, correct name of the
+# "Kiev" is "Kyiv".
+#
+# Reference materials:
+# - Local: Resolution No 55 of 27.01.2010 of the Cabinet of Ministers of Ukraine
+#   "On regulation of transliteration of Ukrainian alphabet by means of Latin
+#   alphabet".
+# - Global: https://unstats.un.org/UNSD/geoinfo/UNGEGN/docs/10th-uncsgn-docs/econf/E_CONF.101_85_Standardization%20of%20Geographical%20Names%20_eng.pdf
+# - Wikipedia: https://en.wikipedia.org/wiki/KyivNotKiev
+
 # From Igor Karpov, who works for the Ukrainian Ministry of Justice,
 # via Garrett Wollman (2003-01-27):
 # BTW, I've found the official document on this matter. It's government

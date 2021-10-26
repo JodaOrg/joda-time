@@ -8,6 +8,12 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
+    <release version="2.10.13" date="2021-10-26" description="v2.10.13">
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2021efork.
+        See https://github.com/JodaOrg/joda-time/issues/566
+      </action>
+    </release>
     <release version="2.10.12" date="2021-09-29" description="v2.10.12">
       <action dev="jodastephen" type="update">
         DateTimeZone data updated to version 2021bfork3.

@@ -13,22 +13,13 @@ pipeline {
 		steps {
 			script {
 				def count = demo()
-				println "count above"+count
-				// new comment
-				//def count = 1
-				
 				if(count == 0) 
 				{
 					bat "mvn -Dsuite=FunctionalTests test"
-					//println "Functionalcount= "+ count
-					//println "Functional Test"
-					
                    		 }
 				else
 				{
 					bat "mvn -Dsuite=PerformanceTests test"
-					//println "Performancecount= "+ count
-					//println "Performance Test"
 					
 				}
 			}
@@ -36,7 +27,7 @@ pipeline {
 		}
 		post{
                           always{
-                              	//junit "**/target/surefire-reports/TEST-org.joda.time.TestAllPackages.xml"
+                              	junit "**/target/surefire-reports/TEST-org.joda.time.TestAllPackages.xml"
 				log()
                         
                                 }
@@ -76,19 +67,11 @@ def demo(){
     println n1
     int n2 = n1+1
     println n2
-    
-   //println "First hashcode"+hashCode[n1+1] 
-    //println "Second hashcode"+hashCode[n2+1]
 
     def firstCommit = hashCode[n1+1]
     def secondCommit = hashCode[n2+1]
 	
-    //def result = bat (script: "git diff -a -m $firstCommit $secondCommit",returnStdout: true).trim()
-      //def result = bat (script: "git diff -a -m 47fe165bd9096bbc33b474488e3e655724dd0277 aa2ab2187857d0e4dca7b3ae78d7a9279cdccbc5",returnStdout: true).trim()
-	
-	def result = bat (script: "git diff $firstCommit $secondCommit| grep ^+",returnStdout: true).trim()
-	//def result = bat (script: "git diff 5e2e7318e25d473ea8e955b15ec482b4f7f375ca 2c424a416e7f6f67525899c7430054b684935fb7| grep ^+",returnStdout: true).trim()
-	
+    	def result = bat (script: "git diff $firstCommit $secondCommit| grep ^+",returnStdout: true).trim()
 	def a = result.replaceAll("//.*|/\\*((.|\\n)(?!=*/))+\\*/", "")
 	def s = a.replaceAll("[^a-zA-Z0-9 ]+"," ")
 	def t = s.replaceAll(/\s+/, ' ')

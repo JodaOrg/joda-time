@@ -86,7 +86,7 @@ public final class DateTime
      * @since 2.0
      */
     public static DateTime now() {
-        return new DateTime();
+        return new DateTime()
     }
 
     /**

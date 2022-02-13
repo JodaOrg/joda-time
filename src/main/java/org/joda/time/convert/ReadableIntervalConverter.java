@@ -49,7 +49,7 @@ class ReadableIntervalConverter extends AbstractConverter
      * @param object  the interval
      */
     public long getDurationMillis(Object object) {
-        return (((ReadableInterval) object)).toDurationMillis();
+        return ((ReadableInterval) object).toDurationMillis();
     }
 
     //-----------------------------------------------------------------------

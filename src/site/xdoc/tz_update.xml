@@ -13,9 +13,9 @@
 <p>
 Time zones are a concept driven by the political situation in each country around the world.
 As such, they change frequently, and often at short notice.
-In order to manage this, Joda-Time uses the internationally recognised
-<a href="https://www.iana.org/time-zones">tz database</a>, which is also used
-in most operating systems and the JDK itself.
+In order to manage this, Joda-Time uses <a href="https://github.com/JodaOrg/global-tz">global-tz</a>
+which is derived from the standard IANA <a ref="https://www.iana.org/time-zones">tz database</a>.
+This is the same core data set used in most operating systems and the JDK itself.
 </p>
 <p>
 Using JDK time zone data is a problem however, as the zones are only updated when the
@@ -30,8 +30,8 @@ that you can update the raw data and recompile the jar at any time.
 <section name="Updating the time zone data">
 <p>
 Firstly, download the latest version of the data files from
-<a href="https://www.iana.org/time-zones">tz database</a>.
-Ensure you select the "Data" download which comes as a tar.gz.
+<a href="https://github.com/JodaOrg/global-tz/releases">global-tz</a>.
+Ensure you select the "tzdata" download which comes as a tar.gz.
 </p>
 <p>
 Secondly, you need a <a href="download.html">source code download</a> of Joda-Time.

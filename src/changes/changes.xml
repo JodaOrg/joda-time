@@ -8,6 +8,13 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
+    <release version="2.10.14" date="2022-03-20" description="v2.10.14">
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2022agtz.
+        This uses the new global-tz project that reinstates all the data removed by IANA's TZDB.
+        See https://github.com/JodaOrg/joda-time/issues/566
+      </action>
+    </release>
     <release version="2.10.13" date="2021-10-26" description="v2.10.13">
       <action dev="jodastephen" type="update">
         DateTimeZone data updated to version 2021efork.

@@ -1,8 +1,11 @@
 name: TZDB check
 
 on:
+  push:
+    branches:
+      - 'master'
   schedule:
-    - cron:  '0 3 * * 1,2,3,5'
+    - cron: '50 1 * * *'
 
 jobs:
   tzdbcheck:
@@ -13,6 +16,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         token: ${{ secrets.PERSONAL_TOKEN_GH }}
+
     - name: Maven cache
       uses: actions/cache@v1
       with:
@@ -25,6 +29,7 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+
     - name: Maven version
       run: |
         mkdir -p ./.mvn
@@ -37,14 +42,17 @@ jobs:
         CURRENT_TZDB=$(mvn help:evaluate -Dexpression=tz.database.version -q -DforceStdout)
         echo "current: $CURRENT_TZDB"
         echo "CURRENT_TZDB=$CURRENT_TZDB" >> $GITHUB_ENV
+
     - name: Get latest version
       working-directory: target
       run: |
-        git clone https://github.com/JodaOrg/tz.git
+        git clone https://github.com/JodaOrg/global-tz.git tz
         cd tz
+        git checkout global-tz
         LATEST_TZDB=$(git describe --abbrev=0 --tags)
         echo "latest: $LATEST_TZDB"
         echo "LATEST_TZDB=$LATEST_TZDB" >> $GITHUB_ENV
+
     - name: Compare versions
       run: |
         echo "current: $CURRENT_TZDB"
@@ -55,9 +63,10 @@ jobs:
       if: env.NOOP != 'true'
       working-directory: target/tz
       run: |
-        git checkout main
+        git checkout global-tz
         git reset --hard ${LATEST_TZDB} --
         git status
+
     - name: Copy files
       if: env.NOOP != 'true'
       run: |
@@ -72,6 +81,7 @@ jobs:
         \cp target/tz/northamerica src/main/java/org/joda/time/tz/src
         \cp target/tz/southamerica src/main/java/org/joda/time/tz/src
         ls -l src/main/java/org/joda/time/tz/src
+
     - name: Update build with new tzdb
       if: env.NOOP != 'true'
       run: |
@@ -87,11 +97,11 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN_GH }}
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        commit-message: 'Update TZDB to ${{ env.LATEST_TZDB }}'
+        commit-message: 'Update time zone data to ${{ env.LATEST_TZDB }}'
         committer: Stephen Colebourne (CI) <scolebourne@joda.org>
         author: Stephen Colebourne (CI) <scolebourne@joda.org>
-        title: 'Update TZDB to ${{ env.LATEST_TZDB }}'
-        body: 'Updates TZDB data to ${{ env.LATEST_TZDB }}'
+        title: 'Update time zone data to ${{ env.LATEST_TZDB }}'
+        body: 'Update time zone data to ${{ env.LATEST_TZDB }}'
         assignees: jodastephen
         labels: TZDB
         branch: bot/update-tzdb

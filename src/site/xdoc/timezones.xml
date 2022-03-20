@@ -11,10 +11,12 @@
 
 <section name="Available Time Zones">
 <p>
-Time zone data is provided by the public IANA <a href="https://www.iana.org/time-zones">time zone database</a>.
-The following table shows all the time zones supported by Joda-Time, using version 2018g
-of the database.
-It is also possible to update to a <a href="tz_update.html">later version of the database</a>.
+Time zone data is provided by <a href="https://github.com/JodaOrg/global-tz">globa-tz</a>
+which is derived from the standard IANA <a href="https://www.iana.org/time-zones">tz database</a>,
+but global-tz reinstates data that was inappropriately removed.
+The following table shows the time zones supported by Joda-Time, using version 2018g of the database.
+Note that Joda-Time's time zone database is more up to date than 2018g!
+See this page to <a href="tz_update.html">update the time zone data</a>.
 This table can be rebuilt by running <code>org.joda.example.time.TimeZoneTable</code>.
 </p>
 <p>

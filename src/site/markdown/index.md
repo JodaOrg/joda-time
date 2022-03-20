@@ -100,8 +100,9 @@ calculations. It already provides out-of-the-box features, such as support for o
 date formats, which are difficult to replicate with the JDK.
 * <b>Up-to-date Time Zone calculations</b>.
 The <a href="timezones.html">time zone implementation</a> is based on
-the public <a href="https://www.iana.org/time-zones">tz database</a>, which is
-updated several times a year. New Joda-Time releases incorporate all changes
+<a href="https://github.com/JodaOrg/global-tz">global-tz</a>, which is a fork of the
+original data provided by IANA.
+It is updated several times a year. New Joda-Time releases incorporate all changes
 made to this database. Should the changes be needed earlier,
 <a href="tz_update.html">manually updating the zone data</a> is easy.
 * <b>Calendar support</b>.

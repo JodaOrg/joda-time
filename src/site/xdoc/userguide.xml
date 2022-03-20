@@ -333,8 +333,8 @@ DateTimeZone zoneUTC = DateTimeZone.forOffsetHours(hours);
 </source>
 </p>
 <p>
-The time zone implementation is based on data provided by the public
-IANA <a href="https://www.iana.org/time-zones">time zone database</a>.
+The time zone implementation is based on data provided by
+<a href="https://github.com/JodaOrg/global-tz">global-tz</a>.
 A full list of time zone ids can be found <a href="timezones.html">here</a>
 </p>
 <p>

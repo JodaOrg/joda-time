@@ -4,14 +4,13 @@
 # 2009-05-17 by Arthur David Olson.
 
 # This file provides links from old or merged timezone names to current ones.
-# Many names changed in late 1993, and many merged names moved here
-# in the period from 2013 through 2021.  Several of these names are
+# Many names changed in late 1993.  Several of these names are
 # also present in the file 'backzone', which has data important only
 # for pre-1970 timestamps and so is out of scope for tzdb proper.
 
 # Link	TARGET			LINK-NAME
-Link	Africa/Nairobi		Africa/Asmera
-Link	Africa/Abidjan		Africa/Timbuktu
+Link	Africa/Asmara	Africa/Asmera
+Link	Africa/Bamako	Africa/Timbuktu
 Link	America/Argentina/Catamarca	America/Argentina/ComodRivadavia
 Link	America/Adak		America/Atka
 Link	America/Argentina/Buenos_Aires	America/Buenos_Aires
@@ -31,8 +30,8 @@ Link	America/Rio_Branco	America/Porto_Acre
 Link	America/Argentina/Cordoba	America/Rosario
 Link	America/Tijuana		America/Santa_Isabel
 Link	America/Denver		America/Shiprock
-Link	America/Port_of_Spain	America/Virgin
-Link	Pacific/Auckland	Antarctica/South_Pole
+Link	America/St_Thomas	America/Virgin
+Link	Antarctica/McMurdo	Antarctica/South_Pole
 Link	Asia/Ashgabat		Asia/Ashkhabad
 Link	Asia/Kolkata		Asia/Calcutta
 Link	Asia/Shanghai		Asia/Chongqing

@@ -404,6 +404,7 @@ public final class MonthDay
      * @param chrono  the chronology to use
      * @return the field, never null
      */
+    @Override
     protected DateTimeField getField(int index, Chronology chrono) {
         switch (index) {
         case MONTH_OF_YEAR:
@@ -422,6 +423,7 @@ public final class MonthDay
      * @return the field at the specified index, never null
      * @throws IndexOutOfBoundsException if the index is invalid
      */
+    @Override
     public DateTimeFieldType getFieldType(int index) {
         return FIELD_TYPES[index];
     }
@@ -433,6 +435,7 @@ public final class MonthDay
      *
      * @return the array of field types (cloned), largest to smallest, never null
      */
+    @Override
     public DateTimeFieldType[] getFieldTypes() {
         return (DateTimeFieldType[]) FIELD_TYPES.clone();
     }
@@ -778,6 +781,7 @@ public final class MonthDay
      *
      * @return ISO8601 time formatted string.
      */
+    @Override
     @ToString
     public String toString() {
         List<DateTimeFieldType> fields = new ArrayList<DateTimeFieldType>();
@@ -792,6 +796,7 @@ public final class MonthDay
      * @param pattern  the pattern specification, null means use <code>toString</code>
      * @see org.joda.time.format.DateTimeFormat
      */
+    @Override
     public String toString(String pattern) {
         if (pattern == null) {
             return toString();
@@ -806,6 +811,7 @@ public final class MonthDay
      * @param locale  Locale to use, null means default
      * @see org.joda.time.format.DateTimeFormat
      */
+    @Override
     public String toString(String pattern, Locale locale) throws IllegalArgumentException {
         if (pattern == null) {
             return toString();
@@ -849,6 +855,7 @@ public final class MonthDay
          * 
          * @return the field
          */
+        @Override
         public DateTimeField getField() {
             return iBase.getField(iFieldIndex);
         }
@@ -858,6 +865,7 @@ public final class MonthDay
          * 
          * @return the partial
          */
+        @Override
         protected ReadablePartial getReadablePartial() {
             return iBase;
         }
@@ -876,6 +884,7 @@ public final class MonthDay
          * 
          * @return the field value
          */
+        @Override
         public int get() {
             return iBase.getValue(iFieldIndex);
         }

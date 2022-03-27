@@ -190,6 +190,7 @@ public final class Years extends BaseSingleFieldPeriod {
      *
      * @return the period type
      */
+    @Override
     public DurationFieldType getFieldType() {
         return DurationFieldType.years();
     }
@@ -199,6 +200,7 @@ public final class Years extends BaseSingleFieldPeriod {
      *
      * @return the period type
      */
+    @Override
     public PeriodType getPeriodType() {
         return PeriodType.years();
     }
@@ -353,6 +355,7 @@ public final class Years extends BaseSingleFieldPeriod {
      *
      * @return the value as an ISO8601 string
      */
+    @Override
     @ToString
     public String toString() {
         return "P" + String.valueOf(getValue()) + "Y";

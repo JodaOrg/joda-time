@@ -42,9 +42,11 @@ public class TestBaseSingleFieldPeriod extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
     }
 
+    @Override
     protected void tearDown() throws Exception {
     }
 
@@ -314,18 +316,22 @@ public class TestBaseSingleFieldPeriod extends TestCase {
             return BaseSingleFieldPeriod.standardPeriodIn(period, millisPerUnit);
         }
         
+        @Override
         public DurationFieldType getFieldType() {
             return DurationFieldType.days();
         }
 
+        @Override
         public PeriodType getPeriodType() {
             return PeriodType.days();
         }
         
+        @Override
         public int getValue() {
             return super.getValue();
         }
         
+        @Override
         public void setValue(int value) {
             super.setValue(value);
         }

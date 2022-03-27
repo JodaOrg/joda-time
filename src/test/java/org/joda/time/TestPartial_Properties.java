@@ -71,11 +71,13 @@ public class TestPartial_Properties extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(DateTimeZone.UTC);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         DateTimeZone.setDefault(zone);
         zone = null;

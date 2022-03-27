@@ -82,6 +82,7 @@ public class TestDuration_Basics extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
@@ -92,6 +93,7 @@ public class TestDuration_Basics extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
@@ -849,6 +851,7 @@ public class TestDuration_Basics extends TestCase {
         public MockMutableDuration(long duration) {
             super(duration);
         }
+        @Override
         public void setMillis(long duration) {
             super.setMillis(duration);
         }

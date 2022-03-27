@@ -50,6 +50,7 @@ public class PreciseDurationField extends BaseDurationField {
      * 
      * @return true always
      */
+    @Override
     public final boolean isPrecise() {
         return true;
     }
@@ -59,6 +60,7 @@ public class PreciseDurationField extends BaseDurationField {
      *
      * @return the unit size of this field, in milliseconds
      */
+    @Override
     public final long getUnitMillis() {
         return iUnitMillis;
     }
@@ -72,6 +74,7 @@ public class PreciseDurationField extends BaseDurationField {
      * @return the value of the field, in the units of the field, which may be
      * negative
      */
+    @Override
     public long getValueAsLong(long duration, long instant) {
         return duration / iUnitMillis;  // safe
     }
@@ -84,6 +87,7 @@ public class PreciseDurationField extends BaseDurationField {
      * @return the milliseconds that the field represents, which may be
      * negative
      */
+    @Override
     public long getMillis(int value, long instant) {
         return value * iUnitMillis;  // safe
     }
@@ -96,20 +100,24 @@ public class PreciseDurationField extends BaseDurationField {
      * @return the milliseconds that the field represents, which may be
      * negative
      */
+    @Override
     public long getMillis(long value, long instant) {
         return FieldUtils.safeMultiply(value, iUnitMillis);
     }
 
+    @Override
     public long add(long instant, int value) {
         long addition = value * iUnitMillis;  // safe
         return FieldUtils.safeAdd(instant, addition);
     }
 
+    @Override
     public long add(long instant, long value) {
         long addition = FieldUtils.safeMultiply(value, iUnitMillis);
         return FieldUtils.safeAdd(instant, addition);
     }
 
+    @Override
     public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
         long difference = FieldUtils.safeSubtract(minuendInstant, subtrahendInstant);
         return difference / iUnitMillis;
@@ -123,6 +131,7 @@ public class PreciseDurationField extends BaseDurationField {
      * @param obj  the object to compare to
      * @return if equal
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -138,6 +147,7 @@ public class PreciseDurationField extends BaseDurationField {
      * 
      * @return a suitable hashcode
      */
+    @Override
     public int hashCode() {
         long millis = iUnitMillis;
         int hash = (int) (millis ^ (millis >>> 32));

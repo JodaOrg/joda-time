@@ -52,10 +52,12 @@ public class TestPreciseDurationField extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         iField = new PreciseDurationField(DurationFieldType.seconds(), 1000);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         iField = null;
     }

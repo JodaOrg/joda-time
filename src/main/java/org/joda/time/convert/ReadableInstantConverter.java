@@ -54,6 +54,7 @@ class ReadableInstantConverter extends AbstractConverter
      * @param zone  the specified zone to use, null means default zone
      * @return the chronology, never null
      */
+    @Override
     public Chronology getChronology(Object object, DateTimeZone zone) {
         Chronology chrono = ((ReadableInstant) object).getChronology();
         if (chrono == null) {
@@ -79,6 +80,7 @@ class ReadableInstantConverter extends AbstractConverter
      * @param chrono  the chronology to use, null means use that from object
      * @return the chronology, never null
      */
+    @Override
     public Chronology getChronology(Object object, Chronology chrono) {
         if (chrono == null) {
             chrono = ((ReadableInstant) object).getChronology();
@@ -96,6 +98,7 @@ class ReadableInstantConverter extends AbstractConverter
      * @throws NullPointerException if the object is null
      * @throws ClassCastException if the object is an invalid type
      */
+    @Override
     public long getInstantMillis(Object object, Chronology chrono) {
         return ((ReadableInstant) object).getMillis();
     }

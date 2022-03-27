@@ -172,6 +172,7 @@ public final class GregorianChronology extends BasicGJChronology {
      * 
      * @return the chronology in UTC
      */
+    @Override
     public Chronology withUTC() {
         return INSTANCE_UTC;
     }
@@ -182,6 +183,7 @@ public final class GregorianChronology extends BasicGJChronology {
      * @param zone  the zone to get the chronology in, null is default
      * @return the chronology
      */
+    @Override
     public Chronology withZone(DateTimeZone zone) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
@@ -192,16 +194,19 @@ public final class GregorianChronology extends BasicGJChronology {
         return getInstance(zone);
     }
 
+    @Override
     protected void assemble(Fields fields) {
         if (getBase() == null) {
             super.assemble(fields);
         }
     }
 
+    @Override
     boolean isLeapYear(int year) {
         return ((year & 3) == 0) && ((year % 100) != 0 || (year % 400) == 0);
     }
 
+    @Override
     long calculateFirstDayOfYearMillis(int year) {
         // Initial value is just temporary.
         int leapYears = year / 100;
@@ -222,26 +227,32 @@ public final class GregorianChronology extends BasicGJChronology {
         return (year * 365L + (leapYears - DAYS_0000_TO_1970)) * DateTimeConstants.MILLIS_PER_DAY;
     }
 
+    @Override
     int getMinYear() {
         return MIN_YEAR;
     }
 
+    @Override
     int getMaxYear() {
         return MAX_YEAR;
     }
 
+    @Override
     long getAverageMillisPerYear() {
         return MILLIS_PER_YEAR;
     }
 
+    @Override
     long getAverageMillisPerYearDividedByTwo() {
         return MILLIS_PER_YEAR / 2;
     }
 
+    @Override
     long getAverageMillisPerMonth() {
         return MILLIS_PER_MONTH;
     }
 
+    @Override
     long getApproxMillisAtEpochDividedByTwo() {
         return (1970L * MILLIS_PER_YEAR) / 2;
     }

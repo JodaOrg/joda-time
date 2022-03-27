@@ -52,11 +52,13 @@ public class TestScaledDurationField extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         DurationField base = MillisDurationField.INSTANCE;
         iField = new ScaledDurationField(base, DurationFieldType.minutes(), 90);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         iField = null;
     }

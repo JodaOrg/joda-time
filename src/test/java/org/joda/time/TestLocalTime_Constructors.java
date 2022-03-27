@@ -81,6 +81,7 @@ public class TestLocalTime_Constructors extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
@@ -88,6 +89,7 @@ public class TestLocalTime_Constructors extends TestCase {
         java.util.TimeZone.setDefault(LONDON.toTimeZone());
     }
 
+    @Override
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);

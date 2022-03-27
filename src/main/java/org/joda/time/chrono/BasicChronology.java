@@ -139,6 +139,7 @@ abstract class BasicChronology extends AssembledChronology {
         iMinDaysInFirstWeek = minDaysInFirstWeek;
     }
 
+    @Override
     public DateTimeZone getZone() {
         Chronology base;
         if ((base = getBase()) != null) {
@@ -213,6 +214,7 @@ abstract class BasicChronology extends AssembledChronology {
      * @return true if equal
      * @since 1.6
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -231,6 +233,7 @@ abstract class BasicChronology extends AssembledChronology {
      * @return the hash code
      * @since 1.6
      */
+    @Override
     public int hashCode() {
         return getClass().getName().hashCode() * 11 + getZone().hashCode() + getMinimumDaysInFirstWeek();
     }
@@ -242,6 +245,7 @@ abstract class BasicChronology extends AssembledChronology {
      * 
      * @return a debugging string
      */
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(60);
         String name = getClass().getName();
@@ -263,6 +267,7 @@ abstract class BasicChronology extends AssembledChronology {
         return sb.toString();
     }
 
+    @Override
     protected void assemble(Fields fields) {
         // First copy fields that are the same for all Gregorian and Julian
         // chronologies.
@@ -805,14 +810,17 @@ abstract class BasicChronology extends AssembledChronology {
             super(DateTimeFieldType.halfdayOfDay(), cHalfdaysField, cDaysField);
         }
 
+        @Override
         public String getAsText(int fieldValue, Locale locale) {
             return GJLocaleSymbols.forLocale(locale).halfdayValueToText(fieldValue);
         }
 
+        @Override
         public long set(long millis, String text, Locale locale) {
             return set(millis, GJLocaleSymbols.forLocale(locale).halfdayTextToValue(text));
         }
 
+        @Override
         public int getMaximumTextLength(Locale locale) {
             return GJLocaleSymbols.forLocale(locale).getHalfdayMaxTextLength();
         }

@@ -231,6 +231,7 @@ public final class Days extends BaseSingleFieldPeriod {
      *
      * @return the period type
      */
+    @Override
     public DurationFieldType getFieldType() {
         return DurationFieldType.days();
     }
@@ -240,6 +241,7 @@ public final class Days extends BaseSingleFieldPeriod {
      *
      * @return the period type
      */
+    @Override
     public PeriodType getPeriodType() {
         return PeriodType.days();
     }
@@ -483,6 +485,7 @@ public final class Days extends BaseSingleFieldPeriod {
      *
      * @return the value as an ISO8601 string
      */
+    @Override
     @ToString
     public String toString() {
         return "P" + String.valueOf(getValue()) + "D";

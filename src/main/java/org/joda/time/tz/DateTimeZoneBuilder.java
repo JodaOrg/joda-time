@@ -639,6 +639,7 @@ public class DateTimeZoneBuilder {
             return prev - offset;
         }
 
+        @Override
         public boolean equals(Object obj) {
             if (this == obj) {
                 return true;
@@ -656,6 +657,7 @@ public class DateTimeZoneBuilder {
             return false;
         }
 
+        @Override
         public String toString() {
             return
                 "[OfYear]\n" + 
@@ -788,6 +790,7 @@ public class DateTimeZoneBuilder {
             return iSaveMillis;
         }
 
+        @Override
         public boolean equals(Object obj) {
             if (this == obj) {
                 return true;
@@ -1219,22 +1222,27 @@ public class DateTimeZoneBuilder {
             iEndRecurrence = endRecurrence;
         }
 
+        @Override
         public String getNameKey(long instant) {
             return findMatchingRecurrence(instant).getNameKey();
         }
 
+        @Override
         public int getOffset(long instant) {
             return iStandardOffset + findMatchingRecurrence(instant).getSaveMillis();
         }
 
+        @Override
         public int getStandardOffset(long instant) {
             return iStandardOffset;
         }
 
+        @Override
         public boolean isFixed() {
             return false;
         }
 
+        @Override
         public long nextTransition(long instant) {
             int standardOffset = iStandardOffset;
             Recurrence startRecurrence = iStartRecurrence;
@@ -1275,6 +1283,7 @@ public class DateTimeZoneBuilder {
             return (start > end) ? end : start;
         }
 
+        @Override
         public long previousTransition(long instant) {
             // Increment in order to handle the case where instant is exactly at
             // a transition.
@@ -1319,6 +1328,7 @@ public class DateTimeZoneBuilder {
             return ((start > end) ? start : end) - 1;
         }
 
+        @Override
         public boolean equals(Object obj) {
             if (this == obj) {
                 return true;
@@ -1545,6 +1555,7 @@ public class DateTimeZoneBuilder {
             iTailZone = tailZone;
         }
 
+        @Override
         public String getNameKey(long instant) {
             long[] transitions = iTransitions;
             int i = Arrays.binarySearch(transitions, instant);
@@ -1564,6 +1575,7 @@ public class DateTimeZoneBuilder {
             return iTailZone.getNameKey(instant);
         }
 
+        @Override
         public int getOffset(long instant) {
             long[] transitions = iTransitions;
             int i = Arrays.binarySearch(transitions, instant);
@@ -1583,6 +1595,7 @@ public class DateTimeZoneBuilder {
             return iTailZone.getOffset(instant);
         }
 
+        @Override
         public int getStandardOffset(long instant) {
             long[] transitions = iTransitions;
             int i = Arrays.binarySearch(transitions, instant);
@@ -1602,10 +1615,12 @@ public class DateTimeZoneBuilder {
             return iTailZone.getStandardOffset(instant);
         }
 
+        @Override
         public boolean isFixed() {
             return false;
         }
 
+        @Override
         public long nextTransition(long instant) {
             long[] transitions = iTransitions;
             int i = Arrays.binarySearch(transitions, instant);
@@ -1623,6 +1638,7 @@ public class DateTimeZoneBuilder {
             return iTailZone.nextTransition(instant);
         }
 
+        @Override
         public long previousTransition(long instant) {
             long[] transitions = iTransitions;
             int i = Arrays.binarySearch(transitions, instant);
@@ -1655,6 +1671,7 @@ public class DateTimeZoneBuilder {
             return instant;
         }
 
+        @Override
         public boolean equals(Object obj) {
             if (this == obj) {
                 return true;

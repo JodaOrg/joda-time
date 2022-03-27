@@ -53,6 +53,7 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
      * @param instant  the time instant in millis to query
      * @return the day of the week extracted from the input
      */
+    @Override
     public int get(long instant) {
         return iChronology.getDayOfWeek(instant);
     }
@@ -64,6 +65,7 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
      * @param locale  the locale to use
      * @return the day of the week, such as 'Monday'
      */
+    @Override
     public String getAsText(int fieldValue, Locale locale) {
         return GJLocaleSymbols.forLocale(locale).dayOfWeekValueToText(fieldValue);
     }
@@ -75,6 +77,7 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
      * @param locale  the locale to use
      * @return the day of the week, such as 'Mon'
      */
+    @Override
     public String getAsShortText(int fieldValue, Locale locale) {
         return GJLocaleSymbols.forLocale(locale).dayOfWeekValueToShortText(fieldValue);
     }
@@ -87,10 +90,12 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
      * @return the value extracted from the text
      * @throws IllegalArgumentException if the text is invalid
      */
+    @Override
     protected int convertText(String text, Locale locale) {
         return GJLocaleSymbols.forLocale(locale).dayOfWeekTextToValue(text);
     }
 
+    @Override
     public DurationField getRangeDurationField() {
         return iChronology.weeks();
     }
@@ -100,6 +105,7 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
      * 
      * @return the field's minimum value
      */
+    @Override
     public int getMinimumValue() {
         return DateTimeConstants.MONDAY;
     }
@@ -109,6 +115,7 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
      * 
      * @return the field's maximum value
      */
+    @Override
     public int getMaximumValue() {
         return DateTimeConstants.SUNDAY;
     }
@@ -119,6 +126,7 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
      * @param locale  the locale to use
      * @return the maximum textual length
      */
+    @Override
     public int getMaximumTextLength(Locale locale) {
         return GJLocaleSymbols.forLocale(locale).getDayOfWeekMaxTextLength();
     }
@@ -129,6 +137,7 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
      * @param locale  the locale to use
      * @return the maximum abbreviated textual length
      */
+    @Override
     public int getMaximumShortTextLength(Locale locale) {
         return GJLocaleSymbols.forLocale(locale).getDayOfWeekMaxShortTextLength();
     }

@@ -49,27 +49,33 @@ final class BasicDayOfYearDateTimeField extends PreciseDurationDateTimeField {
      * @param instant  the time instant in millis to query.
      * @return the day of the year extracted from the input.
      */
+    @Override
     public int get(long instant) {
         return iChronology.getDayOfYear(instant);
     }
 
+    @Override
     public DurationField getRangeDurationField() {
         return iChronology.years();
     }
 
+    @Override
     public int getMinimumValue() {
         return 1;
     }
 
+    @Override
     public int getMaximumValue() {
         return iChronology.getDaysInYearMax();
     }
 
+    @Override
     public int getMaximumValue(long instant) {
         int year = iChronology.getYear(instant);
         return iChronology.getDaysInYear(year);
     }
 
+    @Override
     public int getMaximumValue(ReadablePartial partial) {
         if (partial.isSupported(DateTimeFieldType.year())) {
             int year = partial.get(DateTimeFieldType.year());
@@ -78,6 +84,7 @@ final class BasicDayOfYearDateTimeField extends PreciseDurationDateTimeField {
         return iChronology.getDaysInYearMax();
     }
 
+    @Override
     public int getMaximumValue(ReadablePartial partial, int[] values) {
         int size = partial.size();
         for (int i = 0; i < size; i++) {
@@ -89,6 +96,7 @@ final class BasicDayOfYearDateTimeField extends PreciseDurationDateTimeField {
         return iChronology.getDaysInYearMax();
     }
 
+    @Override
     protected int getMaximumValueForSet(long instant, int value) {
         int maxLessOne = iChronology.getDaysInYearMax() - 1;
         return (value > maxLessOne || value < 1) ? getMaximumValue(instant) : maxLessOne;

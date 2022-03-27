@@ -48,6 +48,7 @@ public class TestMinMaxLong extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         zone = DateTimeZone.getDefault();
         locale = Locale.getDefault();
@@ -56,6 +57,7 @@ public class TestMinMaxLong extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         DateTimeZone.setDefault(zone);
         java.util.TimeZone.setDefault(zone.toTimeZone());

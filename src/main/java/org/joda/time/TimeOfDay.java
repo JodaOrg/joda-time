@@ -438,6 +438,7 @@ public final class TimeOfDay
      * @param chrono  the chronology to use
      * @return the field
      */
+    @Override
     protected DateTimeField getField(int index, Chronology chrono) {
         switch (index) {
             case HOUR_OF_DAY:
@@ -460,6 +461,7 @@ public final class TimeOfDay
      * @return the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
+    @Override
     public DateTimeFieldType getFieldType(int index) {
         return FIELD_TYPES[index];
     }
@@ -471,6 +473,7 @@ public final class TimeOfDay
      *
      * @return the array of field types (cloned), largest to smallest
      */
+    @Override
     public DateTimeFieldType[] getFieldTypes() {
         return (DateTimeFieldType[]) FIELD_TYPES.clone();
     }
@@ -1000,6 +1003,7 @@ public final class TimeOfDay
      * 
      * @return ISO8601 formatted string
      */
+    @Override
     public String toString() {
         return ISODateTimeFormat.tTime().print(this);
     }
@@ -1042,6 +1046,7 @@ public final class TimeOfDay
          * 
          * @return the field
          */
+        @Override
         public DateTimeField getField() {
             return iTimeOfDay.getField(iFieldIndex);
         }
@@ -1051,6 +1056,7 @@ public final class TimeOfDay
          * 
          * @return the partial
          */
+        @Override
         protected ReadablePartial getReadablePartial() {
             return iTimeOfDay;
         }
@@ -1069,6 +1075,7 @@ public final class TimeOfDay
          * 
          * @return the field value
          */
+        @Override
         public int get() {
             return iTimeOfDay.getValue(iFieldIndex);
         }

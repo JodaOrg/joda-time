@@ -28,26 +28,32 @@ public class MockZone extends DateTimeZone {
         this.sizeMillis = sizeSecs * 1000;
     }
 
+    @Override
     public int getOffset(long instant) {
         return (instant < transition ? winterOffset : winterOffset + sizeMillis);
     }
 
+    @Override
     public int getStandardOffset(long instant) {
         return winterOffset;
     }
 
+    @Override
     public long nextTransition(long instant) {
         return (instant < transition ? transition : transition + 180L * DateTimeConstants.MILLIS_PER_DAY);
     }
 
+    @Override
     public long previousTransition(long instant) {
         return (instant > transition ? transition : transition - 180L * DateTimeConstants.MILLIS_PER_DAY);
     }
 
+    @Override
     public boolean isFixed() {
         return false;
     }
 
+    @Override
     public String getNameKey(long instant) {
         return null;
     }

@@ -35,18 +35,22 @@ public final class TestGregorianChronology extends TestGJChronology {
         super(epochYear, epochMonth, epochDay);
     }
 
+    @Override
     public String toString() {
         return "TestGregorianChronology";
     }
 
+    @Override
     long millisPerYear() {
         return (long)(365.2425 * MILLIS_PER_DAY);
     }
 
+    @Override
     long millisPerMonth() {
         return (long)(365.2425 * MILLIS_PER_DAY / 12);
     }
 
+    @Override
     boolean isLeapYear(int year) {
         if (mod(year, 4) == 0) {
             int t = (int)mod(year, 400);
@@ -60,6 +64,7 @@ public final class TestGregorianChronology extends TestGJChronology {
     /**
      * @return days from 0001-01-01
      */
+    @Override
     long fixedFromGJ(int year, int monthOfYear, int dayOfMonth) {
         long year_m1 = year - 1;
         long f = 365 * year_m1 + div(year_m1, 4) - div(year_m1, 100)
@@ -74,6 +79,7 @@ public final class TestGregorianChronology extends TestGJChronology {
      * @param date days from 0001-01-01
      * @return gj year
      */
+    @Override
     int gjYearFromFixed(long date) {
         long d0 = date - 1;
         long n400 = div(d0, 146097);
@@ -100,6 +106,7 @@ public final class TestGregorianChronology extends TestGJChronology {
      * @param date days from 0001-01-01
      * @return gj year, monthOfYear, dayOfMonth
      */
+    @Override
     int[] gjFromFixed(long date) {
         int year = gjYearFromFixed(date);
         long priorDays = date - fixedFromGJ(year, 1, 1);
@@ -117,6 +124,7 @@ public final class TestGregorianChronology extends TestGJChronology {
         return new int[]{year, monthOfYear, day};
     }
 
+    @Override
     long fixedFromISO(int weekyear, int weekOfWeekyear, int dayOfWeek) {
         return nthWeekday(weekOfWeekyear, 0, weekyear - 1, 12, 28) + dayOfWeek;
     }
@@ -125,6 +133,7 @@ public final class TestGregorianChronology extends TestGJChronology {
      * @param date days from 0001-01-01
      * @return iso weekyear, weekOfWeekyear, dayOfWeek (1=Monday to 7)
      */
+    @Override
     int[] isoFromFixed(long date) {
         int weekyear = gjYearFromFixed(date - 3);
         if (date >= fixedFromISO(weekyear + 1, 1, 1)) {

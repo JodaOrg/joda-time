@@ -297,6 +297,7 @@ public abstract class BaseSingleFieldPeriod
      * @return true if all the field values are equal, false if
      *  not or the period is null or of an incorrect type
      */
+    @Override
     public boolean equals(Object period) {
         if (this == period) {
             return true;
@@ -313,6 +314,7 @@ public abstract class BaseSingleFieldPeriod
      *
      * @return a hash code
      */
+    @Override
     public int hashCode() {
         int total = 17;
         total = 27 * total + getValue();

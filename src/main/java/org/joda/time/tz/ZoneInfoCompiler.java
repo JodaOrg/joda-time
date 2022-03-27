@@ -686,6 +686,7 @@ public class ZoneInfoCompiler {
                                iMillisOfDay);
         }
 
+        @Override
         public String toString() {
             return
                 "MonthOfYear: " + iMonthOfYear + "\n" +
@@ -767,6 +768,7 @@ public class ZoneInfoCompiler {
             return name.intern();
         }
 
+        @Override
         public String toString() {
             return
                 "[Rule]\n" + 
@@ -928,6 +930,7 @@ public class ZoneInfoCompiler {
             }
         }
 
+        @Override
         public String toString() {
             String str =
                 "[Zone]\n" + 

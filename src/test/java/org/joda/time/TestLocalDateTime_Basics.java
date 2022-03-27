@@ -96,6 +96,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW_UTC);
         zone = DateTimeZone.getDefault();
@@ -104,6 +105,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         Locale.setDefault(Locale.ENGLISH);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
@@ -311,9 +313,11 @@ public class TestLocalDateTime_Basics extends TestCase {
     }
     
     class MockInstant extends MockPartial {
+        @Override
         public Chronology getChronology() {
             return COPTIC_UTC;
         }
+        @Override
         public DateTimeField[] getFields() {
             return new DateTimeField[] {
                 COPTIC_UTC.year(),
@@ -322,6 +326,7 @@ public class TestLocalDateTime_Basics extends TestCase {
                 COPTIC_UTC.millisOfDay(),
             };
         }
+        @Override
         public int[] getValues() {
             return new int[] {1970, 6, 9, MILLIS_OF_DAY_UTC};
         }

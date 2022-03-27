@@ -82,6 +82,7 @@ class ReadableIntervalConverter extends AbstractConverter
      * @return true if the input is a ReadableInterval
      * @throws ClassCastException if the object is invalid
      */
+    @Override
     public boolean isReadableInterval(Object object, Chronology chrono) {
         return true;
     }

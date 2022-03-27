@@ -548,6 +548,7 @@ public final class LocalDateTime
      * @param chrono  the chronology to use
      * @return the field
      */
+    @Override
     protected DateTimeField getField(int index, Chronology chrono) {
         switch (index) {
             case YEAR:
@@ -603,6 +604,7 @@ public final class LocalDateTime
      * @return the value of that field
      * @throws IllegalArgumentException if the field type is null
      */
+    @Override
     public int get(DateTimeFieldType type) {
         if (type == null) {
             throw new IllegalArgumentException("The DateTimeFieldType must not be null");
@@ -618,6 +620,7 @@ public final class LocalDateTime
      * @param type  a field type, usually obtained from DateTimeFieldType
      * @return true if the field type is supported
      */
+    @Override
     public boolean isSupported(DateTimeFieldType type) {
         if (type == null) {
             return false;
@@ -647,6 +650,7 @@ public final class LocalDateTime
      * @return the number of milliseconds since 1970-01-01T00:00:00
      * @since 1.5 (previously private)
      */
+    @Override
     protected long getLocalMillis() {
         return iLocalMillis;
     }
@@ -668,6 +672,7 @@ public final class LocalDateTime
      * @param partial  an object to check against
      * @return true if fields and values are equal
      */
+    @Override
     public boolean equals(Object partial) {
         // override to perform faster
         if (this == partial) {
@@ -698,6 +703,7 @@ public final class LocalDateTime
      *  or if it has field types that don't match
      * @throws NullPointerException if the partial is null
      */
+    @Override
     public int compareTo(ReadablePartial partial) {
         // override to perform faster
         if (this == partial) {
@@ -2082,6 +2088,7 @@ public final class LocalDateTime
      * 
      * @return ISO8601 time formatted string.
      */
+    @Override
     @ToString
     public String toString() {
         return ISODateTimeFormat.dateTime().print(this);
@@ -2188,6 +2195,7 @@ public final class LocalDateTime
          * 
          * @return the field
          */
+        @Override
         public DateTimeField getField() {
             return iField;
         }
@@ -2197,6 +2205,7 @@ public final class LocalDateTime
          * 
          * @return the milliseconds
          */
+        @Override
         protected long getMillis() {
             return iInstant.getLocalMillis();
         }
@@ -2207,6 +2216,7 @@ public final class LocalDateTime
          * @return the chronology
          * @since 1.4
          */
+        @Override
         protected Chronology getChronology() {
             return iInstant.getChronology();
         }

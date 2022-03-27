@@ -75,10 +75,12 @@ public final class UnsupportedDurationField extends DurationField implements Ser
     // Design note: Simple Accessors return a suitable value, but methods
     // intended to perform calculations throw an UnsupportedOperationException.
 
+    @Override
     public final DurationFieldType getType() {
         return iType;
     }
 
+    @Override
     public String getName() {
         return iType.getName();
     }
@@ -88,6 +90,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
      *
      * @return false always
      */
+    @Override
     public boolean isSupported() {
         return false;
     }
@@ -97,6 +100,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
      * 
      * @return true always
      */
+    @Override
     public boolean isPrecise() {
         return true;
     }
@@ -106,6 +110,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
      *
      * @throws UnsupportedOperationException
      */
+    @Override
     public int getValue(long duration) {
         throw unsupported();
     }
@@ -115,6 +120,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
      *
      * @throws UnsupportedOperationException
      */
+    @Override
     public long getValueAsLong(long duration) {
         throw unsupported();
     }
@@ -124,6 +130,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
      *
      * @throws UnsupportedOperationException
      */
+    @Override
     public int getValue(long duration, long instant) {
         throw unsupported();
     }
@@ -133,6 +140,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
      *
      * @throws UnsupportedOperationException
      */
+    @Override
     public long getValueAsLong(long duration, long instant) {
         throw unsupported();
     }
@@ -142,6 +150,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
      *
      * @throws UnsupportedOperationException
      */
+    @Override
     public long getMillis(int value) {
         throw unsupported();
     }
@@ -151,6 +160,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
      *
      * @throws UnsupportedOperationException
      */
+    @Override
     public long getMillis(long value) {
         throw unsupported();
     }
@@ -160,6 +170,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
      *
      * @throws UnsupportedOperationException
      */
+    @Override
     public long getMillis(int value, long instant) {
         throw unsupported();
     }
@@ -169,6 +180,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
      *
      * @throws UnsupportedOperationException
      */
+    @Override
     public long getMillis(long value, long instant) {
         throw unsupported();
     }
@@ -178,6 +190,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
      *
      * @throws UnsupportedOperationException
      */
+    @Override
     public long add(long instant, int value) {
         throw unsupported();
     }
@@ -187,6 +200,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
      *
      * @throws UnsupportedOperationException
      */
+    @Override
     public long add(long instant, long value) {
         throw unsupported();
     }
@@ -196,6 +210,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
      *
      * @throws UnsupportedOperationException
      */
+    @Override
     public int getDifference(long minuendInstant, long subtrahendInstant) {
         throw unsupported();
     }
@@ -205,6 +220,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
      *
      * @throws UnsupportedOperationException
      */
+    @Override
     public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
         throw unsupported();
     }
@@ -214,6 +230,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
      *
      * @return zero always
      */
+    @Override
     public long getUnitMillis() {
         return 0;
     }
@@ -234,6 +251,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
      * @param obj  the object to compare to
      * @return true if equal
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -252,6 +270,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
      * 
      * @return the hashcode
      */
+    @Override
     public int hashCode() {
         return getName().hashCode();
     }
@@ -261,6 +280,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
      * 
      * @return debug string
      */
+    @Override
     public String toString() {
         return "UnsupportedDurationField[" + getName() + ']';
     }

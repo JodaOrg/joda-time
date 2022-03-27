@@ -54,6 +54,7 @@ public class StrictDateTimeField extends DelegatedDateTimeField {
         super(field);
     }
 
+    @Override
     public final boolean isLenient() {
         return false;
     }
@@ -63,6 +64,7 @@ public class StrictDateTimeField extends DelegatedDateTimeField {
      *
      * @throws IllegalArgumentException if the value is invalid
      */
+    @Override
     public long set(long instant, int value) {
         FieldUtils.verifyValueBounds
             (this, value, getMinimumValue(instant), getMaximumValue(instant));

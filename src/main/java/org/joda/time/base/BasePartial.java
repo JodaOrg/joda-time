@@ -233,6 +233,7 @@ public abstract class BasePartial
      *
      * @return the current values of each field (cloned), largest to smallest
      */
+    @Override
     public int[] getValues() {
         return (int[]) iValues.clone();
     }

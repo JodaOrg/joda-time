@@ -85,14 +85,17 @@ public final class ZonedChronology extends AssembledChronology {
         super(base, zone);
     }
 
+    @Override
     public DateTimeZone getZone() {
         return (DateTimeZone)getParam();
     }
 
+    @Override
     public Chronology withUTC() {
         return getBase();
     }
 
+    @Override
     public Chronology withZone(DateTimeZone zone) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
@@ -106,6 +109,7 @@ public final class ZonedChronology extends AssembledChronology {
         return new ZonedChronology(getBase(), zone);
     }
 
+    @Override
     public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
                                   int millisOfDay)
         throws IllegalArgumentException
@@ -114,6 +118,7 @@ public final class ZonedChronology extends AssembledChronology {
                           (year, monthOfYear, dayOfMonth, millisOfDay));
     }
 
+    @Override
     public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
                                   int hourOfDay, int minuteOfHour,
                                   int secondOfMinute, int millisOfSecond)
@@ -124,6 +129,7 @@ public final class ZonedChronology extends AssembledChronology {
                            hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond));
     }
 
+    @Override
     public long getDateTimeMillis(long instant,
                                   int hourOfDay, int minuteOfHour,
                                   int secondOfMinute, int millisOfSecond)
@@ -159,6 +165,7 @@ public final class ZonedChronology extends AssembledChronology {
         return utcInstant;
     }
 
+    @Override
     protected void assemble(Fields fields) {
         // Keep a local cache of converted fields so as not to create redundant
         // objects.
@@ -245,6 +252,7 @@ public final class ZonedChronology extends AssembledChronology {
      * @return true if equal
      * @since 1.4
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -264,6 +272,7 @@ public final class ZonedChronology extends AssembledChronology {
      * @return the hashcode
      * @since 1.4
      */
+    @Override
     public int hashCode() {
         return 326565 + getZone().hashCode() * 11 + getBase().hashCode() * 7;
     }
@@ -273,6 +282,7 @@ public final class ZonedChronology extends AssembledChronology {
      * 
      * @return the debugging string
      */
+    @Override
     public String toString() {
         return "ZonedChronology[" + getBase() + ", " + getZone().getID() + ']';
     }
@@ -302,42 +312,51 @@ public final class ZonedChronology extends AssembledChronology {
             iZone = zone;
         }
 
+        @Override
         public boolean isPrecise() {
             return iTimeField ? iField.isPrecise() : iField.isPrecise() && this.iZone.isFixed();
         }
 
+        @Override
         public long getUnitMillis() {
             return iField.getUnitMillis();
         }
 
+        @Override
         public int getValue(long duration, long instant) {
             return iField.getValue(duration, addOffset(instant));
         }
 
+        @Override
         public long getValueAsLong(long duration, long instant) {
             return iField.getValueAsLong(duration, addOffset(instant));
         }
 
+        @Override
         public long getMillis(int value, long instant) {
             return iField.getMillis(value, addOffset(instant));
         }
 
+        @Override
         public long getMillis(long value, long instant) {
             return iField.getMillis(value, addOffset(instant));
         }
 
+        @Override
         public long add(long instant, int value) {
             int offset = getOffsetToAdd(instant);
             instant = iField.add(instant + offset, value);
             return instant - (iTimeField ? offset : getOffsetFromLocalToSubtract(instant));
         }
 
+        @Override
         public long add(long instant, long value) {
             int offset = getOffsetToAdd(instant);
             instant = iField.add(instant + offset, value);
             return instant - (iTimeField ? offset : getOffsetFromLocalToSubtract(instant));
         }
 
+        @Override
         public int getDifference(long minuendInstant, long subtrahendInstant) {
             int offset = getOffsetToAdd(subtrahendInstant);
             return iField.getDifference
@@ -345,6 +364,7 @@ public final class ZonedChronology extends AssembledChronology {
                  subtrahendInstant + offset);
         }
 
+        @Override
         public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
             int offset = getOffsetToAdd(subtrahendInstant);
             return iField.getDifferenceAsLong
@@ -428,33 +448,40 @@ public final class ZonedChronology extends AssembledChronology {
             iLeapDurationField = leapDurationField;
         }
 
+        @Override
         public boolean isLenient() {
             return iField.isLenient();
         }
 
+        @Override
         public int get(long instant) {
             long localInstant = iZone.convertUTCToLocal(instant);
             return iField.get(localInstant);
         }
 
+        @Override
         public String getAsText(long instant, Locale locale) {
             long localInstant = iZone.convertUTCToLocal(instant);
             return iField.getAsText(localInstant, locale);
         }
 
+        @Override
         public String getAsShortText(long instant, Locale locale) {
             long localInstant = iZone.convertUTCToLocal(instant);
             return iField.getAsShortText(localInstant, locale);
         }
 
+        @Override
         public String getAsText(int fieldValue, Locale locale) {
             return iField.getAsText(fieldValue, locale);
         }
 
+        @Override
         public String getAsShortText(int fieldValue, Locale locale) {
             return iField.getAsShortText(fieldValue, locale);
         }
 
+        @Override
         public long add(long instant, int value) {
             if (iTimeField) {
                 int offset = getOffsetToAdd(instant);
@@ -467,6 +494,7 @@ public final class ZonedChronology extends AssembledChronology {
             }
         }
 
+        @Override
         public long add(long instant, long value) {
             if (iTimeField) {
                 int offset = getOffsetToAdd(instant);
@@ -479,6 +507,7 @@ public final class ZonedChronology extends AssembledChronology {
             }
         }
 
+        @Override
         public long addWrapField(long instant, int value) {
             if (iTimeField) {
                 int offset = getOffsetToAdd(instant);
@@ -491,6 +520,7 @@ public final class ZonedChronology extends AssembledChronology {
             }
         }
 
+        @Override
         public long set(long instant, int value) {
             long localInstant = iZone.convertUTCToLocal(instant);
             localInstant = iField.set(localInstant, value);
@@ -504,6 +534,7 @@ public final class ZonedChronology extends AssembledChronology {
             return result;
         }
 
+        @Override
         public long set(long instant, String text, Locale locale) {
             // cannot verify that new value stuck because set may be lenient
             long localInstant = iZone.convertUTCToLocal(instant);
@@ -511,6 +542,7 @@ public final class ZonedChronology extends AssembledChronology {
             return iZone.convertLocalToUTC(localInstant, false, instant);
         }
 
+        @Override
         public int getDifference(long minuendInstant, long subtrahendInstant) {
             int offset = getOffsetToAdd(subtrahendInstant);
             return iField.getDifference
@@ -518,6 +550,7 @@ public final class ZonedChronology extends AssembledChronology {
                  subtrahendInstant + offset);
         }
 
+        @Override
         public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
             int offset = getOffsetToAdd(subtrahendInstant);
             return iField.getDifferenceAsLong
@@ -525,28 +558,34 @@ public final class ZonedChronology extends AssembledChronology {
                  subtrahendInstant + offset);
         }
 
+        @Override
         public final DurationField getDurationField() {
             return iDurationField;
         }
 
+        @Override
         public final DurationField getRangeDurationField() {
             return iRangeDurationField;
         }
 
+        @Override
         public boolean isLeap(long instant) {
             long localInstant = iZone.convertUTCToLocal(instant);
             return iField.isLeap(localInstant);
         }
 
+        @Override
         public int getLeapAmount(long instant) {
             long localInstant = iZone.convertUTCToLocal(instant);
             return iField.getLeapAmount(localInstant);
         }
 
+        @Override
         public final DurationField getLeapDurationField() {
             return iLeapDurationField;
         }
 
+        @Override
         public long roundFloor(long instant) {
             if (iTimeField) {
                 int offset = getOffsetToAdd(instant);
@@ -559,6 +598,7 @@ public final class ZonedChronology extends AssembledChronology {
             }
         }
 
+        @Override
         public long roundCeiling(long instant) {
             if (iTimeField) {
                 int offset = getOffsetToAdd(instant);
@@ -571,49 +611,60 @@ public final class ZonedChronology extends AssembledChronology {
             }
         }
 
+        @Override
         public long remainder(long instant) {
             long localInstant = iZone.convertUTCToLocal(instant);
             return iField.remainder(localInstant);
         }
 
+        @Override
         public int getMinimumValue() {
             return iField.getMinimumValue();
         }
 
+        @Override
         public int getMinimumValue(long instant) {
             long localInstant = iZone.convertUTCToLocal(instant);
             return iField.getMinimumValue(localInstant);
         }
 
+        @Override
         public int getMinimumValue(ReadablePartial instant) {
             return iField.getMinimumValue(instant);
         }
 
+        @Override
         public int getMinimumValue(ReadablePartial instant, int[] values) {
             return iField.getMinimumValue(instant, values);
         }
 
+        @Override
         public int getMaximumValue() {
             return iField.getMaximumValue();
         }
 
+        @Override
         public int getMaximumValue(long instant) {
             long localInstant = iZone.convertUTCToLocal(instant);
             return iField.getMaximumValue(localInstant);
         }
 
+        @Override
         public int getMaximumValue(ReadablePartial instant) {
             return iField.getMaximumValue(instant);
         }
 
+        @Override
         public int getMaximumValue(ReadablePartial instant, int[] values) {
             return iField.getMaximumValue(instant, values);
         }
 
+        @Override
         public int getMaximumTextLength(Locale locale) {
             return iField.getMaximumTextLength(locale);
         }
 
+        @Override
         public int getMaximumShortTextLength(Locale locale) {
             return iField.getMaximumShortTextLength(locale);
         }

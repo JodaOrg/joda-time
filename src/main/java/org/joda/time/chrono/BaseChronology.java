@@ -60,6 +60,7 @@ public abstract class BaseChronology
      *
      * @return DateTimeZone null if unspecified
      */
+    @Override
     public abstract DateTimeZone getZone();
 
     /**
@@ -69,6 +70,7 @@ public abstract class BaseChronology
      *
      * @return a version of this chronology that ignores time zones
      */
+    @Override
     public abstract Chronology withUTC();
     
     /**
@@ -78,6 +80,7 @@ public abstract class BaseChronology
      * @param zone to use, or default if null
      * @see org.joda.time.chrono.ZonedChronology
      */
+    @Override
     public abstract Chronology withZone(DateTimeZone zone);
 
     /**
@@ -95,6 +98,7 @@ public abstract class BaseChronology
      * @param millisOfDay millisecond to use
      * @return millisecond instant from 1970-01-01T00:00:00Z
      */
+    @Override
     public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
                                   int millisOfDay)
         throws IllegalArgumentException
@@ -124,6 +128,7 @@ public abstract class BaseChronology
      * @param millisOfSecond millisecond to use
      * @return millisecond instant from 1970-01-01T00:00:00Z
      */
+    @Override
     public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
                                   int hourOfDay, int minuteOfHour,
                                   int secondOfMinute, int millisOfSecond)
@@ -155,6 +160,7 @@ public abstract class BaseChronology
      * @param millisOfSecond millisecond to use
      * @return millisecond instant from 1970-01-01T00:00:00Z
      */
+    @Override
     public long getDateTimeMillis(long instant,
                                   int hourOfDay, int minuteOfHour,
                                   int secondOfMinute, int millisOfSecond)
@@ -177,6 +183,7 @@ public abstract class BaseChronology
      * @param values  the values to validate, not null unless the partial is empty
      * @throws IllegalArgumentException if the instant is invalid
      */
+    @Override
     public void validate(ReadablePartial partial, int[] values) {
         // check values in standard range, catching really stupid cases like -1
         // this means that the second check will not hit trouble
@@ -219,6 +226,7 @@ public abstract class BaseChronology
      * @param instant  the instant to query
      * @return the values of the partial extracted from the instant
      */
+    @Override
     public int[] get(ReadablePartial partial, long instant) {
         int size = partial.size();
         int[] values = new int[size];
@@ -235,6 +243,7 @@ public abstract class BaseChronology
      * @param instant  the instant to update
      * @return the updated instant
      */
+    @Override
     public long set(ReadablePartial partial, long instant) {
         for (int i = 0, isize = partial.size(); i < isize; i++) {
             instant = partial.getFieldType(i).getField(this).set(instant, partial.getValue(i));
@@ -251,6 +260,7 @@ public abstract class BaseChronology
      * @param endInstant  the start instant of an interval to query
      * @return the values of the period extracted from the interval
      */
+    @Override
     public int[] get(ReadablePeriod period, long startInstant, long endInstant) {
         int size = period.size();
         int[] values = new int[size];
@@ -274,6 +284,7 @@ public abstract class BaseChronology
      * @param duration  the duration to query
      * @return the values of the period extracted from the duration
      */
+    @Override
     public int[] get(ReadablePeriod period, long duration) {
         int size = period.size();
         int[] values = new int[size];
@@ -299,6 +310,7 @@ public abstract class BaseChronology
      * @param scalar  the number of times to add
      * @return the updated instant
      */
+    @Override
     public long add(ReadablePeriod period, long instant, int scalar) {
         if (scalar != 0 && period != null) {
             for (int i = 0, isize = period.size(); i < isize; i++) {
@@ -320,6 +332,7 @@ public abstract class BaseChronology
      * @param scalar  the number of times to add
      * @return the updated instant
      */
+    @Override
     public long add(long instant, long duration, int scalar) {
         if (duration == 0 || scalar == 0) {
             return instant;
@@ -335,6 +348,7 @@ public abstract class BaseChronology
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
+    @Override
     public DurationField millis() {
         return UnsupportedDurationField.getInstance(DurationFieldType.millis());
     }
@@ -344,6 +358,7 @@ public abstract class BaseChronology
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
+    @Override
     public DateTimeField millisOfSecond() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.millisOfSecond(), millis());
     }
@@ -353,6 +368,7 @@ public abstract class BaseChronology
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
+    @Override
     public DateTimeField millisOfDay() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.millisOfDay(), millis());
     }
@@ -364,6 +380,7 @@ public abstract class BaseChronology
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
+    @Override
     public DurationField seconds() {
         return UnsupportedDurationField.getInstance(DurationFieldType.seconds());
     }
@@ -373,6 +390,7 @@ public abstract class BaseChronology
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
+    @Override
     public DateTimeField secondOfMinute() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.secondOfMinute(), seconds());
     }
@@ -382,6 +400,7 @@ public abstract class BaseChronology
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
+    @Override
     public DateTimeField secondOfDay() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.secondOfDay(), seconds());
     }
@@ -393,6 +412,7 @@ public abstract class BaseChronology
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
+    @Override
     public DurationField minutes() {
         return UnsupportedDurationField.getInstance(DurationFieldType.minutes());
     }
@@ -402,6 +422,7 @@ public abstract class BaseChronology
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
+    @Override
     public DateTimeField minuteOfHour() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.minuteOfHour(), minutes());
     }
@@ -411,6 +432,7 @@ public abstract class BaseChronology
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
+    @Override
     public DateTimeField minuteOfDay() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.minuteOfDay(), minutes());
     }
@@ -422,6 +444,7 @@ public abstract class BaseChronology
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
+    @Override
     public DurationField hours() {
         return UnsupportedDurationField.getInstance(DurationFieldType.hours());
     }
@@ -431,6 +454,7 @@ public abstract class BaseChronology
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
+    @Override
     public DateTimeField hourOfDay() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.hourOfDay(), hours());
     }
@@ -440,6 +464,7 @@ public abstract class BaseChronology
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
+    @Override
     public DateTimeField clockhourOfDay() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.clockhourOfDay(), hours());
     }
@@ -451,6 +476,7 @@ public abstract class BaseChronology
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
+    @Override
     public DurationField halfdays() {
         return UnsupportedDurationField.getInstance(DurationFieldType.halfdays());
     }
@@ -460,6 +486,7 @@ public abstract class BaseChronology
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
+    @Override
     public DateTimeField hourOfHalfday() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.hourOfHalfday(), hours());
     }
@@ -469,6 +496,7 @@ public abstract class BaseChronology
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
+    @Override
     public DateTimeField clockhourOfHalfday() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.clockhourOfHalfday(), hours());
     }
@@ -478,6 +506,7 @@ public abstract class BaseChronology
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
+    @Override
     public DateTimeField halfdayOfDay() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.halfdayOfDay(), halfdays());
     }
@@ -489,6 +518,7 @@ public abstract class BaseChronology
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
+    @Override
     public DurationField days() {
         return UnsupportedDurationField.getInstance(DurationFieldType.days());
     }
@@ -502,6 +532,7 @@ public abstract class BaseChronology
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
+    @Override
     public DateTimeField dayOfWeek() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.dayOfWeek(), days());
     }
@@ -511,6 +542,7 @@ public abstract class BaseChronology
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
+    @Override
     public DateTimeField dayOfMonth() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.dayOfMonth(), days());
     }
@@ -520,6 +552,7 @@ public abstract class BaseChronology
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
+    @Override
     public DateTimeField dayOfYear() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.dayOfYear(), days());
     }
@@ -531,6 +564,7 @@ public abstract class BaseChronology
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
+    @Override
     public DurationField weeks() {
         return UnsupportedDurationField.getInstance(DurationFieldType.weeks());
     }
@@ -540,6 +574,7 @@ public abstract class BaseChronology
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
+    @Override
     public DateTimeField weekOfWeekyear() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.weekOfWeekyear(), weeks());
     }
@@ -551,6 +586,7 @@ public abstract class BaseChronology
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
+    @Override
     public DurationField weekyears() {
         return UnsupportedDurationField.getInstance(DurationFieldType.weekyears());
     }
@@ -560,6 +596,7 @@ public abstract class BaseChronology
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
+    @Override
     public DateTimeField weekyear() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.weekyear(), weekyears());
     }
@@ -569,6 +606,7 @@ public abstract class BaseChronology
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
+    @Override
     public DateTimeField weekyearOfCentury() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.weekyearOfCentury(), weekyears());
     }
@@ -580,6 +618,7 @@ public abstract class BaseChronology
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
+    @Override
     public DurationField months() {
         return UnsupportedDurationField.getInstance(DurationFieldType.months());
     }
@@ -589,6 +628,7 @@ public abstract class BaseChronology
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
+    @Override
     public DateTimeField monthOfYear() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.monthOfYear(), months());
     }
@@ -600,6 +640,7 @@ public abstract class BaseChronology
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
+    @Override
     public DurationField years() {
         return UnsupportedDurationField.getInstance(DurationFieldType.years());
     }
@@ -609,6 +650,7 @@ public abstract class BaseChronology
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
+    @Override
     public DateTimeField year() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.year(), years());
     }
@@ -618,6 +660,7 @@ public abstract class BaseChronology
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
+    @Override
     public DateTimeField yearOfEra() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.yearOfEra(), years());
     }
@@ -627,6 +670,7 @@ public abstract class BaseChronology
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
+    @Override
     public DateTimeField yearOfCentury() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.yearOfCentury(), years());
     }
@@ -638,6 +682,7 @@ public abstract class BaseChronology
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
+    @Override
     public DurationField centuries() {
         return UnsupportedDurationField.getInstance(DurationFieldType.centuries());
     }
@@ -647,6 +692,7 @@ public abstract class BaseChronology
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
+    @Override
     public DateTimeField centuryOfEra() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.centuryOfEra(), centuries());
     }
@@ -658,6 +704,7 @@ public abstract class BaseChronology
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
+    @Override
     public DurationField eras() {
         return UnsupportedDurationField.getInstance(DurationFieldType.eras());
     }
@@ -667,6 +714,7 @@ public abstract class BaseChronology
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
+    @Override
     public DateTimeField era() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.era(), eras());
     }
@@ -677,6 +725,7 @@ public abstract class BaseChronology
      * 
      * @return a debugging string
      */
+    @Override
     public abstract String toString();
 
 }

@@ -327,6 +327,7 @@ public final class YearMonthDay
      * @param chrono  the chronology to use
      * @return the field
      */
+    @Override
     protected DateTimeField getField(int index, Chronology chrono) {
         switch (index) {
             case YEAR:
@@ -347,6 +348,7 @@ public final class YearMonthDay
      * @return the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
+    @Override
     public DateTimeFieldType getFieldType(int index) {
         return FIELD_TYPES[index];
     }
@@ -358,6 +360,7 @@ public final class YearMonthDay
      *
      * @return the array of field types (cloned), largest to smallest
      */
+    @Override
     public DateTimeFieldType[] getFieldTypes() {
         return (DateTimeFieldType[]) FIELD_TYPES.clone();
     }
@@ -915,6 +918,7 @@ public final class YearMonthDay
      * 
      * @return ISO8601 formatted string
      */
+    @Override
     public String toString() {
         return ISODateTimeFormat.yearMonthDay().print(this);
     }
@@ -957,6 +961,7 @@ public final class YearMonthDay
          * 
          * @return the field
          */
+        @Override
         public DateTimeField getField() {
             return iYearMonthDay.getField(iFieldIndex);
         }
@@ -966,6 +971,7 @@ public final class YearMonthDay
          * 
          * @return the partial
          */
+        @Override
         protected ReadablePartial getReadablePartial() {
             return iYearMonthDay;
         }
@@ -984,6 +990,7 @@ public final class YearMonthDay
          * 
          * @return the field value
          */
+        @Override
         public int get() {
             return iYearMonthDay.getValue(iFieldIndex);
         }

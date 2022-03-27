@@ -743,6 +743,7 @@ public final class Period
      * 
      * @return <code>this</code>
      */
+    @Override
     public Period toPeriod() {
         return this;
     }

@@ -44,11 +44,13 @@ public class TestFixedDateTimeZone extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         originalDateTimeZone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(DateTimeZone.UTC);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         DateTimeZone.setDefault(originalDateTimeZone);
     }

@@ -71,34 +71,42 @@ public abstract class DecoratedDateTimeField extends BaseDateTimeField {
         return iField;
     }
 
+    @Override
     public boolean isLenient() {
         return iField.isLenient();
     }
 
+    @Override
     public int get(long instant) {
         return iField.get(instant);
     }
 
+    @Override
     public long set(long instant, int value) {
         return iField.set(instant, value);
     }
 
+    @Override
     public DurationField getDurationField() {
         return iField.getDurationField();
     }
 
+    @Override
     public DurationField getRangeDurationField() {
         return iField.getRangeDurationField();
     }
 
+    @Override
     public int getMinimumValue() {
         return iField.getMinimumValue();
     }
 
+    @Override
     public int getMaximumValue() {
         return iField.getMaximumValue();
     }
 
+    @Override
     public long roundFloor(long instant) {
         return iField.roundFloor(instant);
     }

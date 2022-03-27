@@ -56,12 +56,14 @@ public class TestBasePartial extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(DateTimeZone.UTC);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
@@ -107,6 +109,7 @@ public class TestBasePartial extends TestCase {
             super(new int[] {1970, 1}, null);
         }
 
+        @Override
         protected DateTimeField getField(int index, Chronology chrono) {
             switch (index) {
                 case 0:

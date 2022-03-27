@@ -121,6 +121,7 @@ public class TestDateMidnight_Basics extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW_UTC);
         originalDateTimeZone = DateTimeZone.getDefault();
@@ -131,6 +132,7 @@ public class TestDateMidnight_Basics extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
@@ -287,6 +289,7 @@ public class TestDateMidnight_Basics extends TestCase {
     }
     
     class MockInstant extends AbstractInstant {
+        @Override
         public String toString() {
             return null;
         }
@@ -992,12 +995,15 @@ public class TestDateMidnight_Basics extends TestCase {
         assertEquals(test.property(DateTimeFieldType.millisOfSecond()), test.property(DateTimeFieldType.millisOfSecond()));
         DateTimeFieldType bad = new DateTimeFieldType("bad") {
             private static final long serialVersionUID = 1L;
+            @Override
             public DurationFieldType getDurationType() {
                 return DurationFieldType.weeks();
             }
+            @Override
             public DurationFieldType getRangeDurationType() {
                 return null;
             }
+            @Override
             public DateTimeField getField(Chronology chronology) {
                 return UnsupportedDateTimeField.getInstance(this, UnsupportedDurationField.getInstance(getDurationType()));
             }

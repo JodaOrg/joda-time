@@ -403,6 +403,7 @@ public class MutableInterval
      *
      * @return a clone of this object.
      */
+    @Override
     public Object clone() {
         try {
             return super.clone();

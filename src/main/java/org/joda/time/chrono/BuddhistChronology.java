@@ -147,6 +147,7 @@ public final class BuddhistChronology extends AssembledChronology {
      * 
      * @return the chronology in UTC
      */
+    @Override
     public Chronology withUTC() {
         return INSTANCE_UTC;
     }
@@ -157,6 +158,7 @@ public final class BuddhistChronology extends AssembledChronology {
      * @param zone  the zone to get the chronology in, null is default
      * @return the chronology
      */
+    @Override
     public Chronology withZone(DateTimeZone zone) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
@@ -175,6 +177,7 @@ public final class BuddhistChronology extends AssembledChronology {
      * @return true if equal
      * @since 1.6
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -192,6 +195,7 @@ public final class BuddhistChronology extends AssembledChronology {
      * @return the hash code
      * @since 1.6
      */
+    @Override
     public int hashCode() {
         return "Buddhist".hashCode() * 11 + getZone().hashCode();
     }
@@ -203,6 +207,7 @@ public final class BuddhistChronology extends AssembledChronology {
      * 
      * @return a debugging string
      */
+    @Override
     public String toString() {
         String str = "BuddhistChronology";
         DateTimeZone zone = getZone();
@@ -212,6 +217,7 @@ public final class BuddhistChronology extends AssembledChronology {
         return str;
     }
 
+    @Override
     protected void assemble(Fields fields) {
         if (getParam() == null) {
             // force init as used below

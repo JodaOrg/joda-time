@@ -58,6 +58,7 @@ public class TestReadablePeriodConverter extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         JULIAN = JulianChronology.getInstance();
         ISO = ISOChronology.getInstance();

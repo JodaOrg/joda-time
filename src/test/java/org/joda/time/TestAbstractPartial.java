@@ -59,12 +59,14 @@ public class TestAbstractPartial extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(DateTimeZone.UTC);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
@@ -154,6 +156,7 @@ public class TestAbstractPartial extends TestCase {
             super();
         }
 
+        @Override
         protected DateTimeField getField(int index, Chronology chrono) {
             switch (index) {
                 case 0:
@@ -184,41 +187,51 @@ public class TestAbstractPartial extends TestCase {
     
     static class MockProperty0 extends AbstractPartialFieldProperty {
         MockPartial partial = new MockPartial();
+        @Override
         public DateTimeField getField() {
             return partial.getField(0);
         }
+        @Override
         public ReadablePartial getReadablePartial() {
             return partial;
         }
+        @Override
         public int get() {
             return partial.getValue(0);
         }
     }
     static class MockProperty1 extends AbstractPartialFieldProperty {
         MockPartial partial = new MockPartial();
+        @Override
         public DateTimeField getField() {
             return partial.getField(1);
         }
+        @Override
         public ReadablePartial getReadablePartial() {
             return partial;
         }
+        @Override
         public int get() {
             return partial.getValue(1);
         }
     }
     static class MockProperty0Field extends MockProperty0 {
+        @Override
         public DateTimeField getField() {
             return BuddhistChronology.getInstanceUTC().hourOfDay();
         }
     }
     static class MockProperty0Val extends MockProperty0 {
+        @Override
         public int get() {
             return 99;
         }
     }
     static class MockProperty0Chrono extends MockProperty0 {
+        @Override
         public ReadablePartial getReadablePartial() {
             return new MockPartial() {
+                @Override
                 public Chronology getChronology() {
                     return ISOChronology.getInstanceUTC();
                 }

@@ -438,6 +438,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * @param object  the object to compare to
      * @return true if equal
      */
+    @Override
     public boolean equals(Object object) {
         if (this == object) {
             return true;
@@ -457,6 +458,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * 
      * @return the hashcode
      */
+    @Override
     public int hashCode() {
         return get() * 17 + getFieldType().hashCode() + getChronology().hashCode();
     }
@@ -467,6 +469,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * 
      * @return debugging string
      */
+    @Override
     public String toString() {
         return "Property[" + getName() + "]";
     }

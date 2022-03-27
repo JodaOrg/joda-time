@@ -63,6 +63,7 @@ public abstract class AbstractDateTime
      * @return the value of that field
      * @throws IllegalArgumentException if the field type is null
      */
+    @Override
     public int get(DateTimeFieldType type) {
         if (type == null) {
             throw new IllegalArgumentException("The DateTimeFieldType must not be null");
@@ -309,6 +310,7 @@ public abstract class AbstractDateTime
      * 
      * @return ISO8601 time formatted string, not null
      */
+    @Override
     @ToString
     public String toString() {
         return super.toString();

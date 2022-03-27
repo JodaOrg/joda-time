@@ -26,6 +26,7 @@ class TestJulianWeekyearField extends TestGJWeekyearField {
         super(chrono);
     }
 
+    @Override
     public long addWrapField(long millis, int value) {
         int weekyear = get(millis);
         int wrapped = FieldUtils.getWrappedValue
@@ -33,6 +34,7 @@ class TestJulianWeekyearField extends TestGJWeekyearField {
         return add(millis, (long) wrapped - weekyear);
     }
 
+    @Override
     public long add(long millis, long value) {
         int weekyear = get(millis);
         int newWeekyear = weekyear + FieldUtils.safeToInt(value);
@@ -48,10 +50,12 @@ class TestJulianWeekyearField extends TestGJWeekyearField {
         return set(millis, newWeekyear);
     }
 
+    @Override
     public int getMinimumValue() {
         return -100000000;
     }
 
+    @Override
     public int getMaximumValue() {
         return 100000000;
     }

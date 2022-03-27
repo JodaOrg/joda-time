@@ -90,6 +90,7 @@ public class TestMutableDateTime_Basics extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
@@ -100,6 +101,7 @@ public class TestMutableDateTime_Basics extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
@@ -249,6 +251,7 @@ public class TestMutableDateTime_Basics extends TestCase {
     }
     
     class MockInstant extends AbstractInstant {
+        @Override
         public String toString() {
             return null;
         }
@@ -262,18 +265,23 @@ public class TestMutableDateTime_Basics extends TestCase {
 
     class MockEqualsChronology extends BaseChronology {
         private static final long serialVersionUID = 1L;
+        @Override
         public boolean equals(Object obj) {
             return obj instanceof MockEqualsChronology;
         }
+        @Override
         public DateTimeZone getZone() {
             return null;
         }
+        @Override
         public Chronology withUTC() {
             return this;
         }
+        @Override
         public Chronology withZone(DateTimeZone zone) {
             return this;
         }
+        @Override
         public String toString() {
             return "";
         }
@@ -732,12 +740,15 @@ public class TestMutableDateTime_Basics extends TestCase {
         assertEquals(test.millisOfSecond(), test.property(DateTimeFieldType.millisOfSecond()));
         DateTimeFieldType bad = new DateTimeFieldType("bad") {
             private static final long serialVersionUID = 1L;
+            @Override
             public DurationFieldType getDurationType() {
                 return DurationFieldType.weeks();
             }
+            @Override
             public DurationFieldType getRangeDurationType() {
                 return null;
             }
+            @Override
             public DateTimeField getField(Chronology chronology) {
                 return UnsupportedDateTimeField.getInstance(this, UnsupportedDurationField.getInstance(getDurationType()));
             }

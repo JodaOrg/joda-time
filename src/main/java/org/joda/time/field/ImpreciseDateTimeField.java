@@ -58,12 +58,16 @@ public abstract class ImpreciseDateTimeField extends BaseDateTimeField {
         iDurationField = new LinkedDurationField(type.getDurationType());
     }
 
+    @Override
     public abstract int get(long instant);
 
+    @Override
     public abstract long set(long instant, int value);
 
+    @Override
     public abstract long add(long instant, int value);
 
+    @Override
     public abstract long add(long instant, long value);
 
     /**
@@ -88,6 +92,7 @@ public abstract class ImpreciseDateTimeField extends BaseDateTimeField {
      * subtract off the minuend
      * @return the difference in the units of this field
      */
+    @Override
     public int getDifference(long minuendInstant, long subtrahendInstant) {
         return FieldUtils.safeToInt(getDifferenceAsLong(minuendInstant, subtrahendInstant));
     }
@@ -115,6 +120,7 @@ public abstract class ImpreciseDateTimeField extends BaseDateTimeField {
      * subtract off the minuend
      * @return the difference in the units of this field
      */
+    @Override
     public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
         if (minuendInstant < subtrahendInstant) {
             return -getDifferenceAsLong(subtrahendInstant, minuendInstant);
@@ -134,12 +140,15 @@ public abstract class ImpreciseDateTimeField extends BaseDateTimeField {
         return difference;
     }
 
+    @Override
     public final DurationField getDurationField() {
         return iDurationField;
     }
 
+    @Override
     public abstract DurationField getRangeDurationField();
 
+    @Override
     public abstract long roundFloor(long instant);
 
     protected final long getDurationUnitMillis() {
@@ -153,45 +162,55 @@ public abstract class ImpreciseDateTimeField extends BaseDateTimeField {
             super(type);
         }
     
+        @Override
         public boolean isPrecise() {
             return false;
         }
     
+        @Override
         public long getUnitMillis() {
             return iUnitMillis;
         }
 
+        @Override
         public int getValue(long duration, long instant) {
             return ImpreciseDateTimeField.this
                 .getDifference(instant + duration, instant);
         }
 
+        @Override
         public long getValueAsLong(long duration, long instant) {
             return ImpreciseDateTimeField.this
                 .getDifferenceAsLong(instant + duration, instant);
         }
         
+        @Override
         public long getMillis(int value, long instant) {
             return ImpreciseDateTimeField.this.add(instant, value) - instant;
         }
 
+        @Override
         public long getMillis(long value, long instant) {
             return ImpreciseDateTimeField.this.add(instant, value) - instant;
         }
 
+        @Override
         public long add(long instant, int value) {
             return ImpreciseDateTimeField.this.add(instant, value);
         }
         
+        @Override
         public long add(long instant, long value) {
             return ImpreciseDateTimeField.this.add(instant, value);
         }
         
+        @Override
         public int getDifference(long minuendInstant, long subtrahendInstant) {
             return ImpreciseDateTimeField.this
                 .getDifference(minuendInstant, subtrahendInstant);
         }
         
+        @Override
         public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
             return ImpreciseDateTimeField.this
                 .getDifferenceAsLong(minuendInstant, subtrahendInstant);

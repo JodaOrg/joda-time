@@ -291,6 +291,7 @@ public final class Duration
      * 
      * @return <code>this</code>
      */
+    @Override
     public Duration toDuration() {
         return this;
     }

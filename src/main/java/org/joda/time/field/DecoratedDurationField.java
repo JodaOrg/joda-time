@@ -69,34 +69,42 @@ public class DecoratedDurationField extends BaseDurationField {
         return iField;
     }
 
+    @Override
     public boolean isPrecise() {
         return iField.isPrecise();
     }
 
+    @Override
     public long getValueAsLong(long duration, long instant) {
         return iField.getValueAsLong(duration, instant);
     }
 
+    @Override
     public long getMillis(int value, long instant) {
         return iField.getMillis(value, instant);
     }
 
+    @Override
     public long getMillis(long value, long instant) {
         return iField.getMillis(value, instant);
     }
 
+    @Override
     public long add(long instant, int value) {
         return iField.add(instant, value);
     }
 
+    @Override
     public long add(long instant, long value) {
         return iField.add(instant, value);
     }
 
+    @Override
     public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
         return iField.getDifferenceAsLong(minuendInstant, subtrahendInstant);
     }
 
+    @Override
     public long getUnitMillis() {
         return iField.getUnitMillis();
     }

@@ -95,34 +95,42 @@ public class CachedDateTimeZone extends DateTimeZone {
         return iZone;
     }
 
+    @Override
     public String getNameKey(long instant) {
         return getInfo(instant).getNameKey(instant);
     }
 
+    @Override
     public int getOffset(long instant) {
         return getInfo(instant).getOffset(instant);
     }
 
+    @Override
     public int getStandardOffset(long instant) {
         return getInfo(instant).getStandardOffset(instant);
     }
 
+    @Override
     public boolean isFixed() {
         return iZone.isFixed();
     }
 
+    @Override
     public long nextTransition(long instant) {
         return iZone.nextTransition(instant);
     }
 
+    @Override
     public long previousTransition(long instant) {
         return iZone.previousTransition(instant);
     }
 
+    @Override
     public int hashCode() {
         return iZone.hashCode();
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;

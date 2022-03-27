@@ -72,12 +72,14 @@ public class TestYearMonth_Basics extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(LONDON);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
@@ -200,15 +202,18 @@ public class TestYearMonth_Basics extends TestCase {
     }
     
     class MockYM extends MockPartial {
+        @Override
         public Chronology getChronology() {
             return COPTIC_UTC;
         }
+        @Override
         public DateTimeField[] getFields() {
             return new DateTimeField[] {
                 COPTIC_UTC.year(),
                 COPTIC_UTC.monthOfYear(),
             };
         }
+        @Override
         public int[] getValues() {
             return new int[] {1970, 6};
         }

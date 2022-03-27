@@ -59,6 +59,7 @@ class StringConverter extends AbstractConverter
      * @return the millisecond value
      * @throws IllegalArgumentException if the value if invalid
      */
+    @Override
     public long getInstantMillis(Object object, Chronology chrono) {
         String str = (String) object;
         DateTimeFormatter p = ISODateTimeFormat.dateTimeParser();
@@ -80,6 +81,7 @@ class StringConverter extends AbstractConverter
      * @throws IllegalArgumentException if the value if invalid
      * @since 1.3
      */
+    @Override
     public int[] getPartialValues(ReadablePartial fieldSource, Object object, Chronology chrono, DateTimeFormatter parser) {
         if (parser.getZone() != null) {
             chrono = chrono.withZone(parser.getZone());

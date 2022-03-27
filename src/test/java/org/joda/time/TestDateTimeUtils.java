@@ -91,13 +91,16 @@ public class TestDateTimeUtils extends TestCase {
     static {
         // don't call Policy.getPolicy()
         RESTRICT = new Policy() {
+            @Override
             public PermissionCollection getPermissions(CodeSource codesource) {
                 Permissions p = new Permissions();
                 p.add(new AllPermission());  // enable everything
                 return p;
             }
+            @Override
             public void refresh() {
             }
+            @Override
             public boolean implies(ProtectionDomain domain, Permission permission) {
                 if (permission instanceof JodaTimePermission) {
                     return false;
@@ -107,11 +110,13 @@ public class TestDateTimeUtils extends TestCase {
             }
         };
         ALLOW = new Policy() {
+            @Override
             public PermissionCollection getPermissions(CodeSource codesource) {
                 Permissions p = new Permissions();
                 p.add(new AllPermission());  // enable everything
                 return p;
             }
+            @Override
             public void refresh() {
             }
         };
@@ -129,9 +134,11 @@ public class TestDateTimeUtils extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
     }
 
+    @Override
     protected void tearDown() throws Exception {
     }
 
@@ -369,6 +376,7 @@ public class TestDateTimeUtils extends TestCase {
         MutableInterval ai = new MutableInterval() {
             private static final long serialVersionUID = 1L;
 
+            @Override
             public Chronology getChronology() {
                 return null; // testing for this
             }

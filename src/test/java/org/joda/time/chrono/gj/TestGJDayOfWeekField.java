@@ -27,6 +27,7 @@ class TestGJDayOfWeekField extends TestGJDateTimeField {
         super(DateTimeFieldType.dayOfWeek(), TestGJChronology.MILLIS_PER_DAY, chrono);
     }
 
+    @Override
     public int get(long millis) {
         int dayOfWeek = (int) TestGJChronology.mod(iChronology.fixedFromMillis(millis), 7);
         if (dayOfWeek == 0) {
@@ -35,26 +36,32 @@ class TestGJDayOfWeekField extends TestGJDateTimeField {
         return dayOfWeek;
     }
 
+    @Override
     public long set(long millis, int value) {
         return add(millis, (long) value - get(millis));
     }
 
+    @Override
     public long add(long millis, long value) {
         return millis + value * TestGJChronology.MILLIS_PER_DAY;
     }
 
+    @Override
     public DurationField getRangeDurationField() {
         return iChronology.weeks();
     }
 
+    @Override
     public int getMinimumValue() {
         return 1;
     }
 
+    @Override
     public int getMaximumValue() {
         return 7;
     }
 
+    @Override
     public long roundFloor(long millis) {
         return iChronology.getDateOnlyMillis(millis);
     }

@@ -213,6 +213,7 @@ public final class Minutes extends BaseSingleFieldPeriod {
      *
      * @return the period type
      */
+    @Override
     public DurationFieldType getFieldType() {
         return DurationFieldType.minutes();
     }
@@ -222,6 +223,7 @@ public final class Minutes extends BaseSingleFieldPeriod {
      *
      * @return the period type
      */
+    @Override
     public PeriodType getPeriodType() {
         return PeriodType.minutes();
     }
@@ -463,6 +465,7 @@ public final class Minutes extends BaseSingleFieldPeriod {
      *
      * @return the value as an ISO8601 string
      */
+    @Override
     @ToString
     public String toString() {
         return "PT" + String.valueOf(getValue()) + "M";

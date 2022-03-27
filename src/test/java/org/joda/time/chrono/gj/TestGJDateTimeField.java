@@ -30,14 +30,17 @@ abstract class TestGJDateTimeField extends ImpreciseDateTimeField {
         iChronology = chrono;
     }
 
+    @Override
     public boolean isLenient() {
         return false;
     }
 
+    @Override
     public long add(long instant, int value) {
         return add(instant, (long)value);
     }
 
+    @Override
     public abstract long add(long instant, long value);
 
 }

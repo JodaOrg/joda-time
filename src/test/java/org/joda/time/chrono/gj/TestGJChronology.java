@@ -91,10 +91,12 @@ abstract class TestGJChronology extends BaseChronology {
         iEpochMillis = fixedFromGJ(epochYear, epochMonth, epochDay) * MILLIS_PER_DAY;
     }
 
+    @Override
     public DateTimeZone getZone() {
         return null;
     }
 
+    @Override
     public Chronology withUTC() {
         return this;
     }
@@ -102,6 +104,7 @@ abstract class TestGJChronology extends BaseChronology {
     /**
      * Unsupported.
      */
+    @Override
     public Chronology withZone(DateTimeZone zone) {
         throw new UnsupportedOperationException();
     }
@@ -114,50 +117,62 @@ abstract class TestGJChronology extends BaseChronology {
         return millis - mod(millis, MILLIS_PER_DAY);
     }
 
+    @Override
     public DurationField days() {
         return dayOfWeek().getDurationField();
     }
 
+    @Override
     public DateTimeField dayOfWeek() {
         return new TestGJDayOfWeekField(this);
     }
 
+    @Override
     public DateTimeField dayOfMonth() {
         return new TestGJDayOfMonthField(this); 
     }
 
+    @Override
     public DateTimeField dayOfYear() {
         return new TestGJDayOfYearField(this);
     }
 
+    @Override
     public DurationField weeks() {
         return weekOfWeekyear().getDurationField();
     }
 
+    @Override
     public DateTimeField weekOfWeekyear() {
         return new TestGJWeekOfWeekyearField(this);
     }
 
+    @Override
     public DurationField weekyears() {
         return weekyear().getDurationField();
     }
 
+    @Override
     public DateTimeField weekyear() {
         return new TestGJWeekyearField(this);
     }
 
+    @Override
     public DurationField months() {
         return monthOfYear().getDurationField();
     }
 
+    @Override
     public DateTimeField monthOfYear() {
         return new TestGJMonthOfYearField(this);
     }
 
+    @Override
     public DurationField years() {
         return year().getDurationField();
     }
 
+    @Override
     public DateTimeField year() {
         return new TestGJYearField(this);
     }

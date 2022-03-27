@@ -27,36 +27,44 @@ class TestGJDayOfYearField extends TestGJDateTimeField {
         super(DateTimeFieldType.dayOfYear(), TestGJChronology.MILLIS_PER_DAY, chrono);
     }
 
+    @Override
     public int get(long millis) {
         int year = iChronology.gjYearFromMillis(millis);
         return (int)(iChronology.fixedFromMillis(millis)
                      - iChronology.fixedFromGJ(year, 1, 1)) + 1;
     }
 
+    @Override
     public long set(long millis, int value) {
         return add(millis, (long) value - get(millis));
     }
 
+    @Override
     public long add(long millis, long value) {
         return millis + value * TestGJChronology.MILLIS_PER_DAY;
     }
 
+    @Override
     public DurationField getRangeDurationField() {
         return iChronology.years();
     }
 
+    @Override
     public int getMinimumValue() {
         return 1;
     }
 
+    @Override
     public int getMaximumValue() {
         return 366;
     }
 
+    @Override
     public int getMaximumValue(long millis) {
         return iChronology.year().isLeap(millis) ? 366 : 365;
     }
 
+    @Override
     public long roundFloor(long millis) {
         return iChronology.getDateOnlyMillis(millis);
     }

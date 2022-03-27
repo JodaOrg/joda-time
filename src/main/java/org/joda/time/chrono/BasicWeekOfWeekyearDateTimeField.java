@@ -51,10 +51,12 @@ final class BasicWeekOfWeekyearDateTimeField extends PreciseDurationDateTimeFiel
      * @param instant  the time instant in millis to query.
      * @return the week of the year extracted from the input.
      */
+    @Override
     public int get(long instant) {
         return iChronology.getWeekOfWeekyear(instant);
     }
 
+    @Override
     public DurationField getRangeDurationField() {
         return iChronology.weekyears();
     }
@@ -62,33 +64,40 @@ final class BasicWeekOfWeekyearDateTimeField extends PreciseDurationDateTimeFiel
     // 1970-01-01 is day of week 4, Thursday. The rounding methods need to
     // apply a corrective alignment since weeks begin on day of week 1, Monday.
 
+    @Override
     public long roundFloor(long instant) {
         return super.roundFloor(instant + 3 * DateTimeConstants.MILLIS_PER_DAY)
             - 3 * DateTimeConstants.MILLIS_PER_DAY;
     }
 
+    @Override
     public long roundCeiling(long instant) {
         return super.roundCeiling(instant + 3 * DateTimeConstants.MILLIS_PER_DAY)
             - 3 * DateTimeConstants.MILLIS_PER_DAY;
     }
 
+    @Override
     public long remainder(long instant) {
         return super.remainder(instant + 3 * DateTimeConstants.MILLIS_PER_DAY);
     }
 
+    @Override
     public int getMinimumValue() {
         return 1;
     }
 
+    @Override
     public int getMaximumValue() {
         return 53;
     }
 
+    @Override
     public int getMaximumValue(long instant) {
         int weekyear = iChronology.getWeekyear(instant);
         return iChronology.getWeeksInYear(weekyear);
     }
 
+    @Override
     public int getMaximumValue(ReadablePartial partial) {
         if (partial.isSupported(DateTimeFieldType.weekyear())) {
             int weekyear = partial.get(DateTimeFieldType.weekyear());
@@ -97,6 +106,7 @@ final class BasicWeekOfWeekyearDateTimeField extends PreciseDurationDateTimeFiel
         return 53;
     }
 
+    @Override
     public int getMaximumValue(ReadablePartial partial, int[] values) {
         int size = partial.size();
         for (int i = 0; i < size; i++) {
@@ -108,6 +118,7 @@ final class BasicWeekOfWeekyearDateTimeField extends PreciseDurationDateTimeFiel
         return 53;
     }
 
+    @Override
     protected int getMaximumValueForSet(long instant, int value) {
         return value > 52 ? getMaximumValue(instant) : 52;
     }

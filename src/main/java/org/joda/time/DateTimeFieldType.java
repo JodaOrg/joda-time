@@ -427,6 +427,7 @@ public abstract class DateTimeFieldType implements Serializable {
      * 
      * @return debug string
      */
+    @Override
     public String toString() {
         return getName();
     }
@@ -460,11 +461,13 @@ public abstract class DateTimeFieldType implements Serializable {
         }
 
         /** @inheritdoc */
+        @Override
         public DurationFieldType getDurationType() {
             return iUnitType;
         }
 
         /** @inheritdoc */
+        @Override
         public DurationFieldType getRangeDurationType() {
             return iRangeType;
         }
@@ -488,6 +491,7 @@ public abstract class DateTimeFieldType implements Serializable {
         }
 
         /** @inheritdoc */
+        @Override
         public DateTimeField getField(Chronology chronology) {
             chronology = DateTimeUtils.getChronology(chronology);
 

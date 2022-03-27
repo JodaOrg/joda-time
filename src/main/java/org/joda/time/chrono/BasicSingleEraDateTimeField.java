@@ -53,22 +53,26 @@ final class BasicSingleEraDateTimeField extends BaseDateTimeField {
     }
 
     /** @inheritDoc */
+    @Override
     public boolean isLenient() {
         return false;
     }
 
     /** @inheritDoc */
+    @Override
     public int get(long instant) {
         return ERA_VALUE;
     }
 
     /** @inheritDoc */
+    @Override
     public long set(long instant, int era) {
         FieldUtils.verifyValueBounds(this, era, ERA_VALUE, ERA_VALUE);
         return instant;
     }
 
     /** @inheritDoc */
+    @Override
     public long set(long instant, String text, Locale locale) {
         if (iEraText.equals(text) == false && "1".equals(text) == false) {
             throw new IllegalFieldValueException(DateTimeFieldType.era(), text);
@@ -77,56 +81,67 @@ final class BasicSingleEraDateTimeField extends BaseDateTimeField {
     }
 
     /** @inheritDoc */
+    @Override
     public long roundFloor(long instant) {
         return Long.MIN_VALUE;
     }
 
     /** @inheritDoc */
+    @Override
     public long roundCeiling(long instant) {
         return Long.MAX_VALUE;
     }
 
     /** @inheritDoc */
+    @Override
     public long roundHalfFloor(long instant) {
         return Long.MIN_VALUE;
     }
 
     /** @inheritDoc */
+    @Override
     public long roundHalfCeiling(long instant) {
         return Long.MIN_VALUE;
     }
 
     /** @inheritDoc */
+    @Override
     public long roundHalfEven(long instant) {
         return Long.MIN_VALUE;
     }
 
     /** @inheritDoc */
+    @Override
     public DurationField getDurationField() {
         return UnsupportedDurationField.getInstance(DurationFieldType.eras());
     }
 
     /** @inheritDoc */
+    @Override
     public DurationField getRangeDurationField() {
         return null;
     }
 
     /** @inheritDoc */
+    @Override
     public int getMinimumValue() {
         return ERA_VALUE;
     }
 
     /** @inheritDoc */
+    @Override
     public int getMaximumValue() {
         return ERA_VALUE;
     }
 
     /** @inheritDoc */
+    @Override
     public String getAsText(int fieldValue, Locale locale) {
         return iEraText;
     }
 
     /** @inheritDoc */
+    @Override
     public int getMaximumTextLength(Locale locale) {
         return iEraText.length();
     }

@@ -279,6 +279,7 @@ public final class GJChronology extends AssembledChronology {
         return getInstance(getZone(), iCutoverInstant, getMinimumDaysInFirstWeek());
     }
 
+    @Override
     public DateTimeZone getZone() {
         Chronology base;
         if ((base = getBase()) != null) {
@@ -294,6 +295,7 @@ public final class GJChronology extends AssembledChronology {
      * 
      * @return the chronology in UTC
      */
+    @Override
     public Chronology withUTC() {
         return withZone(DateTimeZone.UTC);
     }
@@ -304,6 +306,7 @@ public final class GJChronology extends AssembledChronology {
      * @param zone  the zone to get the chronology in, null is default
      * @return the chronology
      */
+    @Override
     public Chronology withZone(DateTimeZone zone) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
@@ -314,6 +317,7 @@ public final class GJChronology extends AssembledChronology {
         return getInstance(zone, iCutoverInstant, getMinimumDaysInFirstWeek());
     }
 
+    @Override
     public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
                                   int millisOfDay)
         throws IllegalArgumentException
@@ -338,6 +342,7 @@ public final class GJChronology extends AssembledChronology {
         return instant;
     }
 
+    @Override
     public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
                                   int hourOfDay, int minuteOfHour,
                                   int secondOfMinute, int millisOfSecond)
@@ -405,6 +410,7 @@ public final class GJChronology extends AssembledChronology {
      * @return true if equal
      * @since 1.6
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -424,6 +430,7 @@ public final class GJChronology extends AssembledChronology {
      * @return the hash code
      * @since 1.6
      */
+    @Override
     public int hashCode() {
         return "GJ".hashCode() * 11 + getZone().hashCode() +
                 getMinimumDaysInFirstWeek() + iCutoverInstant.hashCode();
@@ -436,6 +443,7 @@ public final class GJChronology extends AssembledChronology {
      * 
      * @return a debugging string
      */
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer(60);
         sb.append("GJChronology");
@@ -462,6 +470,7 @@ public final class GJChronology extends AssembledChronology {
         return sb.toString();
     }
 
+    @Override
     protected void assemble(Fields fields) {
         Object[] params = (Object[])getParam();
 
@@ -652,10 +661,12 @@ public final class GJChronology extends AssembledChronology {
             iRangeDurationField = rangeField;
         }
 
+        @Override
         public boolean isLenient() {
             return false;
         }
 
+        @Override
         public int get(long instant) {
             if (instant >= iCutover) {
                 return iGregorianField.get(instant);
@@ -664,6 +675,7 @@ public final class GJChronology extends AssembledChronology {
             }
         }
 
+        @Override
         public String getAsText(long instant, Locale locale) {
             if (instant >= iCutover) {
                 return iGregorianField.getAsText(instant, locale);
@@ -672,10 +684,12 @@ public final class GJChronology extends AssembledChronology {
             }
         }
 
+        @Override
         public String getAsText(int fieldValue, Locale locale) {
             return iGregorianField.getAsText(fieldValue, locale);
         }
 
+        @Override
         public String getAsShortText(long instant, Locale locale) {
             if (instant >= iCutover) {
                 return iGregorianField.getAsShortText(instant, locale);
@@ -684,18 +698,22 @@ public final class GJChronology extends AssembledChronology {
             }
         }
 
+        @Override
         public String getAsShortText(int fieldValue, Locale locale) {
             return iGregorianField.getAsShortText(fieldValue, locale);
         }
 
+        @Override
         public long add(long instant, int value) {
             return iGregorianField.add(instant, value);
         }
 
+        @Override
         public long add(long instant, long value) {
             return iGregorianField.add(instant, value);
         }
 
+        @Override
         public int[] add(ReadablePartial partial, int fieldIndex, int[] values, int valueToAdd) {
             // overridden as superclass algorithm can't handle
             // 2004-02-29 + 48 months -> 2008-02-29 type dates
@@ -714,14 +732,17 @@ public final class GJChronology extends AssembledChronology {
             }
         }
 
+        @Override
         public int getDifference(long minuendInstant, long subtrahendInstant) {
             return iGregorianField.getDifference(minuendInstant, subtrahendInstant);
         }
 
+        @Override
         public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
             return iGregorianField.getDifferenceAsLong(minuendInstant, subtrahendInstant);
         }
 
+        @Override
         public long set(long instant, int value) {
             if (instant >= iCutover) {
                 instant = iGregorianField.set(instant, value);
@@ -753,6 +774,7 @@ public final class GJChronology extends AssembledChronology {
             return instant;
         }
 
+        @Override
         public long set(long instant, String text, Locale locale) {
             if (instant >= iCutover) {
                 instant = iGregorianField.set(instant, text, locale);
@@ -776,14 +798,17 @@ public final class GJChronology extends AssembledChronology {
             return instant;
         }
 
+        @Override
         public DurationField getDurationField() {
             return iDurationField;
         }
 
+        @Override
         public DurationField getRangeDurationField() {
             return iRangeDurationField;
         }
 
+        @Override
         public boolean isLeap(long instant) {
             if (instant >= iCutover) {
                 return iGregorianField.isLeap(instant);
@@ -792,6 +817,7 @@ public final class GJChronology extends AssembledChronology {
             }
         }
 
+        @Override
         public int getLeapAmount(long instant) {
             if (instant >= iCutover) {
                 return iGregorianField.getLeapAmount(instant);
@@ -800,25 +826,30 @@ public final class GJChronology extends AssembledChronology {
             }
         }
 
+        @Override
         public DurationField getLeapDurationField() {
             return iGregorianField.getLeapDurationField();
         }
 
 
+        @Override
         public int getMinimumValue() {
             // For all precise fields, the Julian and Gregorian limits are
             // identical. Choose Julian to tighten up the year limits.
             return iJulianField.getMinimumValue();
         }
 
+        @Override
         public int getMinimumValue(ReadablePartial partial) {
             return iJulianField.getMinimumValue(partial);
         }
 
+        @Override
         public int getMinimumValue(ReadablePartial partial, int[] values) {
             return iJulianField.getMinimumValue(partial, values);
         }
 
+        @Override
         public int getMinimumValue(long instant) {
             if (instant < iCutover) {
                 return iJulianField.getMinimumValue(instant);
@@ -836,12 +867,14 @@ public final class GJChronology extends AssembledChronology {
             return min;
         }
 
+        @Override
         public int getMaximumValue() {
             // For all precise fields, the Julian and Gregorian limits are
             // identical.
             return iGregorianField.getMaximumValue();
         }
 
+        @Override
         public int getMaximumValue(long instant) {
             if (instant >= iCutover) {
                 return iGregorianField.getMaximumValue(instant);
@@ -859,11 +892,13 @@ public final class GJChronology extends AssembledChronology {
             return max;
         }
 
+        @Override
         public int getMaximumValue(ReadablePartial partial) {
             long instant = GJChronology.getInstanceUTC().set(partial, 0L);
             return getMaximumValue(instant);
         }
 
+        @Override
         public int getMaximumValue(ReadablePartial partial, int[] values) {
             Chronology chrono = GJChronology.getInstanceUTC();
             long instant = 0L;
@@ -876,6 +911,7 @@ public final class GJChronology extends AssembledChronology {
             return getMaximumValue(instant);
         }
 
+        @Override
         public long roundFloor(long instant) {
             if (instant >= iCutover) {
                 instant = iGregorianField.roundFloor(instant);
@@ -891,6 +927,7 @@ public final class GJChronology extends AssembledChronology {
             return instant;
         }
 
+        @Override
         public long roundCeiling(long instant) {
             if (instant >= iCutover) {
                 instant = iGregorianField.roundCeiling(instant);
@@ -906,11 +943,13 @@ public final class GJChronology extends AssembledChronology {
             return instant;
         }
 
+        @Override
         public int getMaximumTextLength(Locale locale) {
             return Math.max(iJulianField.getMaximumTextLength(locale),
                             iGregorianField.getMaximumTextLength(locale));
         }
 
+        @Override
         public int getMaximumShortTextLength(Locale locale) {
             return Math.max(iJulianField.getMaximumShortTextLength(locale),
                             iGregorianField.getMaximumShortTextLength(locale));
@@ -990,6 +1029,7 @@ public final class GJChronology extends AssembledChronology {
             iDurationField = durationField;
         }
 
+        @Override
         public long add(long instant, int value) {
             if (instant >= iCutover) {
                 instant = iGregorianField.add(instant, value);
@@ -1023,6 +1063,7 @@ public final class GJChronology extends AssembledChronology {
             return instant;
         }
         
+        @Override
         public long add(long instant, long value) {
             if (instant >= iCutover) {
                 instant = iGregorianField.add(instant, value);
@@ -1056,6 +1097,7 @@ public final class GJChronology extends AssembledChronology {
             return instant;
         }
 
+        @Override
         public int getDifference(long minuendInstant, long subtrahendInstant) {
             if (minuendInstant >= iCutover) {
                 if (subtrahendInstant >= iCutover) {
@@ -1076,6 +1118,7 @@ public final class GJChronology extends AssembledChronology {
             }
         }
 
+        @Override
         public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
             if (minuendInstant >= iCutover) {
                 if (subtrahendInstant >= iCutover) {
@@ -1106,6 +1149,7 @@ public final class GJChronology extends AssembledChronology {
         // at the beginning or end of the year, then the minimum and maximum
         // values are not 1 and 12. I don't expect this case to ever occur.
 
+        @Override
         public int getMinimumValue(long instant) {
             if (instant >= iCutover) {
                 return iGregorianField.getMinimumValue(instant);
@@ -1114,6 +1158,7 @@ public final class GJChronology extends AssembledChronology {
             }
         }
 
+        @Override
         public int getMaximumValue(long instant) {
             if (instant >= iCutover) {
                 return iGregorianField.getMaximumValue(instant);
@@ -1137,18 +1182,22 @@ public final class GJChronology extends AssembledChronology {
             iField = dateTimeField;
         }
 
+        @Override
         public long add(long instant, int value) {
             return iField.add(instant, value);
         }
 
+        @Override
         public long add(long instant, long value) {
             return iField.add(instant, value);
         }
 
+        @Override
         public int getDifference(long minuendInstant, long subtrahendInstant) {
             return iField.getDifference(minuendInstant, subtrahendInstant);
         }
 
+        @Override
         public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
             return iField.getDifferenceAsLong(minuendInstant, subtrahendInstant);
         }

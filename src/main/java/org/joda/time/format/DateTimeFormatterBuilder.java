@@ -2201,7 +2201,6 @@ public class DateTimeFormatterBuilder {
                     if (text.charAt(position) != '.' && text.charAt(position) != ',') {
                         break parse;
                     }
-                    limit--;
                     position++;
                 }
                 

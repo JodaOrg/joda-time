@@ -818,7 +818,7 @@ public class ZoneInfoCompiler {
             if (negativeSave < 0) {
                 System.out.println("Fixed negative save values for rule '" + iRules.get(0).iName + "'");
                 standardMillis += negativeSave;
-                int slashPos = nameFormat.indexOf("/");
+                int slashPos = nameFormat.indexOf('/');
                 if (slashPos > 0) {
                     nameFormat = nameFormat.substring(slashPos + 1) + "/" + nameFormat.substring(0, slashPos);
                 }

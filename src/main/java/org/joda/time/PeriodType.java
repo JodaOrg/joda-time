@@ -646,7 +646,7 @@ public class PeriodType implements Serializable {
      */
     public int indexOf(DurationFieldType type) {
         for (int i = 0, isize = size(); i < isize; i++) {
-            if (iTypes[i] == type) {
+            if (iTypes[i].equals(type)) {
                 return i;
             }
         }

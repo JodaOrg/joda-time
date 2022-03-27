@@ -8,6 +8,12 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
+    <release version="2.10.15" date="SNAPSHOT" description="v2.10.15">
+      <action dev="jodastephen" type="fix">
+        Avoid using == on objects.
+        Fixes #581.
+      </action>
+    </release>
     <release version="2.10.14" date="2022-03-20" description="v2.10.14">
       <action dev="jodastephen" type="update">
         DateTimeZone data updated to version 2022agtz.

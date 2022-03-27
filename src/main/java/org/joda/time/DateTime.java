@@ -539,6 +539,7 @@ public final class DateTime
      * 
      * @return <code>this</code>
      */
+    @Override
     public DateTime toDateTime() {
         return this;
     }
@@ -549,6 +550,7 @@ public final class DateTime
      * 
      * @return a DateTime using the same millis
      */
+    @Override
     public DateTime toDateTimeISO() {
         if (getChronology() == ISOChronology.getInstance()) {
             return this;
@@ -562,6 +564,7 @@ public final class DateTime
      * @param zone time zone to apply, or default if null
      * @return a DateTime using the same millis
      */
+    @Override
     public DateTime toDateTime(DateTimeZone zone) {
         zone = DateTimeUtils.getZone(zone);
         if (getZone() == zone) {
@@ -576,6 +579,7 @@ public final class DateTime
      * @param chronology chronology to apply, or ISOChronology if null
      * @return a DateTime using the same millis
      */
+    @Override
     public DateTime toDateTime(Chronology chronology) {
         chronology = DateTimeUtils.getChronology(chronology);
         if (getChronology() == chronology) {
@@ -2120,6 +2124,7 @@ public final class DateTime
          * 
          * @return the field
          */
+        @Override
         public DateTimeField getField() {
             return iField;
         }
@@ -2129,6 +2134,7 @@ public final class DateTime
          * 
          * @return the milliseconds
          */
+        @Override
         protected long getMillis() {
             return iInstant.getMillis();
         }
@@ -2139,6 +2145,7 @@ public final class DateTime
          * @return the chronology
          * @since 1.4
          */
+        @Override
         protected Chronology getChronology() {
             return iInstant.getChronology();
         }

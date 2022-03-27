@@ -27,10 +27,12 @@ class TestGJYearField extends TestGJDateTimeField {
         super(DateTimeFieldType.year(), chrono.millisPerYear(), chrono);
     }
 
+    @Override
     public int get(long millis) {
         return iChronology.gjYearFromMillis(millis);
     }
 
+    @Override
     public long set(long millis, int value) {
         int[] ymd = iChronology.gjFromMillis(millis);
         millis = iChronology.getTimeOnlyMillis(millis)
@@ -41,34 +43,42 @@ class TestGJYearField extends TestGJDateTimeField {
         return millis;
     }
 
+    @Override
     public long add(long millis, long value) {
         return set(millis, (int)(get(millis) + value));
     }
 
+    @Override
     public boolean isLeap(long millis) {
         return iChronology.isLeapYear(get(millis));
     }
 
+    @Override
     public int getLeapAmount(long millis) {
         return isLeap(millis) ? 1 : 0;
     }
 
+    @Override
     public DurationField getLeapDurationField() {
         return iChronology.days();
     }
 
+    @Override
     public DurationField getRangeDurationField() {
         return null;
     }
 
+    @Override
     public int getMinimumValue() {
         return -100000000;
     }
 
+    @Override
     public int getMaximumValue() {
         return 100000000;
     }
 
+    @Override
     public long roundFloor(long millis) {
         return iChronology.millisFromGJ(get(millis), 1, 1);
     }

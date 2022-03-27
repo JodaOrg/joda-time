@@ -21,6 +21,7 @@ package org.joda.time.tz;
 public class ZoneInfoLogger {
 
     static ThreadLocal<Boolean> cVerbose = new ThreadLocal<Boolean>() {
+        @Override
         protected Boolean initialValue() {
             return Boolean.FALSE;
         }

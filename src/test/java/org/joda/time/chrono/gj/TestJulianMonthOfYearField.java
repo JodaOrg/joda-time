@@ -24,10 +24,12 @@ class TestJulianMonthOfYearField extends TestGJMonthOfYearField {
         super(chrono);
     }
 
+    @Override
     public int get(long millis) {
         return iChronology.gjFromMillis(millis)[1];
     }
 
+    @Override
     public long add(long millis, long value) {
         int year = iChronology.year().get(millis);
         int newYear = year + (int)TestGJChronology.div(value, 12);

@@ -49,9 +49,11 @@ public class TestBaseDateTimeField extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
     }
 
+    @Override
     protected void tearDown() throws Exception {
     }
 
@@ -423,6 +425,7 @@ public class TestBaseDateTimeField extends TestCase {
         assertEquals(2, field.getMaximumTextLength(Locale.ENGLISH));
 
         field = new MockBaseDateTimeField() {
+            @Override
             public int getMaximumValue() {
                 return 5;
             }
@@ -430,6 +433,7 @@ public class TestBaseDateTimeField extends TestCase {
         assertEquals(1, field.getMaximumTextLength(Locale.ENGLISH));
         
         field = new MockBaseDateTimeField() {
+            @Override
             public int getMaximumValue() {
                 return 555;
             }
@@ -437,6 +441,7 @@ public class TestBaseDateTimeField extends TestCase {
         assertEquals(3, field.getMaximumTextLength(Locale.ENGLISH));
         
         field = new MockBaseDateTimeField() {
+            @Override
             public int getMaximumValue() {
                 return 5555;
             }
@@ -444,6 +449,7 @@ public class TestBaseDateTimeField extends TestCase {
         assertEquals(4, field.getMaximumTextLength(Locale.ENGLISH));
         
         field = new MockBaseDateTimeField() {
+            @Override
             public int getMaximumValue() {
                 return -1;
             }
@@ -522,27 +528,35 @@ public class TestBaseDateTimeField extends TestCase {
         protected MockBaseDateTimeField(DateTimeFieldType type) {
             super(type);
         }
+        @Override
         public int get(long instant) {
             return (int) (instant / 60L);
         }
+        @Override
         public long set(long instant, int value) {
             return 1000 + value;
         }
+        @Override
         public DurationField getDurationField() {
             return new MockCountingDurationField(DurationFieldType.seconds());
         }
+        @Override
         public DurationField getRangeDurationField() {
             return new MockCountingDurationField(DurationFieldType.minutes());
         }
+        @Override
         public int getMinimumValue() {
             return 0;
         }
+        @Override
         public int getMaximumValue() {
             return 59;
         }
+        @Override
         public long roundFloor(long instant) {
             return (instant / 60L) * 60L;
         }
+        @Override
         public boolean isLenient() {
             return false;
         }
@@ -552,9 +566,11 @@ public class TestBaseDateTimeField extends TestCase {
         protected MockStandardBaseDateTimeField() {
             super();
         }
+        @Override
         public DurationField getDurationField() {
             return ISOChronology.getInstanceUTC().seconds();
         }
+        @Override
         public DurationField getRangeDurationField() {
             return ISOChronology.getInstanceUTC().minutes();
         }
@@ -569,29 +585,37 @@ public class TestBaseDateTimeField extends TestCase {
         protected MockCountingDurationField(DurationFieldType type) {
             super(type);
         }
+        @Override
         public boolean isPrecise() {
             return false;
         }
+        @Override
         public long getUnitMillis() {
             return 0;
         }
+        @Override
         public long getValueAsLong(long duration, long instant) {
             return 0;
         }
+        @Override
         public long getMillis(int value, long instant) {
             return 0;
         }
+        @Override
         public long getMillis(long value, long instant) {
             return 0;
         }
+        @Override
         public long add(long instant, int value) {
             add_int++;
             return instant + (value * 60L);
         }
+        @Override
         public long add(long instant, long value) {
             add_long++;
             return instant + (value * 60L);
         }
+        @Override
         public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
             difference_long++;
             return 30;
@@ -599,6 +623,7 @@ public class TestBaseDateTimeField extends TestCase {
     }
 
     static class MockPartial extends BasePartial {
+        @Override
         protected DateTimeField getField(int index, Chronology chrono) {
             if (index == 0) {
                 return ISOChronology.getInstanceUTC().minuteOfHour();

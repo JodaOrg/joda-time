@@ -78,6 +78,7 @@ public class TestMutableDateTime_Sets extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
@@ -88,6 +89,7 @@ public class TestMutableDateTime_Sets extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);

@@ -48,6 +48,7 @@ final class GJEraDateTimeField extends BaseDateTimeField {
         iChronology = chronology;
     }
 
+    @Override
     public boolean isLenient() {
         return false;
     }
@@ -57,6 +58,7 @@ final class GJEraDateTimeField extends BaseDateTimeField {
      * 
      * @param instant  the time instant in millis to query.
      */
+    @Override
     public int get(long instant) {
         if (iChronology.getYear(instant) <= 0) {
             return DateTimeConstants.BCE;
@@ -65,6 +67,7 @@ final class GJEraDateTimeField extends BaseDateTimeField {
         }
     }
 
+    @Override
     public String getAsText(int fieldValue, Locale locale) {
         return GJLocaleSymbols.forLocale(locale).eraValueToText(fieldValue);
     }
@@ -77,6 +80,7 @@ final class GJEraDateTimeField extends BaseDateTimeField {
      * @return the updated time instant.
      * @throws IllegalArgumentException  if era is invalid.
      */
+    @Override
     public long set(long instant, int era) {
         FieldUtils.verifyValueBounds(this, era, DateTimeConstants.BCE, DateTimeConstants.CE);
             
@@ -89,10 +93,12 @@ final class GJEraDateTimeField extends BaseDateTimeField {
         }
     }
 
+    @Override
     public long set(long instant, String text, Locale locale) {
         return set(instant, GJLocaleSymbols.forLocale(locale).eraTextToValue(text));
     }
 
+    @Override
     public long roundFloor(long instant) {
         if (get(instant) == DateTimeConstants.CE) {
             return iChronology.setYear(0, 1);
@@ -101,6 +107,7 @@ final class GJEraDateTimeField extends BaseDateTimeField {
         }
     }
 
+    @Override
     public long roundCeiling(long instant) {
         if (get(instant) == DateTimeConstants.BCE) {
             return iChronology.setYear(0, 1);
@@ -109,37 +116,45 @@ final class GJEraDateTimeField extends BaseDateTimeField {
         }
     }
 
+    @Override
     public long roundHalfFloor(long instant) {
         // In reality, the era is infinite, so there is no halfway point.
         return roundFloor(instant);
     }
 
+    @Override
     public long roundHalfCeiling(long instant) {
         // In reality, the era is infinite, so there is no halfway point.
         return roundFloor(instant);
     }
 
+    @Override
     public long roundHalfEven(long instant) {
         // In reality, the era is infinite, so there is no halfway point.
         return roundFloor(instant);
     }
 
+    @Override
     public DurationField getDurationField() {
         return UnsupportedDurationField.getInstance(DurationFieldType.eras());
     }
 
+    @Override
     public DurationField getRangeDurationField() {
         return null;
     }
 
+    @Override
     public int getMinimumValue() {
         return DateTimeConstants.BCE;
     }
 
+    @Override
     public int getMaximumValue() {
         return DateTimeConstants.CE;
     }
 
+    @Override
     public int getMaximumTextLength(Locale locale) {
         return GJLocaleSymbols.forLocale(locale).getEraMaxTextLength();
     }

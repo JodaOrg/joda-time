@@ -53,35 +53,43 @@ class ISOYearOfEraDateTimeField extends DecoratedDateTimeField {
         return GregorianChronology.getInstanceUTC().eras();
     }
 
+    @Override
     public int get(long instant) {
         int year = getWrappedField().get(instant);
         return year < 0 ? -year : year;
     }
 
+    @Override
     public long add(long instant, int years) {
         return getWrappedField().add(instant, years);
     }
 
+    @Override
     public long add(long instant, long years) {
         return getWrappedField().add(instant, years);
     }
 
+    @Override
     public long addWrapField(long instant, int years) {
         return getWrappedField().addWrapField(instant, years);
     }
 
+    @Override
     public int[] addWrapField(ReadablePartial instant, int fieldIndex, int[] values, int years) {
         return getWrappedField().addWrapField(instant, fieldIndex, values, years);
     }
 
+    @Override
     public int getDifference(long minuendInstant, long subtrahendInstant) {
         return getWrappedField().getDifference(minuendInstant, subtrahendInstant);
     }
 
+    @Override
     public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
         return getWrappedField().getDifferenceAsLong(minuendInstant, subtrahendInstant);
     }
 
+    @Override
     public long set(long instant, int year) {
         FieldUtils.verifyValueBounds(this, year, 0, getMaximumValue());
         if (getWrappedField().get(instant) < 0) {
@@ -90,22 +98,27 @@ class ISOYearOfEraDateTimeField extends DecoratedDateTimeField {
         return super.set(instant, year);
     }
 
+    @Override
     public int getMinimumValue() {
         return 0;
     }
 
+    @Override
     public int getMaximumValue() {
         return getWrappedField().getMaximumValue();
     }
 
+    @Override
     public long roundFloor(long instant) {
         return getWrappedField().roundFloor(instant);
     }
 
+    @Override
     public long roundCeiling(long instant) {
         return getWrappedField().roundCeiling(instant);
     }
 
+    @Override
     public long remainder(long instant) {
         return getWrappedField().remainder(instant);
     }

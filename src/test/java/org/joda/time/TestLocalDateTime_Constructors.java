@@ -78,12 +78,14 @@ public class TestLocalDateTime_Constructors extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(MOSCOW);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);

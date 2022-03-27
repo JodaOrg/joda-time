@@ -96,6 +96,7 @@ public class TestDateMidnight_Constructors extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW_UTC);
         zone = DateTimeZone.getDefault();
@@ -104,6 +105,7 @@ public class TestDateMidnight_Constructors extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);

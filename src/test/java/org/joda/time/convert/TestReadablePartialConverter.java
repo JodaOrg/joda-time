@@ -62,6 +62,7 @@ public class TestReadablePartialConverter extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         JULIAN = JulianChronology.getInstance();
         ISO = ISOChronology.getInstance();
@@ -121,6 +122,7 @@ public class TestReadablePartialConverter extends TestCase {
     }
 
     static class MockTOD extends BasePartial {
+        @Override
         protected DateTimeField getField(int index, Chronology chrono) {
             switch (index) {
                 case 0:

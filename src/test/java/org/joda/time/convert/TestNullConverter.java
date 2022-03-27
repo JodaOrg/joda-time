@@ -75,6 +75,7 @@ public class TestNullConverter extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
@@ -88,6 +89,7 @@ public class TestNullConverter extends TestCase {
         JULIAN = JulianChronology.getInstance();
     }
 
+    @Override
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);

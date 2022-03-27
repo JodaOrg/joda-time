@@ -441,6 +441,7 @@ public class MutablePeriod
      * @param value  the new value for the field
      * @throws IndexOutOfBoundsException if the index is invalid
      */
+    @Override
     public void setValue(int index, int value) {
         super.setValue(index, value);
     }
@@ -464,6 +465,7 @@ public class MutablePeriod
      * @param period  the period to set, null means zero length period
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
+    @Override
     public void setPeriod(ReadablePeriod period) {
         super.setPeriod(period);
     }
@@ -481,6 +483,7 @@ public class MutablePeriod
      * @param millis  amount of milliseconds in this period, which must be zero if unsupported
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
+    @Override
     public void setPeriod(int years, int months, int weeks, int days,
                           int hours, int minutes, int seconds, int millis) {
         super.setPeriod(years, months, weeks, days, hours, minutes, seconds, millis);
@@ -732,6 +735,7 @@ public class MutablePeriod
      * @param period  the period to set, null ignored
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
+    @Override
     public void mergePeriod(ReadablePeriod period) {
         super.mergePeriod(period);
     }
@@ -1002,6 +1006,7 @@ public class MutablePeriod
      *
      * @return a clone of this object.
      */
+    @Override
     public Object clone() {
         try {
             return super.clone();

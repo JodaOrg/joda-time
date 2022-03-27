@@ -60,6 +60,7 @@ public class TestMonthDay_Properties extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
@@ -68,6 +69,7 @@ public class TestMonthDay_Properties extends TestCase {
         DateTimeZone.setDefault(DateTimeZone.UTC);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);

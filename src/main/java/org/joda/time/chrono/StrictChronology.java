@@ -59,6 +59,7 @@ public final class StrictChronology extends AssembledChronology {
         super(base, null);
     }
 
+    @Override
     public Chronology withUTC() {
         if (iWithUTC == null) {
             if (getZone() == DateTimeZone.UTC) {
@@ -70,6 +71,7 @@ public final class StrictChronology extends AssembledChronology {
         return iWithUTC;
     }
 
+    @Override
     public Chronology withZone(DateTimeZone zone) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
@@ -83,6 +85,7 @@ public final class StrictChronology extends AssembledChronology {
         return StrictChronology.getInstance(getBase().withZone(zone));
     }
 
+    @Override
     protected void assemble(Fields fields) {
         fields.year = convertField(fields.year);
         fields.yearOfEra = convertField(fields.yearOfEra);
@@ -123,6 +126,7 @@ public final class StrictChronology extends AssembledChronology {
      * @return true if equal
      * @since 1.4
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -140,6 +144,7 @@ public final class StrictChronology extends AssembledChronology {
      * @return the hashcode
      * @since 1.4
      */
+    @Override
     public int hashCode() {
         return 352831696 + getBase().hashCode() * 7;
     }
@@ -149,6 +154,7 @@ public final class StrictChronology extends AssembledChronology {
      * 
      * @return the debugging string
      */
+    @Override
     public String toString() {
         return "StrictChronology[" + getBase().toString() + ']';
     }

@@ -354,6 +354,7 @@ public final class Partial
      * @return the field
      * @throws IndexOutOfBoundsException if the index is invalid
      */
+    @Override
     protected DateTimeField getField(int index, Chronology chrono) {
         return iTypes[index].getField(chrono);
     }
@@ -365,6 +366,7 @@ public final class Partial
      * @return the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
+    @Override
     public DateTimeFieldType getFieldType(int index) {
         return iTypes[index];
     }
@@ -377,6 +379,7 @@ public final class Partial
      *
      * @return the array of field types (cloned), largest to smallest
      */
+    @Override
     public DateTimeFieldType[] getFieldTypes() {
         return (DateTimeFieldType[]) iTypes.clone();
     }
@@ -402,6 +405,7 @@ public final class Partial
      *
      * @return the current values of each field (cloned), largest to smallest
      */
+    @Override
     public int[] getValues() {
         return (int[]) iValues.clone();
     }
@@ -765,6 +769,7 @@ public final class Partial
      * 
      * @return ISO8601 formatted string
      */
+    @Override
     public String toString() {
         DateTimeFormatter[] f = iFormatter;
         if (f == null) {
@@ -871,6 +876,7 @@ public final class Partial
          * 
          * @return the field
          */
+        @Override
         public DateTimeField getField() {
             return iPartial.getField(iFieldIndex);
         }
@@ -880,6 +886,7 @@ public final class Partial
          * 
          * @return the partial
          */
+        @Override
         protected ReadablePartial getReadablePartial() {
             return iPartial;
         }
@@ -898,6 +905,7 @@ public final class Partial
          * 
          * @return the field value
          */
+        @Override
         public int get() {
             return iPartial.getValue(iFieldIndex);
         }

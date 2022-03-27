@@ -66,6 +66,7 @@ class ReadablePeriodConverter extends AbstractConverter
      * @throws NullPointerException if the object is null
      * @throws ClassCastException if the object is an invalid type
      */
+    @Override
     public PeriodType getPeriodType(Object object) {
         ReadablePeriod period = (ReadablePeriod) object;
         return period.getPeriodType();

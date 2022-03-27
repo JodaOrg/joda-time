@@ -60,6 +60,7 @@ public class TestReadableInstantConverter extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         JULIAN = JulianChronology.getInstance();
         ISO = ISOChronology.getInstance();
@@ -107,6 +108,7 @@ public class TestReadableInstantConverter extends TestCase {
         assertEquals(ISO_PARIS, ReadableInstantConverter.INSTANCE.getChronology(new DateTime(123L, new MockBadChronology()), PARIS));
         
         MutableDateTime mdt = new MutableDateTime() {
+            @Override
             public Chronology getChronology() {
                 return null; // bad
             }
@@ -119,6 +121,7 @@ public class TestReadableInstantConverter extends TestCase {
         assertEquals(ISO, ReadableInstantConverter.INSTANCE.getChronology(new DateTime(123L), (Chronology) null));
         
         MutableDateTime mdt = new MutableDateTime() {
+            @Override
             public Chronology getChronology() {
                 return null; // bad
             }

@@ -79,12 +79,14 @@ public class TestTimeOfDay_Basics extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(LONDON);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
@@ -219,9 +221,11 @@ public class TestTimeOfDay_Basics extends TestCase {
     }
 
     class MockInstant extends MockPartial {
+        @Override
         public Chronology getChronology() {
             return CopticChronology.getInstanceUTC();
         }
+        @Override
         public DateTimeField[] getFields() {
             return new DateTimeField[] {
                 CopticChronology.getInstanceUTC().hourOfDay(),
@@ -230,6 +234,7 @@ public class TestTimeOfDay_Basics extends TestCase {
                 CopticChronology.getInstanceUTC().millisOfSecond(),
             };
         }
+        @Override
         public int[] getValues() {
             return new int[] {10, 20, 30, 40};
         }

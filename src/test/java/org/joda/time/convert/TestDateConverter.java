@@ -56,6 +56,7 @@ public class TestDateConverter extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         JULIAN = JulianChronology.getInstance();
         COPTIC = CopticChronology.getInstance();

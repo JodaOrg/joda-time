@@ -132,6 +132,7 @@ public class RemainderDateTimeField extends DecoratedDateTimeField {
      * @param instant  the time instant in millis to query.
      * @return the remainder extracted from the input.
      */
+    @Override
     public int get(long instant) {
         int value = getWrappedField().get(instant);
         if (value >= 0) {
@@ -150,6 +151,7 @@ public class RemainderDateTimeField extends DecoratedDateTimeField {
      * @param amount  the amount to add (can be negative).
      * @return the updated time instant.
      */
+    @Override
     public long addWrapField(long instant, int amount) {
         return set(instant, FieldUtils.getWrappedValue(get(instant), amount, 0, iDivisor - 1));
     }
@@ -162,6 +164,7 @@ public class RemainderDateTimeField extends DecoratedDateTimeField {
      * @return the updated time instant.
      * @throws IllegalArgumentException if value is too large or too small.
      */
+    @Override
     public long set(long instant, int value) {
         FieldUtils.verifyValueBounds(this, value, 0, iDivisor - 1);
         int divided = getDivided(getWrappedField().get(instant));
@@ -176,6 +179,7 @@ public class RemainderDateTimeField extends DecoratedDateTimeField {
     /**
      * Returns a scaled version of the wrapped field's unit duration field.
      */
+    @Override
     public DurationField getRangeDurationField() {
         return iRangeField;
     }
@@ -185,6 +189,7 @@ public class RemainderDateTimeField extends DecoratedDateTimeField {
      * 
      * @return the minimum value of zero.
      */
+    @Override
     public int getMinimumValue() {
         return 0;
     }
@@ -195,30 +200,37 @@ public class RemainderDateTimeField extends DecoratedDateTimeField {
      * 
      * @return the maximum value
      */
+    @Override
     public int getMaximumValue() {
         return iDivisor - 1;
     }
 
+    @Override
     public long roundFloor(long instant) {
         return getWrappedField().roundFloor(instant);
     }
 
+    @Override
     public long roundCeiling(long instant) {
         return getWrappedField().roundCeiling(instant);
     }
 
+    @Override
     public long roundHalfFloor(long instant) {
         return getWrappedField().roundHalfFloor(instant);
     }
 
+    @Override
     public long roundHalfCeiling(long instant) {
         return getWrappedField().roundHalfCeiling(instant);
     }
 
+    @Override
     public long roundHalfEven(long instant) {
         return getWrappedField().roundHalfEven(instant);
     }
 
+    @Override
     public long remainder(long instant) {
         return getWrappedField().remainder(instant);
     }

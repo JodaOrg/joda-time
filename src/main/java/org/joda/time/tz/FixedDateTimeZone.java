@@ -41,30 +41,37 @@ public final class FixedDateTimeZone extends DateTimeZone {
         iStandardOffset = standardOffset;
     }
 
+    @Override
     public String getNameKey(long instant) {
         return iNameKey;
     }
 
+    @Override
     public int getOffset(long instant) {
         return iWallOffset;
     }
 
+    @Override
     public int getStandardOffset(long instant) {
         return iStandardOffset;
     }
 
+    @Override
     public int getOffsetFromLocal(long instantLocal) {
         return iWallOffset;
     }
 
+    @Override
     public boolean isFixed() {
         return true;
     }
 
+    @Override
     public long nextTransition(long instant) {
         return instant;
     }
 
+    @Override
     public long previousTransition(long instant) {
         return instant;
     }
@@ -73,6 +80,7 @@ public final class FixedDateTimeZone extends DateTimeZone {
      * Override to return the correct timezone instance.
      * @since 1.5
      */
+    @Override
     public java.util.TimeZone toTimeZone() {
         String id = getID();
         if (id.length() == 6 && (id.startsWith("+") || id.startsWith("-"))) {
@@ -84,6 +92,7 @@ public final class FixedDateTimeZone extends DateTimeZone {
         return new java.util.SimpleTimeZone(iWallOffset, getID());
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -98,6 +107,7 @@ public final class FixedDateTimeZone extends DateTimeZone {
         return false;
     }
 
+    @Override
     public int hashCode() {
         return getID().hashCode() + 37 * iStandardOffset + 31 * iWallOffset;
     }

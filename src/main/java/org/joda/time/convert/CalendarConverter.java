@@ -64,6 +64,7 @@ final class CalendarConverter extends AbstractConverter
      * @throws NullPointerException if the object is null
      * @throws ClassCastException if the object is an invalid type
      */
+    @Override
     public Chronology getChronology(Object object, Chronology chrono) {
         if (chrono != null) {
             return chrono;
@@ -90,6 +91,7 @@ final class CalendarConverter extends AbstractConverter
      * @throws NullPointerException if the object is null
      * @throws ClassCastException if the object is an invalid type
      */
+    @Override
     public Chronology getChronology(Object object, DateTimeZone zone) {
         if (object.getClass().getName().endsWith(".BuddhistCalendar")) {
             return BuddhistChronology.getInstance(zone);
@@ -117,6 +119,7 @@ final class CalendarConverter extends AbstractConverter
      * @throws NullPointerException if the object is null
      * @throws ClassCastException if the object is an invalid type
      */
+    @Override
     public long getInstantMillis(Object object, Chronology chrono) {
         Calendar calendar = (Calendar) object;
         return calendar.getTime().getTime();

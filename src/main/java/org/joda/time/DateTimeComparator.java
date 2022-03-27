@@ -238,6 +238,7 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
      * @param object  the object to compare to
      * @return true if equal
      */
+    @Override
     public boolean equals(Object object) {
         if (object instanceof DateTimeComparator) {
             DateTimeComparator other = (DateTimeComparator) object;
@@ -254,6 +255,7 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
      * 
      * @return the hashcode
      */
+    @Override
     public int hashCode() {
         return (iLowerLimit == null ? 0 : iLowerLimit.hashCode()) +
                (123 * (iUpperLimit == null ? 0 : iUpperLimit.hashCode()));
@@ -264,6 +266,7 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
      * 
      * @return a debugging string
      */
+    @Override
     public String toString() {
         if (iLowerLimit == iUpperLimit) {
             return "DateTimeComparator["

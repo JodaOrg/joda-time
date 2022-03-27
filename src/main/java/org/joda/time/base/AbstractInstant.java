@@ -254,6 +254,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @return true if millisecond and chronology are equal, false if
      *  not or the instant is null or of an incorrect type
      */
+    @Override
     public boolean equals(Object readableInstant) {
         // must be to fulfil ReadableInstant contract
         if (this == readableInstant) {
@@ -273,6 +274,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      *
      * @return a suitable hash code
      */
+    @Override
     public int hashCode() {
         // must be to fulfil ReadableInstant contract
         return
@@ -419,6 +421,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * 
      * @return ISO8601 time formatted string, not null
      */
+    @Override
     @ToString
     public String toString() {
         return ISODateTimeFormat.dateTime().print(this);

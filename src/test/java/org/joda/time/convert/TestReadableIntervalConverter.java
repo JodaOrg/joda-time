@@ -62,6 +62,7 @@ public class TestReadableIntervalConverter extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         JULIAN = JulianChronology.getInstance();
         ISO = ISOChronology.getInstance();
@@ -156,6 +157,7 @@ public class TestReadableIntervalConverter extends TestCase {
 
     public void testSetIntoInterval_Object3() throws Exception {
         MutableInterval i = new MutableInterval(0L, 123L) {
+            @Override
             public Chronology getChronology() {
                 return null; // bad
             }
@@ -169,6 +171,7 @@ public class TestReadableIntervalConverter extends TestCase {
 
     public void testSetIntoInterval_Object4() throws Exception {
         MutableInterval i = new MutableInterval(0L, 123L) {
+            @Override
             public Chronology getChronology() {
                 return null; // bad
             }

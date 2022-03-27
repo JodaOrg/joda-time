@@ -296,6 +296,7 @@ public final class Interval
      *
      * @return <code>this</code>
      */
+    @Override
     public Interval toInterval() {
         return this;
     }

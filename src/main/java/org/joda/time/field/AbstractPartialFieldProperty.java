@@ -318,6 +318,7 @@ public abstract class AbstractPartialFieldProperty {
      * @param object  the object to compare to
      * @return true if equal
      */
+    @Override
     public boolean equals(Object object) {
         if (this == object) {
             return true;
@@ -339,6 +340,7 @@ public abstract class AbstractPartialFieldProperty {
      * @return the hashcode
      * @since 1.3
      */
+    @Override
     public int hashCode() {
         int hash = 19;
         hash = 13 * hash + get();
@@ -353,6 +355,7 @@ public abstract class AbstractPartialFieldProperty {
      * 
      * @return debugging string
      */
+    @Override
     public String toString() {
         return "Property[" + getName() + "]";
     }

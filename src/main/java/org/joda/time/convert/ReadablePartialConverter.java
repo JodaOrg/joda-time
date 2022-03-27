@@ -49,6 +49,7 @@ class ReadablePartialConverter extends AbstractConverter
      * @param zone  the specified zone to use, null means default zone
      * @return the chronology, never null
      */
+    @Override
     public Chronology getChronology(Object object, DateTimeZone zone) {
         return getChronology(object, (Chronology) null).withZone(zone);
     }
@@ -63,6 +64,7 @@ class ReadablePartialConverter extends AbstractConverter
      * @param chrono  the chronology to use, null means use that from object
      * @return the chronology, never null
      */
+    @Override
     public Chronology getChronology(Object object, Chronology chrono) {
         if (chrono == null) {
             chrono = ((ReadablePartial) object).getChronology();
@@ -83,6 +85,7 @@ class ReadablePartialConverter extends AbstractConverter
      * @return the array of field values that match the fieldSource, must be non-null valid
      * @throws ClassCastException if the object is invalid
      */
+    @Override
     public int[] getPartialValues(ReadablePartial fieldSource, Object object, Chronology chrono) {
         ReadablePartial input = (ReadablePartial) object;
         int size = fieldSource.size();

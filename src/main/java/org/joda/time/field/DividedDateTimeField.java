@@ -137,6 +137,7 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
      * @param instant  the time instant in millis to query.
      * @return the amount of scaled units extracted from the input.
      */
+    @Override
     public int get(long instant) {
         int value = getWrappedField().get(instant);
         if (value >= 0) {
@@ -154,6 +155,7 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
      * @param amount  the amount of scaled units to add (can be negative).
      * @return the updated time instant.
      */
+    @Override
     public long add(long instant, int amount) {
         return getWrappedField().add(instant, amount * iDivisor);
     }
@@ -166,6 +168,7 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
      * @param amount  the amount of scaled units to add (can be negative).
      * @return the updated time instant.
      */
+    @Override
     public long add(long instant, long amount) {
         return getWrappedField().add(instant, amount * iDivisor);
     }
@@ -178,14 +181,17 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
      * @param amount  the amount of scaled units to add (can be negative).
      * @return the updated time instant.
      */
+    @Override
     public long addWrapField(long instant, int amount) {
         return set(instant, FieldUtils.getWrappedValue(get(instant), amount, iMin, iMax));
     }
 
+    @Override
     public int getDifference(long minuendInstant, long subtrahendInstant) {
         return getWrappedField().getDifference(minuendInstant, subtrahendInstant) / iDivisor;
     }
 
+    @Override
     public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
         return getWrappedField().getDifferenceAsLong(minuendInstant, subtrahendInstant) / iDivisor;
     }
@@ -198,6 +204,7 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
      * @return the updated time instant.
      * @throws IllegalArgumentException if value is too large or too small.
      */
+    @Override
     public long set(long instant, int value) {
         FieldUtils.verifyValueBounds(this, value, iMin, iMax);
         int remainder = getRemainder(getWrappedField().get(instant));
@@ -207,6 +214,7 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
     /**
      * Returns a scaled version of the wrapped field's unit duration field.
      */
+    @Override
     public DurationField getDurationField() {
         return iDurationField;
     }
@@ -216,6 +224,7 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
      * 
      * @return the minimum value
      */
+    @Override
     public int getMinimumValue() {
         return iMin;
     }
@@ -225,15 +234,18 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
      * 
      * @return the maximum value
      */
+    @Override
     public int getMaximumValue() {
         return iMax;
     }
 
+    @Override
     public long roundFloor(long instant) {
         DateTimeField field = getWrappedField();
         return field.roundFloor(field.set(instant, get(instant) * iDivisor));
     }
 
+    @Override
     public long remainder(long instant) {
         return set(instant, get(getWrappedField().remainder(instant)));
     }

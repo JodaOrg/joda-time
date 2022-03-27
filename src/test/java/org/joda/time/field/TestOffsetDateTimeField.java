@@ -46,9 +46,11 @@ public class TestOffsetDateTimeField extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
     }
 
+    @Override
     protected void tearDown() throws Exception {
     }
 
@@ -540,9 +542,11 @@ public class TestOffsetDateTimeField extends TestCase {
         protected MockStandardDateTimeField() {
             super();
         }
+        @Override
         public DurationField getDurationField() {
             return ISOChronology.getInstanceUTC().seconds();
         }
+        @Override
         public DurationField getRangeDurationField() {
             return ISOChronology.getInstanceUTC().minutes();
         }

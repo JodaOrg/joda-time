@@ -47,14 +47,17 @@ class BasicYearDateTimeField extends ImpreciseDateTimeField {
         iChronology = chronology;
     }
 
+    @Override
     public boolean isLenient() {
         return false;
     }
 
+    @Override
     public int get(long instant) {
         return iChronology.getYear(instant);
     }
 
+    @Override
     public long add(long instant, int years) {
         if (years == 0) {
             return instant;
@@ -64,10 +67,12 @@ class BasicYearDateTimeField extends ImpreciseDateTimeField {
         return set(instant, newYear);
     }
 
+    @Override
     public long add(long instant, long years) {
         return add(instant, FieldUtils.safeToInt(years));
     }
 
+    @Override
     public long addWrapField(long instant, int years) {
         if (years == 0) {
             return instant;
@@ -79,6 +84,7 @@ class BasicYearDateTimeField extends ImpreciseDateTimeField {
         return set(instant, wrappedYear);
     }
 
+    @Override
     public long set(long instant, int year) {
         FieldUtils.verifyValueBounds
             (this, year, iChronology.getMinYear(), iChronology.getMaxYear());
@@ -92,6 +98,7 @@ class BasicYearDateTimeField extends ImpreciseDateTimeField {
         return iChronology.setYear(instant, year);
     }
 
+    @Override
     public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
         if (minuendInstant < subtrahendInstant) {
             return -iChronology.getYearDifference(subtrahendInstant, minuendInstant);
@@ -99,14 +106,17 @@ class BasicYearDateTimeField extends ImpreciseDateTimeField {
         return iChronology.getYearDifference(minuendInstant, subtrahendInstant);
     }
 
+    @Override
     public DurationField getRangeDurationField() {
         return null;
     }
 
+    @Override
     public boolean isLeap(long instant) {
         return iChronology.isLeapYear(get(instant));
     }
 
+    @Override
     public int getLeapAmount(long instant) {
         if (iChronology.isLeapYear(get(instant))) {
             return 1;
@@ -115,22 +125,27 @@ class BasicYearDateTimeField extends ImpreciseDateTimeField {
         }
     }
 
+    @Override
     public DurationField getLeapDurationField() {
         return iChronology.days();
     }
 
+    @Override
     public int getMinimumValue() {
         return iChronology.getMinYear();
     }
 
+    @Override
     public int getMaximumValue() {
         return iChronology.getMaxYear();
     }
 
+    @Override
     public long roundFloor(long instant) {
         return iChronology.getYearMillis(get(instant));
     }
 
+    @Override
     public long roundCeiling(long instant) {
         int year = get(instant);
         long yearStartMillis = iChronology.getYearMillis(year);
@@ -141,6 +156,7 @@ class BasicYearDateTimeField extends ImpreciseDateTimeField {
         return instant;
     }
 
+    @Override
     public long remainder(long instant) {
         return instant - roundFloor(instant);
     }

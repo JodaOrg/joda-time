@@ -76,6 +76,7 @@ public class PreciseDateTimeField extends PreciseDurationDateTimeField {
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
      * @return the amount of fractional units extracted from the input.
      */
+    @Override
     public int get(long instant) {
         if (instant >= 0) {
             return (int) ((instant / getUnitMillis()) % iRange);
@@ -92,6 +93,7 @@ public class PreciseDateTimeField extends PreciseDurationDateTimeField {
      * @param amount  the amount of units to add (can be negative).
      * @return the updated time instant.
      */
+    @Override
     public long addWrapField(long instant, int amount) {
         int thisValue = get(instant);
         int wrappedValue = FieldUtils.getWrappedValue
@@ -108,6 +110,7 @@ public class PreciseDateTimeField extends PreciseDurationDateTimeField {
      * @return the updated time instant.
      * @throws IllegalArgumentException if value is too large or too small.
      */
+    @Override
     public long set(long instant, int value) {
         FieldUtils.verifyValueBounds(this, value, getMinimumValue(), getMaximumValue());
         return instant + (value - get(instant)) * iUnitMillis;
@@ -119,6 +122,7 @@ public class PreciseDateTimeField extends PreciseDurationDateTimeField {
      *
      * @return the range duration of this field, or null if field has no range
      */
+    @Override
     public DurationField getRangeDurationField() {
         return iRangeField;
     }
@@ -128,6 +132,7 @@ public class PreciseDateTimeField extends PreciseDurationDateTimeField {
      * 
      * @return the maximum value
      */
+    @Override
     public int getMaximumValue() {
         return iRange - 1;
     }

@@ -46,6 +46,7 @@ final class BasicWeekyearDateTimeField extends ImpreciseDateTimeField {
         iChronology = chronology;
     }
 
+    @Override
     public boolean isLenient() {
         return false;
     }
@@ -57,6 +58,7 @@ final class BasicWeekyearDateTimeField extends ImpreciseDateTimeField {
      * @param instant  the time instant in millis to query.
      * @return the year extracted from the input.
      */
+    @Override
     public int get(long instant) {
         return iChronology.getWeekyear(instant);
     }
@@ -69,6 +71,7 @@ final class BasicWeekyearDateTimeField extends ImpreciseDateTimeField {
      * @param years  the years to add (can be negative).
      * @return the updated time instant.
      */
+    @Override
     public long add(long instant, int years) {
         if (years == 0) {
             return instant;
@@ -76,6 +79,7 @@ final class BasicWeekyearDateTimeField extends ImpreciseDateTimeField {
         return set(instant, get(instant) + years);
     }
 
+    @Override
     public long add(long instant, long value) {
         return add(instant, FieldUtils.safeToInt(value));
     }
@@ -89,10 +93,12 @@ final class BasicWeekyearDateTimeField extends ImpreciseDateTimeField {
      * @param years  the years to add (can be negative).
      * @return the updated time instant.
      */
+    @Override
     public long addWrapField(long instant, int years) {
         return add(instant, years);
     }
 
+    @Override
     public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
         if (minuendInstant < subtrahendInstant) {
             return -getDifference(subtrahendInstant, minuendInstant);
@@ -125,6 +131,7 @@ final class BasicWeekyearDateTimeField extends ImpreciseDateTimeField {
      * @return the updated DateTime.
      * @throws IllegalArgumentException  if year is invalid.
      */
+    @Override
     public long set(long instant, int year) {
         FieldUtils.verifyValueBounds(this, Math.abs(year),
                                      iChronology.getMinYear(), iChronology.getMaxYear());
@@ -205,30 +212,37 @@ final class BasicWeekyearDateTimeField extends ImpreciseDateTimeField {
         return workInstant;
     }
 
+    @Override
     public DurationField getRangeDurationField() {
         return null;
     }
 
+    @Override
     public boolean isLeap(long instant) {
         return iChronology.getWeeksInYear(iChronology.getWeekyear(instant)) > 52;
     }
 
+    @Override
     public int getLeapAmount(long instant) {
         return iChronology.getWeeksInYear(iChronology.getWeekyear(instant)) - 52;
     }
 
+    @Override
     public DurationField getLeapDurationField() {
         return iChronology.weeks();
     }
 
+    @Override
     public int getMinimumValue() {
         return iChronology.getMinYear();
     }
 
+    @Override
     public int getMaximumValue() {
         return iChronology.getMaxYear();
     }
 
+    @Override
     public long roundFloor(long instant) {
         // Note: This works fine, but it ideally shouldn't invoke other
         // fields from within a field.
@@ -240,6 +254,7 @@ final class BasicWeekyearDateTimeField extends ImpreciseDateTimeField {
         return instant;
     }
 
+    @Override
     public long remainder(long instant) {
         return instant - roundFloor(instant);
     }

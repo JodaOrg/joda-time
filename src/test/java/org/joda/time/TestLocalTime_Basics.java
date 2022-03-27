@@ -80,12 +80,14 @@ public class TestLocalTime_Basics extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(LONDON);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
@@ -226,12 +228,15 @@ public class TestLocalTime_Basics extends TestCase {
         
         DateTimeFieldType d = new DateTimeFieldType("hours") {
             private static final long serialVersionUID = 1L;
+            @Override
             public DurationFieldType getDurationType() {
                 return DurationFieldType.hours();
             }
+            @Override
             public DurationFieldType getRangeDurationType() {
                 return null;
             }
+            @Override
             public DateTimeField getField(Chronology chronology) {
                 return chronology.hourOfDay();
             }
@@ -240,12 +245,15 @@ public class TestLocalTime_Basics extends TestCase {
         
         d = new DateTimeFieldType("hourOfYear") {
             private static final long serialVersionUID = 1L;
+            @Override
             public DurationFieldType getDurationType() {
                 return DurationFieldType.hours();
             }
+            @Override
             public DurationFieldType getRangeDurationType() {
                 return DurationFieldType.years();
             }
+            @Override
             public DateTimeField getField(Chronology chronology) {
                 return chronology.hourOfDay();
             }
@@ -293,9 +301,11 @@ public class TestLocalTime_Basics extends TestCase {
     }
 
     class MockInstant extends MockPartial {
+        @Override
         public Chronology getChronology() {
             return COPTIC_UTC;
         }
+        @Override
         public DateTimeField[] getFields() {
             return new DateTimeField[] {
                 COPTIC_UTC.hourOfDay(),
@@ -304,6 +314,7 @@ public class TestLocalTime_Basics extends TestCase {
                 COPTIC_UTC.millisOfSecond(),
             };
         }
+        @Override
         public int[] getValues() {
             return new int[] {10, 20, 30, 40};
         }

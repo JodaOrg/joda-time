@@ -60,6 +60,7 @@ abstract class BasicFixedMonthChronology extends BasicChronology {
     }
 
     //-----------------------------------------------------------------------
+    @Override
     long setYear(long instant, int year) {
         // optimsed implementation of set, due to fixed months
         int thisYear = getYear(instant);
@@ -80,6 +81,7 @@ abstract class BasicFixedMonthChronology extends BasicChronology {
     }
 
     //-----------------------------------------------------------------------
+    @Override
     long getYearDifference(long minuendInstant, long subtrahendInstant) {
         // optimsed implementation of getDifference, due to fixed months
         int minuendYear = getYear(minuendInstant);
@@ -97,63 +99,75 @@ abstract class BasicFixedMonthChronology extends BasicChronology {
     }
 
     //-----------------------------------------------------------------------
+    @Override
     long getTotalMillisByYearMonth(int year, int month) {
         return ((month - 1) * MILLIS_PER_MONTH);
     }
 
     //-----------------------------------------------------------------------
+    @Override
     int getDayOfMonth(long millis) {
         // optimised for fixed months
         return (getDayOfYear(millis) - 1) % MONTH_LENGTH + 1;
     }
 
     //-----------------------------------------------------------------------
+    @Override
     boolean isLeapYear(int year) {
         return (year & 3) == 3;
     }
 
     //-----------------------------------------------------------------------
+    @Override
     int getDaysInYearMonth(int year, int month) {
         return (month != 13) ? MONTH_LENGTH : (isLeapYear(year) ? 6 : 5);
     }
 
     //-----------------------------------------------------------------------
+    @Override
     int getDaysInMonthMax() {
         return MONTH_LENGTH;
     }
 
     //-----------------------------------------------------------------------
+    @Override
     int getDaysInMonthMax(int month) {
         return (month != 13 ? MONTH_LENGTH : 6);
     }
 
     //-----------------------------------------------------------------------
+    @Override
     int getMonthOfYear(long millis) {
         return (getDayOfYear(millis) - 1) / MONTH_LENGTH + 1;
     }
 
     //-----------------------------------------------------------------------
+    @Override
     int getMonthOfYear(long millis, int year) {
         long monthZeroBased = (millis - getYearMillis(year)) / MILLIS_PER_MONTH;
         return ((int) monthZeroBased) + 1;
     }
 
     //-----------------------------------------------------------------------
+    @Override
     int getMaxMonth() {
         return 13;
     }
 
     //-----------------------------------------------------------------------
+    @Override
     long getAverageMillisPerYear() {
         return MILLIS_PER_YEAR;
     }
 
     //-----------------------------------------------------------------------
+    @Override
     long getAverageMillisPerYearDividedByTwo() {
         return MILLIS_PER_YEAR / 2;
     }
 
     //-----------------------------------------------------------------------
+    @Override
     long getAverageMillisPerMonth() {
         return MILLIS_PER_MONTH;
     }

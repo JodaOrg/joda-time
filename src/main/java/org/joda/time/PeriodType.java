@@ -658,6 +658,7 @@ public class PeriodType implements Serializable {
      * 
      * @return a string
      */
+    @Override
     public String toString() {
         return "PeriodType[" + getName() + "]";
     }
@@ -831,6 +832,7 @@ public class PeriodType implements Serializable {
      * @param obj  the object to compare to
      * @return true if equal
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -847,6 +849,7 @@ public class PeriodType implements Serializable {
      * 
      * @return a suitable hashcode
      */
+    @Override
     public int hashCode() {
         int hash = 0;
         for (int i = 0; i < iTypes.length; i++) {

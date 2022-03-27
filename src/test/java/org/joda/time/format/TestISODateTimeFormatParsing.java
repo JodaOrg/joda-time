@@ -47,6 +47,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -56,6 +57,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);

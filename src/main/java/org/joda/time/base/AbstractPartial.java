@@ -251,6 +251,7 @@ public abstract class AbstractPartial
      * @param partial  an object to check against
      * @return true if fields and values are equal
      */
+    @Override
     public boolean equals(Object partial) {
         if (this == partial) {
             return true;
@@ -276,6 +277,7 @@ public abstract class AbstractPartial
      *
      * @return a suitable hash code
      */
+    @Override
     public int hashCode() {
         int total = 157;
         for (int i = 0, isize = size(); i < isize; i++) {

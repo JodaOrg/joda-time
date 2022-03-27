@@ -1206,6 +1206,7 @@ public abstract class DateTimeZone implements Serializable {
      * @param object the object to compare with
      * @return true if equal, based on the ID and all internal rules
      */
+    @Override
     public abstract boolean equals(Object object);
 
     /**
@@ -1213,6 +1214,7 @@ public abstract class DateTimeZone implements Serializable {
      * 
      * @return suitable hashcode
      */
+    @Override
     public int hashCode() {
         return 57 + getID().hashCode();
     }
@@ -1221,6 +1223,7 @@ public abstract class DateTimeZone implements Serializable {
      * Gets the datetime zone as a string, which is simply its ID.
      * @return the id of the zone
      */
+    @Override
     public String toString() {
         return getID();
     }
@@ -1281,15 +1284,19 @@ public abstract class DateTimeZone implements Serializable {
             // initialization. Offset parser doesn't need it anyhow.
             Chronology chrono = new BaseChronology() {
                 private static final long serialVersionUID = -3128740902654445468L;
+                @Override
                 public DateTimeZone getZone() {
                     return null;
                 }
+                @Override
                 public Chronology withUTC() {
                     return this;
                 }
+                @Override
                 public Chronology withZone(DateTimeZone zone) {
                     return this;
                 }
+                @Override
                 public String toString() {
                     return getClass().getName();
                 }

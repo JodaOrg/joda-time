@@ -51,10 +51,12 @@ public abstract class BaseDurationField extends DurationField implements Seriali
         iType = type;
     }
 
+    @Override
     public final DurationFieldType getType() {
         return iType;
     }
 
+    @Override
     public final String getName() {
         return iType.getName();
     }
@@ -62,6 +64,7 @@ public abstract class BaseDurationField extends DurationField implements Seriali
     /**
      * @return true always
      */
+    @Override
     public final boolean isSupported() {
         return true;
     }
@@ -75,6 +78,7 @@ public abstract class BaseDurationField extends DurationField implements Seriali
      * @return the value of the field, in the units of the field, which may be
      * negative
      */
+    @Override
     public int getValue(long duration) {
         return FieldUtils.safeToInt(getValueAsLong(duration));
     }
@@ -87,6 +91,7 @@ public abstract class BaseDurationField extends DurationField implements Seriali
      * @return the value of the field, in the units of the field, which may be
      * negative
      */
+    @Override
     public long getValueAsLong(long duration) {
         return duration / getUnitMillis();
     }
@@ -107,6 +112,7 @@ public abstract class BaseDurationField extends DurationField implements Seriali
      * @return the value of the field, in the units of the field, which may be
      * negative
      */
+    @Override
     public int getValue(long duration, long instant) {
         return FieldUtils.safeToInt(getValueAsLong(duration, instant));
     }
@@ -119,6 +125,7 @@ public abstract class BaseDurationField extends DurationField implements Seriali
      * @return the milliseconds that the field represents, which may be
      * negative
      */
+    @Override
     public long getMillis(int value) {
         return value * getUnitMillis();  // safe
     }
@@ -131,12 +138,14 @@ public abstract class BaseDurationField extends DurationField implements Seriali
      * @return the milliseconds that the field represents, which may be
      * negative
      */
+    @Override
     public long getMillis(long value) {
         return FieldUtils.safeMultiply(value, getUnitMillis());
     }
 
     // Calculation API
     //------------------------------------------------------------------------
+    @Override
     public int getDifference(long minuendInstant, long subtrahendInstant) {
         return FieldUtils.safeToInt(getDifferenceAsLong(minuendInstant, subtrahendInstant));
     }
@@ -161,6 +170,7 @@ public abstract class BaseDurationField extends DurationField implements Seriali
      * 
      * @return debug string
      */
+    @Override
     public String toString() {
         return "DurationField[" + getName() + ']';
     }

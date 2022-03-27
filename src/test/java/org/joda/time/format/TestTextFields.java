@@ -71,6 +71,7 @@ public class TestTextFields extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         originalDateTimeZone = DateTimeZone.getDefault();
         originalLocale = Locale.getDefault();
@@ -78,6 +79,7 @@ public class TestTextFields extends TestCase {
         Locale.setDefault(Locale.ENGLISH);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         DateTimeZone.setDefault(originalDateTimeZone);
         Locale.setDefault(originalLocale);

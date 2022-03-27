@@ -184,6 +184,7 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
      * 
      * @return the chronology in UTC
      */
+    @Override
     public Chronology withUTC() {
         return INSTANCE_UTC;
     }
@@ -194,6 +195,7 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
      * @param zone  the zone to get the chronology in, null is default
      * @return the chronology
      */
+    @Override
     public Chronology withZone(DateTimeZone zone) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
@@ -211,6 +213,7 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
     }
 
     //-----------------------------------------------------------------------
+    @Override
     long calculateFirstDayOfYearMillis(int year) {
         // Java epoch is 1970-01-01 Gregorian which is 1962-04-23 Ethiopic.
         // Calculate relative to the nearest leap year and account for the
@@ -239,21 +242,25 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
     }
 
     //-----------------------------------------------------------------------
+    @Override
     int getMinYear() {
         return MIN_YEAR;
     }
 
     //-----------------------------------------------------------------------
+    @Override
     int getMaxYear() {
         return MAX_YEAR;
     }
 
     //-----------------------------------------------------------------------
+    @Override
     long getApproxMillisAtEpochDividedByTwo() {
         return (1962L * MILLIS_PER_YEAR + 112L * DateTimeConstants.MILLIS_PER_DAY) / 2;
     }
 
     //-----------------------------------------------------------------------
+    @Override
     protected void assemble(Fields fields) {
         if (getBase() == null) {
             super.assemble(fields);

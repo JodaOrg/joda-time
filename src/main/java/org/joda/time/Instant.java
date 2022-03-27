@@ -168,6 +168,7 @@ public final class Instant
      * 
      * @return <code>this</code>
      */
+    @Override
     public Instant toInstant() {
         return this;
     }
@@ -316,6 +317,7 @@ public final class Instant
      *
      * @return a DateTime using the same millis
      */
+    @Override
     public DateTime toDateTime() {
         return new DateTime(getMillis(), ISOChronology.getInstance());
     }
@@ -342,6 +344,7 @@ public final class Instant
      * @return a DateTime using the same millis with ISOChronology
      * @deprecated Use toDateTime() as it is identical
      */
+    @Override
     @Deprecated
     public DateTime toDateTimeISO() {
         return toDateTime();
@@ -362,6 +365,7 @@ public final class Instant
      *
      * @return a MutableDateTime using the same millis
      */
+    @Override
     public MutableDateTime toMutableDateTime() {
         return new MutableDateTime(getMillis(), ISOChronology.getInstance());
     }
@@ -388,6 +392,7 @@ public final class Instant
      * @return a MutableDateTime using the same millis with ISOChronology
      * @deprecated Use toMutableDateTime() as it is identical
      */
+    @Override
     @Deprecated
     public MutableDateTime toMutableDateTimeISO() {
         return toMutableDateTime();

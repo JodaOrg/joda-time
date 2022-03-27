@@ -357,6 +357,7 @@ public final class DateMidnight
      * @param chronology  the chronology to use, not null
      * @return the updated instant, rounded to midnight
      */
+    @Override
     protected long checkInstant(long instant, Chronology chronology) {
         return chronology.dayOfMonth().roundFloor(instant);
     }
@@ -1261,6 +1262,7 @@ public final class DateMidnight
          * 
          * @return the field
          */
+        @Override
         public DateTimeField getField() {
             return iField;
         }
@@ -1270,6 +1272,7 @@ public final class DateMidnight
          * 
          * @return the milliseconds
          */
+        @Override
         protected long getMillis() {
             return iInstant.getMillis();
         }
@@ -1280,6 +1283,7 @@ public final class DateMidnight
          * @return the chronology
          * @since 1.4
          */
+        @Override
         protected Chronology getChronology() {
             return iInstant.getChronology();
         }

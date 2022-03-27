@@ -28,32 +28,39 @@ class TestGJWeekOfWeekyearField extends TestGJDateTimeField {
               (long)(TestGJChronology.MILLIS_PER_DAY * 7), chrono);
     }
 
+    @Override
     public int get(long millis) {
         return iChronology.isoFromMillis(millis)[1];
     }
 
+    @Override
     public long set(long millis, int value) {
         int[] wwd = iChronology.isoFromMillis(millis);
         return iChronology.getTimeOnlyMillis(millis)
             + iChronology.millisFromISO(wwd[0], value, wwd[2]);
     }
 
+    @Override
     public long add(long millis, long value) {
         return iChronology.dayOfYear().add(millis, value * 7);
     }
 
+    @Override
     public DurationField getRangeDurationField() {
         return iChronology.weeks();
     }
 
+    @Override
     public int getMinimumValue() {
         return 1;
     }
 
+    @Override
     public int getMaximumValue() {
         return 53;
     }
 
+    @Override
     public int getMaximumValue(long millis) {
         // Move millis to end of weekyear.
         millis = iChronology.weekyear().roundFloor(millis);
@@ -62,6 +69,7 @@ class TestGJWeekOfWeekyearField extends TestGJDateTimeField {
         return get(millis);
     }
 
+    @Override
     public long roundFloor(long millis) {
         int[] wwd = iChronology.isoFromMillis(millis);
         return iChronology.millisFromISO(wwd[0], wwd[1], 1);

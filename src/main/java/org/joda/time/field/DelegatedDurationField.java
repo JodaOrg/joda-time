@@ -75,10 +75,12 @@ public class DelegatedDurationField extends DurationField implements Serializabl
         return iField;
     }
 
+    @Override
     public DurationFieldType getType() {
         return iType;
     }
 
+    @Override
     public String getName() {
         return iType.getName();
     }
@@ -86,62 +88,77 @@ public class DelegatedDurationField extends DurationField implements Serializabl
     /**
      * Returns true if this field is supported.
      */
+    @Override
     public boolean isSupported() {
         return iField.isSupported();
     }
 
+    @Override
     public boolean isPrecise() {
         return iField.isPrecise();
     }
     
+    @Override
     public int getValue(long duration) {
         return iField.getValue(duration);
     }
 
+    @Override
     public long getValueAsLong(long duration) {
         return iField.getValueAsLong(duration);
     }
 
+    @Override
     public int getValue(long duration, long instant) {
         return iField.getValue(duration, instant);
     }
 
+    @Override
     public long getValueAsLong(long duration, long instant) {
         return iField.getValueAsLong(duration, instant);
     }
 
+    @Override
     public long getMillis(int value) {
         return iField.getMillis(value);
     }
 
+    @Override
     public long getMillis(long value) {
         return iField.getMillis(value);
     }
 
+    @Override
     public long getMillis(int value, long instant) {
         return iField.getMillis(value, instant);
     }
 
+    @Override
     public long getMillis(long value, long instant) {
         return iField.getMillis(value, instant);
     }
 
+    @Override
     public long add(long instant, int value) {
         return iField.add(instant, value);
     }
 
+    @Override
     public long add(long instant, long value) {
         return iField.add(instant, value);
     }
 
+    @Override
     public int getDifference(long minuendInstant, long subtrahendInstant) {
         return iField.getDifference(minuendInstant, subtrahendInstant);
     }
 
+    @Override
     public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
         return iField.getDifferenceAsLong(minuendInstant, subtrahendInstant);
     }
 
+    @Override
     public long getUnitMillis() {
         return iField.getUnitMillis();
     }
@@ -150,6 +167,7 @@ public class DelegatedDurationField extends DurationField implements Serializabl
         return iField.compareTo(durationField);
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof DelegatedDurationField) {
             return iField.equals(((DelegatedDurationField) obj).iField);
@@ -157,10 +175,12 @@ public class DelegatedDurationField extends DurationField implements Serializabl
         return false;
     }
 
+    @Override
     public int hashCode() {
         return iField.hashCode() ^ iType.hashCode();
     }
 
+    @Override
     public String toString() {
         return (iType == null) ? iField.toString() :
             ("DurationField[" + iType + ']');

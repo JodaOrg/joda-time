@@ -50,6 +50,7 @@ class LongConverter extends AbstractConverter
      * @throws NullPointerException if the object is null
      * @throws ClassCastException if the object is an invalid type
      */
+    @Override
     public long getInstantMillis(Object object, Chronology chrono) {
         return ((Long) object).longValue();
     }

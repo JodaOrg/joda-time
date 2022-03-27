@@ -84,6 +84,7 @@ public class TestInstant_Basics extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
@@ -94,6 +95,7 @@ public class TestInstant_Basics extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
@@ -205,6 +207,7 @@ public class TestInstant_Basics extends TestCase {
     }
     
     class MockInstant extends AbstractInstant {
+        @Override
         public String toString() {
             return null;
         }

@@ -315,6 +315,7 @@ public abstract class DurationField implements Comparable<DurationField> {
      * 
      * @return debug string
      */
+    @Override
     public abstract String toString();
     
 }

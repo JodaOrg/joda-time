@@ -449,6 +449,7 @@ public class MutableDateTime
      * @param instant  the milliseconds since 1970-01-01T00:00:00Z to set the
      * datetime to
      */
+    @Override
     public void setMillis(long instant) {
         switch (iRoundingMode) {
             case ROUND_NONE:
@@ -558,6 +559,7 @@ public class MutableDateTime
      * 
      * @param chronology  the chronology to use, null means ISOChronology in default zone
      */
+    @Override
     public void setChronology(Chronology chronology) {
         super.setChronology(chronology);
     }
@@ -1245,6 +1247,7 @@ public class MutableDateTime
      *
      * @return a clone of this object.
      */
+    @Override
     public Object clone() {
         try {
             return super.clone();
@@ -1318,6 +1321,7 @@ public class MutableDateTime
          * 
          * @return the field
          */
+        @Override
         public DateTimeField getField() {
             return iField;
         }
@@ -1327,6 +1331,7 @@ public class MutableDateTime
          * 
          * @return the milliseconds
          */
+        @Override
         protected long getMillis() {
             return iInstant.getMillis();
         }
@@ -1337,6 +1342,7 @@ public class MutableDateTime
          * @return the chronology
          * @since 1.4
          */
+        @Override
         protected Chronology getChronology() {
             return iInstant.getChronology();
         }

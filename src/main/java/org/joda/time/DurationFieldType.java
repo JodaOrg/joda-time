@@ -239,6 +239,7 @@ public abstract class DurationFieldType implements Serializable {
      * 
      * @return debug string
      */
+    @Override
     public String toString() {
         return getName();
     }
@@ -278,6 +279,7 @@ public abstract class DurationFieldType implements Serializable {
             return (1 << iOrdinal);
         }
 
+        @Override
         public DurationField getField(Chronology chronology) {
             chronology = DateTimeUtils.getChronology(chronology);
             

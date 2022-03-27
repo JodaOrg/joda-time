@@ -25,18 +25,23 @@ import org.joda.time.chrono.ISOChronology;
  */
 class MockNullZoneChronology extends BaseChronology {
 
+    @Override
     public DateTimeZone getZone() {
         return null;
     }
+    @Override
     public Chronology withUTC() {
         return this;
     }
+    @Override
     public Chronology withZone(DateTimeZone zone) {
         return this;
     }
+    @Override
     public DateTimeField dayOfMonth() {  // for DateMidnight test
         return ISOChronology.getInstance().dayOfMonth();
     }
+    @Override
     public String toString() {
         return "";
     }

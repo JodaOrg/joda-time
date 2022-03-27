@@ -51,60 +51,73 @@ public class ScaledDurationField extends DecoratedDurationField {
         iScalar = scalar;
     }
 
+    @Override
     public int getValue(long duration) {
         return getWrappedField().getValue(duration) / iScalar;
     }
 
+    @Override
     public long getValueAsLong(long duration) {
         return getWrappedField().getValueAsLong(duration) / iScalar;
     }
 
+    @Override
     public int getValue(long duration, long instant) {
         return getWrappedField().getValue(duration, instant) / iScalar;
     }
 
+    @Override
     public long getValueAsLong(long duration, long instant) {
         return getWrappedField().getValueAsLong(duration, instant) / iScalar;
     }
 
+    @Override
     public long getMillis(int value) {
         long scaled = ((long) value) * ((long) iScalar);
         return getWrappedField().getMillis(scaled);
     }
 
+    @Override
     public long getMillis(long value) {
         long scaled = FieldUtils.safeMultiply(value, iScalar);
         return getWrappedField().getMillis(scaled);
     }
 
+    @Override
     public long getMillis(int value, long instant) {
         long scaled = ((long) value) * ((long) iScalar);
         return getWrappedField().getMillis(scaled, instant);
     }
 
+    @Override
     public long getMillis(long value, long instant) {
         long scaled = FieldUtils.safeMultiply(value, iScalar);
         return getWrappedField().getMillis(scaled, instant);
     }
 
+    @Override
     public long add(long instant, int value) {
         long scaled = ((long) value) * ((long) iScalar);
         return getWrappedField().add(instant, scaled);
     }
 
+    @Override
     public long add(long instant, long value) {
         long scaled = FieldUtils.safeMultiply(value, iScalar);
         return getWrappedField().add(instant, scaled);
     }
 
+    @Override
     public int getDifference(long minuendInstant, long subtrahendInstant) {
         return getWrappedField().getDifference(minuendInstant, subtrahendInstant) / iScalar;
     }
 
+    @Override
     public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
         return getWrappedField().getDifferenceAsLong(minuendInstant, subtrahendInstant) / iScalar;
     }
 
+    @Override
     public long getUnitMillis() {
         return getWrappedField().getUnitMillis() * iScalar;
     }
@@ -126,6 +139,7 @@ public class ScaledDurationField extends DecoratedDurationField {
      * @param obj  the object to compare to
      * @return if equal
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -143,6 +157,7 @@ public class ScaledDurationField extends DecoratedDurationField {
      * 
      * @return a suitable hashcode
      */
+    @Override
     public int hashCode() {
         long scalar = iScalar;
         int hash = (int) (scalar ^ (scalar >>> 32));

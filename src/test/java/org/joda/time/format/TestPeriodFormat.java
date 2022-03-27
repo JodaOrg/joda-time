@@ -56,11 +56,13 @@ public class TestPeriodFormat extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         originalLocale = Locale.getDefault();
         Locale.setDefault(DE);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         Locale.setDefault(originalLocale);
         originalLocale = null;

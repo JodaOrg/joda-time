@@ -45,34 +45,42 @@ public final class TestJulianChronology extends TestGJChronology {
         super(epochYear, epochMonth, epochDay);
     }
 
+    @Override
     public DateTimeField dayOfMonth() {
         return new TestJulianDayOfMonthField(this); 
     }
 
+    @Override
     public DateTimeField weekyear() {
         return new TestJulianWeekyearField(this);
     }
 
+    @Override
     public DateTimeField monthOfYear() {
         return new TestJulianMonthOfYearField(this);
     }
 
+    @Override
     public DateTimeField year() {
         return new TestJulianYearField(this);
     }
 
+    @Override
     public String toString() {
         return "TestJulianChronology";
     }
 
+    @Override
     long millisPerYear() {
         return (long)(365.25 * MILLIS_PER_DAY);
     }
 
+    @Override
     long millisPerMonth() {
         return (long)(365.25 * MILLIS_PER_DAY / 12);
     }
 
+    @Override
     boolean isLeapYear(int year) {
         if (year == 0) {
             throw new IllegalArgumentException("Illegal year: " + year);
@@ -83,6 +91,7 @@ public final class TestJulianChronology extends TestGJChronology {
     /**
      * @return days from 0001-01-01
      */
+    @Override
     long fixedFromGJ(int year, int monthOfYear, int dayOfMonth) {
         if (year == 0) {
             throw new IllegalArgumentException("Illegal year: " + year);
@@ -101,6 +110,7 @@ public final class TestJulianChronology extends TestGJChronology {
      * @param date days from 0001-01-01
      * @return gj year
      */
+    @Override
     int gjYearFromFixed(long date) {
         return gjFromFixed(date)[0];
     }
@@ -109,6 +119,7 @@ public final class TestJulianChronology extends TestGJChronology {
      * @param date days from 0001-01-01
      * @return gj year, monthOfYear, dayOfMonth
      */
+    @Override
     int[] gjFromFixed(long date) {
         long approx = div(4 * (date - JULIAN_EPOCH) + 1464, 1461);
         long year = (approx <= 0) ? approx - 1 : approx;
@@ -131,6 +142,7 @@ public final class TestJulianChronology extends TestGJChronology {
         return new int[]{year_i, monthOfYear, day};
     }
 
+    @Override
     long fixedFromISO(int weekyear, int weekOfWeekyear, int dayOfWeek) {
         if (weekyear == 0) {
             throw new IllegalArgumentException("Illegal weekyear: " + weekyear);
@@ -147,6 +159,7 @@ public final class TestJulianChronology extends TestGJChronology {
      * @param date days from 0001-01-01
      * @return iso weekyear, weekOfWeekyear, dayOfWeek (1=Monday to 7)
      */
+    @Override
     int[] isoFromFixed(long date) {
         int weekyear = gjYearFromFixed(date - 3);
         int nextWeekyear;

@@ -81,6 +81,7 @@ abstract class BasicGJChronology extends BasicChronology {
         return dayOfMonth().get(instant) == 29 && monthOfYear().isLeap(instant);
     }
 
+    @Override
     int getMonthOfYear(long millis, int year) {
         // Perform a binary search to get the month. To make it go even faster,
         // compare using ints instead of longs. The number of milliseconds per
@@ -121,6 +122,7 @@ abstract class BasicGJChronology extends BasicChronology {
      * @param month  the month
      * @return the number of days
      */
+    @Override
     int getDaysInYearMonth(int year, int month) {
         if (isLeapYear(year)) {
             return MAX_DAYS_PER_MONTH_ARRAY[month - 1];
@@ -130,16 +132,19 @@ abstract class BasicGJChronology extends BasicChronology {
     }
 
     //-----------------------------------------------------------------------
+    @Override
     int getDaysInMonthMax(int month) {
         return MAX_DAYS_PER_MONTH_ARRAY[month - 1];
     }
 
     //-----------------------------------------------------------------------
+    @Override
     int getDaysInMonthMaxForSet(long instant, int value) {
         return ((value > 28 || value < 1) ? getDaysInMonthMax(instant) : 28);
     }
 
     //-----------------------------------------------------------------------
+    @Override
     long getTotalMillisByYearMonth(int year, int month) {
         if (isLeapYear(year)) {
             return MAX_TOTAL_MILLIS_BY_MONTH_ARRAY[month - 1];
@@ -149,6 +154,7 @@ abstract class BasicGJChronology extends BasicChronology {
     }
 
     //-----------------------------------------------------------------------
+    @Override
     long getYearDifference(long minuendInstant, long subtrahendInstant) {
         int minuendYear = getYear(minuendInstant);
         int subtrahendYear = getYear(subtrahendInstant);
@@ -176,6 +182,7 @@ abstract class BasicGJChronology extends BasicChronology {
     }
 
     //-----------------------------------------------------------------------
+    @Override
     long setYear(long instant, int year) {
         int thisYear = getYear(instant);
         int dayOfYear = getDayOfYear(instant, thisYear);

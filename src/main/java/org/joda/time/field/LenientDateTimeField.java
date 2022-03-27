@@ -58,6 +58,7 @@ public class LenientDateTimeField extends DelegatedDateTimeField {
         iBase = base;
     }
 
+    @Override
     public final boolean isLenient() {
         return true;
     }
@@ -66,6 +67,7 @@ public class LenientDateTimeField extends DelegatedDateTimeField {
      * Set values which may be out of bounds by adding the difference between
      * the new value and the current value.
      */
+    @Override
     public long set(long instant, int value) {
         // lenient needs to handle time zone chronologies
         // so we do the calculation using local milliseconds

@@ -68,6 +68,7 @@ public class TestDateTimeFormatStyle extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
@@ -78,6 +79,7 @@ public class TestDateTimeFormatStyle extends TestCase {
         Locale.setDefault(UK);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);

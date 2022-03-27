@@ -63,6 +63,7 @@ public abstract class PreciseDurationDateTimeField extends BaseDateTimeField {
     /**
      * Returns false by default.
      */
+    @Override
     public boolean isLenient() {
         return false;
     }
@@ -75,6 +76,7 @@ public abstract class PreciseDurationDateTimeField extends BaseDateTimeField {
      * @return the updated time instant.
      * @throws IllegalArgumentException if value is too large or too small.
      */
+    @Override
     public long set(long instant, int value) {
         FieldUtils.verifyValueBounds(this, value, getMinimumValue(),
                                      getMaximumValueForSet(instant, value));
@@ -89,6 +91,7 @@ public abstract class PreciseDurationDateTimeField extends BaseDateTimeField {
      * return super.roundFloor(instant + ALIGNMENT_MILLIS) - ALIGNMENT_MILLIS;
      * </pre>
      */
+    @Override
     public long roundFloor(long instant) {
         if (instant >= 0) {
             return instant - instant % iUnitMillis;
@@ -106,6 +109,7 @@ public abstract class PreciseDurationDateTimeField extends BaseDateTimeField {
      * return super.roundCeiling(instant + ALIGNMENT_MILLIS) - ALIGNMENT_MILLIS;
      * </pre>
      */
+    @Override
     public long roundCeiling(long instant) {
         if (instant > 0) {
             instant -= 1;
@@ -123,6 +127,7 @@ public abstract class PreciseDurationDateTimeField extends BaseDateTimeField {
      * return super.remainder(instant + ALIGNMENT_MILLIS);
      * </pre>
      */
+    @Override
     public long remainder(long instant) {
         if (instant >= 0) {
             return instant % iUnitMillis;
@@ -138,6 +143,7 @@ public abstract class PreciseDurationDateTimeField extends BaseDateTimeField {
      * @return the duration of this field, or UnsupportedDurationField if field
      * has no duration
      */
+    @Override
     public DurationField getDurationField() {
         return iUnitField;
     }
@@ -147,6 +153,7 @@ public abstract class PreciseDurationDateTimeField extends BaseDateTimeField {
      * 
      * @return the minimum value
      */
+    @Override
     public int getMinimumValue() {
         return 0;
     }

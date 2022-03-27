@@ -165,6 +165,7 @@ public abstract class AbstractDuration implements ReadableDuration {
      * @param duration  a readable duration to check against
      * @return true if the length of the duration is equal
      */
+    @Override
     public boolean equals(Object duration) {
         if (this == duration) {
             return true;
@@ -182,6 +183,7 @@ public abstract class AbstractDuration implements ReadableDuration {
      *
      * @return a hash code
      */
+    @Override
     public int hashCode() {
         long len = getMillis();
         return (int) (len ^ (len >>> 32));
@@ -199,6 +201,7 @@ public abstract class AbstractDuration implements ReadableDuration {
      *
      * @return the value as an ISO8601 string
      */
+    @Override
     @ToString
     public String toString() {
         long millis = getMillis();

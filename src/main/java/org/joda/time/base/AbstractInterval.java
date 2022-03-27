@@ -460,6 +460,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @return true if the intervals are equal comparing the start millis,
      *  end millis and chronology
      */
+    @Override
     public boolean equals(Object readableInterval) {
         if (this == readableInterval) {
             return true;
@@ -479,6 +480,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      *
      * @return suitable hashcode
      */
+    @Override
     public int hashCode() {
         long start = getStartMillis();
         long end = getEndMillis();
@@ -496,6 +498,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      *
      * @return re-parsable string (in the default zone)
      */
+    @Override
     public String toString() {
         DateTimeFormatter printer = ISODateTimeFormat.dateTime();
         printer = printer.withChronology(getChronology());

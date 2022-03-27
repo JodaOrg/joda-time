@@ -44,6 +44,7 @@ public class TestUnsupportedDateTimeField extends TestCase {
         return new TestSuite(TestUnsupportedDateTimeField.class);
     }
 
+    @Override
     protected void setUp() throws Exception {
         weeks = DurationFieldType.weeks();
         months = DurationFieldType.months();

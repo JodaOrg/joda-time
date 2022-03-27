@@ -131,6 +131,7 @@ public class TestDateTimeComparator extends TestCase {
     /**
      * Junit <code>setUp()</code> method.
      */
+    @Override
     public void setUp() /* throws Exception */ {
         Chronology chrono = ISOChronology.getInstanceUTC();
 
@@ -154,6 +155,7 @@ public class TestDateTimeComparator extends TestCase {
     /**
      * Junit <code>tearDown()</code> method.
      */
+    @Override
     protected void tearDown() /* throws Exception */ {
         // super.tearDown();
         aDateTime = null;

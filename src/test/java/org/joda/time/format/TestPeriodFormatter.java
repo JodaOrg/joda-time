@@ -73,6 +73,7 @@ public class TestPeriodFormatter extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
@@ -84,6 +85,7 @@ public class TestPeriodFormatter extends TestCase {
         f = ISOPeriodFormat.standard();
     }
 
+    @Override
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);

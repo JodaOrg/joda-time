@@ -30,16 +30,20 @@ class MockBadChronology extends BaseChronology {
         super();
     }
 
+    @Override
     public Chronology withZone(DateTimeZone zone) {
         return null;
     }
     
+    @Override
     public DateTimeZone getZone() {
         return null;
     }
+    @Override
     public Chronology withUTC() {
         return null;
     }
+    @Override
     public String toString() {
         return null;
     }

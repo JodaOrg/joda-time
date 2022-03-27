@@ -76,13 +76,16 @@ public class TestConverterManager extends TestCase {
     static {
         // don't call Policy.getPolicy()
         RESTRICT = new Policy() {
+            @Override
             public PermissionCollection getPermissions(CodeSource codesource) {
                 Permissions p = new Permissions();
                 p.add(new AllPermission());  // enable everything
                 return p;
             }
+            @Override
             public void refresh() {
             }
+            @Override
             public boolean implies(ProtectionDomain domain, Permission permission) {
                 if (permission instanceof JodaTimePermission) {
                     return false;
@@ -92,11 +95,13 @@ public class TestConverterManager extends TestCase {
             }
         };
         ALLOW = new Policy() {
+            @Override
             public PermissionCollection getPermissions(CodeSource codesource) {
                 Permissions p = new Permissions();
                 p.add(new AllPermission());  // enable everything
                 return p;
             }
+            @Override
             public void refresh() {
             }
         };

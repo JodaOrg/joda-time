@@ -102,6 +102,7 @@ public abstract class AssembledChronology extends BaseChronology {
         setFields();
     }
 
+    @Override
     public DateTimeZone getZone() {
         Chronology base;
         if ((base = iBase) != null) {
@@ -110,6 +111,7 @@ public abstract class AssembledChronology extends BaseChronology {
         return null;
     }
 
+    @Override
     public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
                                   int millisOfDay)
         throws IllegalArgumentException
@@ -122,6 +124,7 @@ public abstract class AssembledChronology extends BaseChronology {
         return super.getDateTimeMillis(year, monthOfYear, dayOfMonth, millisOfDay);
     }
 
+    @Override
     public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
                                   int hourOfDay, int minuteOfHour,
                                   int secondOfMinute, int millisOfSecond)
@@ -137,6 +140,7 @@ public abstract class AssembledChronology extends BaseChronology {
                                        hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
     }
 
+    @Override
     public long getDateTimeMillis(long instant,
                                   int hourOfDay, int minuteOfHour,
                                   int secondOfMinute, int millisOfSecond)
@@ -152,142 +156,177 @@ public abstract class AssembledChronology extends BaseChronology {
             (instant, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
     }
 
+    @Override
     public final DurationField millis() {
         return iMillis;
     }
 
+    @Override
     public final DateTimeField millisOfSecond() {
         return iMillisOfSecond;
     }
 
+    @Override
     public final DateTimeField millisOfDay() {
         return iMillisOfDay;
     }
 
+    @Override
     public final DurationField seconds() {
         return iSeconds;
     }
 
+    @Override
     public final DateTimeField secondOfMinute() {
         return iSecondOfMinute;
     }
 
+    @Override
     public final DateTimeField secondOfDay() {
         return iSecondOfDay;
     }
 
+    @Override
     public final DurationField minutes() {
         return iMinutes;
     }
 
+    @Override
     public final DateTimeField minuteOfHour() {
         return iMinuteOfHour;
     }
 
+    @Override
     public final DateTimeField minuteOfDay() {
         return iMinuteOfDay;
     }
 
+    @Override
     public final DurationField hours() {
         return iHours;
     }
 
+    @Override
     public final DateTimeField hourOfDay() {
         return iHourOfDay;
     }
 
+    @Override
     public final DateTimeField clockhourOfDay() {
         return iClockhourOfDay;
     }
 
+    @Override
     public final DurationField halfdays() {
         return iHalfdays;
     }
 
+    @Override
     public final DateTimeField hourOfHalfday() {
         return iHourOfHalfday;
     }
 
+    @Override
     public final DateTimeField clockhourOfHalfday() {
         return iClockhourOfHalfday;
     }
 
+    @Override
     public final DateTimeField halfdayOfDay() {
         return iHalfdayOfDay;
     }
 
+    @Override
     public final DurationField days() {
         return iDays;
     }
 
+    @Override
     public final DateTimeField dayOfWeek() {
         return iDayOfWeek;
     }
 
+    @Override
     public final DateTimeField dayOfMonth() {
         return iDayOfMonth;
     }
 
+    @Override
     public final DateTimeField dayOfYear() {
         return iDayOfYear;
     }
 
+    @Override
     public final DurationField weeks() {
         return iWeeks;
     }
 
+    @Override
     public final DateTimeField weekOfWeekyear() {
         return iWeekOfWeekyear;
     }
 
+    @Override
     public final DurationField weekyears() {
         return iWeekyears;
     }
 
+    @Override
     public final DateTimeField weekyear() {
         return iWeekyear;
     }
 
+    @Override
     public final DateTimeField weekyearOfCentury() {
         return iWeekyearOfCentury;
     }
 
+    @Override
     public final DurationField months() {
         return iMonths;
     }
 
+    @Override
     public final DateTimeField monthOfYear() {
         return iMonthOfYear;
     }
 
+    @Override
     public final DurationField years() {
         return iYears;
     }
 
+    @Override
     public final DateTimeField year() {
         return iYear;
     }
 
+    @Override
     public final DateTimeField yearOfEra() {
         return iYearOfEra;
     }
 
+    @Override
     public final DateTimeField yearOfCentury() {
         return iYearOfCentury;
     }
 
+    @Override
     public final DurationField centuries() {
         return iCenturies;
     }
 
+    @Override
     public final DateTimeField centuryOfEra() {
         return iCenturyOfEra;
     }
 
+    @Override
     public final DurationField eras() {
         return iEras;
     }
 
+    @Override
     public final DateTimeField era() {
         return iEra;
     }

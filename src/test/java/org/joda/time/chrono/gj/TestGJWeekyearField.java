@@ -27,10 +27,12 @@ class TestGJWeekyearField extends TestGJDateTimeField {
         super(DateTimeFieldType.weekyear(), chrono.millisPerYear(), chrono);
     }
 
+    @Override
     public int get(long millis) {
         return iChronology.isoFromMillis(millis)[0];
     }
 
+    @Override
     public long set(long millis, int value) {
         int[] wwd = iChronology.isoFromMillis(millis);
         millis = iChronology.getTimeOnlyMillis(millis)
@@ -45,34 +47,42 @@ class TestGJWeekyearField extends TestGJDateTimeField {
         return millis;
     }
 
+    @Override
     public long add(long millis, long value) {
         return set(millis, (int)(get(millis) + value));
     }
 
+    @Override
     public boolean isLeap(long millis) {
         return iChronology.weekOfWeekyear().getMaximumValue(millis) > 52;
     }
 
+    @Override
     public int getLeapAmount(long millis) {
         return iChronology.weekOfWeekyear().getMaximumValue(millis) - 52;
     } 
 
+    @Override
     public DurationField getLeapDurationField() {
         return iChronology.weeks();
     }
 
+    @Override
     public DurationField getRangeDurationField() {
         return null;
     }
 
+    @Override
     public int getMinimumValue() {
         return -100000000;
     }
 
+    @Override
     public int getMaximumValue() {
         return 100000000;
     }
 
+    @Override
     public long roundFloor(long millis) {
         return iChronology.millisFromISO(get(millis), 1, 1);
     }

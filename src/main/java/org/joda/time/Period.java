@@ -267,7 +267,7 @@ public final class Period
                 throw new IllegalArgumentException("ReadablePartial objects must have the same set of fields");
             }
             types[i] = start.getFieldType(i).getDurationType();
-            if (i > 0 && types[i - 1] == types[i]) {
+            if (i > 0 && types[i - 1].equals(types[i])) {
                 throw new IllegalArgumentException("ReadablePartial objects must not have overlapping fields");
             }
             values[i] = end.getValue(i) - start.getValue(i);

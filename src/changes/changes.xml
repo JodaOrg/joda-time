@@ -8,7 +8,15 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
-    <release version="2.10.15" date="SNAPSHOT" description="v2.10.15">
+    <release version="2.11.0" date="SNAPSHOT" description="v2.11.0">
+      <action dev="jodastephen" type="fix">
+        Change DateTimeZone to use 'org.joda.time.DateTimeZone.Timezone' instead of 'user.timezone'.
+        This change causes Joda-Time to query 'TimeZone.getDefault()' in most cases.
+        In most cases this change will have no effect on application code, as 'user.timezone' will be picked up by 'TimeZone.getDefault()' instead.
+        If you specifically need to stop Joda-Time calling 'TimeZone.getDefault()' then you will need to change
+        to use the new system property 'org.joda.time.DateTimeZone.Timezone'.
+        Fixes #587.
+      </action>
       <action dev="jodastephen" type="fix">
         Avoid using == on objects.
         Fixes #581.

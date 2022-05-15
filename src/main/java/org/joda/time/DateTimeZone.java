@@ -150,12 +150,14 @@ public abstract class DateTimeZone implements Serializable {
     /**
      * Gets the default time zone.
      * <p>
-     * The default time zone is derived from the system property {@code user.timezone}.
+     * The default time zone is derived from the system property {@code org.joda.time.DateTimeZone.Timezone}.
      * If that is {@code null} or is not a valid identifier, then the value of the
      * JDK {@code TimeZone} default is converted. If that fails, {@code UTC} is used.
      * <p>
      * NOTE: If the {@code java.util.TimeZone} default is updated <i>after</i> calling this
      * method, then the change will not be picked up here.
+     * <p>
+     * NOTE: This previously checked the {@code user.timezone} property, see issue #587.
      * 
      * @return the default datetime zone object
      */
@@ -164,7 +166,7 @@ public abstract class DateTimeZone implements Serializable {
         if (zone == null) {
             try {
                 try {
-                    String id = System.getProperty("user.timezone");
+                    String id = System.getProperty("org.joda.time.DateTimeZone.Timezone");
                     if (id != null) {  // null check avoids stack overflow
                         zone = forID(id);
                     }

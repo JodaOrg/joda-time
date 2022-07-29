@@ -1,0 +1,10 @@
+# Dependabot config
+
+version: 2
+updates:
+- package-ecosystem: "maven"
+  directory: "/"
+  schedule:
+    interval: weekly
+    time: "02:30"
+  open-pull-requests-limit: 20

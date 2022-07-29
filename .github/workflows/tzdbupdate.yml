@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'master'
+      - 'enhance*'
   schedule:
     - cron: '50 1 * * *'
 
@@ -13,22 +14,16 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b  #v3.0.2
       with:
         token: ${{ secrets.PERSONAL_TOKEN_GH }}
 
-    - name: Maven cache
-      uses: actions/cache@v1
+    - name: Set up JDK
+      uses: actions/setup-java@2c7a4878f5d120bd643426d54ae1209b29cc01a3  #v3.4.1
       with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-${{ hashFiles('.github/workflows/tzdbupdate.yml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
-
-    - name: Set up JDK 1.8
-      uses: actions/setup-java@v1
-      with:
-        java-version: 1.8
+        java-version: '8'
+        distribution: 'corretto'
+        cache: 'maven'
 
     - name: Maven version
       run: |
@@ -92,7 +87,7 @@ jobs:
     - name: Create Pull Request
       if: env.NOOP != 'true'
       id: createpr
-      uses: peter-evans/create-pull-request@v3.10.1
+      uses: peter-evans/create-pull-request@7380612b49221684fefa025244f2ef4008ae50ad  #v3.10.1
       env:
         GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN_GH }}
       with:

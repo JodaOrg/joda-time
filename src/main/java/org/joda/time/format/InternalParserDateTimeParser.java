@@ -69,4 +69,9 @@ class InternalParserDateTimeParser implements DateTimeParser, InternalParser {
         return false;
     }
 
+
+    @Override
+    public int hashCode() {
+        return underlying.hashCode();
+    }
 }

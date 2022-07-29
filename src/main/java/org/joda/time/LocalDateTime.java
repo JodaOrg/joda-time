@@ -687,6 +687,21 @@ public final class LocalDateTime
         return super.equals(partial);
     }
 
+    @Override
+    public int hashCode() {
+        int total = 157;
+        total = 23 * total + iChronology.year().get(iLocalMillis);
+        total = 23 * total + iChronology.year().getType().hashCode();
+        total = 23 * total + iChronology.monthOfYear().get(iLocalMillis);
+        total = 23 * total + iChronology.monthOfYear().getType().hashCode();
+        total = 23 * total + iChronology.dayOfMonth().get(iLocalMillis);
+        total = 23 * total + iChronology.dayOfMonth().getType().hashCode();
+        total = 23 * total + iChronology.millisOfDay().get(iLocalMillis);
+        total = 23 * total + iChronology.millisOfDay().getType().hashCode();
+        total += getChronology().hashCode();
+        return total;
+    }
+
     /**
      * Compares this partial with another returning an integer
      * indicating the order.

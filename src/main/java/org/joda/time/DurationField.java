@@ -283,31 +283,31 @@ public abstract class DurationField implements Comparable<DurationField> {
 //     */
 //    public abstract int compareTo(DurationField durationField);
 
-    /**
-     * Returns a localized unit name of this field, using the given value as an
-     * aid. For example, the unit name may differ if it is plural.
-     *
-     * @param value the duration value to use for selecting a unit name
-     * @param locale the locale to use for selecting a name, null for default
-     */
-    //String getUnitName(long value, Locale locale);
-
-    /**
-     * Returns a localized unit name of this field, using the given value as an
-     * aid. For example, the unit name may differ if it is plural.
-     *
-     * @param value the duration value to use for selecting a unit name
-     */
-    //String getUnitName(long value);
-
-    /**
-     * Get the maximum length string returned by getUnitName.
-     * 
-     * @param locale the locale to use for selecting a unit name, null for
-     * default
-     * @return the maximum name length
-     */
-    //int getMaximumUnitNameLength(Locale locale);
+//    /**
+//     * Returns a localized unit name of this field, using the given value as an
+//     * aid. For example, the unit name may differ if it is plural.
+//     *
+//     * @param value the duration value to use for selecting a unit name
+//     * @param locale the locale to use for selecting a name, null for default
+//     */
+//    //String getUnitName(long value, Locale locale);
+//
+//    /**
+//     * Returns a localized unit name of this field, using the given value as an
+//     * aid. For example, the unit name may differ if it is plural.
+//     *
+//     * @param value the duration value to use for selecting a unit name
+//     */
+//    //String getUnitName(long value);
+//
+//    /**
+//     * Get the maximum length string returned by getUnitName.
+//     * 
+//     * @param locale the locale to use for selecting a unit name, null for
+//     * default
+//     * @return the maximum name length
+//     */
+//    //int getMaximumUnitNameLength(Locale locale);
 
     //------------------------------------------------------------------------
     /**

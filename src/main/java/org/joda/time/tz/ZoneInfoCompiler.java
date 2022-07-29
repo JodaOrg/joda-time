@@ -88,23 +88,26 @@ public class ZoneInfoCompiler {
         boolean verbose = false;
 
         int i;
-        for (i=0; i<args.length; i++) {
-            try {
-                if ("-src".equals(args[i])) {
-                    inputDir = new File(args[++i]);
-                } else if ("-dst".equals(args[i])) {
-                    outputDir = new File(args[++i]);
-                } else if ("-verbose".equals(args[i])) {
-                    verbose = true;
-                } else if ("-?".equals(args[i])) {
+        for (i = 0; i < args.length; i++) {
+            if ("-src".equals(args[i])) {
+                if (++i >= args.length) {
                     printUsage();
                     return;
-                } else {
-                    break;
                 }
-            } catch (IndexOutOfBoundsException e) {
+                inputDir = new File(args[i]);
+            } else if ("-dst".equals(args[i])) {
+                if (++i >= args.length) {
+                    printUsage();
+                    return;
+                }
+                outputDir = new File(args[i]);
+            } else if ("-verbose".equals(args[i])) {
+                verbose = true;
+            } else if ("-?".equals(args[i])) {
                 printUsage();
                 return;
+            } else {
+                break;
             }
         }
 

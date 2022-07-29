@@ -696,6 +696,21 @@ public final class LocalTime
         return super.equals(partial);
     }
 
+    @Override
+    public int hashCode() {
+        int total = 157;
+        total = 23 * total + iChronology.hourOfDay().get(iLocalMillis);
+        total = 23 * total + iChronology.hourOfDay().getType().hashCode();
+        total = 23 * total + iChronology.minuteOfHour().get(iLocalMillis);
+        total = 23 * total + iChronology.minuteOfHour().getType().hashCode();
+        total = 23 * total + iChronology.secondOfMinute().get(iLocalMillis);
+        total = 23 * total + iChronology.secondOfMinute().getType().hashCode();
+        total = 23 * total + iChronology.millisOfSecond().get(iLocalMillis);
+        total = 23 * total + iChronology.millisOfSecond().getType().hashCode();
+        total += getChronology().hashCode();
+        return total;
+    }
+
     /**
      * Compares this partial with another returning an integer
      * indicating the order.

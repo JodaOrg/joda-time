@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 
 import org.joda.time.Chronology;
@@ -656,6 +657,11 @@ public class DateTimeZoneBuilder {
             }
             return false;
         }
+        
+        @Override
+        public int hashCode() {
+            return Arrays.hashCode(new Object[] {iMode, iMonthOfYear, iDayOfMonth, iDayOfWeek, iAdvance, iMillisOfDay});
+        }
 
         @Override
         public String toString() {
@@ -803,6 +809,11 @@ public class DateTimeZoneBuilder {
                     iOfYear.equals(other.iOfYear);
             }
             return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return Arrays.hashCode(new Object[] {iSaveMillis, iNameKey, iOfYear});
         }
 
         public void writeTo(DataOutput out) throws IOException {
@@ -1344,6 +1355,11 @@ public class DateTimeZoneBuilder {
             return false;
         }
 
+        @Override
+        public int hashCode() {
+            return Arrays.hashCode(new Object[] {iStandardOffset, iStartRecurrence, iEndRecurrence});
+        }
+
         public void writeTo(DataOutput out) throws IOException {
             writeMillis(out, iStandardOffset);
             iStartRecurrence.writeTo(out);
@@ -1497,7 +1513,7 @@ public class DateTimeZoneBuilder {
                     }
                     if (curOffset > nextOffset) {
                         nameKeys[i] = (curNameKey + "-Summer").intern();
-                    } else if (curOffset < nextOffset) {
+                    } else {
                         nameKeys[i + 1] = (nextNameKey + "-Summer").intern();
                         i++;
                     }
@@ -1689,6 +1705,11 @@ public class DateTimeZoneBuilder {
                      : (iTailZone.equals(other.iTailZone)));
             }
             return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return getID().hashCode();
         }
 
         public void writeTo(DataOutput out) throws IOException {

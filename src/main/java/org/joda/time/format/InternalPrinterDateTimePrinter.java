@@ -103,4 +103,8 @@ class InternalPrinterDateTimePrinter implements DateTimePrinter, InternalPrinter
         return false;
     }
 
+    @Override
+    public int hashCode() {
+        return underlying.hashCode();
+    }
 }

@@ -105,6 +105,17 @@ To report a security vulnerability, please use the [Tidelift security contact](h
 Tidelift will coordinate the fix and disclosure.
 
 
+### Development and Contributions
+Joda-Time is developed using standard [GitHub tools](https://github.com/JodaOrg/joda-time).
+A [checkstyle](https://checkstyle.sourceforge.io/) file is available, and PRs must comply with it.
+The project can be built using [Apache Maven](https://maven.apache.org/), such as <code>mvn clean install</code>.
+Continuous Integration takes place using [GitHub Actions](https://github.com/JodaOrg/joda-time/actions).
+Units tests are written in [JUnit](https://junit.org/) and run as part of the build and continuous integration.
+Changes via PR must include appropiate test coverage.
+
+Note that Joda-Time is considered to be a largely “finished” project. No major enhancements are planned. If using Java SE 8, please migrate to java.time (JSR-310).
+
+
 ### Release process
 
 * Update version (pom.xml, README.md, index.md, MANIFEST.MF, changes.xml)

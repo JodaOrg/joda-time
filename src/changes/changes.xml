@@ -8,7 +8,7 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
-    <release version="2.11.0" date="SNAPSHOT" description="v2.11.0">
+    <release version="2.11.0" date="2022-08-12" description="v2.11.0">
       <action dev="jodastephen" type="fix">
         Change DateTimeZone to use 'org.joda.time.DateTimeZone.Timezone' instead of 'user.timezone'.
         This change causes Joda-Time to query 'TimeZone.getDefault()' in most cases.
@@ -20,6 +20,11 @@
       <action dev="jodastephen" type="fix">
         Avoid using == on objects.
         Fixes #581.
+      </action>
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2022bgtz.
+        This uses the new global-tz project that reinstates all the data removed by IANA's TZDB.
+        See https://github.com/JodaOrg/joda-time/issues/566
       </action>
     </release>
     <release version="2.10.14" date="2022-03-20" description="v2.10.14">

@@ -9,9 +9,9 @@ on:
     tags:
       - 'v*'
       - 'website*'
-  pull_request:
+  pull_request
     branches:
-      - 'master'
+      - '*'
 
 jobs:
   build:

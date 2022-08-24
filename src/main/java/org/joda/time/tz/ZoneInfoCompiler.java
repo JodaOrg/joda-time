@@ -168,7 +168,7 @@ public class ZoneInfoCompiler {
                 Short index = Short.valueOf(count);
                 idToIndex.put(id, index);
                 indexToId.put(index, id);
-                if (++count == 0) {
+                if (++count == Integer.MAX_VALUE) {
                     throw new InternalError("Too many time zone ids");
                 }
             }
@@ -177,7 +177,7 @@ public class ZoneInfoCompiler {
                 Short index = Short.valueOf(count);
                 idToIndex.put(id, index);
                 indexToId.put(index, id);
-                if (++count == 0) {
+                if (++count == Integer.MAX_VALUE) {
                     throw new InternalError("Too many time zone ids");
                 }
             }

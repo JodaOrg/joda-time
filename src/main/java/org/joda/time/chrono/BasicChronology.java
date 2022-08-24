@@ -177,9 +177,9 @@ abstract class BasicChronology extends AssembledChronology {
         FieldUtils.verifyValueBounds(DateTimeFieldType.minuteOfHour(), minuteOfHour, 0, 59);
         FieldUtils.verifyValueBounds(DateTimeFieldType.secondOfMinute(), secondOfMinute, 0, 59);
         FieldUtils.verifyValueBounds(DateTimeFieldType.millisOfSecond(), millisOfSecond, 0, 999);
-        long millisOfDay = hourOfDay * DateTimeConstants.MILLIS_PER_HOUR
-                        + minuteOfHour * DateTimeConstants.MILLIS_PER_MINUTE
-                        + secondOfMinute * DateTimeConstants.MILLIS_PER_SECOND
+        long millisOfDay = (long) hourOfDay * DateTimeConstants.MILLIS_PER_HOUR
+                        + (long) minuteOfHour * DateTimeConstants.MILLIS_PER_MINUTE
+                        + (long) secondOfMinute * DateTimeConstants.MILLIS_PER_SECOND
                         + millisOfSecond;
         return getDateTimeMillis0(year, monthOfYear, dayOfMonth, (int) millisOfDay);
     }

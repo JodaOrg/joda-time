@@ -3,7 +3,7 @@ name: TZDB check
 on:
   push:
     branches:
-      - 'master'
+      - 'main'
       - 'enhance*'
   schedule:
     - cron: '50 1 * * *'

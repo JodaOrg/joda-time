@@ -9,9 +9,12 @@ on:
     tags:
       - 'v*'
       - 'website*'
-  pull_request:
+  pull_request_target:
     branches:
       - '*'
+
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -24,8 +27,8 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@2c7a4878f5d120bd643426d54ae1209b29cc01a3  #v3.4.1
       with:
-        java-version: '8'
-        distribution: 'corretto'
+        java-version: 8
+        distribution: 'temurin'
         cache: 'maven'
 
     - name: Maven version

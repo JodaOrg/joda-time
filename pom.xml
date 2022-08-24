@@ -379,7 +379,7 @@
             <configuration>
               <rules>
                 <requireMavenVersion>
-                  <version>3.5.0</version>
+                  <version>3.6.0</version>
                 </requireMavenVersion>
               </rules>
             </configuration>
@@ -1002,13 +1002,13 @@
     <maven-dependency-plugin.version>3.3.0</maven-dependency-plugin.version>
     <maven-enforcer-plugin.version>3.1.0</maven-enforcer-plugin.version>
     <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
-    <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
+    <maven-install-plugin.version>3.0.1</maven-install-plugin.version>
     <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
-    <maven-javadoc-plugin.version>3.4.0</maven-javadoc-plugin.version>
-    <maven-jxr-plugin.version>3.2.0</maven-jxr-plugin.version>
+    <maven-javadoc-plugin.version>3.4.1</maven-javadoc-plugin.version>
+    <maven-jxr-plugin.version>3.3.0</maven-jxr-plugin.version>
     <maven-plugin-plugin.version>3.6.4</maven-plugin-plugin.version>
-    <maven-pmd-plugin.version>3.17.0</maven-pmd-plugin.version>
-    <maven-project-info-reports-plugin.version>3.4.0</maven-project-info-reports-plugin.version>
+    <maven-pmd-plugin.version>3.18.0</maven-pmd-plugin.version>
+    <maven-project-info-reports-plugin.version>3.4.1</maven-project-info-reports-plugin.version>
     <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
     <maven-repository-plugin.version>2.4</maven-repository-plugin.version>
     <maven-resources-plugin.version>3.3.0</maven-resources-plugin.version>

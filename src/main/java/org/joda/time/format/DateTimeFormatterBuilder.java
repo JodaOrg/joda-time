@@ -2382,7 +2382,7 @@ public class DateTimeFormatterBuilder {
                     prefix = text.subSequence(pos, i + 1).toString();
                     pos += prefix.length();
                     String prefixLookup = prefix;
-                    if (i < textLen) {
+                    if (i < textLen - 1) {
                         prefixLookup += text.charAt(i + 1);
                     }
                     suffixSet = GROUPED_IDS.get(prefixLookup);
@@ -2631,7 +2631,7 @@ public class DateTimeFormatterBuilder {
                 bucket.restoreState(originalState);
             }
 
-            if (bestValidPos > position || (bestValidPos == position && isOptional)) {
+            if (bestValidPos > position || (bestValidPos == position && isOptional)) {  // LGTM ignore
                 // Restore the state to the best valid parse.
                 if (bestValidState != null) {
                     bucket.restoreState(bestValidState);

@@ -1650,7 +1650,7 @@ public final class Period
             if (type.isSupported(DurationFieldType.YEARS_TYPE)) {
                 int normalizedYears = FieldUtils.safeToInt(totalMonths / 12);
                 result = result.withYears(normalizedYears);
-                totalMonths = totalMonths - (normalizedYears * 12);
+                totalMonths = totalMonths - (normalizedYears * 12L);
             }
             if (type.isSupported(DurationFieldType.MONTHS_TYPE)) {
                 int normalizedMonths = FieldUtils.safeToInt(totalMonths);

@@ -867,71 +867,6 @@
       </activation>
       <build>
         <plugins>
-          <!-- Sign artifacts -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>sign-artifacts</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <!-- Create dist files -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <configuration>
-              <attach>false</attach>
-              <descriptors>
-                <descriptor>src/main/assembly/dist.xml</descriptor>
-              </descriptors>
-              <tarLongFileMode>gnu</tarLongFileMode>
-            </configuration>
-            <executions>
-              <execution>
-                <id>make-assembly</id>
-                <phase>install</phase>
-                <goals>
-                  <goal>single</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <!-- Release dist files to GitHub -->
-          <plugin>
-            <groupId>de.jutzig</groupId>
-            <artifactId>github-release-plugin</artifactId>
-            <version>1.4.0</version>
-            <configuration>
-              <releaseName>Release v${project.version}</releaseName>
-              <description>See the [change notes](https://www.joda.org/joda-time/changes-report.html#a${project.version}) for more information.</description>
-              <tag>v${project.version}</tag>
-              <overwriteArtifact>true</overwriteArtifact>
-              <fileSets>
-                <fileSet>
-                  <directory>${project.build.directory}</directory>
-                  <includes>
-                    <include>${project.artifactId}*-dist.tar.gz</include>
-                    <include>${project.artifactId}*-dist.zip</include>
-                  </includes>
-                </fileSet>
-              </fileSets>
-            </configuration>
-            <executions>
-              <execution>
-                <id>github-releases</id>
-                <phase>deploy</phase>
-                <goals>
-                  <goal>release</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
           <!-- Use nexus plugin to directly release -->
           <plugin>
             <groupId>org.sonatype.plugins</groupId>
@@ -945,6 +880,84 @@
               <keepStagingRepositoryOnCloseRuleFailure>true</keepStagingRepositoryOnCloseRuleFailure>
               <autoReleaseAfterClose>true</autoReleaseAfterClose>
             </configuration>
+          </plugin>
+          <!-- Create dist files -->
+          <!-- Since we cannot sign a single file, we put everything in the deploy phase -->
+          <!-- The standard files are signed in the verify phase and then deployed to Maven Central using nexus-staging-maven-plugin -->
+          <!-- Then (and only then) we create and attach the dist files, sign them, and release them to GitHub Releases -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>make-assembly</id>
+                <phase>deploy</phase>
+                <goals>
+                  <goal>single</goal>
+                </goals>
+                <configuration>
+                  <descriptors>
+                    <descriptor>src/main/assembly/dist.xml</descriptor>
+                  </descriptors>
+                  <tarLongFileMode>gnu</tarLongFileMode>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <!-- Sign artifacts, which now includes the dist files -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+              <!-- this execution must be located after nexus-staging-maven-plugin (see comment above about ordering) -->
+              <execution>
+                <id>sign-dist-artifacts</id>
+                <phase>deploy</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <!-- Release dist files to GitHub -->
+          <plugin>
+            <groupId>de.jutzig</groupId>
+            <artifactId>github-release-plugin</artifactId>
+            <version>1.4.0</version>
+            <executions>
+              <execution>
+                <id>github-releases</id>
+                <phase>deploy</phase>
+                <goals>
+                  <goal>release</goal>
+                </goals>
+                <configuration>
+                  <releaseName>Release v${project.version}</releaseName>
+                  <description>See the [change notes](https://www.joda.org/joda-time/changes-report.html#a${project.version}) for more information.</description>
+                  <tag>v${project.version}</tag>
+                  <overwriteArtifact>true</overwriteArtifact>
+                  <fileSets>
+                    <fileSet>
+                      <directory>${project.build.directory}</directory>
+                      <includes>
+                        <include>${project.artifactId}-${project.version}-dist.tar.gz</include>
+                        <include>${project.artifactId}-${project.version}-dist.tar.gz.asc</include>
+                        <include>${project.artifactId}-${project.version}-dist.zip</include>
+                        <include>${project.artifactId}-${project.version}-dist.zip.asc</include>
+                        <include>${project.artifactId}-${project.version}.jar.asc</include>
+                      </includes>
+                    </fileSet>
+                  </fileSets>
+                </configuration>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>

@@ -8,7 +8,7 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
-    <release version="SNAPSHOT" date="SNAPSHOT" description="SNAPSHOT">
+    <release version="2.11.1" date="2022-08-25" description="v2.11.1">
       <action dev="jodastephen" type="update">
         Update build scripts and fix static analysis warnings.
       </action>

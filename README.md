@@ -39,6 +39,9 @@ public String getBirthMonthText(LocalDate dateOfBirth) {
 
 Joda-Time is licensed under the business-friendly [Apache 2.0 licence](https://www.joda.org/joda-time/licenses.html).
 
+![Tidelift dependency check](https://tidelift.com/badges/github/JodaOrg/joda-time)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6310/badge)](https://bestpractices.coreinfrastructure.org/projects/6310)
+
 
 ### Documentation
 Various documentation is available:
@@ -70,8 +73,6 @@ Available in the [Maven Central repository](https://search.maven.org/search?q=g:
 ```groovy
 compile 'joda-time:joda-time:2.11.0'
 ```
-
-![Tidelift dependency check](https://tidelift.com/badges/github/JodaOrg/joda-time)
 
 
 ### Related projects

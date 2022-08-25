@@ -10,7 +10,13 @@
     <!-- types are add, fix, remove, update -->
     <release version="SNAPSHOT" date="SNAPSHOT" description="SNAPSHOT">
       <action dev="jodastephen" type="update">
+        Update build scripts and fix static analysis warnings.
+      </action>
+      <action dev="jodastephen" type="update">
         Switch master to main.
+      </action>
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2022cgtz.
       </action>
     </release>
     <release version="2.11.0" date="2022-08-12" description="v2.11.0">

@@ -756,7 +756,10 @@ public final class LocalTime
      * @return a copy of this time with different millis
      */
     LocalTime withLocalMillis(long newMillis) {
-        return (newMillis == getLocalMillis() ? this : new LocalTime(newMillis, getChronology()));
+        if (newMillis == getLocalMillis()) {
+            return this;
+        }
+        return new LocalTime(newMillis, getChronology());
     }
 
     //-----------------------------------------------------------------------

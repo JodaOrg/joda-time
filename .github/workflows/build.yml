@@ -18,8 +18,10 @@ permissions:
 
 jobs:
   build:
+    permissions:
+      security-events: write  # for github/codeql-action
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b  #v3.0.2
@@ -38,10 +40,18 @@ jobs:
         mvn --version
         mkdir -p target
 
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@86f3159a697a097a813ad9bfa0002412d97690a4  #v2.1.25
+      with:
+        languages: java
+    
     - name: Maven build
       run: |
         mvn install site
 
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@86f3159a697a097a813ad9bfa0002412d97690a4  #v2.1.25
+    
     - name: Website
       if: github.event_name == 'push' && (startsWith(github.ref, 'refs/tags/website') || startsWith(github.ref, 'refs/tags/v'))
       env:

@@ -1470,7 +1470,7 @@ Zone	Africa/Freetown	-0:53:00 -	LMT	1882
 			-0:53:00 -	FMT	1913 Jul  1 # Freetown MT
 			-1:00	SL	%s	1939 Sep  5
 			-1:00	-	-01	1941 Dec  6 24:00
-			 0:00	SL	GMT/+01
+			 0:00	-	GMT
 
 # Somalia
 # Zone	NAME		STDOFF	RULES	FORMAT	[UNTIL]

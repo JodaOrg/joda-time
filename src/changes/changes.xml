@@ -8,6 +8,14 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
+    <release version="2.11.2" date="2022-09-25" description="v2.11.2">
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2022dgtz.
+      </action>
+      <action dev="jodastephen" type="update">
+        Switch LGTM to CodeQL.
+      </action>
+    </release>
     <release version="2.11.1" date="2022-08-25" description="v2.11.1">
       <action dev="jodastephen" type="update">
         Update build scripts and fix static analysis warnings.

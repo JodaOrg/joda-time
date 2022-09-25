@@ -2,9 +2,8 @@ name: TZDB check
 
 on:
   push:
-    branches:
-      - 'main'
-      - 'enhance*'
+    tags:
+      - 'tzdb*'
   schedule:
     - cron: '50 1 * * *'
 

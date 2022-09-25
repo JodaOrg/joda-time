@@ -97,6 +97,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN_GH }}
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
+        base: main
         commit-message: 'Update time zone data to ${{ env.LATEST_TZDB }}'
         committer: Stephen Colebourne (CI) <scolebourne@joda.org>
         author: Stephen Colebourne (CI) <scolebourne@joda.org>

@@ -780,7 +780,8 @@ public class TestDateTimeZone extends TestCase {
         boolean jdk9 = true;
         try {
             String str = System.getProperty("java.version");
-            jdk9 = str.startsWith("9");
+            str = str.indexOf('.') > 0 ? str.substring(0, str.indexOf('.')) : str;
+            jdk9 = Integer.parseInt(str) >= 9;
         } catch (Exception ex) {
             jdk9 = false;
         }
@@ -1320,6 +1321,15 @@ public class TestDateTimeZone extends TestCase {
         String str1 = zone.getName(now.getMillis());
         String str2 = zone.getName(now.plusMonths(6).getMillis());
         assertEquals(false, str1.equals(str2));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testIdNotAutoMapped_Asia_Yangon() throws Exception {
+        DateTimeZone zoneOld = DateTimeZone.forID("Asia/Rangoon");
+        assertEquals(zoneOld.getID(), "Asia/Yangon");
+
+        DateTimeZone zoneNew = DateTimeZone.forID("Asia/Yangon");
+        assertEquals(zoneNew.getID(), "Asia/Yangon");
     }
 
 }

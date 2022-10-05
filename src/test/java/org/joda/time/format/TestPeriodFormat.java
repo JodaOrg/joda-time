@@ -17,10 +17,10 @@ package org.joda.time.format;
 
 import java.util.Locale;
 
+import org.joda.time.Period;
+
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
-import org.joda.time.Period;
 
 /**
  * This class is a Junit unit test for PeriodFormat.
@@ -29,18 +29,29 @@ import org.joda.time.Period;
  */
 public class TestPeriodFormat extends TestCase {
 
-    private static final Locale EN = new Locale("en");
-    private static final Locale FR = new Locale("fr");
-    private static final Locale PT = new Locale("pt");
-    private static final Locale ES = new Locale("es");
-    private static final Locale DE = new Locale("de");
-    private static final Locale NL = new Locale("nl");
-    private static final Locale DA = new Locale("da");
-    private static final Locale JA = new Locale("ja");
-    private static final Locale PL = new Locale("pl");
     private static final Locale BG = new Locale("bg");
+    private static final Locale CA = new Locale("ca");
     private static final Locale CS = new Locale("cs");
+    private static final Locale DA = new Locale("da");
+    private static final Locale DE = new Locale("de");
+    private static final Locale EL = new Locale("el");
+    private static final Locale EN = new Locale("en");
+    private static final Locale ES = new Locale("es");
+    private static final Locale EU = new Locale("eu");
+    private static final Locale FI = new Locale("fi");
+    private static final Locale FR = new Locale("fr");
+    private static final Locale IW = new Locale("iw");
+    private static final Locale JA = new Locale("ja");
+    private static final Locale NL = new Locale("nl");
+    private static final Locale NN = new Locale("nn");
+    private static final Locale NO = new Locale("no");
+    private static final Locale PL = new Locale("pl");
+    private static final Locale PT = new Locale("pt");
+    private static final Locale RO = new Locale("ro");
     private static final Locale RU = new Locale("ru");
+    private static final Locale SK = new Locale("sk");
+    private static final Locale TR = new Locale("tr");
+    private static final Locale UK = new Locale("uk");
 
     private Locale originalLocale = null;
 
@@ -131,14 +142,50 @@ public class TestPeriodFormat extends TestCase {
         assertEquals("1 Tag, 5 Stunden, 6 Minuten, 7 Sekunden und 8 Millisekunden", PeriodFormat.wordBased().print(p));
     }
 
-    //-----------------------------------------------------------------------
-    // wordBased(Locale.FRENCH)
-    //-----------------------------------------------------------------------
-    public void test_wordBased_fr_formatStandard() {
-        Period p = new Period(0, 0, 0, 1, 5, 6 ,7, 8);
-        assertEquals("1 jour, 5 heures, 6 minutes, 7 secondes et 8 millisecondes", PeriodFormat.wordBased(FR).print(p));
+    // -----------------------------------------------------------------------
+    // wordBased - minimal test for locales
+    // -----------------------------------------------------------------------
+    private static Object[][] data_formatStandard() {
+        return new Object[][] {
+            {BG, "2 години, 1 месец, 1 ден, 5 часа, 6 минути, 7 секунди и 8 милисекунди"},
+            {CA, "2 anys, 1 mes, 1 dia, 5 hores, 6 minuts, 7 segons i 8 milisegons"},
+            {CS, "2 roky, 1 měsíc, 1 den, 5 hodin, 6 minut, 7 sekund a 8 milisekund"},
+            {DA, "2 år, 1 måned, 1 dag, 5 timer, 6 minutter, 7 sekunder og 8 millisekunder"},
+            {DE, "2 Jahre, 1 Monat, 1 Tag, 5 Stunden, 6 Minuten, 7 Sekunden und 8 Millisekunden"},
+            {EN, "2 years, 1 month, 1 day, 5 hours, 6 minutes, 7 seconds and 8 milliseconds"},
+            {EL, "2 χρόνια, 1 μήνας, 1 μέρα, 5 ώρες, 6 λεπτά, 7 δευτερόλεπτα και 8 χιλιοστά του δευτερολέπτου"},
+            {ES, "2 años, 1 mes, 1 día, 5 horas, 6 minutos, 7 segundos y 8 milisegundos"},
+            {EU, "2 urte, 1 hilabete, 1 egun, 5 ordu, 6 minuto, 7 segundo eta 8 milisegundo"},
+            {FR, "2 années, 1 mois, 1 jour, 5 heures, 6 minutes, 7 secondes et 8 millisecondes"},
+            {FI, "2 vuotta, 1 kuukausi, 1 päivä, 5 tuntia, 6 minuuttia, 7 sekuntia ja 8 millisekuntia"},
+            {IW, "2 שנים, 1 חודש, 1 יום, 5 שעות, 6 דקות, 7 שניות-ו 8 אלפיות שנייה"},
+            {JA, "2年1か月1日5時間6分7秒8ミリ秒"},
+            {NL, "2 jaar, 1 maand, 1 dag, 5 uur, 6 minuten, 7 seconden en 8 milliseconden"},
+            {NN, "2 år, 1 månad, 1 dag, 5 timar, 6 minutt, 7 sekund og 8 millisekund"},
+            {NO, "2 år, 1 måned, 1 dag, 5 timer, 6 minutter, 7 sekunder og 8 millisekunder"},
+            {PL, "2 lata, 1 miesiąc, 1 dzie\u0144, 5 godzin, 6 minut, 7 sekund i 8 milisekund"},
+            {PT, "2 anos, 1 mês, 1 dia, 5 horas, 6 minutos, 7 segundos e 8 milissegundos"},
+            {RO, "2 ani, 1 lună, 1 zi, 5 ore, 6 minute, 7 secunde și 8 milisecunde"},
+            {RU, "2 года, 1 месяц, 1 день, 5 часов, 6 минут, 7 секунд и 8 миллисекунд"},
+            {SK, "2 roky, 1 mesiac, 1 deň, 5 hodín, 6 minút, 7 sekúnd a 8 milisekúnd"},
+            {TR, "2 yıl, 1 ay, 1 gün, 5 saat, 6 dakika, 7 saniye ve 8 milisaniye"},
+            {UK, "2 року, 1 місяць, 1 день, 5 годин, 6 хвилин, 7 секунд и 8 мілісекунд"},
+        };
     }
 
+    public void test_wordBased_formatStandard() {
+        Period p = new Period(2, 1, 0, 1, 5, 6, 7, 8);
+        Object[][] data = data_formatStandard();
+        for (int i = 0; i < data.length; i++) {
+            Locale locale = (Locale) data[i][0];
+            String actual = PeriodFormat.wordBased(locale).print(p);
+            String expected = data[i][1].toString();
+            assertEquals(locale.toString(), expected, actual);
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    // wordBased(Locale.FRENCH)
     //-----------------------------------------------------------------------
     public void test_wordBased_fr_FormatOneField() {
         Period p = Period.days(2);
@@ -171,12 +218,6 @@ public class TestPeriodFormat extends TestCase {
     //-----------------------------------------------------------------------
     // wordBased(Locale pt)
     //-----------------------------------------------------------------------
-    public void test_wordBased_pt_formatStandard() {
-        Period p = new Period(0, 0, 0, 1, 5, 6 ,7, 8);
-        assertEquals("1 dia, 5 horas, 6 minutos, 7 segundos e 8 milissegundos", PeriodFormat.wordBased(PT).print(p));
-    }
-
-    //-----------------------------------------------------------------------
     public void test_wordBased_pt_FormatOneField() {
         Period p = Period.days(2);
         assertEquals("2 dias", PeriodFormat.wordBased(PT).print(p));
@@ -207,12 +248,6 @@ public class TestPeriodFormat extends TestCase {
 
     //-----------------------------------------------------------------------
     // wordBased(Locale es)
-    //-----------------------------------------------------------------------
-    public void test_wordBased_es_formatStandard() {
-        Period p = new Period(0, 0, 0, 1, 5, 6 ,7, 8);
-        assertEquals("1 d\u00EDa, 5 horas, 6 minutos, 7 segundos y 8 milisegundos", PeriodFormat.wordBased(ES).print(p));
-    }
-
     //-----------------------------------------------------------------------
     public void test_wordBased_es_FormatOneField() {
         Period p = Period.days(2);
@@ -245,12 +280,6 @@ public class TestPeriodFormat extends TestCase {
     //-----------------------------------------------------------------------
     // wordBased(Locale de)
     //-----------------------------------------------------------------------
-    public void test_wordBased_de_formatStandard() {
-        Period p = new Period(0, 0, 0, 1, 5, 6 ,7, 8);
-        assertEquals("1 Tag, 5 Stunden, 6 Minuten, 7 Sekunden und 8 Millisekunden", PeriodFormat.wordBased(DE).print(p));
-    }
-
-    //-----------------------------------------------------------------------
     public void test_wordBased_de_FormatOneField() {
         Period p = Period.days(2);
         assertEquals("2 Tage", PeriodFormat.wordBased(DE).print(p));
@@ -281,12 +310,6 @@ public class TestPeriodFormat extends TestCase {
 
     //-----------------------------------------------------------------------
     // wordBased(Locale nl)
-    //-----------------------------------------------------------------------
-    public void test_wordBased_nl_formatStandard() {
-        Period p = new Period(0, 0, 0, 1, 5, 6 ,7, 8);
-        assertEquals("1 dag, 5 uur, 6 minuten, 7 seconden en 8 milliseconden", PeriodFormat.wordBased(NL).print(p));
-    }
-
     //-----------------------------------------------------------------------
     public void test_wordBased_nl_FormatOneField() {
         Period p = Period.days(2);
@@ -379,12 +402,6 @@ public class TestPeriodFormat extends TestCase {
 
     // -----------------------------------------------------------------------
     // wordBased(new Locale("pl")
-    // -----------------------------------------------------------------------
-    public void test_wordBased_pl_formatStandard() {
-        Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
-        assertEquals("1 dzie\u0144, 5 godzin, 6 minut, 7 sekund i 8 milisekund", PeriodFormat.wordBased(PL).print(p));
-    }
-
     // -----------------------------------------------------------------------
     public void test_wordBased_pl_FormatOneField() {
         Period p = Period.days(2);
@@ -577,29 +594,7 @@ public class TestPeriodFormat extends TestCase {
     }
     
     // -----------------------------------------------------------------------
-    // wordBased(new Locale("bg")
-    // -----------------------------------------------------------------------
-    public void test_wordBased_bg_formatStandard() {
-        Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
-        assertEquals("1 ден, 5 часа, 6 минути, 7 секунди и 8 милисекунди", PeriodFormat.wordBased(BG).print(p));
-    }
-
-    // -----------------------------------------------------------------------
-    // wordBased(new Locale("cs")
-    // -----------------------------------------------------------------------
-    public void test_wordBased_cs_formatStandard() {
-        Period p = new Period(0, 0, 0, 1, 5, 6, 7, 8);
-        assertEquals("1 den, 5 hodin, 6 minut, 7 sekund a 8 milisekund", PeriodFormat.wordBased(CS).print(p));
-    }
-
-    // -----------------------------------------------------------------------
     // wordBased(new Locale("ru")
-    // -----------------------------------------------------------------------
-    public void test_wordBased_ru_formatStandard() {
-        Period p = new Period(1, 2, 3, 4, 5, 6, 7, 8);
-        assertEquals("1 год, 2 месяца, 3 недели, 4 дня, 5 часов, 6 минут, 7 секунд и 8 миллисекунд", PeriodFormat.wordBased(RU).print(p));
-    }
-
     // -----------------------------------------------------------------------
     public void test_wordBased_ru_FormatOneField() {
         Period p = Period.days(2);

@@ -8,6 +8,11 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
+    <release version="2.11.3" date="SNAPSHOT" description="v2.11.3">
+      <action dev="various" type="add">
+        Add translations for ca, el, eu, fi, iw, nn, ro, sk.
+      </action>
+    </release>
     <release version="2.11.2" date="2022-09-25" description="v2.11.2">
       <action dev="jodastephen" type="update">
         DateTimeZone data updated to version 2022dgtz.

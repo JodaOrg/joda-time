@@ -42,6 +42,10 @@
   </developers>
   <contributors>
     <contributor>
+      <name>Sergi Almacellas Abellana</name>
+      <url>https://github.com/pokoli</url>
+    </contributor>
+    <contributor>
       <name>Adrian Acala</name>
       <url>https://github.com/AdrianAcala</url>
     </contributor>
@@ -63,6 +67,10 @@
     <contributor>
       <name>Mikey Austin</name>
       <url>https://github.com/mikey-austin</url>
+    </contributor>
+    <contributor>
+      <name>Dominik Baláž</name>
+      <url>https://github.com/dombalaz</url>
     </contributor>
     <contributor>
       <name>Oren Benjamin</name>
@@ -179,12 +187,20 @@
       <url>https://github.com/mkneissl</url>
     </contributor>
     <contributor>
+      <name>Kuunh</name>
+      <url>https://github.com/Kuunh</url>
+    </contributor>
+    <contributor>
       <name>Sebastian Kurten</name>
       <url>https://github.com/sebkur</url>
     </contributor>
     <contributor>
       <name>Fabian Lange</name>
       <url>https://github.com/CodingFabian</url>
+    </contributor>
+    <contributor>
+      <name>Mikel Larreategi</name>
+      <url>https://github.com/erral</url>
     </contributor>
     <contributor>
       <name>Vidar Larsen</name>
@@ -261,6 +277,10 @@
     <contributor>
       <name>Zhanbolat Raimbekov</name>
       <url>https://github.com/janbolat</url>
+    </contributor>
+    <contributor>
+      <name>H. Z. Sababa</name>
+      <url>https://github.com/hb20007</url>
     </contributor>
     <contributor>
       <name>Mike Schrag</name>

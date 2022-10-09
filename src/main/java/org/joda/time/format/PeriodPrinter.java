@@ -77,6 +77,7 @@ public interface PeriodPrinter {
      * @param out  the formatted period is written out
      * @param period  the period to format
      * @param locale  the locale to use
+     * @throws IOException if an IO error occurs
      */
     void printTo(Writer out, ReadablePeriod period, Locale locale) throws IOException;
 

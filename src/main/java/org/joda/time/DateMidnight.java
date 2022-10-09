@@ -134,6 +134,7 @@ public final class DateMidnight
      * This uses {@link ISODateTimeFormat#dateTimeParser()}.
      * 
      * @param str  the string to parse, not null
+     * @return the parsed date-midnight, not null
      * @since 2.0
      */
     @FromString
@@ -146,6 +147,7 @@ public final class DateMidnight
      * 
      * @param str  the string to parse, not null
      * @param formatter  the formatter to use, not null
+     * @return the parsed date-midnight, not null
      * @since 2.0
      */
     public static DateMidnight parse(String str, DateTimeFormatter formatter) {

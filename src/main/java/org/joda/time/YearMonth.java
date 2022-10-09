@@ -134,6 +134,7 @@ public final class YearMonth
      * This uses {@link ISODateTimeFormat#localDateParser()}.
      * 
      * @param str  the string to parse, not null
+     * @return the parsed year-month, not null
      * @since 2.0
      */
     @FromString
@@ -146,6 +147,7 @@ public final class YearMonth
      * 
      * @param str  the string to parse, not null
      * @param formatter  the formatter to use, not null
+     * @return the parsed year-month, not null
      * @since 2.0
      */
     public static YearMonth parse(String str, DateTimeFormatter formatter) {

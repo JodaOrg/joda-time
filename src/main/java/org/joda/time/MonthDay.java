@@ -142,6 +142,7 @@ public final class MonthDay
      * This uses {@link ISODateTimeFormat#localDateParser()} or the format {@code --MM-dd}.
      * 
      * @param str  the string to parse, not null
+     * @return the parsed month-day, not null
      * @since 2.0
      */
     @FromString
@@ -154,6 +155,7 @@ public final class MonthDay
      * 
      * @param str  the string to parse, not null
      * @param formatter  the formatter to use, not null
+     * @return the parsed month-day, not null
      * @since 2.0
      */
     public static MonthDay parse(String str, DateTimeFormatter formatter) {

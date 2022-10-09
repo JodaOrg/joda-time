@@ -1235,6 +1235,7 @@ public abstract class DateTimeZone implements Serializable {
      * referring to the id is written out. When the stub is read in, it
      * replaces itself with a DateTimeZone object.
      * @return a stub object to go in the stream
+     * @throws ObjectStreamException if the stream is invalid
      */
     protected Object writeReplace() throws ObjectStreamException {
         return new Stub(iID);

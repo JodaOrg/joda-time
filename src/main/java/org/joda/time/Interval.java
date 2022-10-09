@@ -69,6 +69,7 @@ public final class Interval
      * offset of the default time-zone. See also {@link #parseWithOffset(String)}.
      * 
      * @param str  the string to parse, not null
+     * @return the parsed interval, not null
      * @since 2.0
      */
     public static Interval parse(String str) {
@@ -99,6 +100,7 @@ public final class Interval
      * The object produced via the constructor has a zone of {@code DateTimeZone.getDefault()}.
      * 
      * @param str  the string to parse, not null
+     * @return the parsed interval, not null
      * @since 2.9
      */
     public static Interval parseWithOffset(String str) {

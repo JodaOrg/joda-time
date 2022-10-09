@@ -157,6 +157,7 @@ public final class LocalTime
      * This uses {@link ISODateTimeFormat#localTimeParser()}.
      * 
      * @param str  the string to parse, not null
+     * @return the parsed time, not null
      * @since 2.0
      */
     @FromString
@@ -169,6 +170,7 @@ public final class LocalTime
      * 
      * @param str  the string to parse, not null
      * @param formatter  the formatter to use, not null
+     * @return the parsed time, not null
      * @since 2.0
      */
     public static LocalTime parse(String str, DateTimeFormatter formatter) {
@@ -185,6 +187,7 @@ public final class LocalTime
      * This method uses the UTC time zone internally.
      *
      * @param millisOfDay  the number of milliseconds into a day to convert
+     * @return the time, not null
      */
     public static LocalTime fromMillisOfDay(long millisOfDay) {
         return fromMillisOfDay(millisOfDay, null);
@@ -200,6 +203,7 @@ public final class LocalTime
      *
      * @param millisOfDay  the number of milliseconds into a day to convert
      * @param chrono  the chronology, null means ISO chronology
+     * @return the time, not null
      */
     public static LocalTime fromMillisOfDay(long millisOfDay, Chronology chrono) {
         chrono = DateTimeUtils.getChronology(chrono).withUTC();
@@ -1325,6 +1329,7 @@ public final class LocalTime
      * Output the time using the specified format pattern.
      *
      * @param pattern  the pattern specification, null means use <code>toString</code>
+     * @return the formatted output, not null
      * @see org.joda.time.format.DateTimeFormat
      */
     public String toString(String pattern) {
@@ -1339,6 +1344,8 @@ public final class LocalTime
      *
      * @param pattern  the pattern specification, null means use <code>toString</code>
      * @param locale  Locale to use, null means default
+     * @return the formatted output, not null
+     * @throws IllegalArgumentException if the pattern is invalid
      * @see org.joda.time.format.DateTimeFormat
      */
     public String toString(String pattern, Locale locale) throws IllegalArgumentException {

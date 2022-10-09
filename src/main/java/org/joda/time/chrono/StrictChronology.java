@@ -39,6 +39,7 @@ public final class StrictChronology extends AssembledChronology {
      * Create a StrictChronology for any chronology.
      *
      * @param base the chronology to wrap
+     * @return the chronology, not null
      * @throws IllegalArgumentException if chronology is null
      */
     public static StrictChronology getInstance(Chronology base) {

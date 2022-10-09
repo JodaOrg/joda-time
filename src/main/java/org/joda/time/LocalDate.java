@@ -161,6 +161,7 @@ public final class LocalDate
      * This uses {@link ISODateTimeFormat#localDateParser()}.
      * 
      * @param str  the string to parse, not null
+     * @return the parsed date, not null
      * @since 2.0
      */
     @FromString
@@ -173,6 +174,7 @@ public final class LocalDate
      * 
      * @param str  the string to parse, not null
      * @param formatter  the formatter to use, not null
+     * @return the parsed date, not null
      * @since 2.0
      */
     public static LocalDate parse(String str, DateTimeFormatter formatter) {
@@ -1844,6 +1846,7 @@ public final class LocalDate
      * Output the date using the specified format pattern.
      *
      * @param pattern  the pattern specification, null means use <code>toString</code>
+     * @return the formatted output
      * @see org.joda.time.format.DateTimeFormat
      */
     public String toString(String pattern) {
@@ -1858,6 +1861,8 @@ public final class LocalDate
      *
      * @param pattern  the pattern specification, null means use <code>toString</code>
      * @param locale  Locale to use, null means default
+     * @return the formatted output
+     * @throws IllegalArgumentException if the pattern is invalid
      * @see org.joda.time.format.DateTimeFormat
      */
     public String toString(String pattern, Locale locale) throws IllegalArgumentException {

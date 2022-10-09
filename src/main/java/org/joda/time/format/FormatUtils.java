@@ -63,6 +63,7 @@ public class FormatUtils {
      * @param appenadble receives integer converted to a string
      * @param value value to convert to a string
      * @param size minimum amount of digits to append
+     * @throws IOException if an IO error occurs
      * @since 2.4
      */
     public static void appendPaddedInteger(Appendable appenadble, int value, int size) throws IOException {
@@ -137,6 +138,7 @@ public class FormatUtils {
      * @param appendable receives integer converted to a string
      * @param value value to convert to a string
      * @param size minimum amount of digits to append
+     * @throws IOException if an IO error occurs
      * @since 2.4
      */
     public static void appendPaddedInteger(Appendable appendable, long value, int size) throws IOException {
@@ -175,10 +177,9 @@ public class FormatUtils {
      * @param out receives integer converted to a string
      * @param value value to convert to a string
      * @param size minimum amount of digits to append
+     * @throws IOException if an IO error occurs
      */
-    public static void writePaddedInteger(Writer out, int value, int size)
-        throws IOException
-    {
+    public static void writePaddedInteger(Writer out, int value, int size) throws IOException {
         if (value < 0) {
             out.write('-');
             if (value != Integer.MIN_VALUE) {
@@ -232,10 +233,9 @@ public class FormatUtils {
      * @param out receives integer converted to a string
      * @param value value to convert to a string
      * @param size minimum amount of digits to append
+     * @throws IOException if an IO error occurs
      */
-    public static void writePaddedInteger(Writer out, long value, int size)
-        throws IOException
-    {
+    public static void writePaddedInteger(Writer out, long value, int size) throws IOException {
         int intValue = (int)value;
         if (intValue == value) {
             writePaddedInteger(out, intValue, size);
@@ -285,6 +285,7 @@ public class FormatUtils {
      *
      * @param appendable receives integer converted to a string
      * @param value value to convert to a string
+     * @throws IOException if an IO error occurs
      * @since 2.4
      */
     public static void appendUnpaddedInteger(Appendable appendable, int value) throws IOException {
@@ -335,6 +336,7 @@ public class FormatUtils {
      *
      * @param appendable receives integer converted to a string
      * @param value value to convert to a string
+     * @throws IOException if an IO error occurs
      */
     public static void appendUnpaddedInteger(Appendable appendable, long value) throws IOException {
         int intValue = (int)value;
@@ -352,10 +354,9 @@ public class FormatUtils {
      *
      * @param out receives integer converted to a string
      * @param value value to convert to a string
+     * @throws IOException if an IO error occurs
      */
-    public static void writeUnpaddedInteger(Writer out, int value)
-        throws IOException
-    {
+    public static void writeUnpaddedInteger(Writer out, int value) throws IOException {
         if (value < 0) {
             out.write('-');
             if (value != Integer.MIN_VALUE) {
@@ -387,10 +388,9 @@ public class FormatUtils {
      *
      * @param out receives integer converted to a string
      * @param value value to convert to a string
+     * @throws IOException if an IO error occurs
      */
-    public static void writeUnpaddedInteger(Writer out, long value)
-        throws IOException
-    {
+    public static void writeUnpaddedInteger(Writer out, long value) throws IOException {
         int intValue = (int)value;
         if (intValue == value) {
             writeUnpaddedInteger(out, intValue);
@@ -402,6 +402,9 @@ public class FormatUtils {
     /**
      * Calculates the number of decimal digits for the given value,
      * including the sign.
+     * 
+     * @param value the value
+     * @return the digit count
      */
     public static int calculateDigitCount(long value) {
         if (value < 0) {

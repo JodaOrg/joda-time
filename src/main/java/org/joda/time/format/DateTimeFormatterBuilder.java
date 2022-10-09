@@ -98,6 +98,7 @@ public class DateTimeFormatterBuilder {
      * {@link DateTimeFormatter#isParser()} will help you determine the state
      * of the formatter.
      *
+     * @return the formatter
      * @throws UnsupportedOperationException if neither printing nor parsing is supported
      */
     public DateTimeFormatter toFormatter() {
@@ -126,6 +127,7 @@ public class DateTimeFormatterBuilder {
      * <p>
      * Subsequent changes to this builder do not affect the returned printer.
      *
+     * @return the printer
      * @throws UnsupportedOperationException if printing is not supported
      */
     public DateTimePrinter toPrinter() {
@@ -147,6 +149,7 @@ public class DateTimeFormatterBuilder {
      * <p>
      * Subsequent changes to this builder do not affect the returned parser.
      *
+     * @return the parser
      * @throws UnsupportedOperationException if parsing is not supported
      */
     public DateTimeParser toParser() {
@@ -339,6 +342,7 @@ public class DateTimeFormatterBuilder {
      * time-zone, chronology, offset parsing or pivot/default year, will not be
      * extracted by this method.
      *
+     * @param parser the parser
      * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if parser is null or of an invalid type
      */
@@ -392,6 +396,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a specific character, and the parser to
      * expect it. The parser is case-insensitive.
      *
+     * @param c the character
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendLiteral(char c) {
@@ -402,6 +407,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit specific text, and the parser to expect
      * it. The parser is case-insensitive.
      *
+     * @param text the text
      * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if text is null
      */
@@ -1126,6 +1132,7 @@ public class DateTimeFormatterBuilder {
      * results into this builder.
      *
      * @param pattern  pattern specification
+     * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if the pattern is invalid
      * @see DateTimeFormat
      */

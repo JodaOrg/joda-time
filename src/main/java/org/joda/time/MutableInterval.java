@@ -65,6 +65,7 @@ public class MutableInterval
      * 'datetime/period' or 'period/datetime'.
      * 
      * @param str  the string to parse, not null
+     * @return the parsed interval, not null
      * @since 2.0
      */
     public static MutableInterval parse(String str) {

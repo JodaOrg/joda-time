@@ -195,6 +195,7 @@ public interface ReadableDateTime extends ReadableInstant {
      * Output the instant using the specified format pattern.
      *
      * @param pattern  pattern specification
+     * @return the formatted output, not null
      * @throws IllegalArgumentException  if pattern is invalid
      * @see  org.joda.time.format.DateTimeFormat
      */
@@ -205,6 +206,7 @@ public interface ReadableDateTime extends ReadableInstant {
      *
      * @param pattern  pattern specification
      * @param locale  Locale to use, or null for default
+     * @return the formatted output, not null
      * @throws IllegalArgumentException  if pattern is invalid
      * @see  org.joda.time.format.DateTimeFormat
      */

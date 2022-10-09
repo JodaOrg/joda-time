@@ -142,6 +142,7 @@ public class MutableDateTime
      * This uses {@link ISODateTimeFormat#dateTimeParser()}.
      * 
      * @param str  the string to parse, not null
+     * @return the parsed date-time, not null
      * @since 2.0
      */
     @FromString
@@ -154,6 +155,7 @@ public class MutableDateTime
      * 
      * @param str  the string to parse, not null
      * @param formatter  the formatter to use, not null
+     * @return the parsed date-time, not null
      * @since 2.0
      */
     public static MutableDateTime parse(String str, DateTimeFormatter formatter) {

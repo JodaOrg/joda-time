@@ -157,7 +157,6 @@ class StringConverter extends AbstractConverter
      * @param period  period to get modified
      * @param object  the String to convert, must not be null
      * @param chrono  the chronology to use
-     * @return the millisecond duration
      * @throws ClassCastException if the object is invalid
      */
     public void setInto(ReadWritablePeriod period, Object object, Chronology chrono) {

@@ -121,8 +121,7 @@ public class DateTimeParserBucket {
      * @param defaultYear  the default year to use when parsing month-day
      * @since 2.0
      */
-    public DateTimeParserBucket(long instantLocal, Chronology chrono,
-            Locale locale, Integer pivotYear, int defaultYear) {
+    public DateTimeParserBucket(long instantLocal, Chronology chrono, Locale locale, Integer pivotYear, int defaultYear) {
         super();
         chrono = DateTimeUtils.getChronology(chrono);
         iMillis = instantLocal;
@@ -190,6 +189,8 @@ public class DateTimeParserBucket {
     //-----------------------------------------------------------------------
     /**
      * Gets the chronology of the bucket, which will be a local (UTC) chronology.
+     * 
+     * @return the chronology
      */
     public Chronology getChronology() {
         return iChrono;
@@ -208,6 +209,8 @@ public class DateTimeParserBucket {
     //-----------------------------------------------------------------------
     /**
      * Returns the time zone used by computeMillis.
+     * 
+     * @return the zone
      */
     public DateTimeZone getZone() {
         return iZone;
@@ -215,6 +218,8 @@ public class DateTimeParserBucket {
 
     /**
      * Set a time zone to be used when computeMillis is called.
+     * 
+     * @param zone the zone
      */
     public void setZone(DateTimeZone zone) {
         iSavedState = null;
@@ -224,6 +229,8 @@ public class DateTimeParserBucket {
     //-----------------------------------------------------------------------
     /**
      * Returns the time zone offset in milliseconds used by computeMillis.
+     * 
+     * @return the offset
      * @deprecated use Integer version
      */
     @Deprecated
@@ -233,6 +240,8 @@ public class DateTimeParserBucket {
 
     /**
      * Returns the time zone offset in milliseconds used by computeMillis.
+     * 
+     * @return the offset
      */
     public Integer getOffsetInteger() {
         return iOffset;
@@ -240,6 +249,8 @@ public class DateTimeParserBucket {
 
     /**
      * Set a time zone offset to be used when computeMillis is called.
+     * 
+     * @param offset the offset
      * @deprecated use Integer version
      */
     @Deprecated
@@ -250,6 +261,8 @@ public class DateTimeParserBucket {
 
     /**
      * Set a time zone offset to be used when computeMillis is called.
+     * 
+     * @param offset the pffset
      */
     public void setOffset(Integer offset) {
         iSavedState = null;

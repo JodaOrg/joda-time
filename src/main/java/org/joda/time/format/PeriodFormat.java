@@ -196,6 +196,7 @@ public class PeriodFormat {
      * Available languages are English, Danish, Dutch, French, German, Japanese,
      * Polish, Portuguese and Spanish.
      * 
+     * @param locale the locale
      * @return the formatter, not null
      * @since 2.0, regex since 2.5
      */

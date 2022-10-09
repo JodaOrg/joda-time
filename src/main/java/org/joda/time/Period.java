@@ -74,6 +74,7 @@ public final class Period
      * This uses {@link ISOPeriodFormat#standard()}.
      * 
      * @param str  the string to parse, not null
+     * @return the parsed period, not null
      * @since 2.0
      */
     @FromString
@@ -86,6 +87,7 @@ public final class Period
      * 
      * @param str  the string to parse, not null
      * @param formatter  the formatter to use, not null
+     * @return the parsed period, not null
      * @since 2.0
      */
     public static Period parse(String str, PeriodFormatter formatter) {
@@ -250,6 +252,7 @@ public final class Period
      *
      * @param start  the start of the period, must not be null
      * @param end  the end of the period, must not be null
+     * @return the period, not null
      * @throws IllegalArgumentException if the partials are null or invalid
      * @since 1.1
      */

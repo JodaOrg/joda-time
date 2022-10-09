@@ -222,6 +222,7 @@ public class PeriodFormatter {
      *
      * @param out  the formatted period is written out
      * @param period  the period to format, not null
+     * @throws IOException if an IO error occurs
      */
     public void printTo(Writer out, ReadablePeriod period) throws IOException {
         checkPrinter();

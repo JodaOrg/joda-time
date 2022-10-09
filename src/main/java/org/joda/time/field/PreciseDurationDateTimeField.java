@@ -164,8 +164,11 @@ public abstract class PreciseDurationDateTimeField extends BaseDateTimeField {
 
     /**
      * Called by the set method to get the maximum allowed value. By default,
-     * returns getMaximumValue(instant). Override to provide a faster
-     * implementation.
+     * returns getMaximumValue(instant). Override to provide a faster implementation.
+     * 
+     * @param instant  the instant to query at
+     * @param value  the value
+     * @return the maximum value
      */
     protected int getMaximumValueForSet(long instant, int value) {
         return getMaximumValue(instant);

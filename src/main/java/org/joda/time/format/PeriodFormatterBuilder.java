@@ -200,6 +200,7 @@ public class PeriodFormatterBuilder {
     /**
      * Appends another formatter.
      *
+     * @param formatter the formatter to append
      * @return this PeriodFormatterBuilder
      */
     public PeriodFormatterBuilder append(PeriodFormatter formatter) {
@@ -235,6 +236,7 @@ public class PeriodFormatterBuilder {
      * Instructs the printer to emit specific text, and the parser to expect it.
      * The parser is case-insensitive.
      *
+     * @param text the text to append
      * @return this PeriodFormatterBuilder
      * @throws IllegalArgumentException if text is null
      */
@@ -253,6 +255,7 @@ public class PeriodFormatterBuilder {
      * fields. By default, the minimum digits printed is one. If the field value
      * is zero, it is not printed unless a printZero rule is applied.
      *
+     * @param minDigits the minimum number of digits
      * @return this PeriodFormatterBuilder
      */
     public PeriodFormatterBuilder minimumPrintedDigits(int minDigits) {
@@ -264,6 +267,7 @@ public class PeriodFormatterBuilder {
      * Set the maximum digits parsed for the next and following appended
      * fields. By default, the maximum digits parsed is ten.
      *
+     * @param maxDigits the maximum number of digits
      * @return this PeriodFormatterBuilder
      */
     public PeriodFormatterBuilder maximumParsedDigits(int maxDigits) {
@@ -274,10 +278,11 @@ public class PeriodFormatterBuilder {
     /**
      * Reject signed values when parsing the next and following appended fields.
      *
+     * @param reject true to reject signed values
      * @return this PeriodFormatterBuilder
      */
-    public PeriodFormatterBuilder rejectSignedValues(boolean v) {
-        iRejectSignedValues = v;
+    public PeriodFormatterBuilder rejectSignedValues(boolean reject) {
+        iRejectSignedValues = reject;
         return this;
     }
 
@@ -935,11 +940,15 @@ public class PeriodFormatterBuilder {
         void printTo(Writer out, int value) throws IOException;
         
         /**
+         * @param periodStr  the period
+         * @param position  the position
          * @return new position after parsing affix, or ~position of failure
          */
         int parse(String periodStr, int position);
 
         /**
+         * @param periodStr  the period
+         * @param position  the position
          * @return position where affix starts, or original ~position if not found
          */
         int scan(String periodStr, int position);
@@ -958,7 +967,7 @@ public class PeriodFormatterBuilder {
          *  - the affix text is also a match
          *  - the affix text is longer than the match from this object
          * 
-         * @param affixesToIgnore
+         * @param affixesToIgnore the affixes that should be ignored
          */
         void finish(Set<PeriodFieldAffix> affixesToIgnore);
     }

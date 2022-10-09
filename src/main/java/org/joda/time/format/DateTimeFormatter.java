@@ -519,6 +519,7 @@ public class DateTimeFormatter {
      *
      * @param out  the destination to format to, not null
      * @param instant  instant to format, null means now
+     * @throws IOException if an IO error occurs
      */
     public void printTo(Writer out, ReadableInstant instant) throws IOException {
         printTo((Appendable) out, instant);
@@ -529,6 +530,7 @@ public class DateTimeFormatter {
      *
      * @param appendable  the destination to format to, not null
      * @param instant  instant to format, null means now
+     * @throws IOException if an IO error occurs
      * @since 2.0
      */
     public void printTo(Appendable appendable, ReadableInstant instant) throws IOException {
@@ -574,6 +576,7 @@ public class DateTimeFormatter {
      *
      * @param out  the destination to format to, not null
      * @param instant  millis since 1970-01-01T00:00:00Z
+     * @throws IOException if an IO error occurs
      */
     public void printTo(Writer out, long instant) throws IOException {
         printTo((Appendable) out, instant);
@@ -585,6 +588,7 @@ public class DateTimeFormatter {
      *
      * @param appendable  the destination to format to, not null
      * @param instant  millis since 1970-01-01T00:00:00Z
+     * @throws IOException if an IO error occurs
      * @since 2.0
      */
     public void printTo(Appendable appendable, long instant) throws IOException {
@@ -634,6 +638,7 @@ public class DateTimeFormatter {
      *
      * @param out  the destination to format to, not null
      * @param partial  partial to format
+     * @throws IOException if an IO error occurs
      */
     public void printTo(Writer out, ReadablePartial partial) throws IOException {
         printTo((Appendable) out, partial);
@@ -647,6 +652,7 @@ public class DateTimeFormatter {
      *
      * @param appendable  the destination to format to, not null
      * @param partial  partial to format
+     * @throws IOException if an IO error occurs
      * @since 2.0
      */
     public void printTo(Appendable appendable, ReadablePartial partial) throws IOException {

@@ -278,6 +278,8 @@ public final class Partial
      * another partial.
      * <p>
      * This is most useful when copying from a YearMonthDay or TimeOfDay.
+     * 
+     * @param partial  the partial to copy
      */
     public Partial(ReadablePartial partial) {
         super();
@@ -816,6 +818,7 @@ public final class Partial
      * Unsupported fields will appear as special unicode characters.
      *
      * @param pattern  the pattern specification, null means use <code>toString</code>
+     * @return the formatted output, not null
      * @see org.joda.time.format.DateTimeFormat
      */
     public String toString(String pattern) {
@@ -831,6 +834,7 @@ public final class Partial
      *
      * @param pattern  the pattern specification, null means use <code>toString</code>
      * @param locale  Locale to use, null means default
+     * @return the formatted output, not null
      * @see org.joda.time.format.DateTimeFormat
      */
     public String toString(String pattern, Locale locale) {

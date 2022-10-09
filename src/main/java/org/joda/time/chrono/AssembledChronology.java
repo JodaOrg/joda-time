@@ -342,6 +342,8 @@ public abstract class AssembledChronology extends BaseChronology {
 
     /**
      * Returns the same base chronology as passed into the constructor.
+     * 
+     * @return the base chronology
      */
     protected final Chronology getBase() {
         return iBase;
@@ -349,6 +351,8 @@ public abstract class AssembledChronology extends BaseChronology {
 
     /**
      * Returns the same param object as passed into the constructor.
+     * 
+     * @return the object parameter
      */
     protected final Object getParam() {
         return iParam;
@@ -477,6 +481,8 @@ public abstract class AssembledChronology extends BaseChronology {
 
         /**
          * Copy the supported fields from a chronology into this container.
+         * 
+         * @param chrono  the chronology to copy from, not null
          */
         public void copyFieldsFrom(Chronology chrono) {
             {

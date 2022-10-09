@@ -340,6 +340,8 @@ public class IllegalFieldValueException extends IllegalArgumentException {
     /**
      * Provide additional detail by prepending a message to the existing message.
      * A colon is separator is automatically inserted between the messages.
+     * 
+     * @param message the message to prepend
      * @since 1.3
      */
     public void prependMessage(String message) {

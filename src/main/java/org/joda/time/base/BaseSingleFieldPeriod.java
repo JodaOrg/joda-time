@@ -124,6 +124,7 @@ public abstract class BaseSingleFieldPeriod
      *
      * @param period  the period to get the number of hours from, must not be null
      * @param millisPerUnit  the number of milliseconds in one standard unit of this period
+     * @return the int value
      * @throws IllegalArgumentException if the period contains imprecise duration values
      */
     protected static int standardPeriodIn(ReadablePeriod period, long millisPerUnit) {

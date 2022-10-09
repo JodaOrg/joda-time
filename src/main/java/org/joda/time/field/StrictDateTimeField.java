@@ -34,8 +34,10 @@ public class StrictDateTimeField extends DelegatedDateTimeField {
 
     /**
      * Returns a strict version of the given field. If it is already strict,
-     * then it is returned as-is. Otherwise, a new StrictDateTimeField is
-     * returned.
+     * then it is returned as-is. Otherwise, a new StrictDateTimeField is returned.
+     * 
+     * @param field  the field, null returns null
+     * @return the field. may be null
      */
     public static DateTimeField getInstance(DateTimeField field) {
         if (field == null) {

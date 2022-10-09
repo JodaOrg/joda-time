@@ -54,6 +54,7 @@ public final class Duration
      * This parses the format {@code PTa.bS}, as per {@link #toString()}.
      * 
      * @param str  the string to parse, not null
+     * @return the parsed duration, not null
      * @since 2.0
      */
     @FromString

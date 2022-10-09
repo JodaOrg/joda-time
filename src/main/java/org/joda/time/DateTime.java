@@ -142,6 +142,7 @@ public final class DateTime
      * The object produced via the constructor has a zone of {@code DateTimeZone.getDefault()}.
      * 
      * @param str  the string to parse, not null
+     * @return the parsed date-time, not null
      * @since 2.0
      */
     @FromString
@@ -154,6 +155,7 @@ public final class DateTime
      * 
      * @param str  the string to parse, not null
      * @param formatter  the formatter to use, not null
+     * @return the parsed date-time, not null
      * @since 2.0
      */
     public static DateTime parse(String str, DateTimeFormatter formatter) {

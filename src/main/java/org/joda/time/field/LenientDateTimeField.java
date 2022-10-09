@@ -37,8 +37,11 @@ public class LenientDateTimeField extends DelegatedDateTimeField {
 
     /**
      * Returns a lenient version of the given field. If it is already lenient,
-     * then it is returned as-is. Otherwise, a new LenientDateTimeField is
-     * returned.
+     * then it is returned as-is. Otherwise, a new LenientDateTimeField is returned.
+     * 
+     * @param field  the field, null returns null
+     * @param base  the chronology, not null
+     * @return the field. may be null
      */
     public static DateTimeField getInstance(DateTimeField field, Chronology base) {
         if (field == null) {

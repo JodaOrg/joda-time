@@ -145,7 +145,7 @@ public interface ReadableInstant extends Comparable<ReadableInstant> {
      * <p>
      * To compare two instants for absolute time (ie. UTC milliseconds 
      * ignoring the chronology), use {@link #isEqual(ReadableInstant)} or
-     * {@link #compareTo(Object)}.
+     * {@link #compareTo}.
      *
      * @param readableInstant  a readable instant to check against
      * @return true if millisecond and chronology are equal, false if

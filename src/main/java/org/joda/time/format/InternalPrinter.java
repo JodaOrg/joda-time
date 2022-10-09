@@ -52,6 +52,7 @@ interface InternalPrinter {
      * this millisecond value
      * @param displayZone  the time zone to use, null means local time
      * @param locale  the locale to use, null means default locale
+     * @throws IOException if an IO error occurs
      */
     void printTo(Appendable appendable, long instant, Chronology chrono,
                  int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException;
@@ -62,6 +63,7 @@ interface InternalPrinter {
      * @param appendable  formatted instant is appended to, not null
      * @param partial  partial to format, not null
      * @param locale  the locale to use, null means default locale
+     * @throws IOException if an IO error occurs
      */
     void printTo(Appendable appendable, ReadablePartial partial, Locale locale) throws IOException;
 

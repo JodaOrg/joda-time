@@ -78,6 +78,7 @@ public interface DateTimePrinter {
      * this millisecond value
      * @param displayZone  the time zone to use, null means local time
      * @param locale  the locale to use, null means default locale
+     * @throws IOException if an IO error occurs
      */
     void printTo(Writer out, long instant, Chronology chrono,
                  int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException;
@@ -98,6 +99,7 @@ public interface DateTimePrinter {
      * @param out  formatted partial is written out, not null
      * @param partial  partial to format, not null
      * @param locale  the locale to use, null means default locale
+     * @throws IOException if an IO error occurs
      */
     void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException;
 

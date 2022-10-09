@@ -59,6 +59,7 @@ public final class LimitChronology extends AssembledChronology {
      * @param base  base chronology to wrap
      * @param lowerLimit  inclusive lower limit, or null if none
      * @param upperLimit  exclusive upper limit, or null if none
+     * @return the chronology, not null
      * @throws IllegalArgumentException if chronology is null or limits are invalid
      */
     public static LimitChronology getInstance(Chronology base,

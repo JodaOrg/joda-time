@@ -493,6 +493,8 @@ public class ISODateTimeFormat {
      * week-date-element = xxxx '-W' ww ['-' e]
      * offset            = 'Z' | (('+' | '-') HH [':' mm [':' ss [('.' | ',') SSS]]])
      * </pre>
+     * 
+     * @return the parser
      */
     public static DateTimeFormatter dateParser() {
         return Constants.dp;
@@ -512,6 +514,8 @@ public class ISODateTimeFormat {
      * ord-date-element  = yyyy ['-' DDD]
      * week-date-element = xxxx '-W' ww ['-' e]
      * </pre>
+     * 
+     * @return the parser
      * @since 1.3
      */
     public static DateTimeFormatter localDateParser() {
@@ -530,6 +534,8 @@ public class ISODateTimeFormat {
      * ord-date-element  = yyyy ['-' DDD]
      * week-date-element = xxxx '-W' ww ['-' e]
      * </pre>
+     * 
+     * @return the parser
      */
     public static DateTimeFormatter dateElementParser() {
         return Constants.dpe;
@@ -551,6 +557,8 @@ public class ISODateTimeFormat {
      * fraction       = ('.' | ',') digit+
      * offset         = 'Z' | (('+' | '-') HH [':' mm [':' ss [('.' | ',') SSS]]])
      * </pre>
+     * 
+     * @return the parser
      */
     public static DateTimeFormatter timeParser() {
         return Constants.tp;
@@ -572,6 +580,8 @@ public class ISODateTimeFormat {
      * second-element = ':' ss [fraction]
      * fraction       = ('.' | ',') digit+
      * </pre>
+     * 
+     * @return the parser
      * @since 1.3
      */
     public static DateTimeFormatter localTimeParser() {
@@ -592,6 +602,8 @@ public class ISODateTimeFormat {
      * second-element = ':' ss [fraction]
      * fraction       = ('.' | ',') digit+
      * </pre>
+     * 
+     * @return the parser
      */
     public static DateTimeFormatter timeElementParser() {
         return Constants.tpe;
@@ -619,6 +631,8 @@ public class ISODateTimeFormat {
      * fraction          = ('.' | ',') digit+
      * offset            = 'Z' | (('+' | '-') HH [':' mm [':' ss [('.' | ',') SSS]]])
      * </pre>
+     * 
+     * @return the parser
      */
     public static DateTimeFormatter dateTimeParser() {
         return Constants.dtp;
@@ -645,6 +659,8 @@ public class ISODateTimeFormat {
      * fraction          = ('.' | ',') digit+
      * </pre>
      * @since 1.3
+     * 
+     * @return the parser
      */
     public static DateTimeFormatter dateOptionalTimeParser() {
         return Constants.dotp;
@@ -671,6 +687,8 @@ public class ISODateTimeFormat {
      * second-element    = ':' ss [fraction]
      * fraction          = ('.' | ',') digit+
      * </pre>
+     * 
+     * @return the parser
      * @since 1.3
      */
     public static DateTimeFormatter localDateOptionalTimeParser() {

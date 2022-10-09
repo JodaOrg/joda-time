@@ -117,6 +117,8 @@ public final class GJChronology extends AssembledChronology {
      * and the minimum days in the first week of the year is 4.
      *
      * <p>The time zone of the returned instance is UTC.
+     * 
+     * @return the chronology, not null
      */
     public static GJChronology getInstanceUTC() {
         return getInstance(DateTimeZone.UTC, DEFAULT_CUTOVER, 4);
@@ -133,6 +135,8 @@ public final class GJChronology extends AssembledChronology {
      * and the minimum days in the first week of the year is 4.
      *
      * <p>The returned chronology is in the default time zone.
+     * 
+     * @return the chronology, not null
      */
     public static GJChronology getInstance() {
         return getInstance(DateTimeZone.getDefault(), DEFAULT_CUTOVER, 4);
@@ -149,6 +153,7 @@ public final class GJChronology extends AssembledChronology {
      * and the minimum days in the first week of the year is 4.
      *
      * @param zone  the time zone to use, null is default
+     * @return the chronology, not null
      */
     public static GJChronology getInstance(DateTimeZone zone) {
         return getInstance(zone, DEFAULT_CUTOVER, 4);
@@ -164,6 +169,7 @@ public final class GJChronology extends AssembledChronology {
      *
      * @param zone  the time zone to use, null is default
      * @param gregorianCutover  the cutover to use, null means default
+     * @return the chronology, not null
      */
     public static GJChronology getInstance(
             DateTimeZone zone,
@@ -179,6 +185,7 @@ public final class GJChronology extends AssembledChronology {
      * @param zone  the time zone to use, null is default
      * @param gregorianCutover  the cutover to use, null means default
      * @param minDaysInFirstWeek  minimum number of days in first week of the year; default is 4
+     * @return the chronology, not null
      */
     public static GJChronology getInstance(
             DateTimeZone zone,
@@ -228,6 +235,7 @@ public final class GJChronology extends AssembledChronology {
      * @param zone  the time zone to use, null is default
      * @param gregorianCutover  the cutover to use
      * @param minDaysInFirstWeek  minimum number of days in first week of the year; default is 4
+     * @return the chronology, not null
      */
     public static GJChronology getInstance(
             DateTimeZone zone,
@@ -628,7 +636,7 @@ public final class GJChronology extends AssembledChronology {
          * @param julianField field from the chronology used before the cutover instant
          * @param gregorianField field from the chronology used at and after the cutover
          * @param cutoverMillis  the millis of the cutover
-         * @param convertByWeekyear
+         * @param convertByWeekyear whether to convert using week-year
          */
         CutoverField(DateTimeField julianField, DateTimeField gregorianField,
                      long cutoverMillis, boolean convertByWeekyear) {
@@ -640,7 +648,7 @@ public final class GJChronology extends AssembledChronology {
          * @param gregorianField field from the chronology used at and after the cutover
          * @param rangeField  the range field
          * @param cutoverMillis  the millis of the cutover
-         * @param convertByWeekyear
+         * @param convertByWeekyear whether to convert using week-year
          */
         CutoverField(DateTimeField julianField, DateTimeField gregorianField,
                      DurationField rangeField, long cutoverMillis, boolean convertByWeekyear) {

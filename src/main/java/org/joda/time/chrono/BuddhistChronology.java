@@ -80,6 +80,8 @@ public final class BuddhistChronology extends AssembledChronology {
      * GregorianJulian calendar rules with a cutover date.
      * <p>
      * The time zone of the returned instance is UTC.
+     * 
+     * @return the chronology, not null
      */
     public static BuddhistChronology getInstanceUTC() {
         return INSTANCE_UTC;
@@ -89,6 +91,8 @@ public final class BuddhistChronology extends AssembledChronology {
      * Standard instance of a Buddhist Chronology, that matches
      * Sun's BuddhistCalendar class. This means that it follows the
      * GregorianJulian calendar rules with a cutover date.
+     * 
+     * @return the chronology, not null
      */
     public static BuddhistChronology getInstance() {
         return getInstance(DateTimeZone.getDefault());
@@ -100,6 +104,7 @@ public final class BuddhistChronology extends AssembledChronology {
      * GregorianJulian calendar rules with a cutover date.
      *
      * @param zone  the time zone to use, null is default
+     * @return the chronology, not null
      */
     public static BuddhistChronology getInstance(DateTimeZone zone) {
         if (zone == null) {

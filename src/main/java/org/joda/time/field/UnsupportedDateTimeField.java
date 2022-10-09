@@ -18,6 +18,7 @@ package org.joda.time.field;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Locale;
+
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
@@ -45,6 +46,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      * The returned instance is cached.
      * 
      * @param type  the type to obtain
+     * @param durationField  the duration field
      * @return the instance
      * @throws IllegalArgumentException if durationField is null
      */
@@ -124,7 +126,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public int get(long instant) {
@@ -134,7 +136,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public String getAsText(long instant, Locale locale) {
@@ -144,7 +146,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public String getAsText(long instant) {
@@ -154,7 +156,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public String getAsText(ReadablePartial partial, int fieldValue, Locale locale) {
@@ -164,7 +166,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public String getAsText(ReadablePartial partial, Locale locale) {
@@ -174,7 +176,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public String getAsText(int fieldValue, Locale locale) {
@@ -184,7 +186,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public String getAsShortText(long instant, Locale locale) {
@@ -194,7 +196,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public String getAsShortText(long instant) {
@@ -204,7 +206,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public String getAsShortText(ReadablePartial partial, int fieldValue, Locale locale) {
@@ -214,7 +216,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public String getAsShortText(ReadablePartial partial, Locale locale) {
@@ -224,7 +226,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public String getAsShortText(int fieldValue, Locale locale) {
@@ -254,7 +256,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public int[] add(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
@@ -264,7 +266,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public int[] addWrapPartial(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
@@ -274,7 +276,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public long addWrapField(long instant, int value) {
@@ -284,7 +286,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public int[] addWrapField(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
@@ -314,7 +316,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public long set(long instant, int value) {
@@ -324,7 +326,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public int[] set(ReadablePartial instant, int fieldIndex, int[] values, int newValue) {
@@ -334,7 +336,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public long set(long instant, String text, Locale locale) {
@@ -344,7 +346,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public long set(long instant, String text) {
@@ -354,7 +356,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public int[] set(ReadablePartial instant, int fieldIndex, int[] values, String text, Locale locale) {
@@ -385,7 +387,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public boolean isLeap(long instant) {
@@ -395,7 +397,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public int getLeapAmount(long instant) {
@@ -415,7 +417,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public int getMinimumValue() {
@@ -425,7 +427,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public int getMinimumValue(long instant) {
@@ -435,7 +437,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public int getMinimumValue(ReadablePartial instant) {
@@ -445,7 +447,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public int getMinimumValue(ReadablePartial instant, int[] values) {
@@ -455,7 +457,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public int getMaximumValue() {
@@ -465,7 +467,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public int getMaximumValue(long instant) {
@@ -475,7 +477,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public int getMaximumValue(ReadablePartial instant) {
@@ -485,7 +487,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public int getMaximumValue(ReadablePartial instant, int[] values) {
@@ -495,7 +497,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public int getMaximumTextLength(Locale locale) {
@@ -505,7 +507,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public int getMaximumShortTextLength(Locale locale) {
@@ -515,7 +517,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public long roundFloor(long instant) {
@@ -525,7 +527,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public long roundCeiling(long instant) {
@@ -535,7 +537,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public long roundHalfFloor(long instant) {
@@ -545,7 +547,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public long roundHalfCeiling(long instant) {
@@ -555,7 +557,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public long roundHalfEven(long instant) {
@@ -565,7 +567,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /**
      * Always throws UnsupportedOperationException
      *
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException as this is not supported
      */
     @Override
     public long remainder(long instant) {

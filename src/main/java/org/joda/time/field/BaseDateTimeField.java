@@ -45,6 +45,8 @@ public abstract class BaseDateTimeField extends DateTimeField {
 
     /**
      * Constructor.
+     * 
+     * @param type  the field type
      */
     protected BaseDateTimeField(DateTimeFieldType type) {
         super();

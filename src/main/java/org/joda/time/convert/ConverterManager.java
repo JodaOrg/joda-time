@@ -189,6 +189,7 @@ public final class ConverterManager {
      * 
      * @param converter  the converter to add, null ignored
      * @return replaced converter, or null
+     * @throws SecurityException if the security manager rejects the change
      */
     public InstantConverter addInstantConverter(InstantConverter converter)
             throws SecurityException {
@@ -208,6 +209,7 @@ public final class ConverterManager {
      * 
      * @param converter  the converter to remove, null ignored
      * @return replaced converter, or null
+     * @throws SecurityException if the security manager rejects the change
      */
     public InstantConverter removeInstantConverter(InstantConverter converter)
             throws SecurityException {
@@ -276,6 +278,7 @@ public final class ConverterManager {
      * 
      * @param converter  the converter to add, null ignored
      * @return replaced converter, or null
+     * @throws SecurityException if the security manager rejects the change
      */
     public PartialConverter addPartialConverter(PartialConverter converter)
             throws SecurityException {
@@ -295,6 +298,7 @@ public final class ConverterManager {
      * 
      * @param converter  the converter to remove, null ignored
      * @return replaced converter, or null
+     * @throws SecurityException if the security manager rejects the change
      */
     public PartialConverter removePartialConverter(PartialConverter converter)
             throws SecurityException {
@@ -363,6 +367,7 @@ public final class ConverterManager {
      * 
      * @param converter  the converter to add, null ignored
      * @return replaced converter, or null
+     * @throws SecurityException if the security manager rejects the change
      */
     public DurationConverter addDurationConverter(DurationConverter converter)
             throws SecurityException {
@@ -382,6 +387,7 @@ public final class ConverterManager {
      * 
      * @param converter  the converter to remove, null ignored
      * @return replaced converter, or null
+     * @throws SecurityException if the security manager rejects the change
      */
     public DurationConverter removeDurationConverter(DurationConverter converter)
             throws SecurityException {
@@ -450,6 +456,7 @@ public final class ConverterManager {
      * 
      * @param converter  the converter to add, null ignored
      * @return replaced converter, or null
+     * @throws SecurityException if the security manager rejects the change
      */
     public PeriodConverter addPeriodConverter(PeriodConverter converter)
             throws SecurityException {
@@ -469,6 +476,7 @@ public final class ConverterManager {
      * 
      * @param converter  the converter to remove, null ignored
      * @return replaced converter, or null
+     * @throws SecurityException if the security manager rejects the change
      */
     public PeriodConverter removePeriodConverter(PeriodConverter converter)
             throws SecurityException {
@@ -537,6 +545,7 @@ public final class ConverterManager {
      * 
      * @param converter  the converter to add, null ignored
      * @return replaced converter, or null
+     * @throws SecurityException if the security manager rejects the change
      */
     public IntervalConverter addIntervalConverter(IntervalConverter converter) 
             throws SecurityException {
@@ -556,6 +565,7 @@ public final class ConverterManager {
      * 
      * @param converter  the converter to remove, null ignored
      * @return replaced converter, or null
+     * @throws SecurityException if the security manager rejects the change
      */
     public IntervalConverter removeIntervalConverter(IntervalConverter converter)
             throws SecurityException {

@@ -163,6 +163,7 @@ public final class TimeOfDay
      * This method uses the UTC time zone internally.
      *
      * @param millisOfDay  the number of milliseconds into a day to convert
+     * @return the time, not null
      */
     public static TimeOfDay fromMillisOfDay(long millisOfDay) {
         return fromMillisOfDay(millisOfDay, null);
@@ -178,6 +179,7 @@ public final class TimeOfDay
      *
      * @param millisOfDay  the number of milliseconds into a day to convert
      * @param chrono  the chronology, null means ISO chronology
+     * @return the time, not null
      */
     public static TimeOfDay fromMillisOfDay(long millisOfDay, Chronology chrono) {
         chrono = DateTimeUtils.getChronology(chrono);

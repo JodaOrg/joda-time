@@ -662,10 +662,17 @@ public class ZoneInfoCompiler {
 
         /**
          * Adds a recurring savings rule to the builder.
+         * 
+         * @param builder  the builder
+         * @param nameKey  the name key
+         * @param saveMillis  the save in millis
+         * @param fromYear  the from year
+         * @param toYear  the to year
          */
         public void addRecurring(DateTimeZoneBuilder builder, String nameKey,
-                                 int saveMillis, int fromYear, int toYear)
-        {
+                int saveMillis,
+                int fromYear,
+                int toYear) {
             builder.addRecurringSavings(nameKey, saveMillis,
                                         fromYear, toYear,
                                         iZoneChar,
@@ -678,6 +685,9 @@ public class ZoneInfoCompiler {
 
         /**
          * Adds a cutover to the builder.
+         * 
+         * @param builder  the builder
+         * @param year  the year
          */
         public void addCutover(DateTimeZoneBuilder builder, int year) {
             builder.addCutover(year,
@@ -739,6 +749,10 @@ public class ZoneInfoCompiler {
 
         /**
          * Adds a recurring savings rule to the builder.
+         * 
+         * @param builder  the builder
+         * @param negativeSave  the negative save value
+         * @param nameFormat  the name format
          */
         public void addRecurring(DateTimeZoneBuilder builder, int negativeSave, String nameFormat) {
             int saveMillis = iSaveMillis + -negativeSave;
@@ -802,6 +816,10 @@ public class ZoneInfoCompiler {
 
         /**
          * Adds recurring savings rules to the builder.
+         * 
+         * @param builder  the builder
+         * @param standardMillis  the standard millis
+         * @param nameFormat  the name format
          */
         public void addRecurring(DateTimeZoneBuilder builder, int standardMillis, String nameFormat) {
             // a hack is necessary to remove negative SAVE values from the input tzdb file
@@ -894,15 +912,15 @@ public class ZoneInfoCompiler {
 
         /**
          * Adds zone info to the builder.
+         * 
+         * @param builder  the builder
+         * @param ruleSets  the rule sets
          */
         public void addToBuilder(DateTimeZoneBuilder builder, Map<String, RuleSet> ruleSets) {
             addToBuilder(this, builder, ruleSets);
         }
 
-        private static void addToBuilder(Zone zone,
-                                         DateTimeZoneBuilder builder,
-                                         Map<String, RuleSet> ruleSets)
-        {
+        private static void addToBuilder(Zone zone, DateTimeZoneBuilder builder, Map<String, RuleSet> ruleSets) {
             for (; zone != null; zone = zone.iNext) {
                 if (zone.iRules == null) {
                     builder.setStandardOffset(zone.iOffsetMillis);

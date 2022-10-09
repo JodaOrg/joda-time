@@ -39,6 +39,7 @@ public final class LenientChronology extends AssembledChronology {
      * Create a LenientChronology for any chronology.
      *
      * @param base the chronology to wrap
+     * @return the chronology, not null
      * @throws IllegalArgumentException if chronology is null
      */
     public static LenientChronology getInstance(Chronology base) {

@@ -84,6 +84,7 @@ public final class Instant
      * Obtains an {@code Instant} set to the milliseconds from 1970-01-01T00:00:00Z.
      * 
      * @param epochMilli  the milliseconds from 1970-01-01T00:00:00Z
+     * @return the instant, not null
      * @since 2.10
      */
     public static Instant ofEpochMilli(long epochMilli) {
@@ -95,6 +96,7 @@ public final class Instant
      * 
      * @param epochSecond  the seconds from 1970-01-01T00:00:00Z
      * @throws ArithmeticException if the new instant exceeds the capacity of a long
+     * @return the instant, not null
      * @since 2.10
      */
     public static Instant ofEpochSecond(long epochSecond) {
@@ -108,6 +110,7 @@ public final class Instant
      * This uses {@link ISODateTimeFormat#dateTimeParser()}.
      * 
      * @param str  the string to parse, not null
+     * @return the parsed instant, not null
      * @since 2.0
      */
     @FromString
@@ -120,6 +123,7 @@ public final class Instant
      * 
      * @param str  the string to parse, not null
      * @param formatter  the formatter to use, not null
+     * @return the parsed instant, not null
      * @since 2.0
      */
     public static Instant parse(String str, DateTimeFormatter formatter) {

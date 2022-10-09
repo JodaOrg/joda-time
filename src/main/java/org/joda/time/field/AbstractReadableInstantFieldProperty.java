@@ -277,6 +277,8 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
     /**
      * If this field were to leap, then it would be in units described by the
      * returned duration. If this field doesn't ever leap, null is returned.
+     * 
+     * @return the duration field
      */
     public DurationField getLeapDurationField() {
         return getField().getLeapDurationField();

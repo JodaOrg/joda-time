@@ -53,6 +53,7 @@ public final class ZonedChronology extends AssembledChronology {
      *
      * @param base base chronology to wrap
      * @param zone the time zone
+     * @return the chronology, not null
      * @throws IllegalArgumentException if chronology or time zone is null
      */
     public static ZonedChronology getInstance(Chronology base, DateTimeZone zone) {

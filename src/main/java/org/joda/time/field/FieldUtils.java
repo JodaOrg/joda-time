@@ -246,6 +246,7 @@ public class FieldUtils {
     /**
      * Verify that input values are within specified bounds.
      * 
+     * @param field  the field to check
      * @param value  the value to check
      * @param lowerBound  the lower bound allowed for value
      * @param upperBound  the upper bound allowed for value
@@ -263,6 +264,7 @@ public class FieldUtils {
     /**
      * Verify that input values are within specified bounds.
      * 
+     * @param fieldType  the field type to check
      * @param value  the value to check
      * @param lowerBound  the lower bound allowed for value
      * @param upperBound  the upper bound allowed for value
@@ -281,6 +283,7 @@ public class FieldUtils {
     /**
      * Verify that input values are within specified bounds.
      * 
+     * @param fieldName  the field name to check
      * @param value  the value to check
      * @param lowerBound  the lower bound allowed for value
      * @param upperBound  the upper bound allowed for value

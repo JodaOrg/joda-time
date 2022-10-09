@@ -67,6 +67,7 @@ public class MutablePeriod
      * This uses {@link ISOPeriodFormat#standard()}.
      * 
      * @param str  the string to parse, not null
+     * @return the parsed period, not null
      * @since 2.0
      */
     @FromString
@@ -79,6 +80,7 @@ public class MutablePeriod
      * 
      * @param str  the string to parse, not null
      * @param formatter  the formatter to use, not null
+     * @return the parsed period, not null
      * @since 2.0
      */
     public static MutablePeriod parse(String str, PeriodFormatter formatter) {

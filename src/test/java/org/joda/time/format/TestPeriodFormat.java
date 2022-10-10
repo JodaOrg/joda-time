@@ -31,6 +31,7 @@ public class TestPeriodFormat extends TestCase {
 
     private static final Locale BG = new Locale("bg");
     private static final Locale CA = new Locale("ca");
+    private static final Locale ZH = new Locale("zh");
     private static final Locale CS = new Locale("cs");
     private static final Locale DA = new Locale("da");
     private static final Locale DE = new Locale("de");
@@ -40,6 +41,8 @@ public class TestPeriodFormat extends TestCase {
     private static final Locale EU = new Locale("eu");
     private static final Locale FI = new Locale("fi");
     private static final Locale FR = new Locale("fr");
+    private static final Locale HI = new Locale("hi");
+    private static final Locale HU = new Locale("hu");
     private static final Locale IW = new Locale("iw");
     private static final Locale JA = new Locale("ja");
     private static final Locale NL = new Locale("nl");
@@ -50,6 +53,7 @@ public class TestPeriodFormat extends TestCase {
     private static final Locale RO = new Locale("ro");
     private static final Locale RU = new Locale("ru");
     private static final Locale SK = new Locale("sk");
+    private static final Locale SV = new Locale("sv");
     private static final Locale TR = new Locale("tr");
     private static final Locale UK = new Locale("uk");
 
@@ -149,6 +153,7 @@ public class TestPeriodFormat extends TestCase {
         return new Object[][] {
             {BG, "2 години, 1 месец, 1 ден, 5 часа, 6 минути, 7 секунди и 8 милисекунди"},
             {CA, "2 anys, 1 mes, 1 dia, 5 hores, 6 minuts, 7 segons i 8 milisegons"},
+            {ZH, "2年1个月1天5小时6分7秒8毫秒"},
             {CS, "2 roky, 1 měsíc, 1 den, 5 hodin, 6 minut, 7 sekund a 8 milisekund"},
             {DA, "2 år, 1 måned, 1 dag, 5 timer, 6 minutter, 7 sekunder og 8 millisekunder"},
             {DE, "2 Jahre, 1 Monat, 1 Tag, 5 Stunden, 6 Minuten, 7 Sekunden und 8 Millisekunden"},
@@ -158,6 +163,8 @@ public class TestPeriodFormat extends TestCase {
             {EU, "2 urte, 1 hilabete, 1 egun, 5 ordu, 6 minuto, 7 segundo eta 8 milisegundo"},
             {FR, "2 années, 1 mois, 1 jour, 5 heures, 6 minutes, 7 secondes et 8 millisecondes"},
             {FI, "2 vuotta, 1 kuukausi, 1 päivä, 5 tuntia, 6 minuuttia, 7 sekuntia ja 8 millisekuntia"},
+            {HI, "2 साल, 1 महीना, 1 दिन, 5 घंटे, 6 मिनट, 7 सेकंड और 8 मिलीसेकंड"},
+            {HU, "2 év, 1 hónap, 1 nap, 5 óra, 6 perc, 7 másodperc és 8 miliszekundum"},
             {IW, "2 שנים, 1 חודש, 1 יום, 5 שעות, 6 דקות, 7 שניות-ו 8 אלפיות שנייה"},
             {JA, "2年1か月1日5時間6分7秒8ミリ秒"},
             {NL, "2 jaar, 1 maand, 1 dag, 5 uur, 6 minuten, 7 seconden en 8 milliseconden"},
@@ -168,6 +175,7 @@ public class TestPeriodFormat extends TestCase {
             {RO, "2 ani, 1 lună, 1 zi, 5 ore, 6 minute, 7 secunde și 8 milisecunde"},
             {RU, "2 года, 1 месяц, 1 день, 5 часов, 6 минут, 7 секунд и 8 миллисекунд"},
             {SK, "2 roky, 1 mesiac, 1 deň, 5 hodín, 6 minút, 7 sekúnd a 8 milisekúnd"},
+            {SV, "2 år, 1 månad, 1 dag, 5 timmar, 6 minuter, 7 sekunder och 8 millisekunder"},
             {TR, "2 yıl, 1 ay, 1 gün, 5 saat, 6 dakika, 7 saniye ve 8 milisaniye"},
             {UK, "2 року, 1 місяць, 1 день, 5 годин, 6 хвилин, 7 секунд и 8 мілісекунд"},
         };

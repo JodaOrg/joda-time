@@ -10,7 +10,7 @@
     <!-- types are add, fix, remove, update -->
     <release version="2.11.3" date="SNAPSHOT" description="v2.11.3">
       <action dev="various" type="add">
-        Add translations for ca, el, eu, fi, hi, hu, iw, nn, ro, sk, sv, zh.
+        Add translations for ca, el, eu, fi, hi, hu, in, iw, ms, nn, ro, sk, sv, zh.
       </action>
     </release>
     <release version="2.11.2" date="2022-09-25" description="v2.11.2">

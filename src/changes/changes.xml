@@ -12,6 +12,9 @@
       <action dev="various" type="add">
         Add translations for ca, el, eu, fi, hi, hu, in, iw, ms, nn, ro, sk, sv, zh.
       </action>
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2022egtz.
+      </action>
     </release>
     <release version="2.11.2" date="2022-09-25" description="v2.11.2">
       <action dev="jodastephen" type="update">

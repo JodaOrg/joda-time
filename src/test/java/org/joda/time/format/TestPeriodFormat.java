@@ -54,6 +54,7 @@ public class TestPeriodFormat extends TestCase {
     private static final Locale PT = new Locale("pt");
     private static final Locale RO = new Locale("ro");
     private static final Locale RU = new Locale("ru");
+    private static final Locale SQ = new Locale("sq");
     private static final Locale SK = new Locale("sk");
     private static final Locale SV = new Locale("sv");
     private static final Locale TR = new Locale("tr");
@@ -168,7 +169,7 @@ public class TestPeriodFormat extends TestCase {
             {HI, "2 साल, 1 महीना, 1 दिन, 5 घंटे, 6 मिनट, 7 सेकंड और 8 मिलीसेकंड"},
             {HU, "2 év, 1 hónap, 1 nap, 5 óra, 6 perc, 7 másodperc és 8 miliszekundum"},
             {IN, "2 tahun, 1 bulan, 1 hari, 5 jam, 6 menit, 7 detik dan8 millidetik"},
-            {IW, "2 שנים, 1 חודש, 1 יום, 5 שעות, 6 דקות, 7 שניות-ו 8 אלפיות שנייה"},
+            {IW, "2 שנים, 1 חודש, 1 יום, 5 שעות, 6 דקות, 7 שניות ו-8 אלפיות שנייה"},
             {JA, "2年1か月1日5時間6分7秒8ミリ秒"},
             {MS, "2 tahun, 1 bulan, 1 hari, 5 jam, 6 minit, 7 saat dan 8 milisaat"},
             {NL, "2 jaar, 1 maand, 1 dag, 5 uur, 6 minuten, 7 seconden en 8 milliseconden"},
@@ -179,6 +180,7 @@ public class TestPeriodFormat extends TestCase {
             {RO, "2 ani, 1 lună, 1 zi, 5 ore, 6 minute, 7 secunde și 8 milisecunde"},
             {RU, "2 года, 1 месяц, 1 день, 5 часов, 6 минут, 7 секунд и 8 миллисекунд"},
             {SK, "2 roky, 1 mesiac, 1 deň, 5 hodín, 6 minút, 7 sekúnd a 8 milisekúnd"},
+            {SQ, "2 vjet, 1 muaj, 1 ditë, 5 orë, 6 minuta, 7 sekonda dhe 8 milisekonda"},
             {SV, "2 år, 1 månad, 1 dag, 5 timmar, 6 minuter, 7 sekunder och 8 millisekunder"},
             {TR, "2 yıl, 1 ay, 1 gün, 5 saat, 6 dakika, 7 saniye ve 8 milisaniye"},
             {UK, "2 року, 1 місяць, 1 день, 5 годин, 6 хвилин, 7 секунд и 8 мілісекунд"},

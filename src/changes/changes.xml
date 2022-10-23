@@ -8,6 +8,11 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
+    <release version="2.12.1" date="SNAPSHOT" description="v2.12.1">
+      <action dev="various" type="add">
+        Add/fix translations for iw, sq.
+      </action>
+    </release>
     <release version="2.12.0" date="2022-10-13" description="v2.12.0">
       <action dev="various" type="add">
         Add translations for ca, el, eu, fi, hi, hu, in, iw, ms, nn, ro, sk, sv, zh.

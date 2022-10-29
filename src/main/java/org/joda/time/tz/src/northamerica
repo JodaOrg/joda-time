@@ -1596,30 +1596,15 @@ Zone America/Moncton	-4:19:08 -	LMT	1883 Dec  9
 # Quebec
 
 # From Paul Eggert (2020-01-10):
+# See America/Toronto for most of Quebec, including Montreal.
 # See America/Halifax for the Îles de la Madeleine and the Listuguj reserve.
+# See America/Puerto_Rico for east of Natashquan.
 # Zone	NAME		STDOFF	RULES	FORMAT	[UNTIL]
 Zone America/Blanc-Sablon -3:48:28 -	LMT	1884
 			-4:00	Canada	A%sT	1970
 			-4:00	-	AST
 
 # Ontario
-
-# From Paul Eggert (2006-07-09):
-# Shanks & Pottenger write that since 1970 most of Ontario has been like
-# Toronto.
-# Thunder Bay skipped DST in 1973.
-# Many smaller locales did not observe peacetime DST until 1974;
-# Nipigon (EST) and Rainy River (CST) are the largest that we know of.
-# Far west Ontario is like Winnipeg; far east Quebec is like Halifax.
-
-# From Jeffery Nichols (2020-02-06):
-# According to the [Shanks] atlas, those western Ontario zones are huge,
-# covering most of Ontario northwest of Sault Ste Marie and Timmins.
-# The zones seem to include towns bigger than the ones they're named after,
-# like Dryden in America/Rainy_River and Wawa (and maybe Attawapiskat) in
-# America/Nipigon.  I assume it's too much trouble to change the name of the
-# zone (like when you found out that America/Glace_Bay includes Sydney, Nova
-# Scotia)....
 
 # From Mark Brader (2003-07-26):
 # [According to the Toronto Star] Orillia, Ontario, adopted DST
@@ -1641,17 +1626,6 @@ Zone America/Blanc-Sablon -3:48:28 -	LMT	1884
 
 # From Mark Brader (2010-03-06):
 #
-# Currently the database has:
-#
-# # Ontario
-#
-# # From Paul Eggert (2006-07-09):
-# # Shanks & Pottenger write that since 1970 most of Ontario has been like
-# # Toronto.
-# # Thunder Bay skipped DST in 1973.
-# # Many smaller locales did not observe peacetime DST until 1974;
-# # Nipigon (EST) and Rainy River (CST) are the largest that we know of.
-#
 # In the (Toronto) Globe and Mail for Saturday, 1955-09-24, in the bottom
 # right corner of page 1, it says that Toronto will return to standard
 # time at 2 am Sunday morning (which agrees with the database), and that:
@@ -1659,10 +1633,8 @@ Zone America/Blanc-Sablon -3:48:28 -	LMT	1884
 #     The one-hour setback will go into effect throughout most of Ontario,
 #     except in areas like Windsor which remains on standard time all year.
 #
-# Windsor is, of course, a lot larger than Nipigon.
-#
-# I only came across this incidentally.  I don't know if Windsor began
-# observing DST when Detroit did, or in 1974, or on some other date.
+# ... I don't know if Windsor began observing DST when Detroit did,
+# or in 1974, or on some other date.
 #
 # By the way, the article continues by noting that:
 #
@@ -1744,23 +1716,6 @@ Rule	Toronto	1951	1956	-	Sep	lastSun	2:00	0	S
 # Toronto Star, which said that DST was ending 1971-10-31 as usual.
 Rule	Toronto	1957	1973	-	Oct	lastSun	2:00	0	S
 
-# From Paul Eggert (2003-07-27):
-# Willett (1914-03) writes (p. 17) "In the Cities of Fort William, and
-# Port Arthur, Ontario, the principle of the Bill has been in
-# operation for the past three years, and in the City of Moose Jaw,
-# Saskatchewan, for one year."
-
-# From David Bryan via Tory Tronrud, Director/Curator,
-# Thunder Bay Museum (2003-11-12):
-# There is some suggestion, however, that, by-law or not, daylight
-# savings time was being practiced in Fort William and Port Arthur
-# before 1909.... [I]n 1910, the line between the Eastern and Central
-# Time Zones was permanently moved about two hundred miles west to
-# include the Thunder Bay area....  When Canada adopted daylight
-# savings time in 1916, Fort William and Port Arthur, having done so
-# already, did not change their clocks....  During the Second World
-# War,... [t]he cities agreed to implement DST during the summer
-# months for the remainder of the war years.
 
 # Zone	NAME		STDOFF	RULES	FORMAT	[UNTIL]
 Zone America/Toronto	-5:17:32 -	LMT	1895
@@ -1769,21 +1724,6 @@ Zone America/Toronto	-5:17:32 -	LMT	1895
 			-5:00	Canada	E%sT	1946
 			-5:00	Toronto	E%sT	1974
 			-5:00	Canada	E%sT
-Zone America/Thunder_Bay -5:57:00 -	LMT	1895
-			-6:00	-	CST	1910
-			-5:00	-	EST	1942
-			-5:00	Canada	E%sT	1970
-			-5:00	Toronto	E%sT	1973
-			-5:00	-	EST	1974
-			-5:00	Canada	E%sT
-Zone America/Nipigon	-5:53:04 -	LMT	1895
-			-5:00	Canada	E%sT	1940 Sep 29
-			-5:00	1:00	EDT	1942 Feb  9  2:00s
-			-5:00	Canada	E%sT
-Zone America/Rainy_River -6:18:16 -	LMT	1895
-			-6:00	Canada	C%sT	1940 Sep 29
-			-6:00	1:00	CDT	1942 Feb  9  2:00s
-			-6:00	Canada	C%sT
 # Zone	NAME		STDOFF	RULES	FORMAT	[UNTIL]
 Zone America/Atikokan	-6:06:28 -	LMT	1895
 			-6:00	Canada	C%sT	1940 Sep 29
@@ -2626,6 +2566,12 @@ Zone America/Dawson	-9:17:40 -	LMT	1900 Aug 20
 # 5- The islands, reefs and keys shall take their timezone from the
 #    longitude they are located at.
 
+# From Paul Eggert (2022-10-28):
+# The new Mexican law was published today:
+# https://www.dof.gob.mx/nota_detalle.php?codigo=5670045&fecha=28/10/2022
+# This abolishes DST except where US DST rules are observed,
+# and in addition changes all of Chihuahua to -06 with no DST.
+
 # Rule	NAME	FROM	TO	-	IN	ON	AT	SAVE	LETTER/S
 Rule	Mexico	1931	only	-	May	1	23:00	1:00	D
 Rule	Mexico	1931	only	-	Oct	1	0:00	0	S
@@ -2641,8 +2587,8 @@ Rule	Mexico	1996	2000	-	Apr	Sun>=1	2:00	1:00	D
 Rule	Mexico	1996	2000	-	Oct	lastSun	2:00	0	S
 Rule	Mexico	2001	only	-	May	Sun>=1	2:00	1:00	D
 Rule	Mexico	2001	only	-	Sep	lastSun	2:00	0	S
-Rule	Mexico	2002	max	-	Apr	Sun>=1	2:00	1:00	D
-Rule	Mexico	2002	max	-	Oct	lastSun	2:00	0	S
+Rule	Mexico	2002	2022	-	Apr	Sun>=1	2:00	1:00	D
+Rule	Mexico	2002	2022	-	Oct	lastSun	2:00	0	S
 # Zone	NAME		STDOFF	RULES	FORMAT	[UNTIL]
 # Quintana Roo; represented by Cancún
 Zone America/Cancun	-5:47:04 -	LMT	1922 Jan  1  6:00u
@@ -2695,7 +2641,8 @@ Zone America/Ojinaga	-6:57:40 -	LMT	1922 Jan  1  7:00u
 			-6:00	Mexico	C%sT	1998
 			-6:00	-	CST	1998 Apr Sun>=1  3:00
 			-7:00	Mexico	M%sT	2010
-			-7:00	US	M%sT
+			-7:00	US	M%sT	2022 Oct 30  2:00
+			-6:00	-	CST
 # Chihuahua (away from US border)
 Zone America/Chihuahua	-7:04:20 -	LMT	1922 Jan  1  7:00u
 			-7:00	-	MST	1927 Jun 10 23:00
@@ -2704,7 +2651,8 @@ Zone America/Chihuahua	-7:04:20 -	LMT	1922 Jan  1  7:00u
 			-6:00	-	CST	1996
 			-6:00	Mexico	C%sT	1998
 			-6:00	-	CST	1998 Apr Sun>=1  3:00
-			-7:00	Mexico	M%sT
+			-7:00	Mexico	M%sT	2022 Oct 30  2:00
+			-6:00	-	CST
 # Sonora
 Zone America/Hermosillo	-7:23:52 -	LMT	1922 Jan  1  7:00u
 			-7:00	-	MST	1927 Jun 10 23:00
@@ -2802,6 +2750,10 @@ Zone America/Tijuana	-7:48:04 -	LMT	1922 Jan  1  7:00u
 # http://dof.gob.mx/nota_detalle.php?codigo=5127480&fecha=06/01/2010
 # It has been moved to the 'backward' file.
 #
+# From Paul Eggert (2022-10-28):
+# Today's new law states that the entire state of Baja California
+# follows US DST rules, which agrees with simplifications noted above.
+#
 #
 # Revillagigedo Is
 # no information
@@ -2813,12 +2765,11 @@ Zone America/Tijuana	-7:48:04 -	LMT	1922 Jan  1  7:00u
 Zone America/Anguilla	-4:12:16 -	LMT	1912 Mar  2
 			-4:00	-	AST
 
-# Antigua and Barbuda
+# Antigua & Barbuda
 # Zone	NAME		STDOFF	RULES	FORMAT	[UNTIL]
 Zone	America/Antigua	-4:07:12 -	LMT	1912 Mar 2
 			-5:00	-	EST	1951
 			-4:00	-	AST
-
 
 # The Bahamas
 # Rule	NAME	FROM	TO	-	IN	ON	AT	SAVE	LETTER/S
@@ -3286,7 +3237,6 @@ Zone	America/Havana	-5:29:28 -	LMT	1890
 Zone America/Dominica	-4:05:36 -	LMT	1911 Jul  1  0:01 # Roseau
 			-4:00	-	AST
 
-
 # Dominican Republic
 
 # From Steffen Thorsen (2000-10-30):
@@ -3345,6 +3295,7 @@ Zone America/Guadeloupe	-4:06:08 -	LMT	1911 Jun  8 # Pointe-à-Pitre
 
 # St Barthélemy
 # See America/St_Barthelemy in southamerica.
+
 # St Martin (French part)
 # See America/Marigot in southamerica.
 
@@ -3538,7 +3489,6 @@ Zone America/Martinique	-4:04:20 -      LMT	1890        # Fort-de-France
 Zone America/Montserrat	-4:08:52 -	LMT	1911 Jul  1  0:01 # Cork Hill
 			-4:00	-	AST
 
-
 # Nicaragua
 #
 # This uses Shanks & Pottenger for times before 2005.
@@ -3629,7 +3579,6 @@ Zone America/St_Lucia	-4:04:00 -	LMT	1890 # Castries
 			-4:04:00 -	CMT	1912 # Castries Mean Time
 			-4:00	-	AST
 
-
 # St Pierre and Miquelon
 # There are too many St Pierres elsewhere, so we'll use 'Miquelon'.
 # Zone	NAME		STDOFF	RULES	FORMAT	[UNTIL]
@@ -3638,12 +3587,11 @@ Zone America/Miquelon	-3:44:40 -	LMT	1911 May 15 # St Pierre
 			-3:00	-	-03	1987
 			-3:00	Canada	-03/-02
 
-# St Vincent and the Grenadines
+# St Vincent & the Grenadines
 # Zone	NAME		STDOFF	RULES	FORMAT	[UNTIL]
 Zone America/St_Vincent	-4:04:56 -	LMT	1890 # Kingstown
 			-4:04:56 -	KMT	1912 # Kingstown Mean Time
 			-4:00	-	AST
-
 
 # Sint Maarten
 # See America/Lower_Princes in southamerica.
@@ -3726,8 +3674,6 @@ Zone America/Tortola	-4:18:28 -	LMT	1911 Jul # Road Town
 # Zone	NAME		STDOFF	RULES	FORMAT	[UNTIL]
 Zone America/St_Thomas	-4:19:44 -	LMT	1911 Jul # Charlotte Amalie
 			-4:00	-	AST
-
-
 
 # Local Variables:
 # coding: utf-8

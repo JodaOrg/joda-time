@@ -256,11 +256,10 @@ Zone Antarctica/Macquarie 0	-	-00	1899 Nov
 Zone Indian/Christmas	7:02:52 -	LMT	1895 Feb
 			7:00	-	+07
 
-# Cocos (Keeling) Is
+# Cocos (Keeling) Islands
 # Zone	NAME		STDOFF	RULES	FORMAT	[UNTIL]
 Zone	Indian/Cocos	6:27:40	-	LMT	1900
 			6:30	-	+0630
-
 
 # Fiji
 
@@ -397,8 +396,14 @@ Zone	Indian/Cocos	6:27:40	-	LMT	1900
 # concerned shifting arrival and departure times, which may look like a simple
 # thing but requires some significant logistical adjustments domestically and
 # internationally."
-# Assume for now that DST will resume with the recent pre-2020 rules for the
-# 2022/2023 season.
+
+# From Shalvin Narayan (2022-10-27):
+# Please note that there will not be any daylight savings time change
+# in Fiji for 2022-2023....
+# https://www.facebook.com/FijianGovernment/posts/pfbid0mmWVTYmTibn66ybpFda75pDcf34SSpoSaskJW5gXwaKo5Sgc7273Q4fXWc6kQV6Hl
+#
+# From Paul Eggert (2022-10-27):
+# For now, assume DST is suspended indefinitely.
 
 # Rule	NAME	FROM	TO	-	IN	ON	AT	SAVE	LETTER/S
 Rule	Fiji	1998	1999	-	Nov	Sun>=1	2:00	1:00	-
@@ -413,8 +418,6 @@ Rule	Fiji	2014	2018	-	Nov	Sun>=1	2:00	1:00	-
 Rule	Fiji	2015	2021	-	Jan	Sun>=12	3:00	0	-
 Rule	Fiji	2019	only	-	Nov	Sun>=8	2:00	1:00	-
 Rule	Fiji	2020	only	-	Dec	20	2:00	1:00	-
-Rule	Fiji	2022	max	-	Nov	Sun>=8	2:00	1:00	-
-Rule	Fiji	2023	max	-	Jan	Sun>=12	3:00	0	-
 # Zone	NAME		STDOFF	RULES	FORMAT	[UNTIL]
 Zone	Pacific/Fiji	11:55:44 -	LMT	1915 Oct 26 # Suva
 			12:00	Fiji	+12/+13
@@ -429,6 +432,7 @@ Zone	Pacific/Tahiti	 -9:58:16 -	LMT	1912 Oct # Papeete
 			-10:00	-	-10
 # Clipperton (near North America) is administered from French Polynesia;
 # it is uninhabited.
+
 
 # Guam
 
@@ -471,11 +475,14 @@ Zone	Pacific/Guam	-14:21:00 -	LMT	1844 Dec 31
 			10:00	Guam	G%sT	2000 Dec 23
 			10:00	-	ChST	# Chamorro Standard Time
 
-# Kiribati
+
+# Kiribati (Gilbert Is)
 # Zone	NAME		STDOFF	RULES	FORMAT	[UNTIL]
 Zone Pacific/Tarawa	 11:32:04 -	LMT	1901 # Bairiki
 			 12:00	-	+12
 
+# Kiribati (except Gilbert Is)
+# Zone	NAME		STDOFF	RULES	FORMAT	[UNTIL]
 Zone Pacific/Kanton	  0	-	-00	1937 Aug 31
 			-12:00	-	-12	1979 Oct
 			-11:00	-	-11	1994 Dec 31
@@ -568,6 +575,7 @@ Zone	Pacific/Noumea	11:05:48 -	LMT	1912 Jan 13 # Nouméa
 ###############################################################################
 
 # New Zealand
+# McMurdo Station and Scott Base in Antarctica use Auckland time.
 
 # Rule	NAME	FROM	TO	-	IN	ON	AT	SAVE	LETTER/S
 Rule	NZ	1927	only	-	Nov	 6	2:00	1:00	S
@@ -603,6 +611,7 @@ Rule	Chatham	2008	max	-	Apr	Sun>=1	2:45s	0	-
 Zone Pacific/Auckland	11:39:04 -	LMT	1868 Nov  2
 			11:30	NZ	NZ%sT	1946 Jan  1
 			12:00	NZ	NZ%sT
+
 # Zone	NAME		STDOFF	RULES	FORMAT	[UNTIL]
 Zone Antarctica/McMurdo	0	-	-00	1956
 			12:00	NZ	NZ%sT
@@ -874,7 +883,6 @@ Zone Pacific/Tongatapu	12:19:12 -	LMT	1945 Sep 10
 Zone Pacific/Funafuti	11:56:52 -	LMT	1901
 			12:00	-	+12
 
-
 # US minor outlying islands
 
 # Howland, Baker
@@ -939,7 +947,6 @@ Zone Pacific/Midway	-11:49:28 -	LMT	1901
 Zone	Pacific/Wake	11:06:28 -	LMT	1901
 			12:00	-	+12
 
-
 # Vanuatu
 
 # From P Chan (2020-11-27):
@@ -979,6 +986,7 @@ Zone	Pacific/Efate	11:13:16 -	LMT	1912 Jan 13 # Vila
 # Zone	NAME		STDOFF	RULES	FORMAT	[UNTIL]
 Zone	Pacific/Wallis	12:15:20 -	LMT	1901
 			12:00	-	+12
+
 
 ###############################################################################
 

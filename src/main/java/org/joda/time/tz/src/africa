@@ -178,7 +178,15 @@ Zone Africa/Lubumbashi	1:49:52 -	LMT	1897 Nov  9
 Zone Africa/Brazzaville	1:01:08 -	LMT	1912
 			1:00	-	WAT
 
-# Côte d'Ivoire / Ivory Coast
+# Côte d'Ivoire (Ivory Coast)
+
+# The other parts of the St Helena territory are similar:
+#	Tristan da Cunha: on GMT, say Whitman and the CIA
+#	Ascension: on GMT, say the USNO (1995-12-21) and the CIA
+#	Gough (scientific station since 1955; sealers wintered previously):
+#		on GMT, says the CIA
+#	Inaccessible, Nightingale: uninhabited
+
 # Zone	NAME		STDOFF	RULES	FORMAT	[UNTIL]
 Zone	Africa/Abidjan	-0:16:08 -	LMT	1912
 			 0:00	-	GMT
@@ -187,6 +195,7 @@ Zone	Africa/Abidjan	-0:16:08 -	LMT	1912
 # Zone	NAME		STDOFF	RULES	FORMAT	[UNTIL]
 Zone	Africa/Djibouti	2:52:36 -	LMT	1911 Jul
 			3:00	-	EAT
+
 
 ###############################################################################
 
@@ -401,13 +410,6 @@ Zone	Africa/Mbabane	2:04:24 -	LMT	1903 Mar
 			2:00	-	SAST
 
 # Ethiopia
-#
-# Unfortunately tzdb records only Western clock time in use in Ethiopia,
-# as the tzdb format is not up to properly recording a common Ethiopian
-# timekeeping practice that is based on solar time.  See:
-# Mortada D. If you have a meeting in Ethiopia, you'd better double
-# check the time. PRI's The World. 2015-01-30 15:15 -05.
-# https://www.pri.org/stories/2015-01-30/if-you-have-meeting-ethiopia-you-better-double-check-time
 # Zone	NAME		STDOFF	RULES	FORMAT	[UNTIL]
 Zone Africa/Addis_Ababa	2:34:48 -	LMT	1870
 			2:35:20	-	ADMT	1936 May  5 # Adis Dera MT
@@ -501,6 +503,14 @@ Zone	Africa/Bissau	-1:02:20 -	LMT	1912 Jan  1  1:00u
 # From Paul Eggert (2020-10-24):
 # The 1908-05-01 announcement does not give an effective date,
 # so just say "1908 May".
+
+# From Paul Eggert (2018-09-11):
+# Unfortunately tzdb records only Western clock time in use in Ethiopia,
+# as the tzdb format is not up to properly recording a common Ethiopian
+# timekeeping practice that is based on solar time.  See:
+# Mortada D. If you have a meeting in Ethiopia, you'd better double
+# check the time. PRI's The World. 2015-01-30 15:15 -05.
+# https://www.pri.org/stories/2015-01-30/if-you-have-meeting-ethiopia-you-better-double-check-time
 
 # Zone	NAME		STDOFF	RULES	FORMAT	[UNTIL]
 Zone	Africa/Nairobi	2:27:16	-	LMT	1908 May
@@ -724,7 +734,6 @@ Zone	Indian/Mayotte	3:00:56 -	LMT	1911 Jul # Mamoutzou
 			3:00	-	EAT
 
 # Morocco
-# See Africa/Ceuta for Spanish Morocco.
 
 # From Alex Krivenyshev (2008-05-09):
 # Here is an article that Morocco plan to introduce Daylight Saving Time between
@@ -1225,7 +1234,6 @@ Zone Africa/El_Aaiun	-0:52:48 -	LMT	1934 Jan # El Aaiún
 Zone	Africa/Maputo	2:10:20 -	LMT	1903 Mar
 			2:00	-	CAT
 
-
 # Namibia
 
 # From Arthur David Olson (2017-08-09):
@@ -1393,9 +1401,6 @@ Zone	Indian/Reunion	3:41:52 -	LMT	1911 Jun # Saint-Denis
 # Juan de Nova - uninhabited
 # Tromelin - inhabited until at least 1958
 
-#
-# The Crozet Islands also observe Réunion time; see the 'antarctica' file.
-
 # Rwanda
 # Zone	NAME		STDOFF	RULES	FORMAT	[UNTIL]
 Zone	Africa/Kigali	2:00:16 -	LMT	1935 Jun
@@ -1406,13 +1411,6 @@ Zone	Africa/Kigali	2:00:16 -	LMT	1935 Jun
 Zone Atlantic/St_Helena	-0:22:48 -	LMT	1890 # Jamestown
 			-0:22:48 -	JMT	1951 # Jamestown Mean Time
 			 0:00	-	GMT
-
-# The other parts of the St Helena territory are similar:
-#	Tristan da Cunha: on GMT, say Whitman and the CIA
-#	Ascension: on GMT, say the USNO (1995-12-21) and the CIA
-#	Gough (scientific station since 1955; sealers wintered previously):
-#		on GMT, says the CIA
-#	Inaccessible, Nightingale: uninhabited
 
 # São Tomé and Príncipe
 

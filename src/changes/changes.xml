@@ -8,9 +8,12 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
-    <release version="2.12.1" date="SNAPSHOT" description="v2.12.1">
+    <release version="2.12.1" date="2022-10-29" description="v2.12.1">
       <action dev="various" type="add">
         Add/fix translations for iw, sq.
+      </action>
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2022fgtz.
       </action>
     </release>
     <release version="2.12.0" date="2022-10-13" description="v2.12.0">

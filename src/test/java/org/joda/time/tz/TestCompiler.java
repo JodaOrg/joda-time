@@ -16,20 +16,23 @@
 package org.joda.time.tz;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.StringTokenizer;
+import java.nio.charset.Charset;
 import java.util.NoSuchElementException;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import java.util.StringTokenizer;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
 import org.joda.time.tz.ZoneInfoCompiler.DateTimeOfYear;
+
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
  * Test cases for ZoneInfoCompiler.
@@ -134,6 +137,57 @@ public class TestCompiler extends TestCase {
         assertEquals(false, tz.isFixed());
         TestBuilder.testForwardTransitions(tz, TestBuilder.AMERICA_LOS_ANGELES_DATA);
         TestBuilder.testReverseTransitions(tz, TestBuilder.AMERICA_LOS_ANGELES_DATA);
+    }
+
+    public void testCompileAllTzdb() throws Exception {
+        String[] files = {
+            "src/main/java/org/joda/time/tz/src/africa",
+            "src/main/java/org/joda/time/tz/src/antarctica",
+            "src/main/java/org/joda/time/tz/src/asia",
+            "src/main/java/org/joda/time/tz/src/australasia",
+            "src/main/java/org/joda/time/tz/src/europe",
+            "src/main/java/org/joda/time/tz/src/northamerica",
+            "src/main/java/org/joda/time/tz/src/southamerica",
+            "src/main/java/org/joda/time/tz/src/etcetera",
+            "src/main/java/org/joda/time/tz/src/backward",
+        };
+        StringBuilder buf = new StringBuilder();
+        for (int i = 0; i < files.length; i++) {
+            byte[] bytes = readAllBytes(files[i]);
+            buf.append(new String(bytes, Charset.forName("UTF-8")));
+        }
+
+        Provider provider = compileAndLoad(buf.toString());
+
+        // check some links
+        assertEquals("Europe/Kiev", provider.getZone("Europe/Kiev").getID());
+        assertEquals("Europe/Kyiv", provider.getZone("Europe/Kyiv").getID());
+        assertEquals("Asia/Rangoon", provider.getZone("Asia/Rangoon").getID());
+        assertEquals("Asia/Yangon", provider.getZone("Asia/Yangon").getID());
+        assertEquals("Europe/Lisbon", provider.getZone("Portugal").getID());
+        assertEquals("Africa/Tripoli", provider.getZone("Libya").getID());
+        assertEquals("Etc/GMT", provider.getZone("GMT").getID());
+        assertEquals("Etc/GMT", provider.getZone("Etc/GMT").getID());
+        assertEquals("Etc/GMT", provider.getZone("Etc/GMT0").getID());
+        assertEquals("Etc/GMT+1", provider.getZone("Etc/GMT+1").getID());
+        assertEquals("UTC", provider.getZone("UTC").getID());
+        assertEquals("Etc/UTC", provider.getZone("Etc/UTC").getID());
+        assertEquals("Australia/Currie", provider.getZone("Australia/Currie").getID());
+    }
+
+    private static byte[] readAllBytes(String fileName) throws IOException {
+        InputStream in = new FileInputStream(fileName);
+        try {
+            byte[] b = new byte[1024];
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            int c;
+            while ((c = in.read(b)) != -1) {
+                out.write(b, 0, c);
+            }
+            return out.toByteArray();
+        } finally {
+            in.close();
+        }
     }
 
     public void testCompileOnBrokenTimeZoneFile() throws Exception {

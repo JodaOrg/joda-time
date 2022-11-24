@@ -41,7 +41,7 @@ jobs:
         mkdir -p target
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@86f3159a697a097a813ad9bfa0002412d97690a4  #v2.1.25
+      uses: github/codeql-action/init@8aff97f12c99086bdb92ff62ae06dbbcdf07941b  #codeql-bundle-20221105
       with:
         languages: java
     
@@ -50,7 +50,7 @@ jobs:
         mvn install site
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@86f3159a697a097a813ad9bfa0002412d97690a4  #v2.1.25
+      uses: github/codeql-action/analyze@8aff97f12c99086bdb92ff62ae06dbbcdf07941b  #codeql-bundle-20221105
     
     - name: Website
       if: github.event_name == 'push' && (startsWith(github.ref, 'refs/tags/website') || startsWith(github.ref, 'refs/tags/v'))

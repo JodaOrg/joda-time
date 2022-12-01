@@ -728,6 +728,10 @@ Zone Indian/Mauritius	3:50:00 -	LMT	1907 # Port Louis
 # Agalega Is, Rodriguez
 # no information; probably like Indian/Mauritius
 
+
+# Morocco
+# See Africa/Ceuta for Spanish Morocco.
+
 # Mayotte
 # Zone	NAME		STDOFF	RULES	FORMAT	[UNTIL]
 Zone	Indian/Mayotte	3:00:56 -	LMT	1911 Jul # Mamoutzou

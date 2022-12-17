@@ -1,0 +1,31 @@
+name: CIFuzz
+on: [pull_request]
+permissions:
+  actions: read
+  actions-reason: to fetch the artifacts
+  contents: read
+  contents-reason: to clone the repo
+jobs:
+  Fuzzing:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Build Fuzzers
+      id: build
+      uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@01544e953848869e7e359156d2b1a877deb98286
+      with:
+        oss-fuzz-project-name: 'joda-time'
+        dry-run: false
+        language: jvm
+    - name: Run Fuzzers
+      uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@01544e953848869e7e359156d2b1a877deb98286
+      with:
+        oss-fuzz-project-name: 'joda-time'
+        fuzz-seconds: 300
+        dry-run: false
+        language: jvm
+    - name: Upload Crash
+      uses: actions/upload-artifact@v3
+      if: failure() && steps.build.outcome == 'success'
+      with:
+        name: artifacts
+        path: ./out/artifacts

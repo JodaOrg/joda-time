@@ -1,10 +1,10 @@
 name: CIFuzz
 on: [pull_request]
 permissions:
+# to fetch the artifacts
   actions: read
-  actions-reason: to fetch the artifacts
+# to clone the repo
   contents: read
-  contents-reason: to clone the repo
 jobs:
   Fuzzing:
     runs-on: ubuntu-latest

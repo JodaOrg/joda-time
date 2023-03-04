@@ -41,6 +41,7 @@ public class TestPeriodFormat extends TestCase {
     private static final Locale EU = new Locale("eu");
     private static final Locale FI = new Locale("fi");
     private static final Locale FR = new Locale("fr");
+    private static final Locale GA = new Locale("ga");
     private static final Locale HI = new Locale("hi");
     private static final Locale HU = new Locale("hu");
     private static final Locale IN = new Locale("in");
@@ -166,6 +167,7 @@ public class TestPeriodFormat extends TestCase {
             {EU, "2 urte, 1 hilabete, 1 egun, 5 ordu, 6 minuto, 7 segundo eta 8 milisegundo"},
             {FR, "2 années, 1 mois, 1 jour, 5 heures, 6 minutes, 7 secondes et 8 millisecondes"},
             {FI, "2 vuotta, 1 kuukausi, 1 päivä, 5 tuntia, 6 minuuttia, 7 sekuntia ja 8 millisekuntia"},
+            {GA, "2 blianta, 1 mí, 1 lá, 5 uair, 6 miontuairiscí, 7 soicind agus 8 milleasoicind"},
             {HI, "2 साल, 1 महीना, 1 दिन, 5 घंटे, 6 मिनट, 7 सेकंड और 8 मिलीसेकंड"},
             {HU, "2 év, 1 hónap, 1 nap, 5 óra, 6 perc, 7 másodperc és 8 miliszekundum"},
             {IN, "2 tahun, 1 bulan, 1 hari, 5 jam, 6 menit, 7 detik dan8 millidetik"},

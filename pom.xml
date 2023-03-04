@@ -1042,22 +1042,22 @@
   <properties>
     <!-- Plugin version numbers -->
     <build-helper-maven-plugin.version>3.3.0</build-helper-maven-plugin.version>
-    <maven-assembly-plugin.version>3.4.2</maven-assembly-plugin.version>
+    <maven-assembly-plugin.version>3.5.0</maven-assembly-plugin.version>
     <maven-changes-plugin.version>2.12.1</maven-changes-plugin.version>
     <maven-checkstyle-plugin.version>2.17</maven-checkstyle-plugin.version>
     <maven-clean-plugin.version>3.2.0</maven-clean-plugin.version>
     <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
-    <maven-deploy-plugin.version>3.0.0</maven-deploy-plugin.version>
-    <maven-dependency-plugin.version>3.4.0</maven-dependency-plugin.version>
-    <maven-enforcer-plugin.version>3.1.0</maven-enforcer-plugin.version>
+    <maven-deploy-plugin.version>3.1.0</maven-deploy-plugin.version>
+    <maven-dependency-plugin.version>3.5.0</maven-dependency-plugin.version>
+    <maven-enforcer-plugin.version>3.2.1</maven-enforcer-plugin.version>
     <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
     <maven-install-plugin.version>3.1.0</maven-install-plugin.version>
     <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
-    <maven-javadoc-plugin.version>3.4.1</maven-javadoc-plugin.version>
+    <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
     <maven-jxr-plugin.version>3.3.0</maven-jxr-plugin.version>
-    <maven-plugin-plugin.version>3.7.0</maven-plugin-plugin.version>
-    <maven-pmd-plugin.version>3.19.0</maven-pmd-plugin.version>
-    <maven-project-info-reports-plugin.version>3.4.1</maven-project-info-reports-plugin.version>
+    <maven-plugin-plugin.version>3.7.1</maven-plugin-plugin.version>
+    <maven-pmd-plugin.version>3.20.0</maven-pmd-plugin.version>
+    <maven-project-info-reports-plugin.version>3.4.2</maven-project-info-reports-plugin.version>
     <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
     <maven-repository-plugin.version>2.4</maven-repository-plugin.version>
     <maven-resources-plugin.version>3.3.0</maven-resources-plugin.version>

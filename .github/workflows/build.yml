@@ -21,6 +21,8 @@ jobs:
     permissions:
       security-events: write  # for github/codeql-action
     runs-on: ubuntu-latest
+    env:
+      MAVN_ARGS: -e -B -DtrimStackTrace=false
 
     steps:
     - name: Checkout
@@ -36,7 +38,6 @@ jobs:
     - name: Maven version
       run: |
         mkdir -p ./.mvn
-        echo '-e -B -DtrimStackTrace=false' > ./.mvn/maven.config
         mvn --version
         mkdir -p target
 

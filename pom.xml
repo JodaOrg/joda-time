@@ -443,7 +443,6 @@
         <configuration>
           <mainClass>org.joda.time.tz.ZoneInfoCompiler</mainClass>
           <classpathScope>compile</classpathScope>
-          <verbose>true</verbose>
           <systemProperties>
             <systemProperty>
               <key>org.joda.time.DateTimeZone.Provider</key>

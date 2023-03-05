@@ -17,12 +17,12 @@ package org.joda.time;
 
 import java.util.Locale;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.LenientChronology;
 import org.joda.time.chrono.StrictChronology;
+
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
  * This class is a Junit unit test for MonthDay. Based on {@link TestYearMonth_Propeties} 
@@ -90,12 +90,14 @@ public class TestMonthDay_Properties extends TestCase {
         assertEquals("9", test.monthOfYear().getAsString());
         assertEquals("September", test.monthOfYear().getAsText());
         assertEquals("septembre", test.monthOfYear().getAsText(Locale.FRENCH));
-        assertEquals("Sep", test.monthOfYear().getAsShortText());
+        String text = test.monthOfYear().getAsShortText();
+        assertTrue(text.equals("Sep") || text.equals("Sept"));
         assertEquals("sept.", test.monthOfYear().getAsShortText(Locale.FRENCH));
         assertEquals(test.getChronology().months(), test.monthOfYear().getDurationField());
         // assertEquals(test.getChronology().days(), test.dayOfMonth().getRangeDurationField());
         assertEquals(9, test.monthOfYear().getMaximumTextLength(null));
-        assertEquals(3, test.monthOfYear().getMaximumShortTextLength(null));
+        int max = test.monthOfYear().getMaximumShortTextLength(null);
+        assertTrue(max == 3 || max == 4);  // for JDK17+
     }
 
     public void testPropertyGetMaxMinValuesMonthOfYear() {

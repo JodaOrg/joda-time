@@ -244,7 +244,8 @@ public class TestMutableDateTime_Properties extends TestCase {
         assertEquals(test.getChronology().months(), test.monthOfYear().getDurationField());
         assertEquals(test.getChronology().years(), test.monthOfYear().getRangeDurationField());
         assertEquals(9, test.monthOfYear().getMaximumTextLength(null));
-        assertEquals(3, test.monthOfYear().getMaximumShortTextLength(null));
+        int max = test.monthOfYear().getMaximumShortTextLength(null);
+        assertTrue(max == 3 || max == 4);  // for JDK17+
         test = new MutableDateTime(2004, 7, 9, 0, 0, 0, 0);
         assertEquals("juillet", test.monthOfYear().getAsText(Locale.FRENCH));
         assertEquals("juil.", test.monthOfYear().getAsShortText(Locale.FRENCH));

@@ -205,17 +205,36 @@ public class TestDateTimeZone extends TestCase {
         zone = DateTimeZone.forID("UTC");
         assertSame(DateTimeZone.UTC, zone);
         
+        zone = DateTimeZone.forID("UT");
+        assertSame(DateTimeZone.UTC, zone);
+
+        zone = DateTimeZone.forID("Z");
+        assertSame(DateTimeZone.UTC, zone);
+
+        zone = DateTimeZone.forID("GMT");
+        // depends if the default time-zone provider has been changed or not
+        assertTrue(zone == DateTimeZone.forID("Etc/GMT") || zone == DateTimeZone.UTC);
+
         zone = DateTimeZone.forID("+00:00");
         assertSame(DateTimeZone.UTC, zone);
         
         zone = DateTimeZone.forID("+00");
         assertSame(DateTimeZone.UTC, zone);
         
+        long expected = DateTimeConstants.MILLIS_PER_HOUR + (23L * DateTimeConstants.MILLIS_PER_MINUTE);
         zone = DateTimeZone.forID("+01:23");
         assertEquals("+01:23", zone.getID());
-        assertEquals(DateTimeConstants.MILLIS_PER_HOUR + (23L * DateTimeConstants.MILLIS_PER_MINUTE),
-                zone.getOffset(TEST_TIME_SUMMER));
-        
+        assertEquals(expected, zone.getOffset(TEST_TIME_SUMMER));
+        zone = DateTimeZone.forID("GMT+01:23");
+        assertEquals("+01:23", zone.getID());
+        assertEquals(expected, zone.getOffset(TEST_TIME_SUMMER));
+        zone = DateTimeZone.forID("UTC+01:23");
+        assertEquals("+01:23", zone.getID());
+        assertEquals(expected, zone.getOffset(TEST_TIME_SUMMER));
+        zone = DateTimeZone.forID("UT+01:23");
+        assertEquals("+01:23", zone.getID());
+        assertEquals(expected, zone.getOffset(TEST_TIME_SUMMER));
+
         zone = DateTimeZone.forID("-02:00");
         assertEquals("-02:00", zone.getID());
         assertEquals((-2L * DateTimeConstants.MILLIS_PER_HOUR),

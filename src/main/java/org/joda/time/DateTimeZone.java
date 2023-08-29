@@ -215,11 +215,13 @@ public abstract class DateTimeZone implements Serializable {
      * <p>
      * The time zone id may be one of those returned by getAvailableIDs.
      * Short ids, as accepted by {@link java.util.TimeZone}, are not accepted.
-     * All IDs must be specified in the long format.
-     * The exception is UTC, which is an acceptable id.
+     * All IDs must be specified in the long format unless detailed below.
      * <p>
-     * Alternatively a locale independent, fixed offset, datetime zone can
-     * be specified. The form <code>[+-]hh:mm</code> can be used.
+     * A locale independent, fixed offset, datetime zone can be specified
+     * using the form <code>[+-]hh:mm</code>.
+     * The offset may be prefixed by 'UTC', 'GMT' or 'UT'.
+     * In addition, the IDs 'Z', 'UTC', 'GMT' and 'UT' will return a UTC
+     * equivalent time-zone.
      * 
      * @param id  the ID of the datetime zone, null means default
      * @return the DateTimeZone object for the ID
@@ -237,13 +239,25 @@ public abstract class DateTimeZone implements Serializable {
         if (zone != null) {
             return zone;
         }
-        if (id.startsWith("+") || id.startsWith("-")) {
-            int offset = parseOffset(id);
+        // compatibility with more ZoneId values
+        // note that GMT normally matches to Etc/GMT in the block above, but if the
+        // time-zone provider has been replaced and does not match GMT then this line will
+        if (id.equals("UT") || id.equals("GMT") || id.equals("Z")) {
+            return DateTimeZone.UTC;
+        }
+        String idToParse = id;
+        if (id.startsWith("UTC+") || id.startsWith("UTC-") || id.startsWith("GMT+") || id.startsWith("GMT-")) {
+            idToParse = id.substring(3);
+        } else if (id.startsWith("UT+") || id.startsWith("UT-")) {
+            idToParse = id.substring(2);
+        }
+        if (idToParse.startsWith("+") || idToParse.startsWith("-")) {
+            int offset = parseOffset(idToParse);
             if (offset == 0L) {
                 return DateTimeZone.UTC;
             } else {
-                id = printOffset(offset);
-                return fixedOffsetZone(id, offset);
+                idToParse = printOffset(offset);
+                return fixedOffsetZone(idToParse, offset);
             }
         }
         throw new IllegalArgumentException("The datetime zone id '" + id + "' is not recognised");

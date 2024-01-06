@@ -679,7 +679,7 @@ public class DateTimeFormat {
      */
     private static DateTimeFormatter createFormatterForPattern(String pattern) {
         if (pattern == null || pattern.length() == 0) {
-            throw new IllegalArgumentException("Invalid pattern specification. Pattern is null or empty.");
+            throw new IllegalArgumentException("Invalid pattern specification: Pattern is null or empty");
         }
         DateTimeFormatter formatter = cPatternCache.get(pattern);
         if (formatter == null) {

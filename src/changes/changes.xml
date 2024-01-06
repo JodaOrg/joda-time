@@ -8,6 +8,15 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
+    <release version="2.12.6" date="2024-01-06" description="v2.12.6">
+      <action dev="cyrilou242" type="update">
+        Better error message in DateTimeFormat.
+        Fixes #731.
+      </action>
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2023dgtz.
+      </action>
+    </release>
     <release version="2.12.5" date="2023-03-30" description="v2.12.5">
       <action dev="jodastephen" type="update">
         DateTimeZone data updated to version 2023cgtz.

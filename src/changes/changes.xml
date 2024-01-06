@@ -9,6 +9,10 @@
 
     <!-- types are add, fix, remove, update -->
     <release version="2.12.6" date="2024-01-06" description="v2.12.6">
+      <action dev="jodastephen" type="update">
+        Enhance DateTimeZone.forID() to better match java.time.
+        Fixes #733, #717.
+      </action>
       <action dev="cyrilou242" type="update">
         Better error message in DateTimeFormat.
         Fixes #731.

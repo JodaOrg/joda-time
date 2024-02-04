@@ -8,7 +8,7 @@
   <artifactId>joda-time</artifactId>
   <packaging>jar</packaging>
   <name>Joda-Time</name>
-  <version>2.12.6</version>
+  <version>2.12.7</version>
   <description>Date and time library to replace JDK date handling</description>
   <url>https://www.joda.org/joda-time/</url>
 

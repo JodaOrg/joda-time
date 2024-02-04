@@ -54,7 +54,7 @@ Various documentation is available:
 
 
 ### Releases
-[Release 2.12.6](https://www.joda.org/joda-time/download.html) is the current latest release.
+[Release 2.12.7](https://www.joda.org/joda-time/download.html) is the current latest release.
 This release is considered stable and worthy of the 2.x tag.
 It depends on JDK 1.5 or later.
 
@@ -65,13 +65,13 @@ Available in the [Maven Central repository](https://search.maven.org/search?q=g:
 <dependency>
   <groupId>joda-time</groupId>
   <artifactId>joda-time</artifactId>
-  <version>2.12.6</version>
+  <version>2.12.7</version>
 </dependency>
 ```
 
 **Gradle configuration:**
 ```groovy
-compile 'joda-time:joda-time:2.12.6'
+compile 'joda-time:joda-time:2.12.7'
 ```
 
 

@@ -1212,8 +1212,19 @@ public abstract class DateTimeZone implements Serializable {
      * 
      * @return the closest matching TimeZone object
      */
-    public java.util.TimeZone toTimeZone() {
-        return java.util.TimeZone.getTimeZone(iID);
+    public TimeZone toTimeZone() {
+        TimeZone converted = TimeZone.getTimeZone(iID);
+        // handle recent renames (since 2019) where the JDK may not have been updated yet
+        if (converted.getID().equals("GMT")) {
+            if (iID.equals("Europe/Kyiv")) {
+                converted = TimeZone.getTimeZone("Europe/Kiev");
+            } else if (iID.equals("Pacific/Kanton")) {
+                converted = TimeZone.getTimeZone("Pacific/Enderbury");
+            } else if (iID.equals("America/Nuuk")) {
+                converted = TimeZone.getTimeZone("America/Godthab");
+            }
+        }
+        return converted;
     }
 
     /**

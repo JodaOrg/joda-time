@@ -81,15 +81,14 @@ import org.joda.time.JodaTimePermission;
 public final class ConverterManager {
 
     /**
-     * Singleton instance, lazily loaded to avoid class loading.
+     * Holds the singleton instance, lazily loaded to avoid class loading.
      */
-    private static ConverterManager INSTANCE;
+    private static final class LazyConverterManagerHolder {
+        static final ConverterManager INSTANCE = new ConverterManager();
+    }
 
     public static ConverterManager getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new ConverterManager();
-        }
-        return INSTANCE;
+        return LazyConverterManagerHolder.INSTANCE;
     }
     
     private ConverterSet iInstantConverters;

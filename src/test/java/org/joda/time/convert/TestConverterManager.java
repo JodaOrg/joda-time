@@ -127,9 +127,12 @@ public class TestConverterManager extends TestCase {
         Constructor con = cls.getDeclaredConstructor((Class[]) null);
         assertEquals(1, cls.getDeclaredConstructors().length);
         assertEquals(true, Modifier.isProtected(con.getModifiers()));
+
+        Class holderCls = Class.forName(cls.getName() + "$LazyConverterManagerHolder");
+        assertEquals(true, Modifier.isPrivate(holderCls.getModifiers()));
         
-        Field fld = cls.getDeclaredField("INSTANCE");
-        assertEquals(true, Modifier.isPrivate(fld.getModifiers()));
+        Field fld = holderCls.getDeclaredField("INSTANCE");
+        assertEquals(true, Modifier.isFinal(fld.getModifiers()));
     }
 
     //-----------------------------------------------------------------------

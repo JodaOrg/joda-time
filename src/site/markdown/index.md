@@ -32,6 +32,7 @@ Various documentation is available:
 * The [Javadoc](apidocs/index.html)
 * The list of [FAQ](faq.html)s.
 * The [change notes](changes-report.html) for each release
+* The [security](security.html) issues page
 * The [GitHub](https://github.com/JodaOrg/joda-time) source repository
 
 

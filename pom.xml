@@ -321,6 +321,10 @@
       <url>https://github.com/alshopov</url>
     </contributor>
     <contributor>
+      <name>Tobias Soloschenko</name>
+      <url>https://github.com/klopfdreh</url>
+    </contributor>
+    <contributor>
       <name>Michael Sotnikov</name>
       <url>https://github.com/stari4ek</url>
     </contributor>
@@ -393,6 +397,13 @@
   <!-- ==================================================================== -->
   <build>
     <resources>
+      <resource>
+        <directory>${project.basedir}/src/main/resources/META-INF</directory>
+        <targetPath>META-INF</targetPath>
+        <includes>
+          <include>native-image/joda-time/joda-time/resource-config.json</include>
+        </includes>
+      </resource>
       <resource>
         <targetPath>META-INF</targetPath>
         <directory>${project.basedir}</directory>

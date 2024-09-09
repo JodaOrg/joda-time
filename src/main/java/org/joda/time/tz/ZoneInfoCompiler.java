@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -61,6 +62,143 @@ import org.joda.time.format.ISODateTimeFormat;
  * @since 1.0
  */
 public class ZoneInfoCompiler {
+
+    private static final List<String> ANCIENT_IDS = Arrays.asList(
+            // changed in 1993
+            "Australia/ACT",
+            "Australia/LHI",
+            "Australia/NSW",
+            "Australia/North",
+            "Australia/Queensland",
+            "Australia/South",
+            "Australia/Tasmania",
+            "Australia/Victoria",
+            "Australia/West",
+            "Australia/Yancowinna",
+            "Brazil/Acre",
+            "Brazil/DeNoronha",
+            "Brazil/East",
+            "Brazil/West",
+            "Canada/Atlantic",
+            "Canada/Central",
+            "Canada/Eastern",
+            "Canada/Mountain",
+            "Canada/Newfoundland",
+            "Canada/Pacific",
+            "Canada/Saskatchewan",
+            "Canada/Yukon",
+            "Chile/Continental",
+            "Chile/EasterIsland",
+            "Cuba",
+            "Egypt",
+            "Eire",
+            "Etc/GMT+0",
+            "Etc/GMT-0",
+            "Etc/GMT0",
+            "Etc/Greenwich",
+            "Etc/UCT",
+            "Etc/Universal",
+            "Etc/Zulu",
+            "GB",
+            "GB-Eire",
+            "GMT+0",
+            "GMT-0",
+            "GMT0",
+            "GMT",
+            "Greenwich",
+            "Hongkong",
+            "Iceland",
+            "Iran",
+            "Israel",
+            "Jamaica",
+            "Japan",
+            "Kwajalein",
+            "Libya",
+            "Mexico/BajaNorte",
+            "Mexico/BajaSur",
+            "Mexico/General",
+            "NZ",
+            "NZ-CHAT",
+            "Navajo",
+            "PRC",
+            "Poland",
+            "Portugal",
+            "ROC",
+            "ROK",
+            "Singapore",
+            "Turkey",
+            "UCT",
+            "US/Alaska",
+            "US/Aleutian",
+            "US/Arizona",
+            "US/Central",
+            "US/East-Indiana",
+            "US/Eastern",
+            "US/Hawaii",
+            "US/Indiana-Starke",
+            "US/Michigan",
+            "US/Mountain",
+            "US/Pacific",
+            "US/Samoa",
+            "UCT",
+            "UTC",
+            "Universal",
+            "W-SU",
+            "Zulu",
+            // removed
+            "US/Pacific-New");
+
+    // allowing these to be "good links"
+    // all these follow the modern naming convention that avoids country names
+//    Australia/Canberra
+//    America/Buenos_Aires
+//    America/Catamarca
+//    America/Cordoba
+//    America/Indianapolis
+//    America/Jujuy
+//    America/Knox_IN
+//    America/Louisville
+//    America/Mendoza
+//    America/Virgin
+//    Pacific/Samoa
+//    Africa/Asmera
+//    Africa/Timbuktu
+//    America/Argentina/ComodRivadavia
+//    America/Atka
+//    America/Coral_Harbour
+//    America/Ensenada
+//    America/Fort_Wayne
+//    America/Godthab
+//    America/Montreal
+//    America/Porto_Acre
+//    America/Rosario
+//    America/Santa_Isabel
+//    America/Shiprock
+//    Antarctica/South_Pole
+//    Asia/Ashkhabad
+//    Asia/Calcutta
+//    Asia/Chongqing
+//    Asia/Chungking
+//    Asia/Dacca
+//    Asia/Harbin
+//    Asia/Kashgar
+//    Asia/Katmandu
+//    Asia/Macao
+//    Asia/Rangoon
+//    Asia/Saigon
+//    Asia/Tel_Aviv
+//    Asia/Thimbu
+//    Asia/Ujung_Pandang
+//    Asia/Ulan_Bator
+//    Atlantic/Faeroe
+//    Atlantic/Jan_Mayen
+//    Europe/Belfast
+//    Europe/Tiraspol
+//    Pacific/Johnston
+//    Pacific/Ponape
+//    Pacific/Truk
+//    Pacific/Yap
+
     static DateTimeOfYear cStartOfYear;
 
     static Chronology cLenientISO;
@@ -353,8 +491,8 @@ public class ZoneInfoCompiler {
     public ZoneInfoCompiler() {
         iRuleSets = new HashMap<String, RuleSet>();
         iZones = new ArrayList<Zone>();
-        iGoodLinks = new ArrayList<String>();
-        iBackLinks = new ArrayList<String>();
+        iGoodLinks = new ArrayList<String>();  // list of pairs, (good, bad)*
+        iBackLinks = new ArrayList<String>();  // list of pairs, (good, bad)*
     }
 
     /**
@@ -362,6 +500,8 @@ public class ZoneInfoCompiler {
      *
      * @param outputDir optional directory to write compiled data files to
      * @param sources optional list of source files to parse
+     * @return the map of ID to zone
+     * @throws IOException if an IO error occurs
      */
     public Map<String, DateTimeZone> compile(File outputDir, File[] sources) throws IOException {
         if (sources != null) {
@@ -430,7 +570,7 @@ public class ZoneInfoCompiler {
             }
         }
 
-        // store "back" links as aliases (where name is permanently mapped
+        // store "back" links as aliases (where name is permanently mapped)
         for (int pass = 0; pass < 2; pass++) {
             for (int i = 0; i < iBackLinks.size(); i += 2) {
                 String id = iBackLinks.get(i);
@@ -551,7 +691,7 @@ public class ZoneInfoCompiler {
                     // links in "backward" are deprecated names
                     // links in other files should be kept
                     // special case a few to try to repair terrible damage to tzdb
-                    if (backward || alias.equals("US/Pacific-New") || alias.startsWith("Etc/") || alias.equals("GMT")) {
+                    if (alias.startsWith("Etc/") || ANCIENT_IDS.contains(alias)) {
                         iBackLinks.add(real);
                         iBackLinks.add(alias);
                     } else {

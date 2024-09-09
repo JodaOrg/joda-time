@@ -1071,9 +1071,19 @@ public class TestDateTimeZone extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testToTimeZone() {
-        DateTimeZone zone = DateTimeZone.forID("Europe/Paris");
-        TimeZone tz = zone.toTimeZone();
-        assertEquals("Europe/Paris", tz.getID());
+        assertEquals("Europe/Paris", DateTimeZone.forID("Europe/Paris").toTimeZone().getID());
+
+        String kanton = DateTimeZone.forID("Pacific/Kanton").toTimeZone().getID();
+        assertTrue(kanton.equals("Pacific/Kanton") || kanton.equals("Pacific/Enderbury"));
+        System.out.println(kanton);
+
+        String gothab = DateTimeZone.forID("America/Nuuk").toTimeZone().getID();
+        assertTrue(gothab.equals("America/Nuuk") || gothab.equals("America/Godthab"));
+        System.out.println(gothab);
+
+        String kyiv = DateTimeZone.forID("Europe/Kyiv").toTimeZone().getID();
+        assertTrue(kyiv.equals("Europe/Kyiv") || kyiv.equals("Europe/Kiev"));
+        System.out.println(kyiv);
     }
 
     //-----------------------------------------------------------------------
@@ -1340,15 +1350,6 @@ public class TestDateTimeZone extends TestCase {
         String str1 = zone.getName(now.getMillis());
         String str2 = zone.getName(now.plusMonths(6).getMillis());
         assertEquals(false, str1.equals(str2));
-    }
-
-    //-----------------------------------------------------------------------
-    public void testIdNotAutoMapped_Asia_Yangon() throws Exception {
-        DateTimeZone zoneOld = DateTimeZone.forID("Asia/Rangoon");
-        assertEquals(zoneOld.getID(), "Asia/Yangon");
-
-        DateTimeZone zoneNew = DateTimeZone.forID("Asia/Yangon");
-        assertEquals(zoneNew.getID(), "Asia/Yangon");
     }
 
 }

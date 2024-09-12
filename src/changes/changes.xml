@@ -8,6 +8,12 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
+    <release version="2.13.0" date="SNAPSHOT" description="v2.13.0">
+      <action dev="jodastephen" type="fix">
+        Enhance the parser to better match specification of zic.
+        Fixes #785.
+      </action>
+    </release>
     <release version="2.12.7" date="2024-02-04" description="v2.12.7">
       <action dev="jodastephen" type="update">
         DateTimeZone data updated to version 2024agtz.

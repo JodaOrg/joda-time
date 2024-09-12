@@ -20,16 +20,16 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.StringTokenizer;
 import java.util.NoSuchElementException;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import java.util.StringTokenizer;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
 import org.joda.time.tz.ZoneInfoCompiler.DateTimeOfYear;
+
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
  * Test cases for ZoneInfoCompiler.
@@ -45,28 +45,29 @@ public class TestCompiler extends TestCase {
         return new TestSuite(TestCompiler.class);
     }
 
+    // this file is adjusted to have short-form codes to test parsing
     static final String AMERICA_LOS_ANGELES_FILE =
         "# Rules for building just America/Los_Angeles time zone.\n" + 
         "\n" + 
-        "Rule    US  1918    1919    -   Mar lastSun 2:00    1:00    D\n" + 
-        "Rule    US  1918    1919    -   Oct lastSun 2:00    0   S\n" + 
-        "Rule    US  1942    only    -   Feb 9   2:00    1:00    W # War\n" + 
-        "Rule    US  1945    only    -   Aug 14  23:00u  1:00    P # Peace\n" + 
-        "Rule    US  1945    only    -   Sep 30  2:00    0   S\n" + 
-        "Rule    US  1967    max -   Oct lastSun 2:00    0   S\n" + 
+        "r\u000bUS  1918    1919    -   Mar lastSu 2    1    D\n" + 
+        "RUL\tUS  1918    1919    -   O lastSun 2:00:00    0   S\n" + 
+        "Rule\fUS  1942    o    -   F 9   2:00    1:00    W # War\n" + 
+        "Rule    US  1945    on    -   AU 14  23:00u  1:00    P # Peace\n" + 
+        "Rule    US  1945    onl    -   S 30  2:00    0   S\n" + 
+        "Rule    US  1967    ma -   Oc lastSun 2:00    0   S\n" + 
         "Rule    US  1967    1973    -   Apr lastSun 2:00    1:00    D\n" + 
-        "Rule    US  1974    only    -   Jan 6   2:00    1:00    D\n" + 
-        "Rule    US  1975    only    -   Feb 23  2:00    1:00    D\n" + 
-        "Rule    US  1976    1986    -   Apr lastSun 2:00    1:00    D\n" + 
-        "Rule    US  1987    max -   Apr Sun>=1  2:00    1:00    D\n" + 
+        "Rule    US  1974    only    -   Ja 6   2:00    1:00    D\n" + 
+        "Rule    US  1975    only    -   FE 23  2:00    1:00    D\n" + 
+        "Rule    US  1976    1986    -   Apri lastSun 2:00    1:00    D\n" + 
+        "Rule    US  1987    maxim -   April Sun>=1  2:00    1:00    D\n" + 
         "\n" + 
-        "Rule    CA  1948    only    -   Mar 14  2:00    1:00    D\n" + 
-        "Rule    CA  1949    only    -   Jan  1  2:00    0   S\n" + 
-        "Rule    CA  1950    1966    -   Apr lastSun 2:00    1:00    D\n" + 
-        "Rule    CA  1950    1961    -   Sep lastSun 2:00    0   S\n" + 
-        "Rule    CA  1962    1966    -   Oct lastSun 2:00    0   S\n" + 
+        "Rule    CA  1948    only    -   Marc 14  2:00    1:00    D\n" + 
+        "Rule    CA  1949    only    -   Janu  1  2:00    0   S\n" + 
+        "Rule    CA  1950    1966    -   Apr LASTSUN 2:00    1:00    D\n" + 
+        "Rule    CA  1950    1961    -   September lastSun 2:00    0   S\n" + 
+        "Rule    CA  1962    1966    -   October lastSun 2:00    0   S\n" + 
         "\n" + 
-        "Zone America/Los_Angeles -7:52:58 - LMT 1883 Nov 18 12:00\n" + 
+        "z America/Los_Angeles -7:52:58 - LMT 1883 Nov 18 12:00\n" + 
         "            -8:00   US  P%sT    1946\n" + 
         "            -8:00   CA  P%sT    1967\n" + 
         "            -8:00   US  P%sT";
@@ -212,6 +213,22 @@ public class TestCompiler extends TestCase {
                 deleteOnExit(files[i]);
             }
         }
+    }
+
+    //-----------------------------------------------------------------------
+    public void test_formatName() {
+        assertEquals("PST", ZoneInfoCompiler.Rule.formatName("PST/PDT", 0, null));
+        assertEquals("PDT", ZoneInfoCompiler.Rule.formatName("PST/PDT", 7200000, null));
+        assertEquals("PST", ZoneInfoCompiler.Rule.formatName("P%sT", 7200000, "S"));
+        assertEquals("PDT", ZoneInfoCompiler.Rule.formatName("P%sT", 7200000, "D"));
+        assertEquals("PT", ZoneInfoCompiler.Rule.formatName("P%sT", 7200000, null));
+        assertEquals("+00", ZoneInfoCompiler.Rule.formatName("%z", 0, null));
+        assertEquals("+02", ZoneInfoCompiler.Rule.formatName("%z", 7200000, null));
+        assertEquals("+020030", ZoneInfoCompiler.Rule.formatName("%z", 7230000, null));
+        assertEquals("+0201", ZoneInfoCompiler.Rule.formatName("%z", 7260000, null));
+        assertEquals("+020101", ZoneInfoCompiler.Rule.formatName("%z", 7261000, null));
+        assertEquals("-02", ZoneInfoCompiler.Rule.formatName("%z", -7200000, null));
+        assertEquals("-020030", ZoneInfoCompiler.Rule.formatName("%z", -7230000, null));
     }
 
     //-----------------------------------------------------------------------

@@ -26,16 +26,18 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import org.joda.time.MutableDateTime;
@@ -61,9 +63,63 @@ import org.joda.time.format.ISODateTimeFormat;
  * @since 1.0
  */
 public class ZoneInfoCompiler {
+    // SPEC: https://man7.org/linux/man-pages/man8/zic.8.html#FILES
+    // Note that we match a subset of the spec, as actually seen in TZDB files
+
     static DateTimeOfYear cStartOfYear;
 
     static Chronology cLenientISO;
+
+    // SPEC: A name can be abbreviated by omitting all but an initial prefix; any
+    // abbreviation must be unambiguous in context.
+    static final Set<String> RULE_LOOKUP = expand("rule", "r");
+    static final Set<String> ZONE_LOOKUP = expand("zone", "z");
+    static final Set<String> LINK_LOOKUP = expand("link", "l");
+    static final Set<String> MIN_YEAR_LOOKUP = expand("minimum", "mi");
+    static final Set<String> MAX_YEAR_LOOKUP = expand("maximum", "ma");
+    static final Set<String> ONLY_YEAR_LOOKUP = expand("only", "o");
+    static final Map<String, Integer> MONTH_LOOKUP = new HashMap<String, Integer>();
+    static {
+        put(expand("january", "ja"), 1, MONTH_LOOKUP);
+        put(expand("february", "f"), 2, MONTH_LOOKUP);
+        put(expand("march", "mar"), 3, MONTH_LOOKUP);
+        put(expand("april", "ap"), 4, MONTH_LOOKUP);
+        put(expand("may", "may"), 5, MONTH_LOOKUP);
+        put(expand("june", "jun"), 6, MONTH_LOOKUP);
+        put(expand("july", "jul"), 7, MONTH_LOOKUP);
+        put(expand("august", "au"), 8, MONTH_LOOKUP);
+        put(expand("september", "s"), 9, MONTH_LOOKUP);
+        put(expand("october", "o"), 10, MONTH_LOOKUP);
+        put(expand("november", "n"), 11, MONTH_LOOKUP);
+        put(expand("december", "d"), 12, MONTH_LOOKUP);
+    }
+    static final Map<String, Integer> DOW_LOOKUP = new HashMap<String, Integer>();
+    static {
+        put(expand("monday", "m"), 1, DOW_LOOKUP);
+        put(expand("tuesday", "tu"), 2, DOW_LOOKUP);
+        put(expand("wednesday", "w"), 3, DOW_LOOKUP);
+        put(expand("thursday", "th"), 4, DOW_LOOKUP);
+        put(expand("friday", "f"), 5, DOW_LOOKUP);
+        put(expand("saturday", "sa"), 6, DOW_LOOKUP);
+        put(expand("sunday", "su"), 7, DOW_LOOKUP);
+    }
+
+    private static void put(Set<String> strs, int value, Map<String, Integer> map) {
+        for (Iterator<String> it = strs.iterator(); it.hasNext();) {
+            map.put(it.next(), value);
+        }
+    }
+
+    private static Set<String> expand(String whole, String shortest) {
+        Set<String> set = new HashSet<String>();
+        String code = whole;
+        while (!code.equals(shortest)) {
+            set.add(code);
+            code = code.substring(0, code.length() - 1);
+        }
+        set.add(code);
+        return set;
+    }
 
     //-----------------------------------------------------------------------
     /**
@@ -200,25 +256,31 @@ public class ZoneInfoCompiler {
     }
 
     static int parseYear(String str, int def) {
-        str = str.toLowerCase(Locale.ENGLISH);
-        if (str.equals("minimum") || str.equals("min")) {
+        String lower = str.toLowerCase(Locale.ENGLISH);
+        if (MIN_YEAR_LOOKUP.contains(lower)) {
             return Integer.MIN_VALUE;
-        } else if (str.equals("maximum") || str.equals("max")) {
+        } else if (MAX_YEAR_LOOKUP.contains(lower)) {
             return Integer.MAX_VALUE;
-        } else if (str.equals("only")) {
+        } else if (ONLY_YEAR_LOOKUP.contains(lower)) {
             return def;
         }
         return Integer.parseInt(str);
     }
 
     static int parseMonth(String str) {
-        DateTimeField field = ISOChronology.getInstanceUTC().monthOfYear();
-        return field.get(field.set(0, str, Locale.ENGLISH));
+        Integer value = MONTH_LOOKUP.get(str.toLowerCase(Locale.ENGLISH));
+        if (value == null) {
+            throw new IllegalArgumentException("Unknown month: " + str);
+        }
+        return value;
     }
 
     static int parseDayOfWeek(String str) {
-        DateTimeField field = ISOChronology.getInstanceUTC().dayOfWeek();
-        return field.get(field.set(0, str, Locale.ENGLISH));
+        Integer value = DOW_LOOKUP.get(str.toLowerCase(Locale.ENGLISH));
+        if (value == null) {
+            throw new IllegalArgumentException("Unknown day-of-week: " + str);
+        }
+        return value;
     }
     
     static String parseOptional(String str) {
@@ -226,6 +288,11 @@ public class ZoneInfoCompiler {
     }
 
     static int parseTime(String str) {
+        // SPEC: (see 'AT' section)
+        // NOTE: negative offsets, and offsets beyond 24:00, are not supported
+        if (str.equals("-")) {
+            return 0;
+        }
         DateTimeFormatter p = ISODateTimeFormat.hourMinuteSecondFraction();
         MutableDateTime mdt = new MutableDateTime(0, getLenientISOChronology());
         int pos = 0;
@@ -244,6 +311,10 @@ public class ZoneInfoCompiler {
     }
 
     static char parseZoneChar(char c) {
+        // SPEC: Any of these forms may be followed by the letter w if the given time is local or “wall clock” time,
+        // s if the given time is standard time without any adjustment for daylight saving,
+        // or u (or g or z) if the given time is universal time;
+        // in the absence of an indicator, local (wall clock) time is assumed.
         switch (c) {
         case 's': case 'S':
             // Standard time
@@ -502,19 +573,28 @@ public class ZoneInfoCompiler {
         Zone zone = null;
         String line;
         while ((line = in.readLine()) != null) {
+            // SPEC: Leading and trailing white space on input lines is ignored.
             String trimmed = line.trim();
+            
+            // SPEC: An unquoted sharp character (#) in the input
+            // introduces a comment which extends to the end of the line the
+            // sharp character appears on.
+            // Any line that is blank (after comment stripping) is ignored
+            // (Note that we do not support quoted fields)
             if (trimmed.length() == 0 || trimmed.charAt(0) == '#') {
                 continue;
             }
-
             int index = line.indexOf('#');
             if (index >= 0) {
                 line = line.substring(0, index);
             }
-
             //System.out.println(line);
 
-            StringTokenizer st = new StringTokenizer(line, " \t");
+            // SPEC: Fields are separated from one
+            // another by one or more white space characters.  The white space
+            // characters are space, form feed, carriage return, newline, tab,
+            // and vertical tab.
+            StringTokenizer st = new StringTokenizer(line, " \f\r\t\u000b");
 
             if (Character.isWhitespace(line.charAt(0)) && st.hasMoreTokens()) {
                 if (zone != null) {
@@ -529,9 +609,14 @@ public class ZoneInfoCompiler {
                 zone = null;
             }
 
+            // SPEC: Names must be in English and are case insensitive.  They appear
+            // in several contexts, and include month and weekday names and
+            // keywords such as maximum, only, Rolling, and Zone.  A name can be
+            // abbreviated by omitting all but an initial prefix; any
+            // abbreviation must be unambiguous in context.
             if (st.hasMoreTokens()) {
-                String token = st.nextToken();
-                if (token.equalsIgnoreCase("Rule")) {
+                String token = st.nextToken().toLowerCase(Locale.ENGLISH);
+                if (RULE_LOOKUP.contains(token)) {
                     Rule r = new Rule(st);
                     RuleSet rs = iRuleSets.get(r.iName);
                     if (rs == null) {
@@ -540,12 +625,12 @@ public class ZoneInfoCompiler {
                     } else {
                         rs.addRule(r);
                     }
-                } else if (token.equalsIgnoreCase("Zone")) {
+                } else if (ZONE_LOOKUP.contains(token)) {
                     if (st.countTokens() < 4) {
                         throw new IllegalArgumentException("Attempting to create a Zone from an incomplete tokenizer");
                     }
                     zone = new Zone(st);
-                } else if (token.equalsIgnoreCase("Link")) {
+                } else if (LINK_LOOKUP.contains(token)) {
                     String real = st.nextToken();
                     String alias = st.nextToken();
                     // links in "backward" are deprecated names
@@ -569,6 +654,7 @@ public class ZoneInfoCompiler {
         }
     }
 
+    // ScopedForTesting
     static class DateTimeOfYear {
         public final int iMonthOfYear;
         public final int iDayOfMonth;
@@ -599,7 +685,7 @@ public class ZoneInfoCompiler {
 
                 if (st.hasMoreTokens()) {
                     String str = st.nextToken();
-                    if (str.startsWith("last")) {
+                    if (str.toLowerCase(Locale.ENGLISH).startsWith("last")) {
                         day = -1;
                         dayOfWeek = parseDayOfWeek(str.substring(4));
                         advance = false;
@@ -627,6 +713,8 @@ public class ZoneInfoCompiler {
                         }
                     }
 
+                    // the SPEC treats time as a duration from 00:00, whereas we parse it as a time
+                    // as such, we cannot handle negative or times beyond 24:00
                     if (st.hasMoreTokens()) {
                         str = st.nextToken();
                         zoneChar = parseZoneChar(str.charAt(str.length() - 1));
@@ -711,7 +799,8 @@ public class ZoneInfoCompiler {
         }
     }
 
-    private static class Rule {
+    // ScopedForTesting
+    static class Rule {
         public final String iName;
         public final int iFromYear;
         public final int iToYear;
@@ -760,7 +849,9 @@ public class ZoneInfoCompiler {
             iDateTimeOfYear.addRecurring(builder, nameKey, saveMillis, iFromYear, iToYear);
         }
 
-        private static String formatName(String nameFormat, int saveMillis, String letterS) {
+        // ScopedForTesting
+        static String formatName(String nameFormat, int saveMillis, String letterS) {
+            // SPEC: Alternatively, a slash (/) separates standard and daylight abbreviations.
             int index = nameFormat.indexOf('/');
             if (index > 0) {
                 if (saveMillis == 0) {
@@ -770,19 +861,39 @@ public class ZoneInfoCompiler {
                     return nameFormat.substring(index + 1).intern();
                 }
             }
+            // SPEC: The pair of characters %s is used to show where the “variable part” of the time zone abbreviation goes.
+            // LETTER column: Gives the “variable part” (for example, the “S” or “D” in “EST” or “EDT”) of time zone
+            // abbreviations to be used when this rule is in effect.  If this field is “-”, the variable part is null.
+            // (the "-" was removed in parsing)
             index = nameFormat.indexOf("%s");
-            if (index < 0) {
-                return nameFormat;
+            if (index >= 0) {
+                String left = nameFormat.substring(0, index);
+                String right = nameFormat.substring(index + 2);
+                String name = left + (letterS == null ? "" : letterS) + right;
+                return name.intern();
             }
-            String left = nameFormat.substring(0, index);
-            String right = nameFormat.substring(index + 2);
-            String name;
-            if (letterS == null) {
-                name = left.concat(right);
-            } else {
-                name = left + letterS + right;
+            // SPEC: Alternatively, a format can use the pair of characters %z to stand for the UT
+            // offset in the form ±hh, ±hhmm, or ±hhmmss, using the shortest form that does not lose information,
+            // where hh, mm, and ss are the hours, minutes, and seconds east (+) or west (-) of UT.
+            if (nameFormat.equals("%z")) {
+                String sign = saveMillis < 0 ? "-" : "+";
+                int saveSecs = Math.abs(saveMillis) / 1000;
+                int hours = saveSecs / 3600;
+                int mins = ((saveSecs / 60) % 60);
+                int secs = (saveSecs % 60);
+                if (secs == 0) {
+                    if (mins == 0) {
+                        return sign + twoDigitString(hours);
+                    }
+                    return sign + twoDigitString(hours) + twoDigitString(mins);
+                }
+                return sign + twoDigitString(hours) + twoDigitString(mins) + twoDigitString(secs);
             }
-            return name.intern();
+            return nameFormat;
+        }
+
+        private static String twoDigitString(int value) {
+            return Integer.toString(value + 100).substring(1);
         }
 
         @Override

@@ -636,7 +636,13 @@ public class ZoneInfoCompiler {
                     // links in "backward" are deprecated names
                     // links in other files should be kept
                     // special case a few to try to repair terrible damage to tzdb
-                    if (backward || alias.equals("US/Pacific-New") || alias.startsWith("Etc/") || alias.equals("GMT")) {
+                    if (alias.equals("WET") || alias.equals("CET") || alias.equals("EET")) {
+                        iGoodLinks.add(real);
+                        iGoodLinks.add(alias);
+                    } else if (alias.equals("MET")) {
+                        iBackLinks.add("CET");  // map MET -> CET (not Europe/Brussels)
+                        iBackLinks.add(alias);
+                    } else if (backward || alias.equals("US/Pacific-New") || alias.startsWith("Etc/") || alias.equals("GMT")) {
                         iBackLinks.add(real);
                         iBackLinks.add(alias);
                     } else {
@@ -962,7 +968,9 @@ public class ZoneInfoCompiler {
 
             // if negative SAVE values, then patch standard millis and name format
             if (negativeSave < 0) {
-                System.out.println("Fixed negative save values for rule '" + iRules.get(0).iName + "'");
+                if (ZoneInfoLogger.verbose()) {
+                    System.out.println("Fixed negative save values for rule '" + iRules.get(0).iName + "'");
+                }
                 standardMillis += negativeSave;
                 int slashPos = nameFormat.indexOf("/");
                 if (slashPos > 0) {

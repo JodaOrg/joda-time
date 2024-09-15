@@ -21,14 +21,14 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
+
+import junit.framework.AssertionFailedError;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
  * This class is a Junit unit test for DateTimeFormatterBuilder.
@@ -547,24 +547,24 @@ public class TestDateTimeFormatterBuilder extends TestCase {
         assertEquals(dt, f.parseDateTime("2007-03-04 12:30 Etc/GMT+10]"));
     }
 
-    public void test_printParseZoneMET() {
+    public void test_printParseZoneCET() {
         DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
                 .appendPattern("yyyy-MM-dd HH:mm ZZZ");
         DateTimeFormatter f = bld.toFormatter();
 
-        DateTime dt = new DateTime(2007, 3, 4, 12, 30, 0, DateTimeZone.forID("MET"));
-        assertEquals("2007-03-04 12:30 MET", f.print(dt));
-        assertEquals(dt, f.parseDateTime("2007-03-04 12:30 MET"));
+        DateTime dt = new DateTime(2007, 3, 4, 12, 30, 0, DateTimeZone.forID("CET"));
+        assertEquals("2007-03-04 12:30 CET", f.print(dt));
+        assertEquals(dt, f.parseDateTime("2007-03-04 12:30 CET"));
     }
 
-    public void test_printParseZoneMET_suffix() {
+    public void test_printParseZoneCET_suffix() {
         DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
                 .appendPattern("yyyy-MM-dd HH:mm ZZZ").appendLiteral(']');
         DateTimeFormatter f = bld.toFormatter();
 
-        DateTime dt = new DateTime(2007, 3, 4, 12, 30, 0, DateTimeZone.forID("MET"));
-        assertEquals("2007-03-04 12:30 MET]", f.print(dt));
-        assertEquals(dt, f.parseDateTime("2007-03-04 12:30 MET]"));
+        DateTime dt = new DateTime(2007, 3, 4, 12, 30, 0, DateTimeZone.forID("CET"));
+        assertEquals("2007-03-04 12:30 CET]", f.print(dt));
+        assertEquals(dt, f.parseDateTime("2007-03-04 12:30 CET]"));
     }
 
     public void test_printParseZoneBahiaBanderas() {

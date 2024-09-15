@@ -26,10 +26,10 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c  #v3.3.0
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332  #v4.1.7
 
     - name: Set up JDK
-      uses: actions/setup-java@3f07048e3d294f56e9b90ac5ea2c6f74e9ad0f98  #v3.10.0
+      uses: actions/setup-java@2dfa2011c5b2a0f1489bf9e433881c92c1631f88  #v4.3.0
       with:
         java-version: 8
         distribution: 'temurin'
@@ -41,16 +41,16 @@ jobs:
         mkdir -p target
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@8aff97f12c99086bdb92ff62ae06dbbcdf07941b  #codeql-bundle-20221105
+      uses: github/codeql-action/init@8fd294e26a0e458834582b0fe4988d79966c7c0a  #codeql-bundle-v2.18.4
       with:
         languages: java
     
     - name: Maven build
       run: |
-        mvn install site
+        mvn install site -B -e -ntp
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@8aff97f12c99086bdb92ff62ae06dbbcdf07941b  #codeql-bundle-20221105
+      uses: github/codeql-action/analyze@8fd294e26a0e458834582b0fe4988d79966c7c0a  #codeql-bundle-v2.18.4
     
     - name: Website
       if: github.event_name == 'push' && (startsWith(github.ref, 'refs/tags/website') || startsWith(github.ref, 'refs/tags/v'))

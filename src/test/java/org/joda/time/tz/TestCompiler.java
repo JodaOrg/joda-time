@@ -217,18 +217,19 @@ public class TestCompiler extends TestCase {
 
     //-----------------------------------------------------------------------
     public void test_formatName() {
-        assertEquals("PST", ZoneInfoCompiler.Rule.formatName("PST/PDT", 0, null));
-        assertEquals("PDT", ZoneInfoCompiler.Rule.formatName("PST/PDT", 7200000, null));
-        assertEquals("PST", ZoneInfoCompiler.Rule.formatName("P%sT", 7200000, "S"));
-        assertEquals("PDT", ZoneInfoCompiler.Rule.formatName("P%sT", 7200000, "D"));
-        assertEquals("PT", ZoneInfoCompiler.Rule.formatName("P%sT", 7200000, null));
-        assertEquals("+00", ZoneInfoCompiler.Rule.formatName("%z", 0, null));
-        assertEquals("+02", ZoneInfoCompiler.Rule.formatName("%z", 7200000, null));
-        assertEquals("+020030", ZoneInfoCompiler.Rule.formatName("%z", 7230000, null));
-        assertEquals("+0201", ZoneInfoCompiler.Rule.formatName("%z", 7260000, null));
-        assertEquals("+020101", ZoneInfoCompiler.Rule.formatName("%z", 7261000, null));
-        assertEquals("-02", ZoneInfoCompiler.Rule.formatName("%z", -7200000, null));
-        assertEquals("-020030", ZoneInfoCompiler.Rule.formatName("%z", -7230000, null));
+        assertEquals("PST", ZoneInfoCompiler.Rule.formatName("PST/PDT", 14400000, 0, null));
+        assertEquals("PDT", ZoneInfoCompiler.Rule.formatName("PST/PDT", 14400000, 7200000, null));
+        assertEquals("PST", ZoneInfoCompiler.Rule.formatName("P%sT", 14400000, 7200000, "S"));
+        assertEquals("PDT", ZoneInfoCompiler.Rule.formatName("P%sT", 14400000, 7200000, "D"));
+        assertEquals("PT", ZoneInfoCompiler.Rule.formatName("P%sT", 14400000, 7200000, null));
+        assertEquals("+00", ZoneInfoCompiler.Rule.formatName("%z", 0, 0, null));
+        assertEquals("+04", ZoneInfoCompiler.Rule.formatName("%z", 14400000, 0, null));
+        assertEquals("+06", ZoneInfoCompiler.Rule.formatName("%z", 14400000, 7200000, null));
+        assertEquals("+060030", ZoneInfoCompiler.Rule.formatName("%z", 14400000, 7230000, null));
+        assertEquals("+0601", ZoneInfoCompiler.Rule.formatName("%z", 14400000, 7260000, null));
+        assertEquals("+060101", ZoneInfoCompiler.Rule.formatName("%z", 14400000, 7261000, null));
+        assertEquals("+02", ZoneInfoCompiler.Rule.formatName("%z", 14400000, -7200000, null));
+        assertEquals("+020030", ZoneInfoCompiler.Rule.formatName("%z", 14400000, -7170000, null));
     }
 
     //-----------------------------------------------------------------------
@@ -297,6 +298,12 @@ public class TestCompiler extends TestCase {
         DateTime expected = new DateTime(1949, 9, 11, 0, 0, DateTimeZone.forOffsetHours(9));
         assertEquals(DateTimeConstants.SUNDAY, expected.getDayOfWeek());
         assertEquals(expected.getMillis(), next);
+    }
+
+    public void test_Azores() {
+        DateTimeZone zone = DateTimeZone.forID("Atlantic/Azores");
+        assertEquals("-01", zone.getNameKey(new DateTime(2000, 1, 1, 0, 0, zone).getMillis()));
+        assertEquals("+00", zone.getNameKey(new DateTime(2000, 7, 1, 0, 0, zone).getMillis()));
     }
 
 }

@@ -366,7 +366,7 @@ public class ZoneInfoCompiler {
                 return false;
             }
 
-            if (nextKey == null || (nextKey.length() < 3 && !"??".equals(nextKey))) {
+            if (nextKey == null || (nextKey.length() < 3 && !"??".equals(nextKey) && !"%z".equals(nextKey))) {
                 System.out.println("*s* Error in " + tz.getID() + " "
                                    + new DateTime(millis,
                                                   ISOChronology.getInstanceUTC())
@@ -501,7 +501,7 @@ public class ZoneInfoCompiler {
             }
         }
 
-        // store "back" links as aliases (where name is permanently mapped
+        // store "back" links as aliases (where name is permanently mapped)
         for (int pass = 0; pass < 2; pass++) {
             for (int i = 0; i < iBackLinks.size(); i += 2) {
                 String id = iBackLinks.get(i);
@@ -840,17 +840,23 @@ public class ZoneInfoCompiler {
          * Adds a recurring savings rule to the builder.
          * 
          * @param builder  the builder
+         * @param standardMillis  the standard millis, pre-adjusted to the negativeSave value
          * @param negativeSave  the negative save value
          * @param nameFormat  the name format
          */
-        public void addRecurring(DateTimeZoneBuilder builder, int negativeSave, String nameFormat) {
+        public void addRecurring(DateTimeZoneBuilder builder, int standardMillis, int negativeSave, String nameFormat) {
             int saveMillis = iSaveMillis + -negativeSave;
-            String nameKey = formatName(nameFormat, saveMillis, iLetterS);
+            String nameKey = formatName(nameFormat, standardMillis, saveMillis, iLetterS);
             iDateTimeOfYear.addRecurring(builder, nameKey, saveMillis, iFromYear, iToYear);
         }
 
         // ScopedForTesting
-        static String formatName(String nameFormat, int saveMillis, String letterS) {
+        static String formatName(String nameFormat, int standardMillis, int saveMillis, String letterS) {
+            // this method is called while adding rules to the builder
+            // the input parameters give the context as to whether the input is standard or 'summer' time
+            // saveMillis == 0 in 'winter' time, and != 0 in 'summer' time
+            // (negative save millis have been applied before this method is called)
+
             // SPEC: Alternatively, a slash (/) separates standard and daylight abbreviations.
             int index = nameFormat.indexOf('/');
             if (index > 0) {
@@ -876,20 +882,28 @@ public class ZoneInfoCompiler {
             // offset in the form ±hh, ±hhmm, or ±hhmmss, using the shortest form that does not lose information,
             // where hh, mm, and ss are the hours, minutes, and seconds east (+) or west (-) of UT.
             if (nameFormat.equals("%z")) {
-                String sign = saveMillis < 0 ? "-" : "+";
-                int saveSecs = Math.abs(saveMillis) / 1000;
-                int hours = saveSecs / 3600;
-                int mins = ((saveSecs / 60) % 60);
-                int secs = (saveSecs % 60);
-                if (secs == 0) {
-                    if (mins == 0) {
-                        return sign + twoDigitString(hours);
-                    }
-                    return sign + twoDigitString(hours) + twoDigitString(mins);
+                if (saveMillis == 0) {
+                    return formatOffset(standardMillis).intern();
+                } else {
+                    return formatOffset(standardMillis + saveMillis).intern();
                 }
-                return sign + twoDigitString(hours) + twoDigitString(mins) + twoDigitString(secs);
             }
             return nameFormat;
+        }
+
+        private static String formatOffset(int millis) {
+            String sign = millis < 0 ? "-" : "+";
+            int saveSecs = Math.abs(millis) / 1000;
+            int hours = saveSecs / 3600;
+            int mins = ((saveSecs / 60) % 60);
+            int secs = (saveSecs % 60);
+            if (secs == 0) {
+                if (mins == 0) {
+                    return sign + twoDigitString(hours);
+                }
+                return sign + twoDigitString(hours) + twoDigitString(mins);
+            }
+            return sign + twoDigitString(hours) + twoDigitString(mins) + twoDigitString(secs);
         }
 
         private static String twoDigitString(int value) {
@@ -960,13 +974,13 @@ public class ZoneInfoCompiler {
             // add a fake rule that predates all other rules to ensure standard=summer (see Namibia)
             if (negativeSave < 0) {
                 Rule rule = new Rule(iRules.get(0));
-                rule.addRecurring(builder, negativeSave, nameFormat);
+                rule.addRecurring(builder, standardMillis, negativeSave, nameFormat);
             }
 
             // add each rule, passing through the negative save to alter the actual iSaveMillis value that is used
             for (int i = 0; i < iRules.size(); i++) {
                 Rule rule = iRules.get(i);
-                rule.addRecurring(builder, negativeSave, nameFormat);
+                rule.addRecurring(builder, standardMillis, negativeSave, nameFormat);
             }
         }
     }

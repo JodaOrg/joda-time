@@ -9,9 +9,21 @@
 
     <!-- types are add, fix, remove, update -->
     <release version="2.13.0" date="SNAPSHOT" description="v2.13.0">
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2024bgtz.
+        This release retires the American short zone IDs - EST, MST, HST, EST5EDT, CST6CDT, MST7MDT and PST8PDT.
+        Creating a zone with one of these IDs will return the modern alternative, for example 'MST' is mapped to 'America/Phoenix'.
+        The European zone IDs - WET, CET and EET - are retained.
+        The non-standard European zone ID 'MET' is mapped to the standard form of 'CET'.
+        Note that these changes have no impact to current or future timestamps.
+      </action>
       <action dev="jodastephen" type="fix">
         Enhance the parser to better match specification of zic.
         Fixes #785.
+      </action>
+      <action dev="klopfdreh" type="add">
+        Enhanced support for native image building.
+        Fixes #784.
       </action>
     </release>
     <release version="2.12.7" date="2024-02-04" description="v2.12.7">

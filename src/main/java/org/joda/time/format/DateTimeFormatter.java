@@ -727,14 +727,8 @@ public class DateTimeFormatter {
         // Shift instant into local time (UTC) to avoid excessive offset
         // calculations when printing multiple fields in a composite printer.
         DateTimeZone zone = chrono.getZone();
-        int offset = zone.getOffset(instant);
-        long adjustedInstant = instant + offset;
-        if ((instant ^ adjustedInstant) < 0 && (instant ^ offset) >= 0) {
-            // Time zone offset overflow, so revert to UTC.
-            zone = DateTimeZone.UTC;
-            offset = 0;
-            adjustedInstant = instant;
-        }
+        int offset = 0;  // Skipping time zone adjustment
+        long adjustedInstant = instant;
         printer.printTo(appendable, adjustedInstant, chrono.withUTC(), offset, zone, iLocale);
     }
 
@@ -1022,9 +1016,6 @@ public class DateTimeFormatter {
         chrono = DateTimeUtils.getChronology(chrono);
         if (iChrono != null) {
             chrono = iChrono;
-        }
-        if (iZone != null) {
-            chrono = chrono.withZone(iZone);
         }
         return chrono;
     }

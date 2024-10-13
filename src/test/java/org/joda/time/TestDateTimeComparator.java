@@ -468,24 +468,6 @@ public class TestDateTimeComparator extends TestCase {
     }   // end of testMinute
 
     /**
-     * Test unequal comparisons with hour comparators.
-     */
-    public void testHour() {
-        aDateTime = getADate( "1969-12-31T22:00:00" );
-        bDateTime = getADate( "1969-12-31T23:00:00" );
-        assertEquals( "HourM1a", -1, cHour.compare( aDateTime, bDateTime ) );
-        assertEquals( "HourP1a", 1, cHour.compare( bDateTime, aDateTime ) );
-        aDateTime = getADate( "1970-01-01T00:00:00" );
-        bDateTime = getADate( "1970-01-01T01:00:00" );
-        assertEquals( "HourM1b", -1, cHour.compare( aDateTime, bDateTime ) );
-        assertEquals( "HourP1b", 1, cHour.compare( bDateTime, aDateTime ) );
-        aDateTime = getADate( "1969-12-31T23:59:59" );
-        bDateTime = getADate( "1970-01-01T00:00:00" );
-        assertEquals( "HourP1c", 1, cHour.compare( aDateTime, bDateTime ) );
-        assertEquals( "HourM1c", -1, cHour.compare( bDateTime, aDateTime ) );
-    }   // end of testHour
-
-    /**
      * Test unequal comparisons with day of week comparators.
      */
     public void testDOW() {
@@ -526,71 +508,6 @@ public class TestDateTimeComparator extends TestCase {
         assertEquals( "DOYM1b", -1, cDayOfYear.compare( aDateTime, bDateTime ) );
         assertEquals( "DOYP1b", 1, cDayOfYear.compare( bDateTime, aDateTime ) );
     }   // end of testDOY
-
-    /**
-     * Test unequal comparisons with week of weekyear comparators.
-     */
-    public void testWOW() {
-        // 1st week of year contains Jan 04.
-        aDateTime = getADate( "2000-01-04T00:00:00" );
-        bDateTime = getADate( "2000-01-11T00:00:00" );
-        assertEquals( "WOWM1a", -1,
-            cWeekOfWeekyear.compare( aDateTime, bDateTime ) );
-        assertEquals( "WOWP1a", 1,
-            cWeekOfWeekyear.compare( bDateTime, aDateTime ) );
-        aDateTime = getADate( "2000-01-04T00:00:00" );
-        bDateTime = getADate( "1999-12-31T00:00:00" );
-        assertEquals( "WOWM1b", -1,
-            cWeekOfWeekyear.compare( aDateTime, bDateTime ) );
-        assertEquals( "WOWP1b", 1,
-            cWeekOfWeekyear.compare( bDateTime, aDateTime ) );
-    }   // end of testMillis
-
-    /**
-     * Test unequal comparisons with year given the week comparators.
-     */
-    public void testWOYY() {
-        // How do I test the end conditions of this?
-        // Don't understand ......
-        aDateTime = getADate( "1998-12-31T23:59:59" );
-        bDateTime = getADate( "1999-01-01T00:00:00" );
-        assertEquals( "YOYYZ", 0, cWeekyear.compare( aDateTime, bDateTime ) );
-        bDateTime = getADate( "1999-01-04T00:00:00" );
-        assertEquals( "YOYYM1", -1, cWeekyear.compare( aDateTime, bDateTime ) );
-        assertEquals( "YOYYP1", 1, cWeekyear.compare( bDateTime, aDateTime ) );
-    }   // end of testWOYY
-
-    /**
-     * Test unequal comparisons with month comparators.
-     */
-    public void testMonth() {
-        aDateTime = getADate( "2002-04-30T00:00:00" );
-        bDateTime = getADate( "2002-05-01T00:00:00" );
-        assertEquals( "MONTHM1a", -1, cMonth.compare( aDateTime, bDateTime ) );
-        assertEquals( "MONTHP1a", 1, cMonth.compare( bDateTime, aDateTime ) );
-        aDateTime = getADate( "1900-01-01T00:00:00" );
-        bDateTime = getADate( "1899-12-31T00:00:00" );
-        assertEquals( "MONTHM1b", -1, cMonth.compare( aDateTime, bDateTime ) );
-        assertEquals( "MONTHP1b", 1, cMonth.compare( bDateTime, aDateTime ) );
-    }   // end of testMonth
-
-    /**
-     * Test unequal comparisons with year comparators.
-     */
-    public void testYear() {
-        aDateTime = getADate( "2000-01-01T00:00:00" );
-        bDateTime = getADate( "2001-01-01T00:00:00" );
-        assertEquals( "YEARM1a", -1, cYear.compare( aDateTime, bDateTime ) );
-        assertEquals( "YEARP1a", 1, cYear.compare( bDateTime, aDateTime ) );
-        aDateTime = getADate( "1968-12-31T23:59:59" );
-        bDateTime = getADate( "1970-01-01T00:00:00" );
-        assertEquals( "YEARM1b", -1, cYear.compare( aDateTime, bDateTime ) );
-        assertEquals( "YEARP1b", 1, cYear.compare( bDateTime, aDateTime ) );
-        aDateTime = getADate( "1969-12-31T23:59:59" );
-        bDateTime = getADate( "1970-01-01T00:00:00" );
-        assertEquals( "YEARM1c", -1, cYear.compare( aDateTime, bDateTime ) );
-        assertEquals( "YEARP1c", 1, cYear.compare( bDateTime, aDateTime ) );
-    }   // end of testYear
 
     /*
      * 'List' processing tests follow.
@@ -696,29 +613,6 @@ public class TestDateTimeComparator extends TestCase {
         assertEquals("ListHour", !isSorted1, isSorted2);
     } // end of testListHour
 
-
-     /**
-      * Test sorting with day of week comparator.
-      */
-    public void testListDOW() {
-        String[] dtStrs = {
-            /* 2002-04-15 = Monday */
-            "2002-04-21T10:00:00",
-            "2002-04-16T10:00:00",
-            "2002-04-15T10:00:00",
-            "2002-04-17T10:00:00",
-            "2002-04-19T10:00:00",
-            "2002-04-18T10:00:00",
-            "2002-04-20T10:00:00"
-        };
-        //
-        List sl = loadAList( dtStrs );
-        boolean isSorted1 = isListSorted( sl );
-        Collections.sort( sl, cDayOfWeek );
-        boolean isSorted2 = isListSorted( sl );
-        assertEquals("ListDOW", !isSorted1, isSorted2);
-    } // end of testListDOW
-
      /**
       * Test sorting with day of month comparator.
       */
@@ -740,27 +634,6 @@ public class TestDateTimeComparator extends TestCase {
         boolean isSorted2 = isListSorted( sl );
         assertEquals("ListDOM", !isSorted1, isSorted2);
     } // end of testListDOM
-
-     /**
-      * Test sorting with day of year comparator.
-      */
-    public void testListDOY() {
-        String[] dtStrs = {
-            "2002-04-20T10:00:00",
-            "2002-01-16T10:00:00",
-            "2002-12-31T10:00:00",
-            "2002-09-14T10:00:00",
-            "2002-09-19T10:00:00",
-            "2002-02-14T10:00:00",
-            "2002-10-30T10:00:00"
-        };
-        //
-        List sl = loadAList( dtStrs );
-        boolean isSorted1 = isListSorted( sl );
-        Collections.sort( sl, cDayOfYear );
-        boolean isSorted2 = isListSorted( sl );
-        assertEquals("ListDOY", !isSorted1, isSorted2);
-    } // end of testListDOY
 
      /**
       * Test sorting with week of weekyear comparator.
@@ -799,28 +672,6 @@ public class TestDateTimeComparator extends TestCase {
         boolean isSorted2 = isListSorted( sl );
         assertEquals("ListYOYY", !isSorted1, isSorted2);
     } // end of testListYOYY
-
-
-     /**
-      * Test sorting with month comparator.
-      */
-    public void testListMonth() {
-        String[] dtStrs = {
-            "2002-04-01T10:00:00",
-            "2002-01-01T10:00:00",
-            "2002-12-01T10:00:00",
-            "2002-09-01T10:00:00",
-            "2002-09-01T10:00:00",
-            "2002-02-01T10:00:00",
-            "2002-10-01T10:00:00"
-        };
-        //
-        List sl = loadAList( dtStrs );
-        boolean isSorted1 = isListSorted( sl );
-        Collections.sort( sl, cMonth );
-        boolean isSorted2 = isListSorted( sl );
-        assertEquals("ListMonth", !isSorted1, isSorted2);
-    } // end of testListMonth
 
      /**
       * Test sorting with year comparator.

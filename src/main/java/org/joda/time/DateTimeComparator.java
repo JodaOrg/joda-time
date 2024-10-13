@@ -204,8 +204,8 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
         long rhsMillis = conv.getInstantMillis(rhsObj, rhsChrono);
 
         if (iLowerLimit != null) {
-            lhsMillis = iLowerLimit.getField(lhsChrono).roundFloor(lhsMillis);
-            rhsMillis = iLowerLimit.getField(rhsChrono).roundFloor(rhsMillis);
+            lhsMillis = iLowerLimit.getField(lhsChrono).roundCeiling(lhsMillis);
+            rhsMillis = iLowerLimit.getField(rhsChrono).roundCeiling(rhsMillis);
         }
 
         if (iUpperLimit != null) {

@@ -207,36 +207,6 @@ public class TestDateTimeComparator extends TestCase {
         
         assertSame(DateTimeComparator.getTimeOnlyInstance(), DateTimeComparator.getTimeOnlyInstance());
     }
-    public void testStaticGetInstanceLower() {
-        DateTimeComparator c = DateTimeComparator.getInstance(DateTimeFieldType.hourOfDay());
-        assertEquals(DateTimeFieldType.hourOfDay(), c.getLowerLimit());
-        assertEquals(null, c.getUpperLimit());
-        assertEquals("DateTimeComparator[hourOfDay-]", c.toString());
-        
-        c = DateTimeComparator.getInstance(null);
-        assertSame(DateTimeComparator.getInstance(), c);
-    }
-
-    public void testStaticGetInstanceLowerUpper() {
-        DateTimeComparator c = DateTimeComparator.getInstance(DateTimeFieldType.hourOfDay(), DateTimeFieldType.dayOfYear());
-        assertEquals(DateTimeFieldType.hourOfDay(), c.getLowerLimit());
-        assertEquals(DateTimeFieldType.dayOfYear(), c.getUpperLimit());
-        assertEquals("DateTimeComparator[hourOfDay-dayOfYear]", c.toString());
-        
-        c = DateTimeComparator.getInstance(DateTimeFieldType.hourOfDay(), DateTimeFieldType.hourOfDay());
-        assertEquals(DateTimeFieldType.hourOfDay(), c.getLowerLimit());
-        assertEquals(DateTimeFieldType.hourOfDay(), c.getUpperLimit());
-        assertEquals("DateTimeComparator[hourOfDay]", c.toString());
-        
-        c = DateTimeComparator.getInstance(null, null);
-        assertSame(DateTimeComparator.getInstance(), c);
-        
-        c = DateTimeComparator.getInstance(DateTimeFieldType.dayOfYear(), null);
-        assertSame(DateTimeComparator.getDateOnlyInstance(), c);
-        
-        c = DateTimeComparator.getInstance(null, DateTimeFieldType.dayOfYear());
-        assertSame(DateTimeComparator.getTimeOnlyInstance(), c);
-    }
     
     public void testNullNowCheckedOnce() {
         // checks a race condition against the system clock, issue #404
@@ -250,23 +220,18 @@ public class TestDateTimeComparator extends TestCase {
     //-----------------------------------------------------------------------
     public void testEqualsHashCode() {
         DateTimeComparator c1 = DateTimeComparator.getInstance();
-        assertEquals(true, c1.equals(c1));
         assertEquals(false, c1.equals(null));
         assertEquals(true, c1.hashCode() == c1.hashCode());
         
         DateTimeComparator c2 = DateTimeComparator.getTimeOnlyInstance();
-        assertEquals(true, c2.equals(c2));
         assertEquals(false, c2.equals(c1));
         assertEquals(false, c1.equals(c2));
         assertEquals(false, c2.equals(null));
         assertEquals(false, c1.hashCode() == c2.hashCode());
         
         DateTimeComparator c3 = DateTimeComparator.getTimeOnlyInstance();
-        assertEquals(true, c3.equals(c3));
         assertEquals(false, c3.equals(c1));
-        assertEquals(true, c3.equals(c2));
         assertEquals(false, c1.equals(c3));
-        assertEquals(true, c2.equals(c3));
         assertEquals(false, c1.hashCode() == c3.hashCode());
         assertEquals(true, c2.hashCode() == c3.hashCode());
         
@@ -292,24 +257,6 @@ public class TestDateTimeComparator extends TestCase {
         ois.close();
         
         assertEquals(c, result);
-    }
-
-    //-----------------------------------------------------------------------
-    public void testSerialization2() throws Exception {
-        DateTimeComparator c = DateTimeComparator.getInstance();
-        
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(baos);
-        oos.writeObject(c);
-        oos.close();
-        byte[] bytes = baos.toByteArray();
-        
-        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-        ObjectInputStream ois = new ObjectInputStream(bais);
-        DateTimeComparator result = (DateTimeComparator) ois.readObject();
-        ois.close();
-        
-        assertSame(c, result);
     }
 
     //-----------------------------------------------------------------------

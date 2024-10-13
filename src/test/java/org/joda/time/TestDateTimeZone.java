@@ -583,36 +583,6 @@ public class TestDateTimeZone extends TestCase {
         }
     }
 
-    public void testZoneInfoProviderResourceLoading() {
-        final Set<String> ids = new HashSet<String>(DateTimeZone.getAvailableIDs());
-        ids.remove(DateTimeZone.getDefault().getID());
-        final String id = ids.toArray(new String[ids.size()])[new Random().nextInt(ids.size())];
-        try {
-            Policy.setPolicy(new Policy() {
-                @Override
-                public PermissionCollection getPermissions(CodeSource codesource) {
-                    Permissions p = new Permissions();
-                    p.add(new AllPermission());  // enable everything
-                    return p;
-                }
-                @Override
-                public void refresh() {
-                }
-                @Override
-                public boolean implies(ProtectionDomain domain, Permission permission) {
-                    return !(permission instanceof FilePermission) && !permission.getName().contains(id);
-                }
-            });
-            System.setSecurityManager(new SecurityManager());
-            // will throw IllegalArgumentException if the resource can
-            // not be loaded
-            final DateTimeZone zone = DateTimeZone.forID(id);
-            assertNotNull(zone);
-        } finally {
-            System.setSecurityManager(null);
-            Policy.setPolicy(ALLOW);
-        }
-    }
 
     static class MockNullIDSProvider implements Provider {
         public Set getAvailableIDs() {

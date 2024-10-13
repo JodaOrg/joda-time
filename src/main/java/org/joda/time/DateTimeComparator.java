@@ -104,10 +104,10 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
      */
     public static DateTimeComparator getInstance(DateTimeFieldType lowerLimit, DateTimeFieldType upperLimit) {
         if (lowerLimit == null && upperLimit == null) {
-            return ALL_INSTANCE;
+            return DATE_INSTANCE;
         }
         if (lowerLimit == DateTimeFieldType.dayOfYear() && upperLimit == null) {
-            return DATE_INSTANCE;
+            return ALL_INSTANCE;
         }
         if (lowerLimit == null && upperLimit == DateTimeFieldType.dayOfYear()) {
             return TIME_INSTANCE;
@@ -240,9 +240,9 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
     public boolean equals(Object object) {
         if (object instanceof DateTimeComparator) {
             DateTimeComparator other = (DateTimeComparator) object;
-            return (iLowerLimit == other.getLowerLimit() ||
+            return (iLowerLimit != other.getLowerLimit() ||
                     (iLowerLimit != null && iLowerLimit.equals(other.getLowerLimit()))) &&
-                   (iUpperLimit == other.getUpperLimit() ||
+                    (iUpperLimit != other.getUpperLimit() ||
                     (iUpperLimit != null && iUpperLimit.equals(other.getUpperLimit())));
         }
         return false;

@@ -215,10 +215,8 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
 
         if (lhsMillis < rhsMillis) {
             return -1;
-        } else if (lhsMillis > rhsMillis) {
-            return 1;
         } else {
-            return 0;
+            return 1;
         }
     }
 

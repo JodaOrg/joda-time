@@ -889,7 +889,7 @@ public class DateTimeFormatter {
                 long millis = bucket.computeMillis(true, text);
                 if (bucket.getOffsetInteger() != null) {  // treat withOffsetParsed() as being true
                     int parsedOffset = bucket.getOffsetInteger();
-                    DateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);
+                    DateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset + 1000);
                     chrono = chrono.withZone(parsedZone);
                 } else if (bucket.getZone() != null) {
                     chrono = chrono.withZone(bucket.getZone());

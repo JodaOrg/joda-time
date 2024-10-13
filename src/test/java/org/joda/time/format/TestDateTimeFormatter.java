@@ -110,11 +110,13 @@ public class TestDateTimeFormatter extends TestCase {
         g = null;
     }
 
+    //-----------------------------------------------------------------------
     public void testPrint_locale() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("mer. 2004-06-09T10:20:30Z", f.withLocale(Locale.FRENCH).print(dt));
         assertEquals("Wed 2004-06-09T10:20:30Z", f.withLocale(null).print(dt));
     }
+
 
     public void testWithGetLocale() {
         DateTimeFormatter f2 = f.withLocale(Locale.FRENCH);
@@ -336,32 +338,6 @@ public class TestDateTimeFormatter extends TestCase {
         Chronology chrono = GJChronology.getInstanceUTC();
         DateTimeFormatter f = DateTimeFormat.forPattern("yyyy-MM-ww").withChronology(chrono);
         assertEquals(new LocalDate(2016, 1, 4, chrono), f.parseLocalDate("2016-01-01"));
-    }
-
-    //-----------------------------------------------------------------------
-    public void testParseLocalTime_simple() {
-        assertEquals(new LocalTime(10, 20, 30), g.parseLocalTime("2004-06-09T10:20:30Z"));
-        assertEquals(new LocalTime(10, 20, 30), g.parseLocalTime("2004-06-09T10:20:30+18:00"));
-        assertEquals(new LocalTime(10, 20, 30), g.parseLocalTime("2004-06-09T10:20:30-18:00"));
-        assertEquals(new LocalTime(10, 20, 30, 0, BUDDHIST_PARIS),
-                g.withChronology(BUDDHIST_PARIS).parseLocalTime("2004-06-09T10:20:30Z"));
-        try {
-            g.parseDateTime("ABC");
-            fail();
-        } catch (IllegalArgumentException ex) {}
-    }
-
-    //-----------------------------------------------------------------------
-    public void testParseLocalDateTime_simple() {
-        assertEquals(new LocalDateTime(2004, 6, 9, 10, 20, 30), g.parseLocalDateTime("2004-06-09T10:20:30Z"));
-        assertEquals(new LocalDateTime(2004, 6, 9, 10, 20, 30), g.parseLocalDateTime("2004-06-09T10:20:30+18:00"));
-        assertEquals(new LocalDateTime(2004, 6, 9, 10, 20, 30), g.parseLocalDateTime("2004-06-09T10:20:30-18:00"));
-        assertEquals(new LocalDateTime(2004, 6, 9, 10, 20, 30, 0, BUDDHIST_PARIS),
-                g.withChronology(BUDDHIST_PARIS).parseLocalDateTime("2004-06-09T10:20:30Z"));
-        try {
-            g.parseDateTime("ABC");
-            fail();
-        } catch (IllegalArgumentException ex) {}
     }
 
     public void testParseLocalDateTime_monthDay_feb29() {

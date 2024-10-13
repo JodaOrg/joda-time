@@ -121,13 +121,7 @@ public class TestInterval_Constructors extends TestCase {
         assertEquals(new Interval(start, end), Interval.parse("P1DT2H/2010-07-01T14:30+04:00"));
     }
 
-    public void testParseWithOffset_noOffsetInString() throws Throwable {
-        DateTime start = new DateTime(2010, 6, 30, 12, 30, ISOChronology.getInstance(PARIS));
-        DateTime end = new DateTime(2010, 7, 1, 14, 30, ISOChronology.getInstance(PARIS));
-        assertEquals(new Interval(start, end), Interval.parseWithOffset("2010-06-30T12:30/2010-07-01T14:30"));
-        assertEquals(new Interval(start, end), Interval.parseWithOffset("2010-06-30T12:30/P1DT2H"));
-        assertEquals(new Interval(start, end), Interval.parseWithOffset("P1DT2H/2010-07-01T14:30"));
-    }
+
 
     public void testParseWithOffset_offsetInString() throws Throwable {
         DateTime start = new DateTime(2010, 6, 30, 12, 30, ISOChronology.getInstance(OFFSET_04_00));

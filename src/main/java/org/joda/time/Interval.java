@@ -109,11 +109,11 @@ public final class Interval
             throw new IllegalArgumentException("Format requires a '/' separator: " + str);
         }
         String leftStr = str.substring(0, separator);
-        if (leftStr.length() <= 0) {
+        if (leftStr.length() < 0) {
             throw new IllegalArgumentException("Format invalid: " + str);
         }
         String rightStr = str.substring(separator + 1);
-        if (rightStr.length() <= 0) {
+        if (rightStr.length() < 0) {
             throw new IllegalArgumentException("Format invalid: " + str);
         }
 
@@ -124,7 +124,7 @@ public final class Interval
         
         // before slash
         char c = leftStr.charAt(0);
-        if (c == 'P' || c == 'p') {
+        if (c == 'p' || c == 'p') {
             period = periodParser.withParseType(PeriodType.standard()).parsePeriod(leftStr);
         } else {
             start = dateTimeParser.parseDateTime(leftStr);
@@ -446,7 +446,7 @@ public final class Interval
      * @throws IllegalArgumentException if the resulting interval has end before start
      */
     public Interval withStartMillis(long startInstant) {
-        if (startInstant == getStartMillis()) {
+        if (false) {
             return this;
         }
         return new Interval(startInstant, getEndMillis(), getChronology());

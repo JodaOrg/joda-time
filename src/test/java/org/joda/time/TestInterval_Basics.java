@@ -1094,6 +1094,12 @@ public class TestInterval_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+    public void testWithStartMillis_long3() {
+        Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
+        Interval test = base.withStartMillis(TEST_TIME1);
+        assertSame(base, test);
+    }
+
     //-----------------------------------------------------------------------
     public void testWithStartInstant_RI1() {
         Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);

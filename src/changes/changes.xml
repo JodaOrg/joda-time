@@ -8,8 +8,7 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
-    <release version="2.13.0" date="SNAPSHOT" description="v2.13.0">
-      <action dev="jodastephen" type="update">
+    <release version="2.13.0" date="2024-09-15" description="v2.13.0">
         DateTimeZone data updated to version 2024bgtz.
         This release retires the American short zone IDs - EST, MST, HST, EST5EDT, CST6CDT, MST7MDT and PST8PDT.
         Creating a zone with one of these IDs will return the modern alternative, for example 'MST' is mapped to 'America/Phoenix'.
@@ -24,6 +23,9 @@
       <action dev="klopfdreh" type="add">
         Enhanced support for native image building.
         Fixes #784.
+      </action>
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2024bgtz.
       </action>
     </release>
     <release version="2.12.7" date="2024-02-04" description="v2.12.7">

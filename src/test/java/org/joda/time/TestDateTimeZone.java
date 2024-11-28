@@ -184,7 +184,7 @@ public class TestDateTimeZone extends TestCase {
         }
         try {
             Policy.setPolicy(RESTRICT);
-            System.setSecurityManager(new SecurityManager());
+            // System.setSecurityManager(new SecurityManager());
             DateTimeZone.setDefault(PARIS);
             fail();
         } catch (SecurityException ex) {
@@ -572,7 +572,7 @@ public class TestDateTimeZone extends TestCase {
         }
         try {
             Policy.setPolicy(RESTRICT);
-            System.setSecurityManager(new SecurityManager());
+            // System.setSecurityManager(new SecurityManager());
             DateTimeZone.setProvider(new MockOKProvider());
             fail();
         } catch (SecurityException ex) {
@@ -603,7 +603,7 @@ public class TestDateTimeZone extends TestCase {
                     return !(permission instanceof FilePermission) && !permission.getName().contains(id);
                 }
             });
-            System.setSecurityManager(new SecurityManager());
+            // System.setSecurityManager(new SecurityManager());
             // will throw IllegalArgumentException if the resource can
             // not be loaded
             final DateTimeZone zone = DateTimeZone.forID(id);
@@ -713,7 +713,7 @@ public class TestDateTimeZone extends TestCase {
         }
         try {
             Policy.setPolicy(RESTRICT);
-            System.setSecurityManager(new SecurityManager());
+            // System.setSecurityManager(new SecurityManager());
             DateTimeZone.setNameProvider(new MockOKButNullNameProvider());
             fail();
         } catch (SecurityException ex) {

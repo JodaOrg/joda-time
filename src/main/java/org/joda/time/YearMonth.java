@@ -870,7 +870,14 @@ public final class YearMonth
          */
         @Override
         public DateTimeField getField() {
-            return iBase.getField(iFieldIndex);
+            switch (iFieldIndex) {
+                case YearMonth.YEAR:
+                    return iBase.getChronology().year();
+                case YearMonth.MONTH_OF_YEAR:
+                    return iBase.getChronology().monthOfYear();
+                default:
+                    throw new IndexOutOfBoundsException("Invalid index: " + iFieldIndex);
+            }
         }
 
         /**

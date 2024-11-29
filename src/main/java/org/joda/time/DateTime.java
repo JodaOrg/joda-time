@@ -147,7 +147,14 @@ public final class DateTime
      */
     @FromString
     public static DateTime parse(String str) {
-        return parse(str, ISODateTimeFormat.dateTimeParser().withOffsetParsed());
+        return ISODateTimeFormat.dateTimeParser().parseDateTime(str);
+    }
+
+    public static DateTime parse(String str, DateTimeFormatter formatter) {
+        if (formatter == null) {
+            throw new IllegalArgumentException("DateTimeFormatter must not be null");
+        }
+        return formatter.parseDateTime(str);
     }
 
     /**
@@ -158,7 +165,7 @@ public final class DateTime
      * @return the parsed date-time, not null
      * @since 2.0
      */
-    public static DateTime parse(String str, DateTimeFormatter formatter) {
+    private static DateTime parseWithFormatter(String str, DateTimeFormatter formatter) {
         return formatter.parseDateTime(str);
     }
 

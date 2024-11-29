@@ -1550,7 +1550,11 @@ public final class LocalDate
      * @return the day of week
      */
     public int getDayOfWeek() {
-        return getChronology().dayOfWeek().get(getLocalMillis());
+        return getDayOfWeekField().get(getLocalMillis());
+    }
+
+    private DateTimeField getDayOfWeekField() {
+        return getChronology().dayOfWeek();
     }
 
     //-----------------------------------------------------------------------

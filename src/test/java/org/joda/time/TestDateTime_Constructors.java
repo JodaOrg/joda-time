@@ -21,6 +21,7 @@ import java.util.Locale;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.DateTime;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
@@ -171,6 +172,8 @@ public class TestDateTime_Constructors extends TestCase {
     public void testParse_noFormatter_vs_constructor_correctOffset() throws Throwable {
         DateTime parsed = DateTime.parse("2010-06-30T01:20+01:00");
         DateTime constructed = new DateTime("2010-06-30T01:20+01:00");
+        DateTime parsedNormalized = parsed.withZoneRetainFields(DateTimeZone.UTC);
+        DateTime constructedNormalized = constructed.withZoneRetainFields(DateTimeZone.UTC);
         assertEquals(DateTimeZone.getDefault(), constructed.getZone());
         assertEquals(DateTimeZone.forOffsetHours(1), parsed.getZone());
     }

@@ -701,6 +701,8 @@ public final class Partial
         return true;
     }
 
+
+
     /**
      * Does this partial match the specified partial.
      * <p>
@@ -714,16 +716,28 @@ public final class Partial
      * @since 1.5
      */
     public boolean isMatch(ReadablePartial partial) {
-        if (partial == null) {
-            throw new IllegalArgumentException("The partial must not be null");
+        if (!isPartialValid(partial)) {
+            return false;
         }
-        for (int i = 0; i < iTypes.length; i++) {
-            int value = partial.get(iTypes[i]);
-            if (value != iValues[i]) {
+        return isValuesMatch(partial);
+    }
+
+    private boolean isPartialValid(ReadablePartial partial) {
+        return partial != null && partial.size() == size();
+    }
+
+    private boolean isValuesMatch(ReadablePartial partial) {
+        for (int i = 0; i < size(); i++) {
+            if (!isFieldTypeAndValueMatch(partial, i)) {
                 return false;
             }
         }
         return true;
+    }
+
+    private boolean isFieldTypeAndValueMatch(ReadablePartial partial, int index) {
+        return partial.getFieldType(index) == getFieldType(index) &&
+                partial.getValue(index) == getValue(index);
     }
 
     //-----------------------------------------------------------------------

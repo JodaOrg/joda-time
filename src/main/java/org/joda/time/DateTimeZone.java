@@ -309,31 +309,38 @@ public abstract class DateTimeZone implements Serializable {
      *  when the hours are positive, or the resulting offset exceeds +/- 23:59:59.000
      */
     public static DateTimeZone forOffsetHoursMinutes(int hoursOffset, int minutesOffset) throws IllegalArgumentException {
-        if (hoursOffset == 0 && minutesOffset == 0) {
-            return DateTimeZone.UTC;
-        }
+        validateOffsetRange(hoursOffset, minutesOffset);
+        validatePositiveHoursWithNegativeMinutes(hoursOffset, minutesOffset);
+
+        int offset = calculateOffsetInMillis(hoursOffset, minutesOffset);
+        return forOffsetMillis(offset);
+    }
+
+    private static void validateOffsetRange(int hoursOffset, int minutesOffset) {
         if (hoursOffset < -23 || hoursOffset > 23) {
             throw new IllegalArgumentException("Hours out of range: " + hoursOffset);
         }
         if (minutesOffset < -59 || minutesOffset > 59) {
             throw new IllegalArgumentException("Minutes out of range: " + minutesOffset);
         }
+    }
+
+    private static void validatePositiveHoursWithNegativeMinutes(int hoursOffset, int minutesOffset) {
         if (hoursOffset > 0 && minutesOffset < 0) {
             throw new IllegalArgumentException("Positive hours must not have negative minutes: " + minutesOffset);
         }
+    }
+
+    private static int calculateOffsetInMillis(int hoursOffset, int minutesOffset) {
         int offset = 0;
         try {
             int hoursInMinutes = hoursOffset * 60;
-            if (hoursInMinutes < 0) {
-                minutesOffset = hoursInMinutes - Math.abs(minutesOffset);
-            } else {
-                minutesOffset = hoursInMinutes + minutesOffset;
-            }
+            minutesOffset = hoursInMinutes + (hoursInMinutes < 0 ? -Math.abs(minutesOffset) : minutesOffset);
             offset = FieldUtils.safeMultiply(minutesOffset, DateTimeConstants.MILLIS_PER_MINUTE);
         } catch (ArithmeticException ex) {
             throw new IllegalArgumentException("Offset is too large");
         }
-        return forOffsetMillis(offset);
+        return offset;
     }
 
     /**

@@ -183,7 +183,10 @@ public class DateTimeParserBucket {
         } else {
             newPos = ~newPos;
         }
-        throw new IllegalArgumentException(FormatUtils.createErrorMessage(text.toString(), newPos));
+        String errorMessage = FormatUtils.createErrorMessage(text.toString(), newPos);
+        throw new IllegalArgumentException(errorMessage);
+
+
     }
 
     //-----------------------------------------------------------------------

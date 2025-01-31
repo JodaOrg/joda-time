@@ -6,6 +6,7 @@ on:
       - 'tzdb*'
   schedule:
     - cron: '50 1 * * *'
+  workflow_dispatch:
 
 permissions:
   contents: read

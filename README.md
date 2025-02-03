@@ -124,3 +124,5 @@ Note that Joda-Time is considered to be a largely “finished” project. No maj
 * Ensure on Java SE 8
 * `mvn clean deploy -Doss.repo -Dgpg.passphrase=""`
 * Website will be built and released by GitHub Actions
+
+If the GitHub stage fails, use `mvn clean deploy -Doss.repo -DskipRemoteStaging=true` to re-run

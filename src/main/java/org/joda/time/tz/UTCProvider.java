@@ -54,6 +54,17 @@ public final class UTCProvider implements Provider {
     }
 
     /**
+     * Returns {@link DateTimeZone#UTC UTC} for <code>"UTC"</code>, null
+     * otherwise.
+     */
+    public DateTimeZone getExactZone(String id) {
+        if ("UTC".equalsIgnoreCase(id)) {
+            return DateTimeZone.UTC;
+        }
+        return null;
+    }
+
+    /**
      * Returns a singleton collection containing only <code>"UTC"</code>.
      */    
     public Set<String> getAvailableIDs() {

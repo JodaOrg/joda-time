@@ -132,7 +132,7 @@ Joda-Time is licenced under the business friendly <a href="licenses.html">Apache
 
 ## <i></i> Releases
 
-[Release 2.13.1](download.html) is the current latest release.
+[Release 2.14.0](download.html) is the current latest release.
 This release is considered stable and worthy of the 2.x tag.
 See the [change notes](changes-report.html) for full details.
 
@@ -146,7 +146,7 @@ Available in [Maven Central](https://search.maven.org/search?q=g:joda-time%20AND
 <dependency>
   <groupId>joda-time</groupId>
   <artifactId>joda-time</artifactId>
-  <version>2.13.1</version>
+  <version>2.14.0</version>
 </dependency>
 ```
 

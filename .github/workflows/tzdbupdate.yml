@@ -9,25 +9,23 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write  # to create branch and push
+  pull-requests: write  # to create a PR
 
 jobs:
   tzdbcheck:
-    permissions:
-      contents: write  # for peter-evans/create-pull-request to create branch
-      pull-requests: write  # for peter-evans/create-pull-request to create a PR
     runs-on: ubuntu-latest
     env:
       MAVEN_ARGS: -e -B -DtrimStackTrace=false
 
     steps:
     - name: Checkout
-      uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c  #v3.3.0
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  #v4.2.2
       with:
         token: ${{ secrets.PERSONAL_TOKEN_GH }}
 
     - name: Set up JDK
-      uses: actions/setup-java@3f07048e3d294f56e9b90ac5ea2c6f74e9ad0f98  #v3.10.0
+      uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12  #v4.7.0
       with:
         java-version: '8'
         distribution: 'corretto'
@@ -93,11 +91,9 @@ jobs:
     - name: Create Pull Request
       if: env.NOOP != 'true'
       id: createpr
-      uses: peter-evans/create-pull-request@7380612b49221684fefa025244f2ef4008ae50ad  #v3.10.1
-      env:
-        GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN_GH }}
+      uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e  #v7.0.8
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.PERSONAL_TOKEN_GH }}
         base: main
         commit-message: 'Update time zone data to ${{ env.LATEST_TZDB }}'
         committer: Stephen Colebourne (CI) <scolebourne@joda.org>

@@ -1,0 +1,72 @@
+name: Website
+
+on:
+  push:
+    tags:
+      - 'website*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  website:
+    runs-on: ubuntu-latest
+    env:
+      MAVEN_ARGS: -e -B -ntp -DtrimStackTrace=false
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  #v4.2.2
+      with:
+        token: ${{ secrets.PERSONAL_TOKEN_GH }}
+        fetch-tags: true
+
+    - name: Setup git
+      run: |
+        git config --global user.name "Stephen Colebourne (CI)"
+        git config --global user.email "scolebourne@joda.org"
+
+    - name: Set up JDK
+      uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12  #v4.7.0
+      with:
+        java-version: 8
+        distribution: 'temurin'
+        cache: 'maven'
+
+    - name: Maven version
+      run: |
+        mvn --version
+        mkdir -p target
+
+    #------------------------------------------------------------------------
+    - name: Maven site
+      run: |
+        mvn install site
+
+    - name: Checkout website
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  #v4.2.2
+      with:
+        token: ${{ secrets.PERSONAL_TOKEN_GH }}
+        repository: JodaOrg/jodaorg.github.io
+        path: target/jodaorg.github.io
+        ref: "main"
+
+    - name: Update website
+      run: |
+        cd target/jodaorg.github.io
+        git status
+
+        rm -rf joda-time/
+        cp -R ../site joda-time/
+
+        git add -A
+        git status
+        git commit --message "Update joda-time from CI: $GITHUB_ACTION"
+
+        git push origin main
+
+    - name: Delete website tag
+      run: |
+        git tag --delete "${GITHUB_REF_NAME}" || true
+        git push --delete origin "${GITHUB_REF_NAME}" || true

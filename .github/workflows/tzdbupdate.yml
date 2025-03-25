@@ -16,7 +16,7 @@ jobs:
   tzdbcheck:
     runs-on: ubuntu-latest
     env:
-      MAVEN_ARGS: -e -B -DtrimStackTrace=false
+      MAVEN_ARGS: -e -B -ntp -DtrimStackTrace=false
 
     steps:
     - name: Checkout
@@ -27,8 +27,8 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12  #v4.7.0
       with:
-        java-version: '8'
-        distribution: 'corretto'
+        java-version: 8
+        distribution: 'temurin'
         cache: 'maven'
 
     - name: Maven version
@@ -36,6 +36,7 @@ jobs:
         mvn --version
         mkdir -p target
 
+    #------------------------------------------------------------------------
     - name: Get current version
       run: |
         CURRENT_TZDB=$(mvn help:evaluate -Dexpression=tz.database.version -q -DforceStdout)

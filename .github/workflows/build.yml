@@ -2,35 +2,35 @@
 
 name: Build
 
-on: 
+on:
   push:
     branches:
       - '*'
     tags:
       - 'v*'
-      - 'website*'
   pull_request:
     branches:
       - 'main'
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
+  security-events: write  # for github/codeql-action
 
 jobs:
   build:
-    permissions:
-      security-events: write  # for github/codeql-action
     runs-on: ubuntu-latest
     env:
-      MAVEN_ARGS: -e -B -DtrimStackTrace=false
+      MAVEN_ARGS: -e -B -ntp -DtrimStackTrace=false
 
     steps:
     - name: Checkout
-      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332  #v4.1.7
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  #v4.2.2
+      with:
+        token: ${{ secrets.PERSONAL_TOKEN_GH }}
 
     - name: Set up JDK
-      uses: actions/setup-java@2dfa2011c5b2a0f1489bf9e433881c92c1631f88  #v4.3.0
+      uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12  #v4.7.0
       with:
         java-version: 8
         distribution: 'temurin'
@@ -42,21 +42,19 @@ jobs:
         mkdir -p target
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@8fd294e26a0e458834582b0fe4988d79966c7c0a  #codeql-bundle-v2.18.4
+      uses: github/codeql-action/init@70df9def86d22bf0ea4e7f8b956e7b92e7c1ea22  #codeql-bundle-v2.20.7
       with:
         languages: java
-    
+
     - name: Maven build
       run: |
-        mvn install site -B -e -ntp
+        mvn install site
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@8fd294e26a0e458834582b0fe4988d79966c7c0a  #codeql-bundle-v2.18.4
-    
-    - name: Website
-      if: github.event_name == 'push' && (startsWith(github.ref, 'refs/tags/website') || startsWith(github.ref, 'refs/tags/v'))
-      env:
-        GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN_GH }}
+      uses: github/codeql-action/analyze@70df9def86d22bf0ea4e7f8b956e7b92e7c1ea22  #codeql-bundle-v2.20.7
+
+    - name: Update website
+      if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
       run: |
-        chmod +x ./.github/website.sh
-        .github/website.sh
+        git tag websiterelease
+        git push origin websiterelease

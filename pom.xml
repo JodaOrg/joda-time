@@ -489,7 +489,8 @@
           <includes>
             <include>**/TestAllPackages.java</include>
           </includes>
-          <!--argLine>-Djava.security.manager -Djava.security.policy=${basedir}/src/test/resources/java.policy</argLine-->
+          <!-- disable fork to allow project to run locally -->
+          <forkCount>0</forkCount>
         </configuration>
       </plugin>
       <!-- Setup Jar file manifest entries -->
@@ -1091,7 +1092,6 @@
     <maven.compiler.target>1.5</maven.compiler.target>
     <maven.compiler.fork>true</maven.compiler.fork>
     <maven.compiler.verbose>false</maven.compiler.verbose>
-    <maven.compiler.optimize>true</maven.compiler.optimize>
     <maven.compiler.debug>true</maven.compiler.debug>
     <maven.compiler.debuglevel>lines,source</maven.compiler.debuglevel>
     <!-- Properties for maven-javadoc-plugin -->

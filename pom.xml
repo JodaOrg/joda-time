@@ -13,11 +13,28 @@
   <url>https://www.joda.org/joda-time/</url>
 
   <!-- ==================================================================== -->
+  <inceptionYear>2002</inceptionYear>
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <organization>
+    <name>Joda.org</name>
+    <url>https://www.joda.org</url>
+  </organization>
   <issueManagement>
     <system>GitHub</system>
-    <url>https://github.com/JodaOrg/joda-time/issues</url>
+    <url>https://github.com/JodaOrg/joda-time/issues/</url>
   </issueManagement>
-  <inceptionYear>2002</inceptionYear>
+  <scm>
+    <connection>scm:git:https://github.com/JodaOrg/joda-time.git</connection>
+    <developerConnection>scm:git:https://github.com/JodaOrg/joda-time.git</developerConnection>
+    <url>https://github.com/JodaOrg/joda-time</url>
+    <tag>HEAD</tag>
+  </scm>
 
   <!-- ==================================================================== -->
   <developers>
@@ -376,29 +393,10 @@
   </contributors>
 
   <!-- ==================================================================== -->
-  <licenses>
-    <license>
-      <name>Apache License, Version 2.0</name>
-      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-  <scm>
-    <connection>scm:git:https://github.com/JodaOrg/joda-time.git</connection>
-    <developerConnection>scm:git:git@github.com:JodaOrg/joda-time.git</developerConnection>
-    <url>https://github.com/JodaOrg/joda-time</url>
-    <tag>HEAD</tag>
-  </scm>
-  <organization>
-    <name>Joda.org</name>
-    <url>https://www.joda.org</url>
-  </organization>
-
-  <!-- ==================================================================== -->
   <build>
     <resources>
       <resource>
-        <directory>${project.basedir}/src/main/resources/META-INF</directory>
+        <directory>src/main/resources/META-INF</directory>
         <targetPath>META-INF</targetPath>
         <includes>
           <include>native-image/joda-time/joda-time/resource-config.json</include>
@@ -413,7 +411,7 @@
         </includes>
       </resource>
       <resource>
-        <directory>${project.basedir}/src/main/java</directory>
+        <directory>src/main/java</directory>
         <includes>
           <include>**/*.properties</include>
         </includes>
@@ -611,6 +609,24 @@
           <logResults>true</logResults>
         </configuration>
       </plugin>
+      <!-- Release to GitHub -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <arguments>-Doss.repo</arguments>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+          <tagNameFormat>v@{project.version}</tagNameFormat>
+          <localCheckout>true</localCheckout>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.kohsuke</groupId>
+            <artifactId>github-api</artifactId>
+            <version>${github-api.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
     </plugins>
     <!-- Manage plugin versions -->
     <pluginManagement>
@@ -698,6 +714,11 @@
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>${maven-release-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-repository-plugin</artifactId>
           <version>${maven-repository-plugin.version}</version>
         </plugin>
@@ -725,18 +746,6 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-toolchains-plugin</artifactId>
           <version>${maven-toolchains-plugin.version}</version>
-        </plugin>
-        <!-- Setup release -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-release-plugin</artifactId>
-          <version>${maven-release-plugin.version}</version>
-          <configuration>
-            <arguments>-Doss.repo</arguments>
-            <autoVersionSubmodules>true</autoVersionSubmodules>
-            <tagNameFormat>v@{project.version}</tagNameFormat>
-            <localCheckout>true</localCheckout>
-          </configuration>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
@@ -931,9 +940,8 @@
             <configuration>
               <nexusUrl>https://oss.sonatype.org/</nexusUrl>
               <serverId>sonatype-joda-staging</serverId>
-              <description>Releasing ${project.groupId}:${project.artifactId}:${project.version}</description>
               <keepStagingRepositoryOnCloseRuleFailure>true</keepStagingRepositoryOnCloseRuleFailure>
-              <autoReleaseAfterClose>true</autoReleaseAfterClose>
+              <autoReleaseAfterClose>false</autoReleaseAfterClose>
             </configuration>
           </plugin>
           <!-- Create dist files -->
@@ -970,6 +978,9 @@
                 <goals>
                   <goal>sign</goal>
                 </goals>
+                <configuration>
+                  <signer>bc</signer>
+                </configuration>
               </execution>
               <!-- this execution must be located after nexus-staging-maven-plugin (see comment above about ordering) -->
               <execution>
@@ -978,6 +989,9 @@
                 <goals>
                   <goal>sign</goal>
                 </goals>
+                <configuration>
+                  <signer>bc</signer>
+                </configuration>
               </execution>
             </executions>
           </plugin>
@@ -1064,20 +1078,20 @@
     <maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
     <maven-changes-plugin.version>2.12.1</maven-changes-plugin.version>
     <maven-checkstyle-plugin.version>2.17</maven-checkstyle-plugin.version>
-    <maven-clean-plugin.version>3.3.2</maven-clean-plugin.version>
+    <maven-clean-plugin.version>3.4.0</maven-clean-plugin.version>
     <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
-    <maven-deploy-plugin.version>3.1.1</maven-deploy-plugin.version>
-    <maven-dependency-plugin.version>3.6.1</maven-dependency-plugin.version>
-    <maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
-    <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
-    <maven-install-plugin.version>3.1.1</maven-install-plugin.version>
-    <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
+    <maven-dependency-plugin.version>3.8.1</maven-dependency-plugin.version>
+    <maven-deploy-plugin.version>3.1.3</maven-deploy-plugin.version>
+    <maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
+    <maven-gpg-plugin.version>3.2.7</maven-gpg-plugin.version>
+    <maven-install-plugin.version>3.1.3</maven-install-plugin.version>
+    <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
     <maven-javadoc-plugin.version>3.6.3</maven-javadoc-plugin.version>
     <maven-jxr-plugin.version>3.3.2</maven-jxr-plugin.version>
     <maven-plugin-plugin.version>3.10.2</maven-plugin-plugin.version>
     <maven-pmd-plugin.version>3.21.2</maven-pmd-plugin.version>
     <maven-project-info-reports-plugin.version>3.5.0</maven-project-info-reports-plugin.version>
-    <maven-release-plugin.version>3.0.1</maven-release-plugin.version>
+    <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
     <maven-repository-plugin.version>2.4</maven-repository-plugin.version>
     <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
     <maven-site-plugin.version>3.12.1</maven-site-plugin.version>
@@ -1085,7 +1099,9 @@
     <!-- Stick with this version of surefire, see Java 5 comments above -->
     <maven-surefire-report-plugin.version>2.21.0</maven-surefire-report-plugin.version>
     <maven-toolchains-plugin.version>3.1.0</maven-toolchains-plugin.version>
+    <github-api.version>1.326</github-api.version>
     <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
+
     <!-- Properties for maven-compiler-plugin -->
     <maven.compiler.compilerVersion>1.5</maven.compiler.compilerVersion>
     <maven.compiler.source>1.5</maven.compiler.source>
@@ -1094,12 +1110,15 @@
     <maven.compiler.verbose>false</maven.compiler.verbose>
     <maven.compiler.debug>true</maven.compiler.debug>
     <maven.compiler.debuglevel>lines,source</maven.compiler.debuglevel>
+
     <!-- Properties for maven-javadoc-plugin -->
     <author>false</author>
     <notimestamp>true</notimestamp>
+
     <!-- Properties for maven-checkstyle-plugin -->
     <checkstyle.config.location>src/main/checkstyle/checkstyle.xml</checkstyle.config.location>
     <linkXRef>false</linkXRef>
+
     <!-- Other properties -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

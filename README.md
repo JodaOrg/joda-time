@@ -121,8 +121,13 @@ Note that Joda-Time is considered to be a largely “finished” project. No maj
 
 * Update version (pom.xml, README.md, index.md, MANIFEST.MF, changes.xml)
 * Commit and push
+* `git push origin HEAD:refs/tags/release`
+* Code and Website will be built and released by GitHub Actions
+
+Release from local:
+
+* Turn off gpg "bc" signer
 * Ensure on Java SE 8
 * `mvn clean deploy -Doss.repo -Dgpg.passphrase=""`
 * Website will be built and released by GitHub Actions
-
-If the GitHub stage fails, use `mvn clean deploy -Doss.repo -DskipRemoteStaging=true` to re-run
+* If the GitHub stage fails, use `mvn clean deploy -Doss.repo -DskipRemoteStaging=true` to re-run

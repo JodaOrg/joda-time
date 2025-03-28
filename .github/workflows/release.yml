@@ -1,16 +1,16 @@
-name: Website
+name: Release
 
 on:
   push:
     tags:
-      - 'website*'
+      - 'release*'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  website:
+  build:
     runs-on: ubuntu-latest
     env:
       MAVEN_ARGS: -e -B -ntp -DtrimStackTrace=false
@@ -20,6 +20,7 @@ jobs:
       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  #v4.2.2
       with:
         token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
+        ref: "main"
         fetch-tags: true
 
     - name: Setup git
@@ -36,37 +37,30 @@ jobs:
 
     - name: Maven version
       run: |
+        mkdir -p ./.mvn
+        echo "--settings" >> ./.mvn/maven.config
+        echo "$( pwd )/.github/maven-settings.xml" >> ./.mvn/maven.config
         mvn --version
         mkdir -p target
 
     #------------------------------------------------------------------------
-    - name: Maven site
+    - name: Maven release
+      env:
+        OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+        OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+        MAVEN_GPG_PASSPHRASE: ${{ secrets.RELEASES_GPG_PASSPHRASE }}
+        MAVEN_GPG_KEY: ${{ secrets.RELEASES_GPG_PRIVATE_KEY }}
+        GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
       run: |
-        mvn install site
-
-    - name: Checkout website
-      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  #v4.2.2
-      with:
-        token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
-        repository: JodaOrg/jodaorg.github.io
-        path: target/jodaorg.github.io
-        ref: "main"
+        mvn clean deploy -Doss.repo
 
     - name: Update website
       run: |
-        cd target/jodaorg.github.io
-        git status
+        git tag websiterelease
+        git push origin websiterelease
 
-        rm -rf joda-time/
-        cp -R ../site joda-time/
-
-        git add -A
-        git status
-        git commit --message "Update joda-time from CI: $GITHUB_ACTION"
-
-        git push origin main
-
-    - name: Delete website tag
+    - name: Delete release tag
+      if: "always()"
       run: |
         git tag --delete "${GITHUB_REF_NAME}" || true
         git push --delete origin "${GITHUB_REF_NAME}" || true

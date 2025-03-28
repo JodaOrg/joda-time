@@ -4,10 +4,13 @@
                           https://maven.apache.org/xsd/settings-1.0.0.xsd">
   <servers>
     <server>
+      <id>sonatype-joda-staging</id>
+      <username>${env.OSSRH_USERNAME}</username>
+      <password>${env.OSSRH_TOKEN}</password>
+    </server>
+    <server>
       <id>github</id>
-      <username></username>
-      <password>${GITHUB_TOKEN}</password>
+      <privateKey>${env.GITHUB_TOKEN}</privateKey>
     </server>
   </servers>
-  
 </settings>

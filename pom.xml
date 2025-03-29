@@ -1095,7 +1095,7 @@
     <maven-repository-plugin.version>2.4</maven-repository-plugin.version>
     <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
     <maven-site-plugin.version>3.12.1</maven-site-plugin.version>
-    <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
+    <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
     <!-- Stick with this version of surefire, see Java 5 comments above -->
     <maven-surefire-report-plugin.version>2.21.0</maven-surefire-report-plugin.version>
     <maven-toolchains-plugin.version>3.1.0</maven-toolchains-plugin.version>

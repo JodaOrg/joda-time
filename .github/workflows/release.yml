@@ -60,7 +60,7 @@ jobs:
         git push origin websiterelease
 
     - name: Delete release tag
-      if: "always()"
+      if: "always() && github.ref != 'refs/heads/main'"
       run: |
         git tag --delete "${GITHUB_REF_NAME}" || true
         git push --delete origin "${GITHUB_REF_NAME}" || true

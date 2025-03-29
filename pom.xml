@@ -941,7 +941,7 @@
               <nexusUrl>https://oss.sonatype.org/</nexusUrl>
               <serverId>sonatype-joda-staging</serverId>
               <keepStagingRepositoryOnCloseRuleFailure>true</keepStagingRepositoryOnCloseRuleFailure>
-              <autoReleaseAfterClose>false</autoReleaseAfterClose>
+              <autoReleaseAfterClose>true</autoReleaseAfterClose>
             </configuration>
           </plugin>
           <!-- Create dist files -->

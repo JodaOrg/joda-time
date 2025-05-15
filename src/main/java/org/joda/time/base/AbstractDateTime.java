@@ -29,7 +29,7 @@ import org.joda.time.format.DateTimeFormat;
  * AbstractDateTime provides the common behaviour for datetime classes.
  * <p>
  * This class should generally not be used directly by API users.
- * The {@link ReadableDateTime} interface should be used when different 
+ * The {@link ReadableDateTime} interface should be used when different
  * kinds of date/time objects are to be referenced.
  * <p>
  * Whenever you want to implement <code>ReadableDateTime</code> you should
@@ -48,18 +48,19 @@ public abstract class AbstractDateTime
     /**
      * Constructor.
      */
+    // This is the constructor
     protected AbstractDateTime() {
         super();
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Get the value of one of the fields of a datetime.
      * <p>
      * This method uses the chronology of the datetime to obtain the value.
      * It is essentially a generic way of calling one of the get methods.
      *
-     * @param type  a field type, usually obtained from DateTimeFieldType
+     * @param type a field type, usually obtained from DateTimeFieldType
      * @return the value of that field
      * @throws IllegalArgumentException if the field type is null
      */
@@ -71,7 +72,7 @@ public abstract class AbstractDateTime
         return type.getField(getChronology()).get(getMillis());
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Get the era field value.
      * 
@@ -167,7 +168,8 @@ public abstract class AbstractDateTime
     /**
      * Get the day of month field value.
      * <p>
-     * The values for the day of month are defined in {@link org.joda.time.DateTimeConstants}.
+     * The values for the day of month are defined in
+     * {@link org.joda.time.DateTimeConstants}.
      * 
      * @return the day of month
      */
@@ -178,7 +180,8 @@ public abstract class AbstractDateTime
     /**
      * Get the day of week field value.
      * <p>
-     * The values for the day of week are defined in {@link org.joda.time.DateTimeConstants}.
+     * The values for the day of week are defined in
+     * {@link org.joda.time.DateTimeConstants}.
      * 
      * @return the day of week
      */
@@ -186,7 +189,7 @@ public abstract class AbstractDateTime
         return getChronology().dayOfWeek().get(getMillis());
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Get the hour of day field value.
      *
@@ -250,7 +253,7 @@ public abstract class AbstractDateTime
         return getChronology().millisOfSecond().get(getMillis());
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Get the date time as a <code>java.util.Calendar</code>, assigning
      * exactly the same millisecond instant.
@@ -265,7 +268,7 @@ public abstract class AbstractDateTime
      * is the same. Most of the time this just means that the JDK field values
      * are wrong, as our time zone information is more up to date.
      *
-     * @param locale  the locale to get the Calendar for, or default if null
+     * @param locale the locale to get the Calendar for, or default if null
      * @return a localized Calendar initialised with this datetime
      */
     public Calendar toCalendar(Locale locale) {
@@ -299,7 +302,7 @@ public abstract class AbstractDateTime
         return cal;
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Output the date time in ISO8601 format (yyyy-MM-ddTHH:mm:ss.SSSZZ).
      * <p>
@@ -319,9 +322,10 @@ public abstract class AbstractDateTime
     /**
      * Output the instant using the specified format pattern.
      *
-     * @param pattern  the pattern specification, null means use <code>toString</code>
+     * @param pattern the pattern specification, null means use
+     *                <code>toString</code>
      * @return the formatted string, not null
-     * @see  org.joda.time.format.DateTimeFormat
+     * @see org.joda.time.format.DateTimeFormat
      */
     public String toString(String pattern) {
         if (pattern == null) {
@@ -333,10 +337,11 @@ public abstract class AbstractDateTime
     /**
      * Output the instant using the specified format pattern.
      *
-     * @param pattern  the pattern specification, null means use <code>toString</code>
+     * @param pattern the pattern specification, null means use
+     *                <code>toString</code>
      * @param locale  Locale to use, null means default
      * @return the formatted string, not null
-     * @see  org.joda.time.format.DateTimeFormat
+     * @see org.joda.time.format.DateTimeFormat
      */
     public String toString(String pattern, Locale locale) throws IllegalArgumentException {
         if (pattern == null) {

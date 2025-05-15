@@ -55,7 +55,6 @@ public abstract class AbstractDateTime
 
     // -----------------------------------------------------------------------
     /**
-     * Get the value of one of the fields of a datetime.
      * <p>
      * This method uses the chronology of the datetime to obtain the value.
      * It is essentially a generic way of calling one of the get methods.

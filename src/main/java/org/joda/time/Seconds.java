@@ -49,9 +49,15 @@ public final class Seconds extends BaseSingleFieldPeriod {
     public static final Seconds TWO = new Seconds(2);
     /** Constant representing three seconds. */
     public static final Seconds THREE = new Seconds(3);
-    /** Constant representing the maximum number of seconds that can be stored in this object. */
+    /**
+     * Constant representing the maximum number of seconds that can be stored in
+     * this object.
+     */
     public static final Seconds MAX_VALUE = new Seconds(Integer.MAX_VALUE);
-    /** Constant representing the minimum number of seconds that can be stored in this object. */
+    /**
+     * Constant representing the minimum number of seconds that can be stored in
+     * this object.
+     */
     public static final Seconds MIN_VALUE = new Seconds(Integer.MIN_VALUE);
 
     /** The parser to use for this class. */
@@ -59,13 +65,13 @@ public final class Seconds extends BaseSingleFieldPeriod {
     /** Serialization version. */
     private static final long serialVersionUID = 87525275727380862L;
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Obtains an instance of <code>Seconds</code> that may be cached.
      * <code>Seconds</code> is immutable, so instances can be cached and shared.
      * This factory method provides access to shared instances.
      *
-     * @param seconds  the number of seconds to obtain an instance for
+     * @param seconds the number of seconds to obtain an instance for
      * @return the instance of Seconds
      */
     public static Seconds seconds(int seconds) {
@@ -74,8 +80,6 @@ public final class Seconds extends BaseSingleFieldPeriod {
                 return ZERO;
             case 1:
                 return ONE;
-            case 2:
-                return TWO;
             case 3:
                 return THREE;
             case Integer.MAX_VALUE:
@@ -87,13 +91,13 @@ public final class Seconds extends BaseSingleFieldPeriod {
         }
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Creates a <code>Seconds</code> representing the number of whole seconds
      * between the two specified datetimes.
      *
-     * @param start  the start instant, must not be null
-     * @param end  the end instant, must not be null
+     * @param start the start instant, must not be null
+     * @param end   the end instant, must not be null
      * @return the period in seconds
      * @throws IllegalArgumentException if the instants are null or invalid
      */
@@ -109,13 +113,13 @@ public final class Seconds extends BaseSingleFieldPeriod {
      * The two partials must contain the same fields, for example you can specify
      * two <code>LocalTime</code> objects.
      *
-     * @param start  the start partial date, must not be null
-     * @param end  the end partial date, must not be null
+     * @param start the start partial date, must not be null
+     * @param end   the end partial date, must not be null
      * @return the period in seconds
      * @throws IllegalArgumentException if the partials are null or invalid
      */
     public static Seconds secondsBetween(ReadablePartial start, ReadablePartial end) {
-        if (start instanceof LocalTime && end instanceof LocalTime)   {
+        if (start instanceof LocalTime && end instanceof LocalTime) {
             Chronology chrono = DateTimeUtils.getChronology(start.getChronology());
             int seconds = chrono.seconds().getDifference(
                     ((LocalTime) end).getLocalMillis(), ((LocalTime) start).getLocalMillis());
@@ -129,12 +133,12 @@ public final class Seconds extends BaseSingleFieldPeriod {
      * Creates a <code>Seconds</code> representing the number of whole seconds
      * in the specified interval.
      *
-     * @param interval  the interval to extract seconds from, null returns zero
+     * @param interval the interval to extract seconds from, null returns zero
      * @return the period in seconds
      * @throws IllegalArgumentException if the partials are null or invalid
      */
     public static Seconds secondsIn(ReadableInterval interval) {
-        if (interval == null)   {
+        if (interval == null) {
             return Seconds.ZERO;
         }
         int amount = BaseSingleFieldPeriod.between(interval.getStart(), interval.getEnd(), DurationFieldType.seconds());
@@ -145,7 +149,8 @@ public final class Seconds extends BaseSingleFieldPeriod {
      * Creates a new <code>Seconds</code> representing the number of complete
      * standard length seconds in the specified period.
      * <p>
-     * This factory method converts all fields from the period to hours using standardised
+     * This factory method converts all fields from the period to hours using
+     * standardised
      * durations for each field. Only those fields which have a precise duration in
      * the ISO UTC chronology can be converted.
      * <ul>
@@ -155,11 +160,13 @@ public final class Seconds extends BaseSingleFieldPeriod {
      * <li>One minute consists of 60 seconds.
      * <li>One second consists of 1000 milliseconds.
      * </ul>
-     * Months and Years are imprecise and periods containing these values cannot be converted.
+     * Months and Years are imprecise and periods containing these values cannot be
+     * converted.
      *
-     * @param period  the period to get the number of hours from, null returns zero
+     * @param period the period to get the number of hours from, null returns zero
      * @return the period in seconds
-     * @throws IllegalArgumentException if the period contains imprecise duration values
+     * @throws IllegalArgumentException if the period contains imprecise duration
+     *                                  values
      */
     public static Seconds standardSecondsIn(ReadablePeriod period) {
         int amount = BaseSingleFieldPeriod.standardPeriodIn(period, DateTimeConstants.MILLIS_PER_SECOND);
@@ -167,13 +174,16 @@ public final class Seconds extends BaseSingleFieldPeriod {
     }
 
     /**
-     * Creates a new <code>Seconds</code> by parsing a string in the ISO8601 format 'PTnS'.
+     * Creates a new <code>Seconds</code> by parsing a string in the ISO8601 format
+     * 'PTnS'.
      * <p>
-     * The parse will accept the full ISO syntax of PnYnMnWnDTnHnMnS however only the
-     * seconds component may be non-zero. If any other component is non-zero, an exception
+     * The parse will accept the full ISO syntax of PnYnMnWnDTnHnMnS however only
+     * the
+     * seconds component may be non-zero. If any other component is non-zero, an
+     * exception
      * will be thrown.
      *
-     * @param periodStr  the period string, null returns zero
+     * @param periodStr the period string, null returns zero
      * @return the period in seconds
      * @throws IllegalArgumentException if the string format is invalid
      */
@@ -186,13 +196,13 @@ public final class Seconds extends BaseSingleFieldPeriod {
         return Seconds.seconds(p.getSeconds());
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Creates a new instance representing a number of seconds.
      * You should consider using the factory method {@link #seconds(int)}
      * instead of the constructor.
      *
-     * @param seconds  the number of seconds to represent
+     * @param seconds the number of seconds to represent
      */
     private Seconds(int seconds) {
         super(seconds);
@@ -207,7 +217,7 @@ public final class Seconds extends BaseSingleFieldPeriod {
         return Seconds.seconds(getValue());
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Gets the duration field type, which is <code>seconds</code>.
      *
@@ -228,7 +238,7 @@ public final class Seconds extends BaseSingleFieldPeriod {
         return PeriodType.seconds();
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Converts this period in seconds to a period in weeks assuming a
      * 7 day week, 24 hour day, 60 minute hour and 60 second minute.
@@ -241,7 +251,8 @@ public final class Seconds extends BaseSingleFieldPeriod {
      * not be true for some unusual chronologies. However, it is included as it
      * is a useful operation for many applications and business rules.
      * 
-     * @return a period representing the number of whole weeks for this number of seconds
+     * @return a period representing the number of whole weeks for this number of
+     *         seconds
      */
     public Weeks toStandardWeeks() {
         return Weeks.weeks(getValue() / DateTimeConstants.SECONDS_PER_WEEK);
@@ -290,13 +301,14 @@ public final class Seconds extends BaseSingleFieldPeriod {
      * This may not be true for some unusual chronologies. However, it is included
      * as it is a useful operation for many applications and business rules.
      * 
-     * @return a period representing the number of minutes for this number of seconds
+     * @return a period representing the number of minutes for this number of
+     *         seconds
      */
     public Minutes toStandardMinutes() {
         return Minutes.minutes(getValue() / DateTimeConstants.SECONDS_PER_MINUTE);
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Converts this period in seconds to a duration in milliseconds assuming a
      * 24 hour day, 60 minute hour and 60 second minute.
@@ -311,11 +323,11 @@ public final class Seconds extends BaseSingleFieldPeriod {
      * @return a duration equivalent to this number of seconds
      */
     public Duration toStandardDuration() {
-        long seconds = getValue();  // assign to a long
+        long seconds = getValue(); // assign to a long
         return new Duration(seconds * DateTimeConstants.MILLIS_PER_SECOND);
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Gets the number of seconds that this period represents.
      *
@@ -325,13 +337,13 @@ public final class Seconds extends BaseSingleFieldPeriod {
         return getValue();
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Returns a new instance with the specified number of seconds added.
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param seconds  the amount of seconds to add, may be negative
+     * @param seconds the amount of seconds to add, may be negative
      * @return the new period plus the specified number of seconds
      * @throws ArithmeticException if the result overflows an int
      */
@@ -347,7 +359,7 @@ public final class Seconds extends BaseSingleFieldPeriod {
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param seconds  the amount of seconds to add, may be negative, null means zero
+     * @param seconds the amount of seconds to add, may be negative, null means zero
      * @return the new period plus the specified number of seconds
      * @throws ArithmeticException if the result overflows an int
      */
@@ -358,13 +370,13 @@ public final class Seconds extends BaseSingleFieldPeriod {
         return plus(seconds.getValue());
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Returns a new instance with the specified number of seconds taken away.
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param seconds  the amount of seconds to take away, may be negative
+     * @param seconds the amount of seconds to take away, may be negative
      * @return the new period minus the specified number of seconds
      * @throws ArithmeticException if the result overflows an int
      */
@@ -377,7 +389,8 @@ public final class Seconds extends BaseSingleFieldPeriod {
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param seconds  the amount of seconds to take away, may be negative, null means zero
+     * @param seconds the amount of seconds to take away, may be negative, null
+     *                means zero
      * @return the new period minus the specified number of seconds
      * @throws ArithmeticException if the result overflows an int
      */
@@ -388,13 +401,13 @@ public final class Seconds extends BaseSingleFieldPeriod {
         return minus(seconds.getValue());
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Returns a new instance with the seconds multiplied by the specified scalar.
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param scalar  the amount to multiply by, may be negative
+     * @param scalar the amount to multiply by, may be negative
      * @return the new period multiplied by the specified scalar
      * @throws ArithmeticException if the result overflows an int
      */
@@ -408,7 +421,7 @@ public final class Seconds extends BaseSingleFieldPeriod {
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param divisor  the amount to divide by, may be negative
+     * @param divisor the amount to divide by, may be negative
      * @return the new period divided by the specified divisor
      * @throws ArithmeticException if the divisor is zero
      */
@@ -419,7 +432,7 @@ public final class Seconds extends BaseSingleFieldPeriod {
         return Seconds.seconds(getValue() / divisor);
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Returns a new instance with the seconds value negated.
      *
@@ -430,11 +443,11 @@ public final class Seconds extends BaseSingleFieldPeriod {
         return Seconds.seconds(FieldUtils.safeNegate(getValue()));
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Is this seconds instance greater than the specified number of seconds.
      *
-     * @param other  the other period, null means zero
+     * @param other the other period, null means zero
      * @return true if this seconds instance is greater than the specified one
      */
     public boolean isGreaterThan(Seconds other) {
@@ -447,7 +460,7 @@ public final class Seconds extends BaseSingleFieldPeriod {
     /**
      * Is this seconds instance less than the specified number of seconds.
      *
-     * @param other  the other period, null means zero
+     * @param other the other period, null means zero
      * @return true if this seconds instance is less than the specified one
      */
     public boolean isLessThan(Seconds other) {
@@ -457,7 +470,7 @@ public final class Seconds extends BaseSingleFieldPeriod {
         return getValue() < other.getValue();
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Gets this instance as a String in the ISO8601 duration format.
      * <p>

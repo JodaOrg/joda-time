@@ -49,9 +49,15 @@ public final class Years extends BaseSingleFieldPeriod {
     public static final Years TWO = new Years(2);
     /** Constant representing three years. */
     public static final Years THREE = new Years(3);
-    /** Constant representing the maximum number of years that can be stored in this object. */
+    /**
+     * Constant representing the maximum number of years that can be stored in this
+     * object.
+     */
     public static final Years MAX_VALUE = new Years(Integer.MAX_VALUE);
-    /** Constant representing the minimum number of years that can be stored in this object. */
+    /**
+     * Constant representing the minimum number of years that can be stored in this
+     * object.
+     */
     public static final Years MIN_VALUE = new Years(Integer.MIN_VALUE);
 
     /** The parser to use for this class. */
@@ -59,13 +65,13 @@ public final class Years extends BaseSingleFieldPeriod {
     /** Serialization version. */
     private static final long serialVersionUID = 87525275727380868L;
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Obtains an instance of <code>Years</code> that may be cached.
      * <code>Years</code> is immutable, so instances can be cached and shared.
      * This factory method provides access to shared instances.
      *
-     * @param years  the number of years to obtain an instance for
+     * @param years the number of years to obtain an instance for
      * @return the instance of Years
      */
     public static Years years(int years) {
@@ -78,8 +84,6 @@ public final class Years extends BaseSingleFieldPeriod {
                 return TWO;
             case 3:
                 return THREE;
-            case Integer.MAX_VALUE:
-                return MAX_VALUE;
             case Integer.MIN_VALUE:
                 return MIN_VALUE;
             default:
@@ -87,14 +91,14 @@ public final class Years extends BaseSingleFieldPeriod {
         }
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Creates a <code>Years</code> representing the number of whole years
      * between the two specified datetimes. This method correctly handles
      * any daylight savings time changes that may occur during the interval.
      *
-     * @param start  the start instant, must not be null
-     * @param end  the end instant, must not be null
+     * @param start the start instant, must not be null
+     * @param end   the end instant, must not be null
      * @return the period in years
      * @throws IllegalArgumentException if the instants are null or invalid
      */
@@ -110,13 +114,13 @@ public final class Years extends BaseSingleFieldPeriod {
      * The two partials must contain the same fields, for example you can specify
      * two <code>LocalDate</code> objects.
      *
-     * @param start  the start partial date, must not be null
-     * @param end  the end partial date, must not be null
+     * @param start the start partial date, must not be null
+     * @param end   the end partial date, must not be null
      * @return the period in years
      * @throws IllegalArgumentException if the partials are null or invalid
      */
     public static Years yearsBetween(ReadablePartial start, ReadablePartial end) {
-        if (start instanceof LocalDate && end instanceof LocalDate)   {
+        if (start instanceof LocalDate && end instanceof LocalDate) {
             Chronology chrono = DateTimeUtils.getChronology(start.getChronology());
             int years = chrono.years().getDifference(
                     ((LocalDate) end).getLocalMillis(), ((LocalDate) start).getLocalMillis());
@@ -131,12 +135,12 @@ public final class Years extends BaseSingleFieldPeriod {
      * in the specified interval. This method correctly handles any daylight
      * savings time changes that may occur during the interval.
      *
-     * @param interval  the interval to extract years from, null returns zero
+     * @param interval the interval to extract years from, null returns zero
      * @return the period in years
      * @throws IllegalArgumentException if the partials are null or invalid
      */
     public static Years yearsIn(ReadableInterval interval) {
-        if (interval == null)   {
+        if (interval == null) {
             return Years.ZERO;
         }
         int amount = BaseSingleFieldPeriod.between(interval.getStart(), interval.getEnd(), DurationFieldType.years());
@@ -144,13 +148,16 @@ public final class Years extends BaseSingleFieldPeriod {
     }
 
     /**
-     * Creates a new <code>Years</code> by parsing a string in the ISO8601 format 'PnY'.
+     * Creates a new <code>Years</code> by parsing a string in the ISO8601 format
+     * 'PnY'.
      * <p>
-     * The parse will accept the full ISO syntax of PnYnMnWnDTnHnMnS however only the
-     * years component may be non-zero. If any other component is non-zero, an exception
+     * The parse will accept the full ISO syntax of PnYnMnWnDTnHnMnS however only
+     * the
+     * years component may be non-zero. If any other component is non-zero, an
+     * exception
      * will be thrown.
      *
-     * @param periodStr  the period string, null returns zero
+     * @param periodStr the period string, null returns zero
      * @return the period in years
      * @throws IllegalArgumentException if the string format is invalid
      */
@@ -163,13 +170,13 @@ public final class Years extends BaseSingleFieldPeriod {
         return Years.years(p.getYears());
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Creates a new instance representing a number of years.
      * You should consider using the factory method {@link #years(int)}
      * instead of the constructor.
      *
-     * @param years  the number of years to represent
+     * @param years the number of years to represent
      */
     private Years(int years) {
         super(years);
@@ -184,7 +191,7 @@ public final class Years extends BaseSingleFieldPeriod {
         return Years.years(getValue());
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Gets the duration field type, which is <code>years</code>.
      *
@@ -205,7 +212,7 @@ public final class Years extends BaseSingleFieldPeriod {
         return PeriodType.years();
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Gets the number of years that this period represents.
      *
@@ -215,13 +222,13 @@ public final class Years extends BaseSingleFieldPeriod {
         return getValue();
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Returns a new instance with the specified number of years added.
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param years  the amount of years to add, may be negative
+     * @param years the amount of years to add, may be negative
      * @return the new period plus the specified number of years
      * @throws ArithmeticException if the result overflows an int
      */
@@ -237,7 +244,7 @@ public final class Years extends BaseSingleFieldPeriod {
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param years  the amount of years to add, may be negative, null means zero
+     * @param years the amount of years to add, may be negative, null means zero
      * @return the new period plus the specified number of years
      * @throws ArithmeticException if the result overflows an int
      */
@@ -248,13 +255,13 @@ public final class Years extends BaseSingleFieldPeriod {
         return plus(years.getValue());
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Returns a new instance with the specified number of years taken away.
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param years  the amount of years to take away, may be negative
+     * @param years the amount of years to take away, may be negative
      * @return the new period minus the specified number of years
      * @throws ArithmeticException if the result overflows an int
      */
@@ -267,7 +274,8 @@ public final class Years extends BaseSingleFieldPeriod {
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param years  the amount of years to take away, may be negative, null means zero
+     * @param years the amount of years to take away, may be negative, null means
+     *              zero
      * @return the new period minus the specified number of years
      * @throws ArithmeticException if the result overflows an int
      */
@@ -278,13 +286,13 @@ public final class Years extends BaseSingleFieldPeriod {
         return minus(years.getValue());
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Returns a new instance with the years multiplied by the specified scalar.
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param scalar  the amount to multiply by, may be negative
+     * @param scalar the amount to multiply by, may be negative
      * @return the new period multiplied by the specified scalar
      * @throws ArithmeticException if the result overflows an int
      */
@@ -298,7 +306,7 @@ public final class Years extends BaseSingleFieldPeriod {
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param divisor  the amount to divide by, may be negative
+     * @param divisor the amount to divide by, may be negative
      * @return the new period divided by the specified divisor
      * @throws ArithmeticException if the divisor is zero
      */
@@ -309,7 +317,7 @@ public final class Years extends BaseSingleFieldPeriod {
         return Years.years(getValue() / divisor);
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Returns a new instance with the years value negated.
      *
@@ -320,11 +328,11 @@ public final class Years extends BaseSingleFieldPeriod {
         return Years.years(FieldUtils.safeNegate(getValue()));
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Is this years instance greater than the specified number of years.
      *
-     * @param other  the other period, null means zero
+     * @param other the other period, null means zero
      * @return true if this years instance is greater than the specified one
      */
     public boolean isGreaterThan(Years other) {
@@ -337,7 +345,7 @@ public final class Years extends BaseSingleFieldPeriod {
     /**
      * Is this years instance less than the specified number of years.
      *
-     * @param other  the other period, null means zero
+     * @param other the other period, null means zero
      * @return true if this years instance is less than the specified one
      */
     public boolean isLessThan(Years other) {
@@ -347,7 +355,7 @@ public final class Years extends BaseSingleFieldPeriod {
         return getValue() < other.getValue();
     }
 
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Gets this instance as a String in the ISO8601 duration format.
      * <p>

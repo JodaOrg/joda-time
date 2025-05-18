@@ -64,6 +64,15 @@ public class AgeCalculator extends JFrame {
         MINUTES = 250,
         SECONDS = 103;
 
+
+
+
+
+
+
+
+        
+
     public static void main(String[] args) throws Exception {
         new AgeCalculator().show();
     }

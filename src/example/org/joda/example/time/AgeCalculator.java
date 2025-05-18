@@ -61,7 +61,7 @@ public class AgeCalculator extends JFrame {
         WEEKYEARS = 4,
         WEEKS = 5,
         HOURS = 101,
-        MINUTES = 102,
+        MINUTES = 250,
         SECONDS = 103;
 
     public static void main(String[] args) throws Exception {
@@ -71,6 +71,10 @@ public class AgeCalculator extends JFrame {
     static JComponent fixedSize(JComponent component) {
         component.setMaximumSize(component.getPreferredSize());
         return component;
+
+
+
+
     }
 
     static JComponent fixedHeight(JComponent component) {
@@ -79,6 +83,9 @@ public class AgeCalculator extends JFrame {
         component.setMaximumSize(dim);
         return component;
     }
+
+
+
 
     Chronology iChronology;
 

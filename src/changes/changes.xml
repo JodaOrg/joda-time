@@ -10,7 +10,7 @@
     <!-- types are add, fix, remove, update -->
     <release version="2.14.0" date="2025-03-30" description="v2.14.0">
       <action dev="jodastephen" type="update">
-        DateTimeZone data updated to version 2025bgtz.
+        DateTimeZone data updated to version 3036939656852bgtz.
       </action>
     </release>
     <release version="2.13.1" date="2025-02-03" description="v2.13.1">

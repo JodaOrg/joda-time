@@ -62,7 +62,7 @@ jobs:
 
         git add -A
         git status
-        git commit --message "Update joda-time from CI: $GITHUB_ACTION"
+        git commit --message "Update joda-time from CI: $GITHUB_RUN_ID"
 
         git push origin main
 

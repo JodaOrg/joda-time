@@ -9,20 +9,25 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write  # to create branch and push
-  pull-requests: write  # to create a PR
+  contents: read
 
 jobs:
   tzdbcheck:
+    permissions:
+      contents: write  # for peter-evans/create-pull-request to create branch
+      pull-requests: write  # for peter-evans/create-pull-request to create a PR
     runs-on: ubuntu-latest
-    env:
-      MAVEN_ARGS: -e -B -ntp -DtrimStackTrace=false
-
     steps:
     - name: Checkout
       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  #v4.2.2
       with:
         token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
+        fetch-tags: true
+
+    - name: Setup git
+      run: |
+        git config --global user.name "Stephen Colebourne (CI)"
+        git config --global user.email "scolebourne@joda.org"
 
     - name: Set up JDK
       uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12  #v4.7.0
@@ -33,6 +38,13 @@ jobs:
 
     - name: Maven version
       run: |
+        mkdir -p ./.mvn
+        echo "-e" >> ./.mvn/maven.config
+        echo "-B" >> ./.mvn/maven.config
+        echo "-ntp" >> ./.mvn/maven.config
+        echo "-DtrimStackTrace=false" >> ./.mvn/maven.config
+        echo "--settings" >> ./.mvn/maven.config
+        echo "$( pwd )/.github/maven-settings.xml" >> ./.mvn/maven.config
         mvn --version
         mkdir -p target
 
@@ -85,7 +97,6 @@ jobs:
     - name: Update build with new tzdb
       if: env.NOOP != 'true'
       run: |
-        sed -i 's/$CURRENT_TZDB/${LATEST_TZDB}/g' src/main/java/org/joda/time/tz/src/Readme.txt
         mvn versions:set-property -DnewVersion=${LATEST_TZDB} -Dproperty=tz.database.version -DgenerateBackupPoms=false
         mvn install
 
@@ -104,3 +115,15 @@ jobs:
         assignees: jodastephen
         labels: TZDB
         branch: bot/update-tzdb
+
+    - name: Auto-merge the Pull Request
+      if: steps.createpr.outputs.pull-request-number
+      run: gh pr merge --squash --auto "${{ steps.createpr.outputs.pull-request-number }}"
+      env:
+        GH_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
+
+    - name: Delete tzdb tag
+      if: env.NOOP != 'true' && startsWith(github.ref, 'refs/tags/tzdb')
+      run: |
+        git tag --delete "${GITHUB_REF_NAME}" || true
+        git push --delete origin "${GITHUB_REF_NAME}" || true

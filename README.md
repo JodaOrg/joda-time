@@ -126,7 +126,7 @@ Note that Joda-Time is considered to be a largely “finished” project. No maj
 
 Release from local:
 
-* Turn off gpg "bc" signer
+* Ensure `gpg-agent` is running
 * Ensure on Java SE 8
 * `mvn clean deploy -Doss.repo -Dgpg.passphrase=""`
 * Website will be built and released by GitHub Actions

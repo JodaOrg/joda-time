@@ -12,18 +12,16 @@ permissions:
 jobs:
   website:
     runs-on: ubuntu-latest
-    env:
-      MAVEN_ARGS: -e -B -ntp -DtrimStackTrace=false
-
     steps:
     - name: Checkout
       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  #v4.2.2
       with:
         token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
+        ref: ${{ github.ref }}
+        fetch-tags: true
 
     - name: Setup git
       run: |
-        git fetch --tags
         git config --global user.name "Stephen Colebourne (CI)"
         git config --global user.email "scolebourne@joda.org"
 
@@ -36,6 +34,13 @@ jobs:
 
     - name: Maven version
       run: |
+        mkdir -p ./.mvn
+        echo "-e" >> ./.mvn/maven.config
+        echo "-B" >> ./.mvn/maven.config
+        echo "-ntp" >> ./.mvn/maven.config
+        echo "-DtrimStackTrace=false" >> ./.mvn/maven.config
+        echo "--settings" >> ./.mvn/maven.config
+        echo "$( pwd )/.github/maven-settings.xml" >> ./.mvn/maven.config
         mvn --version
         mkdir -p target
 
@@ -66,8 +71,9 @@ jobs:
 
         git push origin main
 
+    # delete the initiating tag, but not if the build is manually initialized by workflow_dispatch
     - name: Delete website tag
-      if: github.ref != 'refs/heads/main'
+      if: "always() && github.ref != 'refs/heads/main'"
       run: |
         git tag --delete "${GITHUB_REF_NAME}" || true
         git push --delete origin "${GITHUB_REF_NAME}" || true

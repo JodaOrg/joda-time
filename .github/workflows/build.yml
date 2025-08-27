@@ -12,20 +12,17 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  security-events: write  # for github/codeql-action
+  contents: read
 
 jobs:
   build:
+    permissions:
+      security-events: write  # for github/codeql-action
     runs-on: ubuntu-latest
-    env:
-      MAVEN_ARGS: -e -B -ntp -DtrimStackTrace=false
 
     steps:
     - name: Checkout
       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  #v4.2.2
-      with:
-        token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
 
     - name: Set up JDK
       uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12  #v4.7.0
@@ -36,9 +33,17 @@ jobs:
 
     - name: Maven version
       run: |
+        mkdir -p ./.mvn
+        echo "-e" >> ./.mvn/maven.config
+        echo "-B" >> ./.mvn/maven.config
+        echo "-ntp" >> ./.mvn/maven.config
+        echo "-DtrimStackTrace=false" >> ./.mvn/maven.config
+        echo "--settings" >> ./.mvn/maven.config
+        echo "$( pwd )/.github/maven-settings.xml" >> ./.mvn/maven.config
         mvn --version
         mkdir -p target
 
+    #------------------------------------------------------------------------
     - name: Initialize CodeQL
       uses: github/codeql-action/init@70df9def86d22bf0ea4e7f8b956e7b92e7c1ea22  #codeql-bundle-v2.20.7
       with:

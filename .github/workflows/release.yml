@@ -12,9 +12,6 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      MAVEN_ARGS: -e -B -ntp -DtrimStackTrace=false
-
     steps:
     - name: Checkout
       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  #v4.2.2
@@ -38,6 +35,10 @@ jobs:
     - name: Maven version
       run: |
         mkdir -p ./.mvn
+        echo "-e" >> ./.mvn/maven.config
+        echo "-B" >> ./.mvn/maven.config
+        echo "-ntp" >> ./.mvn/maven.config
+        echo "-DtrimStackTrace=false" >> ./.mvn/maven.config
         echo "--settings" >> ./.mvn/maven.config
         echo "$( pwd )/.github/maven-settings.xml" >> ./.mvn/maven.config
         mvn --version
@@ -46,8 +47,8 @@ jobs:
     #------------------------------------------------------------------------
     - name: Maven release
       env:
-        OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-        OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+        MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+        MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
         MAVEN_GPG_PASSPHRASE: ${{ secrets.RELEASES_GPG_PASSPHRASE }}
         MAVEN_GPG_KEY: ${{ secrets.RELEASES_GPG_PRIVATE_KEY }}
         GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
@@ -59,6 +60,7 @@ jobs:
         git tag websiterelease
         git push origin websiterelease
 
+    # delete the initiating tag, but not if the build is manually initialized by workflow_dispatch
     - name: Delete release tag
       if: "always() && github.ref != 'refs/heads/main'"
       run: |

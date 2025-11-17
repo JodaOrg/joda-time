@@ -31,6 +31,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.joda.convert.FromString;
 import org.joda.convert.ToString;
+import org.joda.time.DateTimeZone.LazyInit;
 import org.joda.time.chrono.BaseChronology;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.DateTimeFormatter;
@@ -1327,6 +1328,8 @@ public abstract class DateTimeZone implements Serializable {
         private static Map<String, String> buildMap() {
             // Backwards compatibility with TimeZone.
             Map<String, String> map = new HashMap<String, String>();
+
+            // European Zones
             map.put("GMT", "UTC");
             map.put("WET", "WET");
             map.put("CET", "CET");
@@ -1335,6 +1338,8 @@ public abstract class DateTimeZone implements Serializable {
             map.put("EET", "EET");
             map.put("MIT", "Pacific/Apia");
             map.put("HST", "Pacific/Honolulu");  // JDK 1.1 compatible
+
+            // American Zones
             map.put("AST", "America/Anchorage");
             map.put("PST", "America/Los_Angeles");
             map.put("MST", "America/Denver");  // JDK 1.1 compatible
@@ -1346,6 +1351,8 @@ public abstract class DateTimeZone implements Serializable {
             map.put("CNT", "America/St_Johns");
             map.put("AGT", "America/Argentina/Buenos_Aires");
             map.put("BET", "America/Sao_Paulo");
+
+            // Asian/Pacific/African Zones
             map.put("ART", "Africa/Cairo");
             map.put("CAT", "Africa/Harare");
             map.put("EAT", "Africa/Addis_Ababa");

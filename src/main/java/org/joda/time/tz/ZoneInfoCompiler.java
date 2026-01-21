@@ -1056,14 +1056,16 @@ public class ZoneInfoCompiler {
         private static void addToBuilder(Zone zone, DateTimeZoneBuilder builder, Map<String, RuleSet> ruleSets) {
             for (; zone != null; zone = zone.iNext) {
                 if (zone.iRules == null) {
+                    String formattedName = Rule.formatName(zone.iFormat, zone.iOffsetMillis, 0, null);
                     builder.setStandardOffset(zone.iOffsetMillis);
-                    builder.setFixedSavings(zone.iFormat, 0);
+                    builder.setFixedSavings(formattedName, 0);
                 } else {
                     try {
                         // Check if iRules actually just refers to a savings.
                         int saveMillis = parseTime(zone.iRules);
+                        String formattedName = Rule.formatName(zone.iFormat, zone.iOffsetMillis, saveMillis, null);
                         builder.setStandardOffset(zone.iOffsetMillis);
-                        builder.setFixedSavings(zone.iFormat, saveMillis);
+                        builder.setFixedSavings(formattedName, saveMillis);
                     }
                     catch (Exception e) {
                         // Zone is using a RuleSet for this segment of the timeline

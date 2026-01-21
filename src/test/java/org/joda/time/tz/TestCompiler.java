@@ -85,6 +85,10 @@ public class TestCompiler extends TestCase {
         "Rule    CA  1949    only    -   Jan  1  2:00    0   S\n" +
         "\n" +
         "Zone "; // this line is intentionally left incomplete
+    
+    static final String DUBAI_FILE = 
+        "Zone   Asia/Dubai  3:41:12 -   LMT 1920\r\n" +
+        "            4:00    -   %z\r\n";
 
     private DateTimeZone originalDateTimeZone = null;
 
@@ -159,6 +163,16 @@ public class TestCompiler extends TestCase {
         } catch (IllegalArgumentException iae) {
             assertEquals("Attempting to create a Zone from an incomplete tokenizer", iae.getMessage());
         }
+    }
+
+    public void testCompileDubaiPercentZ() throws Exception {
+        Provider provider = compileAndLoad(DUBAI_FILE);
+        DateTimeZone tz = provider.getZone("Asia/Dubai");
+
+        assertEquals("Asia/Dubai", tz.getID());
+        assertEquals(false, tz.isFixed());
+        TestBuilder.testForwardTransitions(tz, TestBuilder.ASIA_DUBAI_DATA);
+        TestBuilder.testReverseTransitions(tz, TestBuilder.ASIA_DUBAI_DATA);
     }
 
     private Provider compileAndLoad(String data) throws Exception {
@@ -304,6 +318,12 @@ public class TestCompiler extends TestCase {
         DateTimeZone zone = DateTimeZone.forID("Atlantic/Azores");
         assertEquals("-01", zone.getNameKey(new DateTime(2000, 1, 1, 0, 0, zone).getMillis()));
         assertEquals("+00", zone.getNameKey(new DateTime(2000, 7, 1, 0, 0, zone).getMillis()));
+    }
+
+    public void test_Dubai() {
+        DateTimeZone zone = DateTimeZone.forID("Asia/Dubai");
+        assertEquals("+04", zone.getNameKey(new DateTime(2000, 1, 1, 0, 0, zone).getMillis()));
+        assertEquals("+04", zone.getNameKey(new DateTime(2000, 7, 1, 0, 0, zone).getMillis()));
     }
 
 }

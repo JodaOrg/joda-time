@@ -162,6 +162,12 @@ public class TestBuilder extends TestCase {
         {"2000-10-29T02:00:00.000-07:00", "PST", "-08:00", "-08:00"},
     };
 
+    // Each row is {transition, nameKey, standardOffset, offset}
+    static final String[][] ASIA_DUBAI_DATA = {
+        {null,                            "LMT", "+03:41:12", "+03:41:12"},
+        {"1919-12-31T20:18:48.000Z",      "+04", "+04:00", "+04:00"},
+    };
+
     static DateTimeZoneBuilder buildAmericaLosAngelesBuilder() {
         return new DateTimeZoneBuilder()
             .addCutover(-2147483648, 'w', 1, 1, 0, false, 0)

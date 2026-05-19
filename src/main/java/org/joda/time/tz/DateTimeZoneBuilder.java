@@ -94,8 +94,8 @@ public class DateTimeZoneBuilder {
      * @param id time zone id to assign
      */
     public static DateTimeZone readFrom(InputStream in, String id) throws IOException {
-        if (in instanceof DataInput) {
-            return readFrom((DataInput)in, id);
+        if (in instanceof DataInput input) {
+            return readFrom(input, id);
         } else {
             return readFrom((DataInput)new DataInputStream(in), id);
         }
@@ -446,8 +446,8 @@ public class DateTimeZoneBuilder {
      * @since 1.5 (parameter added)
      */
     public void writeTo(String zoneID, OutputStream out) throws IOException {
-        if (out instanceof DataOutput) {
-            writeTo(zoneID, (DataOutput)out);
+        if (out instanceof DataOutput output) {
+            writeTo(zoneID, output);
         } else {
             DataOutputStream dout = new DataOutputStream(out);
             writeTo(zoneID, (DataOutput)dout);
@@ -472,9 +472,9 @@ public class DateTimeZoneBuilder {
             writeMillis(out, zone.getOffset(0));
             writeMillis(out, zone.getStandardOffset(0));
         } else {
-            if (zone instanceof CachedDateTimeZone) {
+            if (zone instanceof CachedDateTimeZone timeZone) {
                 out.writeByte('C'); // 'C' for cached, precalculated
-                zone = ((CachedDateTimeZone)zone).getUncachedZone();
+                zone = timeZone.getUncachedZone();
             } else {
                 out.writeByte('P'); // 'P' for precalculated, uncached
             }
@@ -645,8 +645,7 @@ public class DateTimeZoneBuilder {
             if (this == obj) {
                 return true;
             }
-            if (obj instanceof OfYear) {
-                OfYear other = (OfYear)obj;
+            if (obj instanceof OfYear other) {
                 return
                     iMode == other.iMode &&
                     iMonthOfYear == other.iMonthOfYear &&
@@ -801,8 +800,7 @@ public class DateTimeZoneBuilder {
             if (this == obj) {
                 return true;
             }
-            if (obj instanceof Recurrence) {
-                Recurrence other = (Recurrence)obj;
+            if (obj instanceof Recurrence other) {
                 return
                     iSaveMillis == other.iSaveMillis &&
                     iNameKey.equals(other.iNameKey) &&
@@ -1344,8 +1342,7 @@ public class DateTimeZoneBuilder {
             if (this == obj) {
                 return true;
             }
-            if (obj instanceof DSTZone) {
-                DSTZone other = (DSTZone)obj;
+            if (obj instanceof DSTZone other) {
                 return
                     getID().equals(other.getID()) &&
                     iStandardOffset == other.iStandardOffset &&
@@ -1692,8 +1689,7 @@ public class DateTimeZoneBuilder {
             if (this == obj) {
                 return true;
             }
-            if (obj instanceof PrecalculatedZone) {
-                PrecalculatedZone other = (PrecalculatedZone)obj;
+            if (obj instanceof PrecalculatedZone other) {
                 return
                     getID().equals(other.getID()) &&
                     Arrays.equals(iTransitions, other.iTransitions) &&

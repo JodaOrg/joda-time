@@ -15,6 +15,8 @@
  */
 package org.joda.time.chrono;
 
+import java.io.Serial;
+
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeConstants;
 
@@ -34,6 +36,7 @@ import org.joda.time.DateTimeConstants;
 abstract class BasicGJChronology extends BasicChronology {
 
     /** Serialization lock */
+    @Serial
     private static final long serialVersionUID = 538276888268L;
 
     // These arrays are NOT public. We trust ourselves not to alter the array.

@@ -15,6 +15,7 @@
  */
 package org.joda.time.base;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import org.joda.time.Chronology;
@@ -47,6 +48,7 @@ public abstract class BaseDuration
         implements ReadableDuration, Serializable {
 
     /** Serialization version */
+    @Serial
     private static final long serialVersionUID = 2581698638990L;
 
     /** The duration length */

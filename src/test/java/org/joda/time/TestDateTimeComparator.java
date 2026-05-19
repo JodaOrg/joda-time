@@ -388,9 +388,9 @@ public class TestDateTimeComparator extends TestCase {
      */
     public void testBasicComps4() {
         Long aDateTime
-            = new Long( System.currentTimeMillis() );
+            = Long.valueOf(System.currentTimeMillis());
         Long bDateTime
-            = new Long( aDateTime.longValue() );
+            = Long.valueOf(aDateTime.longValue());
         assertEquals( "MILLIS", 0, cMillis.compare( aDateTime, bDateTime ) );
         assertEquals( "SECOND", 0, cSecond.compare( aDateTime, bDateTime ) );
         assertEquals( "MINUTE", 0, cMinute.compare( aDateTime, bDateTime ) );
@@ -944,11 +944,11 @@ public class TestDateTimeComparator extends TestCase {
         // tl must be populated with DateTime objects.
         DateTime lhDT = (DateTime)tl.get(0);
         DateTime rhDT = null;
-        Long lhVal = new Long( lhDT.getMillis() );
+        Long lhVal = Long.valueOf(lhDT.getMillis());
         Long rhVal = null;
         for (int i = 1; i < tl.size(); ++i) {
             rhDT = (DateTime)tl.get(i);
-            rhVal = new Long( rhDT.getMillis() );
+            rhVal = Long.valueOf(rhDT.getMillis());
             if ( lhVal.compareTo( rhVal) > 0 ) return false;
             //
             lhVal = rhVal;  // swap for next iteration

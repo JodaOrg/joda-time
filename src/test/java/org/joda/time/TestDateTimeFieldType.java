@@ -290,7 +290,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertEquals(1, cls.getDeclaredConstructors().length);
         Constructor con = cls.getDeclaredConstructors()[0];
         Object[] params = new Object[] {
-            "other", new Byte((byte) 128), DurationFieldType.hours(), DurationFieldType.months()};
+            "other", Byte.valueOf((byte) 128), DurationFieldType.hours(), DurationFieldType.months()};
         con.setAccessible(true);  // for Apache Harmony JVM
         DateTimeFieldType type = (DateTimeFieldType) con.newInstance(params);
         

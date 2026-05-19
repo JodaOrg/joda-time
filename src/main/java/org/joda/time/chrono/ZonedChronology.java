@@ -15,6 +15,7 @@
  */
 package org.joda.time.chrono;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -41,6 +42,7 @@ import org.joda.time.field.BaseDurationField;
 public final class ZonedChronology extends AssembledChronology {
 
     /** Serialization lock */
+    @Serial
     private static final long serialVersionUID = -1079258847191166848L;
     /**
      * Avoid calculation errors near zero.
@@ -297,6 +299,7 @@ public final class ZonedChronology extends AssembledChronology {
      * fields, can nullify or reverse an add when crossing a transition.
      */
     static class ZonedDurationField extends BaseDurationField {
+        @Serial
         private static final long serialVersionUID = -485345310999208286L;
 
         final DurationField iField;
@@ -401,8 +404,7 @@ public final class ZonedChronology extends AssembledChronology {
         public boolean equals(Object obj) {
             if (this == obj) {
                 return true;
-            } else if (obj instanceof ZonedDurationField) {
-                ZonedDurationField other = (ZonedDurationField) obj;
+            } else if (obj instanceof ZonedDurationField other) {
                 return iField.equals(other.iField) &&
                        iZone.equals(other.iZone);
             }
@@ -684,8 +686,7 @@ public final class ZonedChronology extends AssembledChronology {
         public boolean equals(Object obj) {
             if (this == obj) {
                 return true;
-            } else if (obj instanceof ZonedDateTimeField) {
-                ZonedDateTimeField other = (ZonedDateTimeField) obj;
+            } else if (obj instanceof ZonedDateTimeField other) {
                 return iField.equals(other.iField) &&
                        iZone.equals(other.iZone) &&
                        iDurationField.equals(other.iDurationField) &&

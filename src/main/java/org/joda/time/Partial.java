@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,6 +71,7 @@ public final class Partial
         implements ReadablePartial, Serializable {
 
     /** Serialization version */
+    @Serial
     private static final long serialVersionUID = 12324121189002L;
 
     /** The chronology in use. */
@@ -856,6 +858,7 @@ public final class Partial
     public static class Property extends AbstractPartialFieldProperty implements Serializable {
 
         /** Serialization version */
+        @Serial
         private static final long serialVersionUID = 53278362873888L;
 
         /** The partial */

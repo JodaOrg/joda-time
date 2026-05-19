@@ -15,6 +15,7 @@
  */
 package org.joda.time.field;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 
@@ -32,6 +33,7 @@ import org.joda.time.DurationFieldType;
 public final class UnsupportedDurationField extends DurationField implements Serializable {
 
     /** Serialization lock. */
+    @Serial
     private static final long serialVersionUID = -6390301302770925357L;
 
     /** The cache of unsupported duration field instances */
@@ -255,8 +257,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
-        } else if (obj instanceof UnsupportedDurationField) {
-            UnsupportedDurationField other = (UnsupportedDurationField) obj;
+        } else if (obj instanceof UnsupportedDurationField other) {
             if (other.getName() == null) {
                 return (getName() == null);
             }

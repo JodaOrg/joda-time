@@ -34,11 +34,11 @@ class InternalPrinterDateTimePrinter implements DateTimePrinter, InternalPrinter
     private final InternalPrinter underlying;
 
     static DateTimePrinter of(InternalPrinter underlying) {
-        if (underlying instanceof DateTimePrinterInternalPrinter) {
-            return ((DateTimePrinterInternalPrinter) underlying).getUnderlying();
+        if (underlying instanceof DateTimePrinterInternalPrinter printer) {
+            return printer.getUnderlying();
         }
-        if (underlying instanceof DateTimePrinter) {
-            return (DateTimePrinter) underlying;
+        if (underlying instanceof DateTimePrinter printer1) {
+            return printer1;
         }
         if (underlying == null) {
             return null;
@@ -96,8 +96,7 @@ class InternalPrinterDateTimePrinter implements DateTimePrinter, InternalPrinter
         if (obj == this) {
             return true;
         }
-        if (obj instanceof InternalPrinterDateTimePrinter) {
-            InternalPrinterDateTimePrinter other = (InternalPrinterDateTimePrinter) obj;
+        if (obj instanceof InternalPrinterDateTimePrinter other) {
             return underlying.equals(other.underlying);
         }
         return false;

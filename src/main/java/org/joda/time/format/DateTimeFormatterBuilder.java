@@ -1171,8 +1171,8 @@ public class DateTimeFormatterBuilder {
 
     private boolean isPrinter(Object f) {
         if (f instanceof InternalPrinter) {
-            if (f instanceof Composite) {
-                return ((Composite)f).isPrinter();
+            if (f instanceof Composite composite) {
+                return composite.isPrinter();
             }
             return true;
         }
@@ -1181,8 +1181,8 @@ public class DateTimeFormatterBuilder {
 
     private boolean isParser(Object f) {
         if (f instanceof InternalParser) {
-            if (f instanceof Composite) {
-                return ((Composite)f).isParser();
+            if (f instanceof Composite composite) {
+                return composite.isParser();
             }
             return true;
         }
@@ -2541,15 +2541,15 @@ public class DateTimeFormatterBuilder {
             int size = elementPairs.size();
             for (int i=0; i<size; i+=2) {
                 Object element = elementPairs.get(i);
-                if (element instanceof Composite) {
-                    addArrayToList(printerList, ((Composite)element).iPrinters);
+                if (element instanceof Composite composite) {
+                    addArrayToList(printerList, composite.iPrinters);
                 } else {
                     printerList.add(element);
                 }
 
                 element = elementPairs.get(i + 1);
-                if (element instanceof Composite) {
-                    addArrayToList(parserList, ((Composite)element).iParsers);
+                if (element instanceof Composite composite1) {
+                    addArrayToList(parserList, composite1.iParsers);
                 } else {
                     parserList.add(element);
                 }

@@ -217,7 +217,7 @@ public class TestInstant_Constructors extends TestCase {
     public void testConstructor_badconverterObject() throws Throwable {
         try {
             ConverterManager.getInstance().addInstantConverter(MockZeroNullIntegerConverter.INSTANCE);
-            Instant test = new Instant(new Integer(0));
+            Instant test = new Instant(Integer.valueOf(0));
             assertEquals(ISOChronology.getInstanceUTC(), test.getChronology());
             assertEquals(0L, test.getMillis());
         } finally {

@@ -50,11 +50,11 @@ public class TestIllegalFieldValueException extends TestCase {
             assertEquals(DateTimeFieldType.monthOfYear(), e.getDateTimeFieldType());
             assertEquals(null, e.getDurationFieldType());
             assertEquals("monthOfYear", e.getFieldName());
-            assertEquals(new Integer(-5), e.getIllegalNumberValue());
+            assertEquals(Integer.valueOf(-5), e.getIllegalNumberValue());
             assertEquals(null, e.getIllegalStringValue());
             assertEquals("-5", e.getIllegalValueAsString());
-            assertEquals(new Integer(1), e.getLowerBound());
-            assertEquals(new Integer(31), e.getUpperBound());
+            assertEquals(Integer.valueOf(1), e.getLowerBound());
+            assertEquals(Integer.valueOf(31), e.getUpperBound());
         }
 
         try {
@@ -64,11 +64,11 @@ public class TestIllegalFieldValueException extends TestCase {
             assertEquals(DateTimeFieldType.hourOfDay(), e.getDateTimeFieldType());
             assertEquals(null, e.getDurationFieldType());
             assertEquals("hourOfDay", e.getFieldName());
-            assertEquals(new Integer(27), e.getIllegalNumberValue());
+            assertEquals(Integer.valueOf(27), e.getIllegalNumberValue());
             assertEquals(null, e.getIllegalStringValue());
             assertEquals("27", e.getIllegalValueAsString());
-            assertEquals(new Integer(0), e.getLowerBound());
-            assertEquals(new Integer(23), e.getUpperBound());
+            assertEquals(Integer.valueOf(0), e.getLowerBound());
+            assertEquals(Integer.valueOf(23), e.getUpperBound());
         }
 
         try {
@@ -78,11 +78,11 @@ public class TestIllegalFieldValueException extends TestCase {
             assertEquals(null, e.getDateTimeFieldType());
             assertEquals(null, e.getDurationFieldType());
             assertEquals("foo", e.getFieldName());
-            assertEquals(new Integer(1), e.getIllegalNumberValue());
+            assertEquals(Integer.valueOf(1), e.getIllegalNumberValue());
             assertEquals(null, e.getIllegalStringValue());
             assertEquals("1", e.getIllegalValueAsString());
-            assertEquals(new Integer(2), e.getLowerBound());
-            assertEquals(new Integer(3), e.getUpperBound());
+            assertEquals(Integer.valueOf(2), e.getLowerBound());
+            assertEquals(Integer.valueOf(3), e.getUpperBound());
         }
     }
 
@@ -96,7 +96,7 @@ public class TestIllegalFieldValueException extends TestCase {
             assertEquals(DateTimeFieldType.year(), e.getDateTimeFieldType());
             assertEquals(null, e.getDurationFieldType());
             assertEquals("year", e.getFieldName());
-            assertEquals(new Integer(1970), e.getIllegalNumberValue());
+            assertEquals(Integer.valueOf(1970), e.getIllegalNumberValue());
             assertEquals(null, e.getIllegalStringValue());
             assertEquals("1970", e.getIllegalValueAsString());
             assertEquals(null, e.getLowerBound());
@@ -200,7 +200,7 @@ public class TestIllegalFieldValueException extends TestCase {
             assertEquals(DateTimeFieldType.hourOfDay(), e.getDateTimeFieldType());
             assertEquals(null, e.getDurationFieldType());
             assertEquals("hourOfDay", e.getFieldName());
-            assertEquals(new Integer(2), e.getIllegalNumberValue());
+            assertEquals(Integer.valueOf(2), e.getIllegalNumberValue());
             assertEquals(null, e.getIllegalStringValue());
             assertEquals("2", e.getIllegalValueAsString());
             assertEquals(null, e.getLowerBound());
@@ -217,7 +217,7 @@ public class TestIllegalFieldValueException extends TestCase {
             assertEquals(DateTimeFieldType.year(), e.getDateTimeFieldType());
             assertEquals(null, e.getDurationFieldType());
             assertEquals("year", e.getFieldName());
-            assertEquals(new Integer(0), e.getIllegalNumberValue());
+            assertEquals(Integer.valueOf(0), e.getIllegalNumberValue());
             assertEquals(null, e.getIllegalStringValue());
             assertEquals("0", e.getIllegalValueAsString());
             assertEquals(null, e.getLowerBound());
@@ -234,7 +234,7 @@ public class TestIllegalFieldValueException extends TestCase {
             assertEquals(DateTimeFieldType.dayOfMonth(), e.getDateTimeFieldType());
             assertEquals(null, e.getDurationFieldType());
             assertEquals("dayOfMonth", e.getFieldName());
-            assertEquals(new Integer(5), e.getIllegalNumberValue());
+            assertEquals(Integer.valueOf(5), e.getIllegalNumberValue());
             assertEquals(null, e.getIllegalStringValue());
             assertEquals("5", e.getIllegalValueAsString());
             assertEquals(null, e.getLowerBound());
@@ -249,7 +249,7 @@ public class TestIllegalFieldValueException extends TestCase {
             assertEquals(DateTimeFieldType.dayOfMonth(), e.getDateTimeFieldType());
             assertEquals(null, e.getDurationFieldType());
             assertEquals("dayOfMonth", e.getFieldName());
-            assertEquals(new Integer(14), e.getIllegalNumberValue());
+            assertEquals(Integer.valueOf(14), e.getIllegalNumberValue());
             assertEquals(null, e.getIllegalStringValue());
             assertEquals("14", e.getIllegalValueAsString());
             assertEquals(null, e.getLowerBound());
@@ -266,10 +266,10 @@ public class TestIllegalFieldValueException extends TestCase {
             assertEquals(DateTimeFieldType.monthOfYear(), e.getDateTimeFieldType());
             assertEquals(null, e.getDurationFieldType());
             assertEquals("monthOfYear", e.getFieldName());
-            assertEquals(new Integer(-5), e.getIllegalNumberValue());
+            assertEquals(Integer.valueOf(-5), e.getIllegalNumberValue());
             assertEquals(null, e.getIllegalStringValue());
             assertEquals("-5", e.getIllegalValueAsString());
-            assertEquals(new Integer(1), e.getLowerBound());
+            assertEquals(Integer.valueOf(1), e.getLowerBound());
             assertEquals(null, e.getUpperBound());
         }
 
@@ -280,11 +280,11 @@ public class TestIllegalFieldValueException extends TestCase {
             assertEquals(DateTimeFieldType.monthOfYear(), e.getDateTimeFieldType());
             assertEquals(null, e.getDurationFieldType());
             assertEquals("monthOfYear", e.getFieldName());
-            assertEquals(new Integer(500), e.getIllegalNumberValue());
+            assertEquals(Integer.valueOf(500), e.getIllegalNumberValue());
             assertEquals(null, e.getIllegalStringValue());
             assertEquals("500", e.getIllegalValueAsString());
             assertEquals(null, e.getLowerBound());
-            assertEquals(new Integer(12), e.getUpperBound());
+            assertEquals(Integer.valueOf(12), e.getUpperBound());
         }
 
         try {
@@ -294,26 +294,26 @@ public class TestIllegalFieldValueException extends TestCase {
             assertEquals(DateTimeFieldType.dayOfMonth(), e.getDateTimeFieldType());
             assertEquals(null, e.getDurationFieldType());
             assertEquals("dayOfMonth", e.getFieldName());
-            assertEquals(new Integer(30), e.getIllegalNumberValue());
+            assertEquals(Integer.valueOf(30), e.getIllegalNumberValue());
             assertEquals(null, e.getIllegalStringValue());
             assertEquals("30", e.getIllegalValueAsString());
             assertEquals(null, e.getLowerBound());
-            assertEquals(new Integer(28), e.getUpperBound());
+            assertEquals(Integer.valueOf(28), e.getUpperBound());
         }
     }
 
     // Test extra constructors not currently called by anything
     public void testOtherConstructors() {
         IllegalFieldValueException e = new IllegalFieldValueException
-            (DurationFieldType.days(), new Integer(1), new Integer(2), new Integer(3));
+            (DurationFieldType.days(), Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3));
         assertEquals(null, e.getDateTimeFieldType());
         assertEquals(DurationFieldType.days(), e.getDurationFieldType());
         assertEquals("days", e.getFieldName());
-        assertEquals(new Integer(1), e.getIllegalNumberValue());
+        assertEquals(Integer.valueOf(1), e.getIllegalNumberValue());
         assertEquals(null, e.getIllegalStringValue());
         assertEquals("1", e.getIllegalValueAsString());
-        assertEquals(new Integer(2), e.getLowerBound());
-        assertEquals(new Integer(3), e.getUpperBound());
+        assertEquals(Integer.valueOf(2), e.getLowerBound());
+        assertEquals(Integer.valueOf(3), e.getUpperBound());
 
         e = new IllegalFieldValueException(DurationFieldType.months(), "five");
         assertEquals(null, e.getDateTimeFieldType());

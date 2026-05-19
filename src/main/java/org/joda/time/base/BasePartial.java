@@ -15,6 +15,7 @@
  */
 package org.joda.time.base;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Locale;
 
@@ -45,6 +46,7 @@ public abstract class BasePartial
         implements ReadablePartial, Serializable {
 
     /** Serialization version */
+    @Serial
     private static final long serialVersionUID = 2353678632973660L;
 
     /** The chronology in use */

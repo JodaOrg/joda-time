@@ -237,7 +237,7 @@ public class TestDuration_Constructors extends TestCase {
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        Long base = new Long(length);
+        Long base = Long.valueOf(length);
         Duration test = new Duration(base);
         assertEquals(length, test.getMillis());
     }

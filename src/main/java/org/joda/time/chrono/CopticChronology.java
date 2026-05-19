@@ -15,6 +15,7 @@
  */
 package org.joda.time.chrono;
 
+import java.io.Serial;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.joda.time.Chronology;
@@ -50,6 +51,7 @@ import org.joda.time.field.SkipDateTimeField;
 public final class CopticChronology extends BasicFixedMonthChronology {
 
     /** Serialization lock */
+    @Serial
     private static final long serialVersionUID = -5972804258688333942L;
 
     /**

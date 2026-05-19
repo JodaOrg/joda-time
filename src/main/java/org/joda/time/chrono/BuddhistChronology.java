@@ -15,6 +15,7 @@
  */
 package org.joda.time.chrono;
 
+import java.io.Serial;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.joda.time.Chronology;
@@ -52,8 +53,9 @@ import org.joda.time.field.UnsupportedDurationField;
  * @since 1.0
  */
 public final class BuddhistChronology extends AssembledChronology {
-    
+
     /** Serialization lock */
+    @Serial
     private static final long serialVersionUID = -3474595157769370126L;
 
     /**
@@ -187,8 +189,7 @@ public final class BuddhistChronology extends AssembledChronology {
         if (this == obj) {
             return true;
         }
-        if (obj instanceof BuddhistChronology) {
-            BuddhistChronology chrono = (BuddhistChronology) obj;
+        if (obj instanceof BuddhistChronology chrono) {
             return getZone().equals(chrono.getZone());
         }
         return false;

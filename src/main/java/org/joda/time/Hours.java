@@ -15,6 +15,8 @@
  */
 package org.joda.time;
 
+import java.io.Serial;
+
 import org.joda.convert.FromString;
 import org.joda.convert.ToString;
 import org.joda.time.base.BaseSingleFieldPeriod;
@@ -67,6 +69,7 @@ public final class Hours extends BaseSingleFieldPeriod {
     /** The parser to use for this class. */
     private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.hours());
     /** Serialization version. */
+    @Serial
     private static final long serialVersionUID = 87525275727380864L;
 
     //-----------------------------------------------------------------------
@@ -135,10 +138,10 @@ public final class Hours extends BaseSingleFieldPeriod {
      * @throws IllegalArgumentException if the partials are null or invalid
      */
     public static Hours hoursBetween(ReadablePartial start, ReadablePartial end) {
-        if (start instanceof LocalTime && end instanceof LocalTime)   {
+        if (start instanceof LocalTime time && end instanceof LocalTime time1)   {
             Chronology chrono = DateTimeUtils.getChronology(start.getChronology());
             int hours = chrono.hours().getDifference(
-                    ((LocalTime) end).getLocalMillis(), ((LocalTime) start).getLocalMillis());
+                    time1.getLocalMillis(), time.getLocalMillis());
             return Hours.hours(hours);
         }
         int amount = BaseSingleFieldPeriod.between(start, end, ZERO);

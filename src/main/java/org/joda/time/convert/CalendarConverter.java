@@ -95,8 +95,7 @@ final class CalendarConverter extends AbstractConverter
     public Chronology getChronology(Object object, DateTimeZone zone) {
         if (object.getClass().getName().endsWith(".BuddhistCalendar")) {
             return BuddhistChronology.getInstance(zone);
-        } else if (object instanceof GregorianCalendar) {
-            GregorianCalendar gc = (GregorianCalendar) object;
+        } else if (object instanceof GregorianCalendar gc) {
             long cutover = gc.getGregorianChange().getTime();
             if (cutover == Long.MIN_VALUE) {
                 return GregorianChronology.getInstance(zone);

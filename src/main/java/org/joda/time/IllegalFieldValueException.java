@@ -15,6 +15,8 @@
  */
 package org.joda.time;
 
+import java.io.Serial;
+
 /**
  * Exception thrown when attempting to set a field outside its supported range.
  *
@@ -22,8 +24,9 @@ package org.joda.time;
  * @since 1.1
  */
 public class IllegalFieldValueException extends IllegalArgumentException {
-    
+
     /** Serialization lock. */
+    @Serial
     private static final long serialVersionUID = 6305711765985447737L;
 
     /**

@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import java.io.Serial;
 import java.security.BasicPermission;
 
 /**
@@ -44,8 +45,9 @@ import java.security.BasicPermission;
  * @since 1.0
  */
 public class JodaTimePermission extends BasicPermission {
-    
+
     /** Serialization version */
+    @Serial
     private static final long serialVersionUID = 1408944367355875472L;
 
     /**

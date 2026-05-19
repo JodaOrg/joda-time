@@ -15,6 +15,7 @@
  */
 package org.joda.time.chrono;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import org.joda.time.Chronology;
@@ -45,6 +46,7 @@ public abstract class BaseChronology
         implements Serializable {
 
     /** Serialization version. */
+    @Serial
     private static final long serialVersionUID = -7310865996721419676L;
 
     /**

@@ -15,6 +15,7 @@
  */
 package org.joda.time.field;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import org.joda.time.DurationField;
@@ -34,6 +35,7 @@ import org.joda.time.DurationFieldType;
 public class DelegatedDurationField extends DurationField implements Serializable {
 
     /** Serialization lock. */
+    @Serial
     private static final long serialVersionUID = -5576443481242007829L;
 
     /** The DurationField being wrapped */
@@ -169,8 +171,8 @@ public class DelegatedDurationField extends DurationField implements Serializabl
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof DelegatedDurationField) {
-            return iField.equals(((DelegatedDurationField) obj).iField);
+        if (obj instanceof DelegatedDurationField field) {
+            return iField.equals(field.iField);
         }
         return false;
     }

@@ -27,11 +27,11 @@ class InternalParserDateTimeParser implements DateTimeParser, InternalParser {
     private final InternalParser underlying;
 
     static DateTimeParser of(InternalParser underlying) {
-        if (underlying instanceof DateTimeParserInternalParser) {
-            return ((DateTimeParserInternalParser) underlying).getUnderlying();
+        if (underlying instanceof DateTimeParserInternalParser parser) {
+            return parser.getUnderlying();
         }
-        if (underlying instanceof DateTimeParser) {
-            return (DateTimeParser) underlying;
+        if (underlying instanceof DateTimeParser parser1) {
+            return parser1;
         }
         if (underlying == null) {
             return null;
@@ -62,8 +62,7 @@ class InternalParserDateTimeParser implements DateTimeParser, InternalParser {
         if (obj == this) {
             return true;
         }
-        if (obj instanceof InternalParserDateTimeParser) {
-            InternalParserDateTimeParser other = (InternalParserDateTimeParser) obj;
+        if (obj instanceof InternalParserDateTimeParser other) {
             return underlying.equals(other.underlying);
         }
         return false;

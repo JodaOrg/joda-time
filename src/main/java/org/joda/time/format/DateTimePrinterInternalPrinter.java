@@ -59,11 +59,9 @@ class DateTimePrinterInternalPrinter implements InternalPrinter {
 
     public void printTo(Appendable appendable, long instant, Chronology chrono, int displayOffset,
                     DateTimeZone displayZone, Locale locale) throws IOException {
-        if (appendable instanceof StringBuffer) {
-            StringBuffer buf = (StringBuffer) appendable;
+        if (appendable instanceof StringBuffer buf) {
             underlying.printTo(buf, instant, chrono, displayOffset, displayZone, locale);
-        } else if (appendable instanceof Writer) {
-            Writer out = (Writer) appendable;
+        } else if (appendable instanceof Writer out) {
             underlying.printTo(out, instant, chrono, displayOffset, displayZone, locale);
         } else {
             StringBuffer buf = new StringBuffer(estimatePrintedLength());
@@ -73,11 +71,9 @@ class DateTimePrinterInternalPrinter implements InternalPrinter {
     }
 
     public void printTo(Appendable appendable, ReadablePartial partial, Locale locale) throws IOException {
-        if (appendable instanceof StringBuffer) {
-            StringBuffer buf = (StringBuffer) appendable;
+        if (appendable instanceof StringBuffer buf) {
             underlying.printTo(buf, partial, locale);
-        } else if (appendable instanceof Writer) {
-            Writer out = (Writer) appendable;
+        } else if (appendable instanceof Writer out) {
             underlying.printTo(out, partial, locale);
         } else {
             StringBuffer buf = new StringBuffer(estimatePrintedLength());

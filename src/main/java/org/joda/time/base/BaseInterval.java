@@ -15,6 +15,7 @@
  */
 package org.joda.time.base;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import org.joda.time.Chronology;
@@ -50,6 +51,7 @@ public abstract class BaseInterval
         implements ReadableInterval, Serializable {
 
     /** Serialization version */
+    @Serial
     private static final long serialVersionUID = 576586928732749278L;
 
     /** The chronology of the interval */
@@ -193,8 +195,8 @@ public abstract class BaseInterval
             iChronology = (chrono != null ? chrono : input.getChronology());
             iStartMillis = input.getStartMillis();
             iEndMillis = input.getEndMillis();
-        } else if (this instanceof ReadWritableInterval) {
-            converter.setInto((ReadWritableInterval) this, interval, chrono);
+        } else if (this instanceof ReadWritableInterval writableInterval) {
+            converter.setInto(writableInterval, interval, chrono);
         } else {
             MutableInterval mi = new MutableInterval();
             converter.setInto(mi, interval, chrono);

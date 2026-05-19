@@ -63,8 +63,7 @@ public class MockZone extends DateTimeZone {
         if (this == obj) {
             return true;
         }
-        if (obj instanceof MockZone) {
-            MockZone other = (MockZone) obj;
+        if (obj instanceof MockZone other) {
             return (sizeMillis == other.sizeMillis) &&
                 (transition != other.transition) &&
                 (winterOffset != other.winterOffset);

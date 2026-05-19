@@ -86,32 +86,32 @@ public class TestLongConverter extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testGetInstantMillis_Object_Chronology() throws Exception {
-        assertEquals(123L, LongConverter.INSTANCE.getInstantMillis(new Long(123L), JULIAN));
-        assertEquals(123L, LongConverter.INSTANCE.getInstantMillis(new Long(123L), (Chronology) null));
+        assertEquals(123L, LongConverter.INSTANCE.getInstantMillis(Long.valueOf(123L), JULIAN));
+        assertEquals(123L, LongConverter.INSTANCE.getInstantMillis(Long.valueOf(123L), (Chronology) null));
     }
 
     //-----------------------------------------------------------------------
     public void testGetChronology_Object_Zone() throws Exception {
-        assertEquals(ISO_PARIS, LongConverter.INSTANCE.getChronology(new Long(123L), PARIS));
-        assertEquals(ISO, LongConverter.INSTANCE.getChronology(new Long(123L), (DateTimeZone) null));
+        assertEquals(ISO_PARIS, LongConverter.INSTANCE.getChronology(Long.valueOf(123L), PARIS));
+        assertEquals(ISO, LongConverter.INSTANCE.getChronology(Long.valueOf(123L), (DateTimeZone) null));
     }
 
     public void testGetChronology_Object_Chronology() throws Exception {
-        assertEquals(JULIAN, LongConverter.INSTANCE.getChronology(new Long(123L), JULIAN));
-        assertEquals(ISO, LongConverter.INSTANCE.getChronology(new Long(123L), (Chronology) null));
+        assertEquals(JULIAN, LongConverter.INSTANCE.getChronology(Long.valueOf(123L), JULIAN));
+        assertEquals(ISO, LongConverter.INSTANCE.getChronology(Long.valueOf(123L), (Chronology) null));
     }
 
     //-----------------------------------------------------------------------
     public void testGetPartialValues() throws Exception {
         TimeOfDay tod = new TimeOfDay();
         int[] expected = ISOChronology.getInstance().get(tod, 12345678L);
-        int[] actual = LongConverter.INSTANCE.getPartialValues(tod, new Long(12345678L), ISOChronology.getInstance());
+        int[] actual = LongConverter.INSTANCE.getPartialValues(tod, Long.valueOf(12345678L), ISOChronology.getInstance());
         assertEquals(true, Arrays.equals(expected, actual));
     }
 
     //-----------------------------------------------------------------------
     public void testGetDurationMillis_Object() throws Exception {
-        assertEquals(123L, LongConverter.INSTANCE.getDurationMillis(new Long(123L)));
+        assertEquals(123L, LongConverter.INSTANCE.getDurationMillis(Long.valueOf(123L)));
     }
 
     //-----------------------------------------------------------------------

@@ -44,7 +44,7 @@ public class ClassLoadTest {
         System.out.println("-----------new DateTime(ReadableInstant)-------");
         dt = new DateTime(dt);
         System.out.println("-----------new DateTime(Long)------------------");
-        dt = new DateTime(new Long(0));
+        dt = new DateTime(Long.valueOf(0));
         System.out.println("-----------------------------------------------");
     }
     

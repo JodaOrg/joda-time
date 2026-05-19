@@ -15,6 +15,7 @@
  */
 package org.joda.time.field;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Locale;
@@ -35,6 +36,7 @@ import org.joda.time.ReadablePartial;
 public final class UnsupportedDateTimeField extends DateTimeField implements Serializable {
 
     /** Serialization version */
+    @Serial
     private static final long serialVersionUID = -1934618396111902255L;
 
     /** The cache of unsupported datetime field instances */

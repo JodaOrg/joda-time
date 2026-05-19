@@ -15,6 +15,8 @@
  */
 package org.joda.time.field;
 
+import java.io.Serial;
+
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 
@@ -31,6 +33,7 @@ import org.joda.time.DurationFieldType;
  */
 public class ScaledDurationField extends DecoratedDurationField {
 
+    @Serial
     private static final long serialVersionUID = -3205227092378684157L;
 
     private final int iScalar;
@@ -143,8 +146,7 @@ public class ScaledDurationField extends DecoratedDurationField {
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
-        } else if (obj instanceof ScaledDurationField) {
-            ScaledDurationField other = (ScaledDurationField) obj;
+        } else if (obj instanceof ScaledDurationField other) {
             return (getWrappedField().equals(other.getWrappedField())) &&
                    (getType() == other.getType()) &&
                    (iScalar == other.iScalar);

@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -70,6 +71,7 @@ public final class YearMonth
         implements ReadablePartial, Serializable {
 
     /** Serialization version */
+    @Serial
     private static final long serialVersionUID = 797544782896179L;
     /** The singleton set of field types */
     private static final DateTimeFieldType[] FIELD_TYPES = new DateTimeFieldType[] {
@@ -844,6 +846,7 @@ public final class YearMonth
     public static class Property extends AbstractPartialFieldProperty implements Serializable {
 
         /** Serialization version */
+        @Serial
         private static final long serialVersionUID = 5727734012190224363L;
 
         /** The partial */

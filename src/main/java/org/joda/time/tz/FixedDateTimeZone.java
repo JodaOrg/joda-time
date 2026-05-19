@@ -15,6 +15,8 @@
  */
 package org.joda.time.tz;
 
+import java.io.Serial;
+
 import org.joda.time.DateTimeZone;
 
 /**
@@ -27,6 +29,7 @@ import org.joda.time.DateTimeZone;
  */
 public final class FixedDateTimeZone extends DateTimeZone {
 
+    @Serial
     private static final long serialVersionUID = -3513011772763289092L;
 
     private final String iNameKey;
@@ -97,8 +100,7 @@ public final class FixedDateTimeZone extends DateTimeZone {
         if (this == obj) {
             return true;
         }
-        if (obj instanceof FixedDateTimeZone) {
-            FixedDateTimeZone other = (FixedDateTimeZone) obj;
+        if (obj instanceof FixedDateTimeZone other) {
             return
                 getID().equals(other.getID()) &&
                 iStandardOffset == other.iStandardOffset &&

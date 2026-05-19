@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import org.joda.convert.FromString;
@@ -65,6 +66,7 @@ public final class Period
     public static final Period ZERO = new Period();
 
     /** Serialization version */
+    @Serial
     private static final long serialVersionUID = 741052353876488155L;
 
     //-----------------------------------------------------------------------

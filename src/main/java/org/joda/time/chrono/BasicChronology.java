@@ -15,6 +15,7 @@
  */
 package org.joda.time.chrono;
 
+import java.io.Serial;
 import java.util.Locale;
 
 import org.joda.time.Chronology;
@@ -51,6 +52,7 @@ import org.joda.time.field.ZeroIsMaxDateTimeField;
 abstract class BasicChronology extends AssembledChronology {
 
     /** Serialization lock */
+    @Serial
     private static final long serialVersionUID = 8283225332206808863L;
 
     private static final DurationField cMillisField;

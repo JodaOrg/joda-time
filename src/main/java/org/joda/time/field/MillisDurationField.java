@@ -15,6 +15,7 @@
  */
 package org.joda.time.field;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import org.joda.time.DurationField;
@@ -32,6 +33,7 @@ import org.joda.time.DurationFieldType;
 public final class MillisDurationField extends DurationField implements Serializable {
 
     /** Serialization lock. */
+    @Serial
     private static final long serialVersionUID = 2656707858124633367L;
 
     /** Singleton instance. */
@@ -163,8 +165,8 @@ public final class MillisDurationField extends DurationField implements Serializ
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof MillisDurationField) {
-            return getUnitMillis() == ((MillisDurationField) obj).getUnitMillis();
+        if (obj instanceof MillisDurationField field) {
+            return getUnitMillis() == field.getUnitMillis();
         }
         return false;
     }

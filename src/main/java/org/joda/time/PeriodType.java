@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,6 +51,7 @@ import org.joda.time.field.FieldUtils;
  */
 public class PeriodType implements Serializable {
     /** Serialization version */
+    @Serial
     private static final long serialVersionUID = 2274324892792009998L;
 
     /** Cache of all the known types. */
@@ -529,8 +531,8 @@ public class PeriodType implements Serializable {
         }
         PeriodType inPartType = new PeriodType(null, types, null);
         Object cached = cache.get(inPartType);
-        if (cached instanceof PeriodType) {
-            return (PeriodType) cached;
+        if (cached instanceof PeriodType type) {
+            return type;
         }
         if (cached != null) {
             throw new IllegalArgumentException("PeriodType does not support fields: " + cached);

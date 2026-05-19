@@ -15,6 +15,8 @@
  */
 package org.joda.time.field;
 
+import java.io.Serial;
+
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
@@ -35,6 +37,7 @@ import org.joda.time.IllegalFieldValueException;
 public final class SkipDateTimeField extends DelegatedDateTimeField {
 
     /** Serialization version. */
+    @Serial
     private static final long serialVersionUID = -8869148464118507846L;
 
     /** The chronology to wrap. */

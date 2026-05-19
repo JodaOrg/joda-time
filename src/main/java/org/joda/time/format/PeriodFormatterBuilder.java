@@ -2178,8 +2178,8 @@ public class PeriodFormatterBuilder {
             for (int i=0; i<size; i+=2) {
                 Object element = elementPairs.get(i);
                 if (element instanceof PeriodPrinter) {
-                    if (element instanceof Composite) {
-                        addArrayToList(printerList, ((Composite) element).iPrinters);
+                    if (element instanceof Composite composite) {
+                        addArrayToList(printerList, composite.iPrinters);
                     } else {
                         printerList.add(element);
                     }
@@ -2187,8 +2187,8 @@ public class PeriodFormatterBuilder {
 
                 element = elementPairs.get(i + 1);
                 if (element instanceof PeriodParser) {
-                    if (element instanceof Composite) {
-                        addArrayToList(parserList, ((Composite) element).iParsers);
+                    if (element instanceof Composite composite1) {
+                        addArrayToList(parserList, composite1.iParsers);
                     } else {
                         parserList.add(element);
                     }

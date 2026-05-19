@@ -15,6 +15,7 @@
  */
 package org.joda.time.base;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import org.joda.time.Chronology;
@@ -47,6 +48,7 @@ public abstract class BaseSingleFieldPeriod
         implements ReadablePeriod, Comparable<BaseSingleFieldPeriod>, Serializable {
 
     /** Serialization version. */
+    @Serial
     private static final long serialVersionUID = 9386874258972L;
     /** The start of 1972. */
     private static final long START_1972 = 2L * 365L * 86400L * 1000L;

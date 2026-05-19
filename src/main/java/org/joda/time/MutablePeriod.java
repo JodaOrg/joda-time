@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import org.joda.convert.FromString;
@@ -58,6 +59,7 @@ public class MutablePeriod
         implements ReadWritablePeriod, Cloneable, Serializable {
 
     /** Serialization version */
+    @Serial
     private static final long serialVersionUID = 3436451121567212165L;
 
     //-----------------------------------------------------------------------

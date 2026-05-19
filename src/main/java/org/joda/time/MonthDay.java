@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -73,6 +74,7 @@ public final class MonthDay
         implements ReadablePartial, Serializable {
 
     /** Serialization version */
+    @Serial
     private static final long serialVersionUID = 2954560699050434609L;
 
     /** The singleton set of field types */
@@ -833,6 +835,7 @@ public final class MonthDay
     public static class Property extends AbstractPartialFieldProperty implements Serializable {
 
         /** Serialization version */
+        @Serial
         private static final long serialVersionUID = 5727734012190224363L;
 
         /** The partial */

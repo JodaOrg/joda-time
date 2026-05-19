@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -70,6 +71,7 @@ public final class TimeOfDay
     // different chronologies
 
     /** Serialization version */
+    @Serial
     private static final long serialVersionUID = 3633353405803318660L;
     /** The singleton set of field types */
     private static final DateTimeFieldType[] FIELD_TYPES = new DateTimeFieldType[] {
@@ -1024,6 +1026,7 @@ public final class TimeOfDay
     public static class Property extends AbstractPartialFieldProperty implements Serializable {
 
         /** Serialization version */
+        @Serial
         private static final long serialVersionUID = 5598459141741063833L;
 
         /** The partial */

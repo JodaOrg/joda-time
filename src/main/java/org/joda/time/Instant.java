@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import org.joda.convert.FromString;
@@ -64,6 +65,7 @@ public final class Instant
     public static final Instant EPOCH = new Instant(0L);
 
     /** Serialization lock */
+    @Serial
     private static final long serialVersionUID = 3299096530934209741L;
 
     /** The millis from 1970-01-01T00:00:00Z */

@@ -15,6 +15,8 @@
  */
 package org.joda.time;
 
+import java.io.Serial;
+
 import org.joda.convert.FromString;
 import org.joda.convert.ToString;
 import org.joda.time.base.BaseSingleFieldPeriod;
@@ -57,6 +59,7 @@ public final class Years extends BaseSingleFieldPeriod {
     /** The parser to use for this class. */
     private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.years());
     /** Serialization version. */
+    @Serial
     private static final long serialVersionUID = 87525275727380868L;
 
     //-----------------------------------------------------------------------
@@ -116,10 +119,10 @@ public final class Years extends BaseSingleFieldPeriod {
      * @throws IllegalArgumentException if the partials are null or invalid
      */
     public static Years yearsBetween(ReadablePartial start, ReadablePartial end) {
-        if (start instanceof LocalDate && end instanceof LocalDate)   {
+        if (start instanceof LocalDate date && end instanceof LocalDate date1)   {
             Chronology chrono = DateTimeUtils.getChronology(start.getChronology());
             int years = chrono.years().getDifference(
-                    ((LocalDate) end).getLocalMillis(), ((LocalDate) start).getLocalMillis());
+                    date1.getLocalMillis(), date.getLocalMillis());
             return Years.years(years);
         }
         int amount = BaseSingleFieldPeriod.between(start, end, ZERO);

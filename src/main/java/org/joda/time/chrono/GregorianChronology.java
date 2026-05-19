@@ -15,6 +15,7 @@
  */
 package org.joda.time.chrono;
 
+import java.io.Serial;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.joda.time.Chronology;
@@ -44,6 +45,7 @@ import org.joda.time.DateTimeZone;
 public final class GregorianChronology extends BasicGJChronology {
 
     /** Serialization lock */
+    @Serial
     private static final long serialVersionUID = -861407383323710522L;
 
     private static final long MILLIS_PER_YEAR =

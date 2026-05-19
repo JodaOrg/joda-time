@@ -15,6 +15,7 @@
  */
 package org.joda.time.field;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Locale;
 import org.joda.time.DateTimeField;
@@ -36,6 +37,7 @@ import org.joda.time.ReadablePartial;
 public class DelegatedDateTimeField extends DateTimeField implements Serializable {
 
     /** Serialization version */
+    @Serial
     private static final long serialVersionUID = -4730164440214502503L;
 
     /** The DateTimeField being wrapped. */

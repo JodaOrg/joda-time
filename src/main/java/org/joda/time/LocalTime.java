@@ -18,6 +18,7 @@ package org.joda.time;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -78,6 +79,7 @@ public final class LocalTime
         implements ReadablePartial, Serializable {
 
     /** Serialization lock */
+    @Serial
     private static final long serialVersionUID = -12873158713873L;
 
     /** Constant for midnight. */
@@ -691,8 +693,7 @@ public final class LocalTime
         if (this == partial) {
             return true;
         }
-        if (partial instanceof LocalTime) {
-            LocalTime other = (LocalTime) partial;
+        if (partial instanceof LocalTime other) {
             if (iChronology.equals(other.iChronology)) {
                 return iLocalMillis == other.iLocalMillis;
             }
@@ -737,8 +738,7 @@ public final class LocalTime
         if (this == partial) {
             return 0;
         }
-        if (partial instanceof LocalTime) {
-            LocalTime other = (LocalTime) partial;
+        if (partial instanceof LocalTime other) {
             if (iChronology.equals(other.iChronology)) {
                 return (iLocalMillis < other.iLocalMillis ? -1 :
                             (iLocalMillis == other.iLocalMillis ? 0 : 1));
@@ -1383,8 +1383,9 @@ public final class LocalTime
      * @since 1.3
      */
     public static final class Property extends AbstractReadableInstantFieldProperty {
-        
+
         /** Serialization version */
+        @Serial
         private static final long serialVersionUID = -325842547277223L;
         
         /** The instant this property is working against */

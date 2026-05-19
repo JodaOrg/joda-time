@@ -15,6 +15,7 @@
  */
 package org.joda.time.chrono;
 
+import java.io.Serial;
 import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -73,6 +74,7 @@ import org.joda.time.format.ISODateTimeFormat;
 public final class GJChronology extends AssembledChronology {
 
     /** Serialization lock */
+    @Serial
     private static final long serialVersionUID = -2545574827706931671L;
 
     /**
@@ -423,8 +425,7 @@ public final class GJChronology extends AssembledChronology {
         if (this == obj) {
             return true;
         }
-        if (obj instanceof GJChronology) {
-            GJChronology chrono = (GJChronology) obj;
+        if (obj instanceof GJChronology chrono) {
             return iCutoverMillis == chrono.iCutoverMillis &&
                     getMinimumDaysInFirstWeek() == chrono.getMinimumDaysInFirstWeek() &&
                     getZone().equals(chrono.getZone());
@@ -1181,6 +1182,7 @@ public final class GJChronology extends AssembledChronology {
      * Links the duration back to a ImpreciseCutoverField.
      */
     private static class LinkedDurationField extends DecoratedDurationField {
+        @Serial
         private static final long serialVersionUID = 4097975388007713084L;
 
         private final ImpreciseCutoverField iField;

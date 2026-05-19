@@ -137,7 +137,7 @@ public class TestConverterManager extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testGetInstantConverter() {
-        InstantConverter c = ConverterManager.getInstance().getInstantConverter(new Long(0L));
+        InstantConverter c = ConverterManager.getInstance().getInstantConverter(Long.valueOf(0L));
         assertEquals(Long.class, c.getSupportedType());
         
         c = ConverterManager.getInstance().getInstantConverter(new DateTime());
@@ -339,7 +339,7 @@ public class TestConverterManager extends TestCase {
     private static final int PARTIAL_SIZE = 7;
     
     public void testGetPartialConverter() {
-        PartialConverter c = ConverterManager.getInstance().getPartialConverter(new Long(0L));
+        PartialConverter c = ConverterManager.getInstance().getPartialConverter(Long.valueOf(0L));
         assertEquals(Long.class, c.getSupportedType());
         
         c = ConverterManager.getInstance().getPartialConverter(new TimeOfDay());
@@ -549,7 +549,7 @@ public class TestConverterManager extends TestCase {
     private static int DURATION_SIZE = 5;
     
     public void testGetDurationConverter() {
-        DurationConverter c = ConverterManager.getInstance().getDurationConverter(new Long(0L));
+        DurationConverter c = ConverterManager.getInstance().getDurationConverter(Long.valueOf(0L));
         assertEquals(Long.class, c.getSupportedType());
         
         c = ConverterManager.getInstance().getDurationConverter(new Duration(123L));
@@ -862,7 +862,7 @@ public class TestConverterManager extends TestCase {
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            ConverterManager.getInstance().getIntervalConverter(new Long(0));
+            ConverterManager.getInstance().getIntervalConverter(Long.valueOf(0));
             fail();
         } catch (IllegalArgumentException ex) {}
     }

@@ -15,6 +15,8 @@
  */
 package org.joda.time;
 
+import java.io.Serial;
+
 import org.joda.time.format.DateTimeFormat;
 
 /**
@@ -39,8 +41,9 @@ import org.joda.time.format.DateTimeFormat;
  * @since 2.2
  */
 public class IllegalInstantException extends IllegalArgumentException {
-    
+
     /** Serialization lock. */
+    @Serial
     private static final long serialVersionUID = 2858712538216L;
 
 

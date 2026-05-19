@@ -339,7 +339,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     public void testConstructor_badconverterObject() throws Throwable {
         try {
             ConverterManager.getInstance().addInstantConverter(MockZeroNullIntegerConverter.INSTANCE);
-            DateMidnight test = new DateMidnight(new Integer(0));
+            DateMidnight test = new DateMidnight(Integer.valueOf(0));
             assertEquals(ISOChronology.getInstance(), test.getChronology());
             assertEquals(0L - DateTimeConstants.MILLIS_PER_HOUR, test.getMillis());
         } finally {
@@ -401,7 +401,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     public void testConstructor_badconverterObject_DateTimeZone() throws Throwable {
         try {
             ConverterManager.getInstance().addInstantConverter(MockZeroNullIntegerConverter.INSTANCE);
-            DateMidnight test = new DateMidnight(new Integer(0), GregorianChronology.getInstance());
+            DateMidnight test = new DateMidnight(Integer.valueOf(0), GregorianChronology.getInstance());
             assertEquals(ISOChronology.getInstance(), test.getChronology());
             assertEquals(0L - DateTimeConstants.MILLIS_PER_HOUR, test.getMillis());
         } finally {
@@ -463,7 +463,7 @@ public class TestDateMidnight_Constructors extends TestCase {
     public void testConstructor_badconverterObject_Chronology() throws Throwable {
         try {
             ConverterManager.getInstance().addInstantConverter(MockZeroNullIntegerConverter.INSTANCE);
-            DateMidnight test = new DateMidnight(new Integer(0), GregorianChronology.getInstance());
+            DateMidnight test = new DateMidnight(Integer.valueOf(0), GregorianChronology.getInstance());
             assertEquals(ISOChronology.getInstance(), test.getChronology());
             assertEquals(0L - DateTimeConstants.MILLIS_PER_HOUR, test.getMillis());
         } finally {

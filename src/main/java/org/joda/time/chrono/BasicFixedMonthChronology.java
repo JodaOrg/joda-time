@@ -15,6 +15,8 @@
  */
 package org.joda.time.chrono;
 
+import java.io.Serial;
+
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeConstants;
 
@@ -35,6 +37,7 @@ import org.joda.time.DateTimeConstants;
 abstract class BasicFixedMonthChronology extends BasicChronology {
 
     /** Serialization lock */
+    @Serial
     private static final long serialVersionUID = 261387371998L;
 
     /** The length of the month. */

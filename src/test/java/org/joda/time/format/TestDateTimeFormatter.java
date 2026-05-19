@@ -322,12 +322,12 @@ public class TestDateTimeFormatter extends TestCase {
 
     public void testWithGetPivotYear() {
         DateTimeFormatter f2 = f.withPivotYear(13);
-        assertEquals(new Integer(13), f2.getPivotYear());
+        assertEquals(Integer.valueOf(13), f2.getPivotYear());
         assertSame(f2, f2.withPivotYear(13));
         
-        f2 = f.withPivotYear(new Integer(14));
-        assertEquals(new Integer(14), f2.getPivotYear());
-        assertSame(f2, f2.withPivotYear(new Integer(14)));
+        f2 = f.withPivotYear(Integer.valueOf(14));
+        assertEquals(Integer.valueOf(14), f2.getPivotYear());
+        assertSame(f2, f2.withPivotYear(Integer.valueOf(14)));
         
         f2 = f.withPivotYear(null);
         assertEquals(null, f2.getPivotYear());

@@ -155,7 +155,7 @@ public class TestDurationFieldType extends TestCase {
         Class cls = DurationFieldType.class.getDeclaredClasses()[0];
         assertEquals(1, cls.getDeclaredConstructors().length);
         Constructor con = cls.getDeclaredConstructors()[0];
-        Object[] params = new Object[] {"other", new Byte((byte) 128)};
+        Object[] params = new Object[] {"other", Byte.valueOf((byte) 128)};
         DurationFieldType type = (DurationFieldType) con.newInstance(params);
         
         assertEquals("other", type.getName());

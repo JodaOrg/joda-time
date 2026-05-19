@@ -15,6 +15,8 @@
  */
 package org.joda.time;
 
+import java.io.Serial;
+
 import org.joda.convert.FromString;
 import org.joda.convert.ToString;
 import org.joda.time.base.BaseSingleFieldPeriod;
@@ -57,6 +59,7 @@ public final class Weeks extends BaseSingleFieldPeriod {
     /** The parser to use for this class. */
     private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.weeks());
     /** Serialization version. */
+    @Serial
     private static final long serialVersionUID = 87525275727380866L;
 
     //-----------------------------------------------------------------------
@@ -115,10 +118,10 @@ public final class Weeks extends BaseSingleFieldPeriod {
      * @throws IllegalArgumentException if the partials are null or invalid
      */
     public static Weeks weeksBetween(ReadablePartial start, ReadablePartial end) {
-        if (start instanceof LocalDate && end instanceof LocalDate)   {
+        if (start instanceof LocalDate date && end instanceof LocalDate date1)   {
             Chronology chrono = DateTimeUtils.getChronology(start.getChronology());
             int weeks = chrono.weeks().getDifference(
-                    ((LocalDate) end).getLocalMillis(), ((LocalDate) start).getLocalMillis());
+                    date1.getLocalMillis(), date.getLocalMillis());
             return Weeks.weeks(weeks);
         }
         int amount = BaseSingleFieldPeriod.between(start, end, ZERO);

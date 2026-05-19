@@ -15,6 +15,7 @@
  */
 package org.joda.time.base;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import org.joda.time.Chronology;
@@ -45,6 +46,7 @@ public abstract class BaseDateTime
         implements ReadableDateTime, Serializable {
 
     /** Serialization lock */
+    @Serial
     private static final long serialVersionUID = -6728882245981L;
 
     /** The millis from 1970-01-01T00:00:00Z */

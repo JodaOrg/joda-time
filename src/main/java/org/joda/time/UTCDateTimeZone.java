@@ -15,6 +15,8 @@
  */
 package org.joda.time;
 
+import java.io.Serial;
+
 /**
  * A DateTimeZone implementation for UTC.
  * <p>
@@ -24,6 +26,7 @@ package org.joda.time;
 final class UTCDateTimeZone extends DateTimeZone {
 
     static final DateTimeZone INSTANCE = new UTCDateTimeZone();
+    @Serial
     private static final long serialVersionUID = -3513011772763289092L;
 
     public UTCDateTimeZone() {

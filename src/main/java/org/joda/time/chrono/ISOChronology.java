@@ -18,6 +18,7 @@ package org.joda.time.chrono;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -48,6 +49,7 @@ import org.joda.time.field.RemainderDateTimeField;
 public final class ISOChronology extends AssembledChronology {
 
     /** Serialization lock */
+    @Serial
     private static final long serialVersionUID = -6212696554273812441L;
 
     /** Singleton instance of a UTC ISOChronology */
@@ -184,8 +186,7 @@ public final class ISOChronology extends AssembledChronology {
         if (this == obj) {
             return true;
         }
-        if (obj instanceof ISOChronology) {
-            ISOChronology chrono = (ISOChronology) obj;
+        if (obj instanceof ISOChronology chrono) {
             return getZone().equals(chrono.getZone());
         }
         return false;
@@ -212,6 +213,7 @@ public final class ISOChronology extends AssembledChronology {
     }
 
     private static final class Stub implements Serializable {
+        @Serial
         private static final long serialVersionUID = -6212696554273812441L;
 
         private transient DateTimeZone iZone;

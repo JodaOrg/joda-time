@@ -15,6 +15,7 @@
  */
 package org.joda.time.field;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import org.joda.time.DurationField;
@@ -38,6 +39,7 @@ import org.joda.time.DurationFieldType;
 public abstract class BaseDurationField extends DurationField implements Serializable {
 
     /** Serialization lock. */
+    @Serial
     private static final long serialVersionUID = -2554245107589433218L;
 
     /** A descriptive name for the field. */

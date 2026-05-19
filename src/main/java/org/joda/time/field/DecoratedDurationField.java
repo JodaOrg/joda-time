@@ -15,6 +15,8 @@
  */
 package org.joda.time.field;
 
+import java.io.Serial;
+
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 
@@ -37,6 +39,7 @@ import org.joda.time.DurationFieldType;
  */
 public class DecoratedDurationField extends BaseDurationField {
 
+    @Serial
     private static final long serialVersionUID = 8019982251647420015L;
 
     /** The DurationField being wrapped */

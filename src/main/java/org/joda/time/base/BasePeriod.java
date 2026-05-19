@@ -15,6 +15,7 @@
  */
 package org.joda.time.base;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import org.joda.time.Chronology;
@@ -52,6 +53,7 @@ public abstract class BasePeriod
         implements ReadablePeriod, Serializable {
 
     /** Serialization version */
+    @Serial
     private static final long serialVersionUID = -2110953284060001145L;
     /** Serialization version */
     private static final ReadablePeriod DUMMY_PERIOD = new AbstractPeriod() {
@@ -156,11 +158,11 @@ public abstract class BasePeriod
         if (start == null || end == null) {
             throw new IllegalArgumentException("ReadablePartial objects must not be null");
         }
-        if (start instanceof BaseLocal && end instanceof BaseLocal && start.getClass() == end.getClass()) {
+        if (start instanceof BaseLocal local && end instanceof BaseLocal local1 && start.getClass() == end.getClass()) {
             // for performance
             type = checkPeriodType(type);
-            long startMillis = ((BaseLocal) start).getLocalMillis();
-            long endMillis = ((BaseLocal) end).getLocalMillis();
+            long startMillis = local.getLocalMillis();
+            long endMillis = local1.getLocalMillis();
             Chronology chrono = start.getChronology();
             chrono = DateTimeUtils.getChronology(chrono);
             iType = type;
@@ -273,10 +275,10 @@ public abstract class BasePeriod
         type = (type == null ? converter.getPeriodType(period) : type);
         type = checkPeriodType(type);
         iType = type;
-        if (this instanceof ReadWritablePeriod) {
+        if (this instanceof ReadWritablePeriod writablePeriod) {
             iValues = new int[size()];
             chrono = DateTimeUtils.getChronology(chrono);
-            converter.setInto((ReadWritablePeriod) this, period, chrono);
+            converter.setInto(writablePeriod, period, chrono);
         } else {
             iValues = new MutablePeriod(period, type, chrono).getValues();
         }

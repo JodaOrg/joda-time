@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -39,6 +40,7 @@ import java.io.Serializable;
 public abstract class DurationFieldType implements Serializable {
 
     /** Serialization version */
+    @Serial
     private static final long serialVersionUID = 8765135187319L;
 
     // Ordinals for standard field types.
@@ -246,6 +248,7 @@ public abstract class DurationFieldType implements Serializable {
 
     private static class StandardDurationFieldType extends DurationFieldType {
         /** Serialization version */
+        @Serial
         private static final long serialVersionUID = 31156755687123L;
 
         /** The ordinal of the standard field type, for switch statements */
@@ -267,8 +270,8 @@ public abstract class DurationFieldType implements Serializable {
             if (this == obj) {
                 return true;
             }
-            if (obj instanceof StandardDurationFieldType) {
-                return iOrdinal == ((StandardDurationFieldType) obj).iOrdinal;
+            if (obj instanceof StandardDurationFieldType type) {
+                return iOrdinal == type.iOrdinal;
             }
             return false;
         }

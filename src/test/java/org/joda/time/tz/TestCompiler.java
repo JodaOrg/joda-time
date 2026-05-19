@@ -47,44 +47,48 @@ public class TestCompiler extends TestCase {
 
     // this file is adjusted to have short-form codes to test parsing
     static final String AMERICA_LOS_ANGELES_FILE =
-        "# Rules for building just America/Los_Angeles time zone.\n" + 
-        "\n" + 
-        "r\u000bUS  1918    1919    -   Mar lastSu 2    1    D\n" + 
-        "RUL\tUS  1918    1919    -   O lastSun 2:00:00    0   S\n" + 
-        "Rule\fUS  1942    o    -   F 9   2:00    1:00    W # War\n" + 
-        "Rule    US  1945    on    -   AU 14  23:00u  1:00    P # Peace\n" + 
-        "Rule    US  1945    onl    -   S 30  2:00    0   S\n" + 
-        "Rule    US  1967    ma -   Oc lastSun 2:00    0   S\n" + 
-        "Rule    US  1967    1973    -   Apr lastSun 2:00    1:00    D\n" + 
-        "Rule    US  1974    only    -   Ja 6   2:00    1:00    D\n" + 
-        "Rule    US  1975    only    -   FE 23  2:00    1:00    D\n" + 
-        "Rule    US  1976    1986    -   Apri lastSun 2:00    1:00    D\n" + 
-        "Rule    US  1987    maxim -   April Sun>=1  2:00    1:00    D\n" + 
-        "\n" + 
-        "Rule    CA  1948    only    -   Marc 14  2:00    1:00    D\n" + 
-        "Rule    CA  1949    only    -   Janu  1  2:00    0   S\n" + 
-        "Rule    CA  1950    1966    -   Apr LASTSUN 2:00    1:00    D\n" + 
-        "Rule    CA  1950    1961    -   September lastSun 2:00    0   S\n" + 
-        "Rule    CA  1962    1966    -   October lastSun 2:00    0   S\n" + 
-        "\n" + 
-        "z America/Los_Angeles -7:52:58 - LMT 1883 Nov 18 12:00\n" + 
-        "            -8:00   US  P%sT    1946\n" + 
-        "            -8:00   CA  P%sT    1967\n" + 
-        "            -8:00   US  P%sT";
+        """
+        # Rules for building just America/Los_Angeles time zone.
+        
+        rUS  1918    1919    -   Mar lastSu 2    1    D
+        RUL	US  1918    1919    -   O lastSun 2:00:00    0   S
+        RuleUS  1942    o    -   F 9   2:00    1:00    W # War
+        Rule    US  1945    on    -   AU 14  23:00u  1:00    P # Peace
+        Rule    US  1945    onl    -   S 30  2:00    0   S
+        Rule    US  1967    ma -   Oc lastSun 2:00    0   S
+        Rule    US  1967    1973    -   Apr lastSun 2:00    1:00    D
+        Rule    US  1974    only    -   Ja 6   2:00    1:00    D
+        Rule    US  1975    only    -   FE 23  2:00    1:00    D
+        Rule    US  1976    1986    -   Apri lastSun 2:00    1:00    D
+        Rule    US  1987    maxim -   April Sun>=1  2:00    1:00    D
+        
+        Rule    CA  1948    only    -   Marc 14  2:00    1:00    D
+        Rule    CA  1949    only    -   Janu  1  2:00    0   S
+        Rule    CA  1950    1966    -   Apr LASTSUN 2:00    1:00    D
+        Rule    CA  1950    1961    -   September lastSun 2:00    0   S
+        Rule    CA  1962    1966    -   October lastSun 2:00    0   S
+        
+        z America/Los_Angeles -7:52:58 - LMT 1883 Nov 18 12:00
+                    -8:00   US  P%sT    1946
+                    -8:00   CA  P%sT    1967
+                    -8:00   US  P%sT""";
 
     static final String BROKEN_TIMEZONE_FILE =
-        "# Incomplete Rules for building America/Los_Angeles time zone.\n" +
-        "\n" +
-        "Rule    US  1918    1919    -   Mar lastSun 2:00    1:00    D\n" +
-        "Rule    \n" ; // this line is intentionally incomplete
+        """
+        # Incomplete Rules for building America/Los_Angeles time zone.
+        
+        Rule    US  1918    1919    -   Mar lastSun 2:00    1:00    D
+        Rule   \s
+        """ ; // this line is intentionally incomplete
 
     static final String BROKEN_TIMEZONE_FILE_2 =
-        "# Incomplete Zone for building America/Los_Angeles time zone.\n" +
-        "\n" +
-        "Rule    CA  1948    only    -   Mar 14  2:00    1:00    D\n" +
-        "Rule    CA  1949    only    -   Jan  1  2:00    0   S\n" +
-        "\n" +
-        "Zone "; // this line is intentionally left incomplete
+        """
+        # Incomplete Zone for building America/Los_Angeles time zone.
+        
+        Rule    CA  1948    only    -   Mar 14  2:00    1:00    D
+        Rule    CA  1949    only    -   Jan  1  2:00    0   S
+        
+        Zone """; // this line is intentionally left incomplete
     
     static final String DUBAI_FILE = 
         "Zone   Asia/Dubai  3:41:12 -   LMT 1920\r\n" +

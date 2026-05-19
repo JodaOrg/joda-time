@@ -15,6 +15,8 @@
  */
 package org.joda.time.field;
 
+import java.io.Serial;
+
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeField;
 
@@ -31,6 +33,7 @@ import org.joda.time.DateTimeField;
  */
 public class LenientDateTimeField extends DelegatedDateTimeField {
 
+    @Serial
     private static final long serialVersionUID = 8714085824173290599L;
 
     private final Chronology iBase;
@@ -47,8 +50,8 @@ public class LenientDateTimeField extends DelegatedDateTimeField {
         if (field == null) {
             return null;
         }
-        if (field instanceof StrictDateTimeField) {
-            field = ((StrictDateTimeField)field).getWrappedField();
+        if (field instanceof StrictDateTimeField timeField) {
+            field = timeField.getWrappedField();
         }
         if (field.isLenient()) {
             return field;

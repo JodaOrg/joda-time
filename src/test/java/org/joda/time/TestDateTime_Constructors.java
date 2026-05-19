@@ -335,7 +335,7 @@ public class TestDateTime_Constructors extends TestCase {
     public void testConstructor_badconverterObject() throws Throwable {
         try {
             ConverterManager.getInstance().addInstantConverter(MockZeroNullIntegerConverter.INSTANCE);
-            DateTime test = new DateTime(new Integer(0));
+            DateTime test = new DateTime(Integer.valueOf(0));
             assertEquals(ISOChronology.getInstance(), test.getChronology());
             assertEquals(0L, test.getMillis());
         } finally {
@@ -500,7 +500,7 @@ public class TestDateTime_Constructors extends TestCase {
     public void testConstructor_badconverterObject_DateTimeZone() throws Throwable {
         try {
             ConverterManager.getInstance().addInstantConverter(MockZeroNullIntegerConverter.INSTANCE);
-            DateTime test = new DateTime(new Integer(0), GregorianChronology.getInstance());
+            DateTime test = new DateTime(Integer.valueOf(0), GregorianChronology.getInstance());
             assertEquals(ISOChronology.getInstance(), test.getChronology());
             assertEquals(0L, test.getMillis());
         } finally {
@@ -562,7 +562,7 @@ public class TestDateTime_Constructors extends TestCase {
     public void testConstructor_badconverterObject_Chronology() throws Throwable {
         try {
             ConverterManager.getInstance().addInstantConverter(MockZeroNullIntegerConverter.INSTANCE);
-            DateTime test = new DateTime(new Integer(0), GregorianChronology.getInstance());
+            DateTime test = new DateTime(Integer.valueOf(0), GregorianChronology.getInstance());
             assertEquals(ISOChronology.getInstance(), test.getChronology());
             assertEquals(0L, test.getMillis());
         } finally {

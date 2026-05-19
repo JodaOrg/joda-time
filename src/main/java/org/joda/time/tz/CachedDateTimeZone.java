@@ -15,6 +15,8 @@
  */
 package org.joda.time.tz;
 
+import java.io.Serial;
+
 import org.joda.time.DateTimeZone;
 
 /**
@@ -29,6 +31,7 @@ import org.joda.time.DateTimeZone;
  */
 public class CachedDateTimeZone extends DateTimeZone {
 
+    @Serial
     private static final long serialVersionUID = 5472298452022250685L;
 
     private static final int cInfoCacheMask;
@@ -65,8 +68,8 @@ public class CachedDateTimeZone extends DateTimeZone {
      * Returns a new CachedDateTimeZone unless given zone is already cached.
      */
     public static CachedDateTimeZone forZone(DateTimeZone zone) {
-        if (zone instanceof CachedDateTimeZone) {
-            return (CachedDateTimeZone)zone;
+        if (zone instanceof CachedDateTimeZone timeZone) {
+            return timeZone;
         }
         return new CachedDateTimeZone(zone);
     }
@@ -135,8 +138,8 @@ public class CachedDateTimeZone extends DateTimeZone {
         if (this == obj) {
             return true;
         }
-        if (obj instanceof CachedDateTimeZone) {
-            return iZone.equals(((CachedDateTimeZone)obj).iZone);
+        if (obj instanceof CachedDateTimeZone zone) {
+            return iZone.equals(zone.iZone);
         }
         return false;
     }

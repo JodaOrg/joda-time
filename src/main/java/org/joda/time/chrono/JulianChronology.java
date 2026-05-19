@@ -15,6 +15,7 @@
  */
 package org.joda.time.chrono;
 
+import java.io.Serial;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.joda.time.Chronology;
@@ -49,6 +50,7 @@ import org.joda.time.field.SkipDateTimeField;
 public final class JulianChronology extends BasicGJChronology {
 
     /** Serialization lock */
+    @Serial
     private static final long serialVersionUID = -8731039522547897247L;
 
     private static final long MILLIS_PER_YEAR =

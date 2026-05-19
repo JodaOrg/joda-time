@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import org.joda.time.base.BaseInterval;
@@ -54,6 +55,7 @@ public class MutableInterval
         implements ReadWritableInterval, Cloneable, Serializable {
 
     /** Serialization version */
+    @Serial
     private static final long serialVersionUID = -5982824024992428470L;
 
     //-----------------------------------------------------------------------

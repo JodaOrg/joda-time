@@ -18,6 +18,7 @@ package org.joda.time;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Locale;
 
@@ -75,6 +76,7 @@ public final class DateTime
         implements ReadableDateTime, Serializable {
 
     /** Serialization lock */
+    @Serial
     private static final long serialVersionUID = -5171125899451703815L;
 
     //-----------------------------------------------------------------------
@@ -2082,8 +2084,9 @@ public final class DateTime
      * @since 1.0
      */
     public static final class Property extends AbstractReadableInstantFieldProperty {
-        
+
         /** Serialization version */
+        @Serial
         private static final long serialVersionUID = -6983323811635733510L;
         
         /** The instant this property is working against */

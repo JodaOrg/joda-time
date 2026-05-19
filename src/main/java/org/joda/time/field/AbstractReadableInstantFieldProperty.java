@@ -15,6 +15,7 @@
  */
 package org.joda.time.field;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Locale;
 
@@ -46,6 +47,7 @@ import org.joda.time.ReadablePartial;
 public abstract class AbstractReadableInstantFieldProperty implements Serializable {
 
     /** Serialization version. */
+    @Serial
     private static final long serialVersionUID = 1971226328211649661L;
 
     /**

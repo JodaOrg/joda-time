@@ -15,6 +15,7 @@
  */
 package org.joda.time.chrono;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -49,6 +50,7 @@ import org.joda.time.format.ISODateTimeFormat;
 public final class LimitChronology extends AssembledChronology {
 
     /** Serialization lock */
+    @Serial
     private static final long serialVersionUID = 7670866536893052522L;
 
     /**
@@ -352,6 +354,7 @@ public final class LimitChronology extends AssembledChronology {
      * generated unless it is actually requested.
      */
     private class LimitException extends IllegalArgumentException {
+        @Serial
         private static final long serialVersionUID = -5924689995607498581L;
 
         private final boolean iIsLow;
@@ -396,6 +399,7 @@ public final class LimitChronology extends AssembledChronology {
     }
 
     private class LimitDurationField extends DecoratedDurationField {
+        @Serial
         private static final long serialVersionUID = 8049297699408782284L;
 
         LimitDurationField(DurationField field) {

@@ -18,6 +18,7 @@ package org.joda.time;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Locale;
 
@@ -73,6 +74,7 @@ public class MutableDateTime
         implements ReadWritableDateTime, Cloneable, Serializable {
 
     /** Serialization version */
+    @Serial
     private static final long serialVersionUID = 2852608688135209575L;
 
     /** Rounding is disabled */
@@ -933,8 +935,7 @@ public class MutableDateTime
      */
     public void setDate(final ReadableInstant instant) {
         long instantMillis = DateTimeUtils.getInstantMillis(instant);
-        if (instant instanceof ReadableDateTime) {
-            ReadableDateTime rdt = (ReadableDateTime) instant;
+        if (instant instanceof ReadableDateTime rdt) {
             Chronology instantChrono = DateTimeUtils.getChronology(rdt.getChronology());
             DateTimeZone zone = instantChrono.getZone();
             if (zone != null) {
@@ -1279,8 +1280,9 @@ public class MutableDateTime
      * @since 1.0
      */
     public static final class Property extends AbstractReadableInstantFieldProperty {
-        
+
         /** Serialization version */
+        @Serial
         private static final long serialVersionUID = -4481126543819298617L;
         
         /** The instant this property is working against */

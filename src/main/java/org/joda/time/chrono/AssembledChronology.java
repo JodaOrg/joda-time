@@ -17,6 +17,7 @@ package org.joda.time.chrono;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeField;
@@ -34,6 +35,7 @@ import org.joda.time.DurationField;
  */
 public abstract class AssembledChronology extends BaseChronology {
 
+    @Serial
     private static final long serialVersionUID = -6728465968995518215L;
 
     private final Chronology iBase;

@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectStreamException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
@@ -113,8 +114,9 @@ import org.joda.time.tz.ZoneInfoProvider;
  * @since 1.0
  */
 public abstract class DateTimeZone implements Serializable {
-    
+
     /** Serialization version. */
+    @Serial
     private static final long serialVersionUID = 5546345482340108586L;
 
     /** The time zone for Universal Coordinated Time */
@@ -792,8 +794,8 @@ public abstract class DateTimeZone implements Serializable {
         }
         String name;
         NameProvider np = getNameProvider();
-        if (np instanceof DefaultNameProvider) {
-            name = ((DefaultNameProvider) np).getShortName(locale, iID, nameKey, isStandardOffset(instant));
+        if (np instanceof DefaultNameProvider provider) {
+            name = provider.getShortName(locale, iID, nameKey, isStandardOffset(instant));
         } else {
             name = np.getShortName(locale, iID, nameKey);
         }
@@ -838,8 +840,8 @@ public abstract class DateTimeZone implements Serializable {
         }
         String name;
         NameProvider np = getNameProvider();
-        if (np instanceof DefaultNameProvider) {
-            name = ((DefaultNameProvider) np).getName(locale, iID, nameKey, isStandardOffset(instant));
+        if (np instanceof DefaultNameProvider provider) {
+            name = provider.getName(locale, iID, nameKey, isStandardOffset(instant));
         } else {
             name = np.getName(locale, iID, nameKey);
         }
@@ -1260,6 +1262,7 @@ public abstract class DateTimeZone implements Serializable {
      */
     private static final class Stub implements Serializable {
         /** Serialization lock. */
+        @Serial
         private static final long serialVersionUID = -6471952376487863581L;
         /** The ID of the zone. */
         private transient String iID;

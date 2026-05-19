@@ -176,7 +176,7 @@ public class TestDateTimeFormat extends TestCase {
         } catch (IllegalArgumentException ex) {}
 
         // Added tests for pivot year setting
-        f = f.withPivotYear(new Integer(2050));
+        f = f.withPivotYear(Integer.valueOf(2050));
         expect = new DateTime(2000, 1, 1, 0, 0, 0, 0, UTC);
         assertEquals(expect, f.parseDateTime("00"));
 
@@ -268,7 +268,7 @@ public class TestDateTimeFormat extends TestCase {
         } catch (IllegalArgumentException ex) {}
 
         // Added tests for pivot year setting
-        f = f.withPivotYear(new Integer(2050));
+        f = f.withPivotYear(Integer.valueOf(2050));
         expect = new DateTime(2000, 1, 1, 0, 0, 0, 0, UTC);
         assertEquals(expect, f.parseDateTime("00"));
 
@@ -413,7 +413,7 @@ public class TestDateTimeFormat extends TestCase {
         } catch (IllegalArgumentException ex) {}
 
         // Added tests for pivot year setting
-        f = f.withPivotYear(new Integer(2050));
+        f = f.withPivotYear(Integer.valueOf(2050));
         expect = new DateTime(2000, 1, 3, 0, 0, 0, 0, DateTimeZone.UTC);
         assertEquals(expect, f.parseDateTime("00"));
 

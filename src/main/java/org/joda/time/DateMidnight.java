@@ -18,6 +18,7 @@ package org.joda.time;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Locale;
 
@@ -78,8 +79,9 @@ import org.joda.time.format.ISODateTimeFormat;
 public final class DateMidnight
         extends BaseDateTime
         implements ReadableDateTime, Serializable {
-    
+
     /** Serialization lock */
+    @Serial
     private static final long serialVersionUID = 156371964018738L;
 
     //-----------------------------------------------------------------------
@@ -1220,8 +1222,9 @@ public final class DateMidnight
      * @since 1.0
      */
     public static final class Property extends AbstractReadableInstantFieldProperty {
-    
+
         /** Serialization lock */
+        @Serial
         private static final long serialVersionUID = 257629620L;
         
         /** The instant this property is working against */

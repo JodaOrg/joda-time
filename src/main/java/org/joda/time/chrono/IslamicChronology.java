@@ -15,6 +15,7 @@
  */
 package org.joda.time.chrono;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -65,6 +66,7 @@ import org.joda.time.DateTimeZone;
 public final class IslamicChronology extends BasicChronology {
 
     /** Serialization lock */
+    @Serial
     private static final long serialVersionUID = -3663823829888L;
 
     /**
@@ -295,8 +297,7 @@ public final class IslamicChronology extends BasicChronology {
         if (this == obj) {
             return true;
         }
-        if (obj instanceof IslamicChronology) {
-            IslamicChronology chrono = (IslamicChronology) obj;
+        if (obj instanceof IslamicChronology chrono) {
             return getLeapYearPatternType().index == chrono.getLeapYearPatternType().index &&
                     super.equals(obj);
         }
@@ -529,6 +530,7 @@ public final class IslamicChronology extends BasicChronology {
      */
     public static class LeapYearPatternType implements Serializable {
         /** Serialization lock */
+        @Serial
         private static final long serialVersionUID = 26581275372698L;
 //        /** Leap year raw data encoded into bits. */
 //        private static final int[][] LEAP_YEARS = {
@@ -589,8 +591,8 @@ public final class IslamicChronology extends BasicChronology {
 
         @Override
         public boolean equals(Object obj) {
-            if (obj instanceof LeapYearPatternType) {
-                return index == ((LeapYearPatternType) obj).index;
+            if (obj instanceof LeapYearPatternType type) {
+                return index == type.index;
             }
             return false;
         }

@@ -15,6 +15,8 @@
  */
 package org.joda.time.chrono;
 
+import java.io.Serial;
+
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
@@ -33,6 +35,7 @@ import org.joda.time.field.StrictDateTimeField;
 public final class StrictChronology extends AssembledChronology {
 
     /** Serialization lock */
+    @Serial
     private static final long serialVersionUID = 6633006628097111960L;
 
     /**

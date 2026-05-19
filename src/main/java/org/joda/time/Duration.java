@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.RoundingMode;
 
@@ -45,6 +46,7 @@ public final class Duration
     public static final Duration ZERO = new Duration(0L);
 
     /** Serialization version */
+    @Serial
     private static final long serialVersionUID = 2471658376918L;
 
     //-----------------------------------------------------------------------

@@ -15,6 +15,8 @@
  */
 package org.joda.time.field;
 
+import java.io.Serial;
+
 import org.joda.time.DateTimeField;
 
 /**
@@ -30,6 +32,7 @@ import org.joda.time.DateTimeField;
  */
 public class StrictDateTimeField extends DelegatedDateTimeField {
 
+    @Serial
     private static final long serialVersionUID = 3154803964207950910L;
 
     /**
@@ -43,8 +46,8 @@ public class StrictDateTimeField extends DelegatedDateTimeField {
         if (field == null) {
             return null;
         }
-        if (field instanceof LenientDateTimeField) {
-            field = ((LenientDateTimeField)field).getWrappedField();
+        if (field instanceof LenientDateTimeField timeField) {
+            field = timeField.getWrappedField();
         }
         if (!field.isLenient()) {
             return field;

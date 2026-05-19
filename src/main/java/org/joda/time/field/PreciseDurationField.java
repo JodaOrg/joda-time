@@ -15,6 +15,8 @@
  */
 package org.joda.time.field;
 
+import java.io.Serial;
+
 import org.joda.time.DurationFieldType;
 
 /**
@@ -27,7 +29,8 @@ import org.joda.time.DurationFieldType;
  * @since 1.0
  */
 public class PreciseDurationField extends BaseDurationField {
-    
+
+    @Serial
     private static final long serialVersionUID = -8346152187724495365L;
 
     /** The size of the unit */
@@ -135,8 +138,7 @@ public class PreciseDurationField extends BaseDurationField {
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
-        } else if (obj instanceof PreciseDurationField) {
-            PreciseDurationField other = (PreciseDurationField) obj;
+        } else if (obj instanceof PreciseDurationField other) {
             return (getType() == other.getType()) && (iUnitMillis == other.iUnitMillis);
         }
         return false;

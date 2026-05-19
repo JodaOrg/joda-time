@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Comparator;
 
@@ -48,6 +49,7 @@ import org.joda.time.convert.InstantConverter;
 public class DateTimeComparator implements Comparator<Object>, Serializable {
 
     /** Serialization lock */
+    @Serial
     private static final long serialVersionUID = -6097339773320178364L;
 
     /** Singleton instance */
@@ -240,8 +242,7 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
      */
     @Override
     public boolean equals(Object object) {
-        if (object instanceof DateTimeComparator) {
-            DateTimeComparator other = (DateTimeComparator) object;
+        if (object instanceof DateTimeComparator other) {
             return (iLowerLimit == other.getLowerLimit() ||
                     (iLowerLimit != null && iLowerLimit.equals(other.getLowerLimit()))) &&
                    (iUpperLimit == other.getUpperLimit() ||

@@ -1,0 +1,4 @@
+# The first provider cannot be created, so the second is used.
+org.joda.time.TestServiceProviderLoader$UncreatableNameProvider
+org.joda.time.TestServiceProviderLoader$FirstNameProvider
+org.joda.time.TestServiceProviderLoader$SecondNameProvider

@@ -1,0 +1,8 @@
+# Missing, incompatible, uncreatable, and invalid providers are skipped.
+invalid.MissingProvider
+java.lang.String
+org.joda.time.TestServiceProviderLoader$UncreatableProvider
+org.joda.time.TestServiceProviderLoader$InvalidProvider
+org.joda.time.TestServiceProviderLoader$FirstProvider
+org.joda.time.TestServiceProviderLoader$SecondProvider
+org.joda.time.TestServiceProviderLoader$FirstProvider

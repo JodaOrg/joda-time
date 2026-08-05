@@ -92,10 +92,12 @@ import org.joda.time.tz.ZoneInfoProvider;
  * However, the factory that accepts a TimeZone will attempt to convert from
  * the old short id to a suitable long id.
  * <p>
- * There are four approaches to loading time-zone data, which are tried in this order:
+ * There are five approaches to loading time-zone data, which are tried in this order:
  * <ol>
  * <li>load the specific {@link Provider} specified by the system property
  *   {@code org.joda.time.DateTimeZone.Provider}.
+ * <li>load a {@link Provider} declared in
+ *   {@code META-INF/services/org.joda.time.tz.Provider}.
  * <li>load {@link ZoneInfoProvider} using the data in the filing system folder
  *   pointed to by system property {@code org.joda.time.DateTimeZone.Folder}.
  * <li>load {@link ZoneInfoProvider} using the data in the classpath location
@@ -103,7 +105,9 @@ import org.joda.time.tz.ZoneInfoProvider;
  * <li>load {@link UTCProvider}
  * </ol>
  * <p>
- * Unless you override the standard behaviour, the default if the third approach.
+ * Service provider declarations that cannot be loaded, created or validated are ignored.
+ * <p>
+ * Unless you override the standard behaviour, the default is the fourth approach.
  * <p>
  * DateTimeZone is thread-safe and immutable, and all subclasses must be as
  * well.
@@ -517,10 +521,12 @@ public abstract class DateTimeZone implements Serializable {
     /**
      * Gets the default zone provider.
      * <p>
-     * This tries four approaches to loading data:
+     * This tries five approaches to loading data:
      * <ol>
      * <li>loads the provider identifier by the system property
      *   <code>org.joda.time.DateTimeZone.Provider</code>.
+     * <li>loads a provider declared in
+     *   <code>META-INF/services/org.joda.time.tz.Provider</code>.
      * <li>load <code>ZoneInfoProvider</code> using the data in the filing system folder
      *   pointed to by system property <code>org.joda.time.DateTimeZone.Folder</code>.
      * <li>loads <code>ZoneInfoProvider</code> using the data in the classpath location
@@ -528,31 +534,29 @@ public abstract class DateTimeZone implements Serializable {
      * <li>loads <code>UTCProvider</code>.
      * </ol>
      * <p>
-     * Unless you override the standard behaviour, the default if the third approach.
+     * Unless you override the standard behaviour, the default is the fourth approach.
      * 
      * @return the default name provider
      */
     private static Provider getDefaultProvider() {
-        // approach 1
-        try {
-            String providerClass = System.getProperty("org.joda.time.DateTimeZone.Provider");
-            if (providerClass != null) {
-                try {
-                    // do not initialize the class until the type has been checked
-                    Class<?> cls = Class.forName(providerClass, false, DateTimeZone.class.getClassLoader());
-                    if (!Provider.class.isAssignableFrom(cls)) {
-                        throw new IllegalArgumentException("System property referred to class that does not implement " + Provider.class);
+        // approaches 1 and 2
+        Provider loadedProvider = ServiceProviderLoader.load(
+                "org.joda.time.DateTimeZone.Provider",
+                Provider.class,
+                new ServiceProviderLoader.Predicate<Provider>() {
+                    public boolean test(Provider provider) {
+                        try {
+                            validateProvider(provider);
+                            return true;
+                        } catch (IllegalArgumentException ex) {
+                            return false;
+                        }
                     }
-                    Provider provider = cls.asSubclass(Provider.class).getConstructor().newInstance();
-                    return validateProvider(provider);
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        } catch (SecurityException ex) {
-            // ignored
+                });
+        if (loadedProvider != null) {
+            return loadedProvider;
         }
-        // approach 2
+        // approach 3
         try {
             String dataFolder = System.getProperty("org.joda.time.DateTimeZone.Folder");
             if (dataFolder != null) {
@@ -566,14 +570,14 @@ public abstract class DateTimeZone implements Serializable {
         } catch (SecurityException ex) {
             // ignored
         }
-        // approach 3
+        // approach 4
         try {
             Provider provider = new ZoneInfoProvider(DEFAULT_TZ_DATA_PATH);
             return validateProvider(provider);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        // approach 4
+        // approach 5
         return new UTCProvider();
     }
 
@@ -621,30 +625,16 @@ public abstract class DateTimeZone implements Serializable {
     /**
      * Gets the default name provider.
      * <p>
-     * Tries the system property <code>org.joda.time.DateTimeZone.NameProvider</code>.
-     * Then uses <code>DefaultNameProvider</code>.
+     * Tries the system property <code>org.joda.time.DateTimeZone.NameProvider</code>,
+     * then service providers declared in
+     * <code>META-INF/services/org.joda.time.tz.NameProvider</code>,
+     * then uses <code>DefaultNameProvider</code>.
      * 
      * @return the default name provider
      */
     private static NameProvider getDefaultNameProvider() {
-        NameProvider nameProvider = null;
-        try {
-            String providerClass = System.getProperty("org.joda.time.DateTimeZone.NameProvider");
-            if (providerClass != null) {
-                try {
-                    // do not initialize the class until the type has been checked
-                    Class<?> cls = Class.forName(providerClass, false, DateTimeZone.class.getClassLoader());
-                    if (!NameProvider.class.isAssignableFrom(cls)) {
-                        throw new IllegalArgumentException("System property referred to class that does not implement " + NameProvider.class);
-                    }
-                    nameProvider = cls.asSubclass(NameProvider.class).getConstructor().newInstance();
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        } catch (SecurityException ex) {
-            // ignore
-        }
+        NameProvider nameProvider = ServiceProviderLoader.load(
+                "org.joda.time.DateTimeZone.NameProvider", NameProvider.class, null);
 
         if (nameProvider == null) {
             nameProvider = new DefaultNameProvider();

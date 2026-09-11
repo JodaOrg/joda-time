@@ -32,7 +32,7 @@ public class TestAll extends TestCase {
         super(testName);
     }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         String[] testCaseName = {
             TestAll.class.getName()
         };

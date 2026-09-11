@@ -170,7 +170,8 @@ public class DelegatedDurationField extends DurationField implements Serializabl
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof DelegatedDurationField) {
-            return iField.equals(((DelegatedDurationField) obj).iField);
+            DelegatedDurationField other = (DelegatedDurationField) obj;
+            return iField.equals(other.iField) && iType == other.iType;
         }
         return false;
     }

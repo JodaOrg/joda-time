@@ -32,7 +32,7 @@ public class TestAll extends TestCase {
         super(testName);
     }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         String[] testCaseName = {
             TestAll.class.getName()
         };
@@ -50,6 +50,7 @@ public class TestAll extends TestCase {
         suite.addTest(TestPreciseDateTimeField.suite());
         
         suite.addTest(TestMillisDurationField.suite());
+        suite.addTest(TestDelegatedDurationField.suite());
         suite.addTest(TestPreciseDurationField.suite());
         suite.addTest(TestScaledDurationField.suite());
         suite.addTest(TestUnsupportedDateTimeField.suite());

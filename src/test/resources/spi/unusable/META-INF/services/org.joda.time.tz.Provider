@@ -1,0 +1,4 @@
+invalid.MissingProvider
+java.lang.String
+org.joda.time.TestServiceProviderLoader$UncreatableProvider
+org.joda.time.TestServiceProviderLoader$InvalidProvider

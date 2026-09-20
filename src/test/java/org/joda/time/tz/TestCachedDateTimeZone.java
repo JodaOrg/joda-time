@@ -15,15 +15,21 @@
  */
 package org.joda.time.tz;
 
+import org.joda.time.DateTimeZone;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.ref.SoftReference;
+import java.lang.reflect.Field;
+import java.time.ZoneId;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TimeZone;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
-import org.joda.time.DateTimeZone;
 
 /**
  * Test cases for FixedDateTimeZone.
@@ -55,6 +61,56 @@ public class TestCachedDateTimeZone extends TestCase {
     @Override
     protected void tearDown() throws Exception {
         DateTimeZone.setDefault(originalDateTimeZone);
+    }
+
+    public void testRangoonDateTimeZone_MappingToNewId_Asia_Yangon() throws Exception {
+        DateTimeZone zoneOld = DateTimeZone.forID("Asia/Rangoon");
+        assertEquals(zoneOld.getID(), "Asia/Yangon");
+
+        DateTimeZone zoneNew = DateTimeZone.forID("Asia/Yangon");
+        assertEquals(zoneNew.getID(), "Asia/Yangon");
+    }
+
+    public void testRangoonDateTimeZone_NoMapping() throws Exception {
+        DateTimeZone zoneOld = DateTimeZone.forExactID("Asia/Rangoon");
+        assertEquals(zoneOld.getID(), "Asia/Rangoon");
+
+        DateTimeZone zoneNew = DateTimeZone.forID("Asia/Yangon");
+        assertEquals(zoneNew.getID(), "Asia/Yangon");
+    }
+
+    public void testRangoonJavaUtilTimeZone() throws Exception {
+        TimeZone zone = TimeZone.getTimeZone("Asia/Rangoon");
+        assertEquals(zone.getID(), "Asia/Rangoon");
+
+        TimeZone zoneNew = TimeZone.getTimeZone("Asia/Yangon");
+        assertEquals(zoneNew.getID(), "Asia/Yangon");
+    }
+
+    public void testRangoonJavaTimeZoneId() throws Exception {
+        ZoneId zone = ZoneId.of("Asia/Rangoon");
+        assertEquals(zone.getId(), "Asia/Rangoon");
+
+        ZoneId zoneNew = ZoneId.of("Asia/Yangon");
+        assertEquals(zoneNew.getId(), "Asia/Yangon");
+    }
+
+    public void testRangoonCachingForMappingCode() throws Exception {
+        DateTimeZone zoneYangon = DateTimeZone.forID("Asia/Rangoon");
+        DateTimeZone zoneRangoon = DateTimeZone.forExactID("Asia/Rangoon");
+        Field field_iZoneInfoMap = ZoneInfoProvider.class.getDeclaredField("iZoneInfoMap");
+        field_iZoneInfoMap.setAccessible(true);
+        Map<String, Object> iZoneInfoMap = (Map<String, Object>) field_iZoneInfoMap.get(DateTimeZone.getProvider());
+        Entry<String, SoftReference<DateTimeZone>> entryRangoon = (Entry<String, SoftReference<DateTimeZone>>) iZoneInfoMap.get("Asia/Rangoon");
+        assertEquals("Asia/Yangon", entryRangoon.getKey());
+        SoftReference<DateTimeZone> entryYangon = (SoftReference<DateTimeZone>) iZoneInfoMap.get("Asia/Yangon");
+        entryRangoon.getValue().clear();
+        entryYangon.clear();
+
+        assertEquals(DateTimeZone.forID("Asia/Rangoon"), zoneYangon);
+        assertEquals(DateTimeZone.forExactID("Asia/Rangoon"), zoneRangoon);
+        assertEquals(DateTimeZone.forID("Asia/Rangoon").getID(), "Asia/Yangon");
+        assertEquals(DateTimeZone.forExactID("Asia/Rangoon").getID(), "Asia/Rangoon");
     }
 
     public void test_caching() throws Exception {

@@ -36,6 +36,14 @@ public interface Provider {
     DateTimeZone getZone(String id);
 
     /**
+     * Same as {@link #getZone(String) getZone} but does no mapping of deprecated time zones
+     * 
+     * @param id String id
+     * @return null if not found
+     */
+    DateTimeZone getExactZone(String id);
+
+    /**
      * Returns an unmodifiable set of ids. All providers must at least
      * support id "UTC".
      */        

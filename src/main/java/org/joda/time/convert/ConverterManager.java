@@ -15,8 +15,6 @@
  */
 package org.joda.time.convert;
 
-import org.joda.time.JodaTimePermission;
-
 /**
  * ConverterManager controls the date and time converters.
  * <p>
@@ -188,12 +186,9 @@ public final class ConverterManager {
      * 
      * @param converter  the converter to add, null ignored
      * @return replaced converter, or null
-     * @throws SecurityException if the security manager rejects the change
      */
-    public InstantConverter addInstantConverter(InstantConverter converter)
-            throws SecurityException {
+    public InstantConverter addInstantConverter(InstantConverter converter) {
         
-        checkAlterInstantConverters();
         if (converter == null) {
             return null;
         }
@@ -208,12 +203,9 @@ public final class ConverterManager {
      * 
      * @param converter  the converter to remove, null ignored
      * @return replaced converter, or null
-     * @throws SecurityException if the security manager rejects the change
      */
-    public InstantConverter removeInstantConverter(InstantConverter converter)
-            throws SecurityException {
+    public InstantConverter removeInstantConverter(InstantConverter converter) {
         
-        checkAlterInstantConverters();
         if (converter == null) {
             return null;
         }
@@ -222,18 +214,6 @@ public final class ConverterManager {
         return removed[0];
     }
     
-    /**
-     * Checks whether the user has permission 'ConverterManager.alterInstantConverters'.
-     * 
-     * @throws SecurityException if the user does not have the permission
-     */
-    private void checkAlterInstantConverters() throws SecurityException {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkPermission(new JodaTimePermission("ConverterManager.alterInstantConverters"));
-        }
-    }
-
     //-----------------------------------------------------------------------
     /**
      * Gets the best converter for the object specified.
@@ -277,12 +257,9 @@ public final class ConverterManager {
      * 
      * @param converter  the converter to add, null ignored
      * @return replaced converter, or null
-     * @throws SecurityException if the security manager rejects the change
      */
-    public PartialConverter addPartialConverter(PartialConverter converter)
-            throws SecurityException {
+    public PartialConverter addPartialConverter(PartialConverter converter) {
         
-        checkAlterPartialConverters();
         if (converter == null) {
             return null;
         }
@@ -297,12 +274,9 @@ public final class ConverterManager {
      * 
      * @param converter  the converter to remove, null ignored
      * @return replaced converter, or null
-     * @throws SecurityException if the security manager rejects the change
      */
-    public PartialConverter removePartialConverter(PartialConverter converter)
-            throws SecurityException {
+    public PartialConverter removePartialConverter(PartialConverter converter) {
         
-        checkAlterPartialConverters();
         if (converter == null) {
             return null;
         }
@@ -311,18 +285,6 @@ public final class ConverterManager {
         return removed[0];
     }
     
-    /**
-     * Checks whether the user has permission 'ConverterManager.alterPartialConverters'.
-     * 
-     * @throws SecurityException if the user does not have the permission
-     */
-    private void checkAlterPartialConverters() throws SecurityException {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkPermission(new JodaTimePermission("ConverterManager.alterPartialConverters"));
-        }
-    }
-
     //-----------------------------------------------------------------------
     /**
      * Gets the best converter for the object specified.
@@ -366,12 +328,9 @@ public final class ConverterManager {
      * 
      * @param converter  the converter to add, null ignored
      * @return replaced converter, or null
-     * @throws SecurityException if the security manager rejects the change
      */
-    public DurationConverter addDurationConverter(DurationConverter converter)
-            throws SecurityException {
+    public DurationConverter addDurationConverter(DurationConverter converter) {
         
-        checkAlterDurationConverters();
         if (converter == null) {
             return null;
         }
@@ -386,12 +345,9 @@ public final class ConverterManager {
      * 
      * @param converter  the converter to remove, null ignored
      * @return replaced converter, or null
-     * @throws SecurityException if the security manager rejects the change
      */
-    public DurationConverter removeDurationConverter(DurationConverter converter)
-            throws SecurityException {
+    public DurationConverter removeDurationConverter(DurationConverter converter) {
         
-        checkAlterDurationConverters();
         if (converter == null) {
             return null;
         }
@@ -400,18 +356,6 @@ public final class ConverterManager {
         return removed[0];
     }
     
-    /**
-     * Checks whether the user has permission 'ConverterManager.alterDurationConverters'.
-     * 
-     * @throws SecurityException if the user does not have the permission
-     */
-    private void checkAlterDurationConverters() throws SecurityException {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkPermission(new JodaTimePermission("ConverterManager.alterDurationConverters"));
-        }
-    }
-
     //-----------------------------------------------------------------------
     /**
      * Gets the best converter for the object specified.
@@ -455,12 +399,9 @@ public final class ConverterManager {
      * 
      * @param converter  the converter to add, null ignored
      * @return replaced converter, or null
-     * @throws SecurityException if the security manager rejects the change
      */
-    public PeriodConverter addPeriodConverter(PeriodConverter converter)
-            throws SecurityException {
+    public PeriodConverter addPeriodConverter(PeriodConverter converter) {
         
-        checkAlterPeriodConverters();
         if (converter == null) {
             return null;
         }
@@ -475,12 +416,9 @@ public final class ConverterManager {
      * 
      * @param converter  the converter to remove, null ignored
      * @return replaced converter, or null
-     * @throws SecurityException if the security manager rejects the change
      */
-    public PeriodConverter removePeriodConverter(PeriodConverter converter)
-            throws SecurityException {
+    public PeriodConverter removePeriodConverter(PeriodConverter converter) {
         
-        checkAlterPeriodConverters();
         if (converter == null) {
             return null;
         }
@@ -489,18 +427,6 @@ public final class ConverterManager {
         return removed[0];
     }
     
-    /**
-     * Checks whether the user has permission 'ConverterManager.alterPeriodConverters'.
-     * 
-     * @throws SecurityException if the user does not have the permission
-     */
-    private void checkAlterPeriodConverters() throws SecurityException {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkPermission(new JodaTimePermission("ConverterManager.alterPeriodConverters"));
-        }
-    }
-
     //-----------------------------------------------------------------------
     /**
      * Gets the best converter for the object specified.
@@ -544,12 +470,9 @@ public final class ConverterManager {
      * 
      * @param converter  the converter to add, null ignored
      * @return replaced converter, or null
-     * @throws SecurityException if the security manager rejects the change
      */
-    public IntervalConverter addIntervalConverter(IntervalConverter converter) 
-            throws SecurityException {
+    public IntervalConverter addIntervalConverter(IntervalConverter converter) {
         
-        checkAlterIntervalConverters();
         if (converter == null) {
             return null;
         }
@@ -564,12 +487,9 @@ public final class ConverterManager {
      * 
      * @param converter  the converter to remove, null ignored
      * @return replaced converter, or null
-     * @throws SecurityException if the security manager rejects the change
      */
-    public IntervalConverter removeIntervalConverter(IntervalConverter converter)
-            throws SecurityException {
+    public IntervalConverter removeIntervalConverter(IntervalConverter converter) {
         
-        checkAlterIntervalConverters();
         if (converter == null) {
             return null;
         }
@@ -578,18 +498,6 @@ public final class ConverterManager {
         return removed[0];
     }
     
-    /**
-     * Checks whether the user has permission 'ConverterManager.alterIntervalConverters'.
-     * 
-     * @throws SecurityException if the user does not have the permission
-     */
-    private void checkAlterIntervalConverters() throws SecurityException {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkPermission(new JodaTimePermission("ConverterManager.alterIntervalConverters"));
-        }
-    }
-
     //-----------------------------------------------------------------------
     /**
      * Gets a debug representation of the object.

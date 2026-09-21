@@ -77,11 +77,8 @@ public class DateTimeUtils {
      * <p>
      * This method changes the behaviour of {@link #currentTimeMillis()}.
      * Whenever the current time is queried, {@link System#currentTimeMillis()} is used.
-     * 
-     * @throws SecurityException if the application does not have sufficient security rights
      */
-    public static final void setCurrentMillisSystem() throws SecurityException {
-        checkPermission();
+    public static final void setCurrentMillisSystem() {
         cMillisProvider = SYSTEM_MILLIS_PROVIDER;
     }
 
@@ -92,10 +89,8 @@ public class DateTimeUtils {
      * Whenever the current time is queried, the same millisecond time will be returned.
      * 
      * @param fixedMillis  the fixed millisecond time to use
-     * @throws SecurityException if the application does not have sufficient security rights
      */
-    public static final void setCurrentMillisFixed(long fixedMillis) throws SecurityException {
-        checkPermission();
+    public static final void setCurrentMillisFixed(long fixedMillis) {
         cMillisProvider = new FixedMillisProvider(fixedMillis);
     }
 
@@ -107,10 +102,8 @@ public class DateTimeUtils {
      * and then offset by adding the millisecond value specified here.
      * 
      * @param offsetMillis  the fixed millisecond time to use
-     * @throws SecurityException if the application does not have sufficient security rights
      */
-    public static final void setCurrentMillisOffset(long offsetMillis) throws SecurityException {
-        checkPermission();
+    public static final void setCurrentMillisOffset(long offsetMillis) {
         if (offsetMillis == 0) {
             cMillisProvider = SYSTEM_MILLIS_PROVIDER;
         } else {
@@ -125,27 +118,13 @@ public class DateTimeUtils {
      * Whenever the current time is queried, the specified class will be called.
      * 
      * @param millisProvider  the provider of the current time to use, not null
-     * @throws SecurityException if the application does not have sufficient security rights
      * @since 2.0
      */
-    public static final void setCurrentMillisProvider(MillisProvider millisProvider) throws SecurityException {
+    public static final void setCurrentMillisProvider(MillisProvider millisProvider) {
         if (millisProvider == null) {
             throw new IllegalArgumentException("The MillisProvider must not be null");
         }
-        checkPermission();
         cMillisProvider = millisProvider;
-    }
-
-    /**
-     * Checks whether the provider may be changed using permission 'CurrentTime.setProvider'.
-     * 
-     * @throws SecurityException if the provider may not be changed
-     */
-    private static void checkPermission() throws SecurityException {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkPermission(new JodaTimePermission("CurrentTime.setProvider"));
-        }
     }
 
     //-----------------------------------------------------------------------

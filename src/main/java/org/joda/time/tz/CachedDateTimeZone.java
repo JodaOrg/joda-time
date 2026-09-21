@@ -34,12 +34,7 @@ public class CachedDateTimeZone extends DateTimeZone {
     private static final int cInfoCacheMask;
 
     static {
-        Integer i;
-        try {
-            i = Integer.getInteger("org.joda.time.tz.CachedDateTimeZone.size");
-        } catch (SecurityException e) {
-            i = null;
-        }
+        Integer i = Integer.getInteger("org.joda.time.tz.CachedDateTimeZone.size");
 
         int cacheSize;
         if (i == null) {

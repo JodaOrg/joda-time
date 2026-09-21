@@ -196,13 +196,8 @@ public abstract class DateTimeZone implements Serializable {
      * 
      * @param zone  the default datetime zone object, must not be null
      * @throws IllegalArgumentException if the zone is null
-     * @throws SecurityException if the application has insufficient security rights
      */
-    public static void setDefault(DateTimeZone zone) throws SecurityException {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkPermission(new JodaTimePermission("DateTimeZone.setDefault"));
-        }
+    public static void setDefault(DateTimeZone zone) {
         if (zone == null) {
             throw new IllegalArgumentException("The datetime zone must not be null");
         }
@@ -477,14 +472,9 @@ public abstract class DateTimeZone implements Serializable {
      * actual instances of DateTimeZone.
      * 
      * @param provider  provider to use, or null for default
-     * @throws SecurityException if you do not have the permission DateTimeZone.setProvider
      * @throws IllegalArgumentException if the provider is invalid
      */
-    public static void setProvider(Provider provider) throws SecurityException {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkPermission(new JodaTimePermission("DateTimeZone.setProvider"));
-        }
+    public static void setProvider(Provider provider) {
         if (provider == null) {
             provider = getDefaultProvider();
         } else {
@@ -494,7 +484,7 @@ public abstract class DateTimeZone implements Serializable {
     }
 
     /**
-     * Sets the zone provider factory without performing the security check.
+     * Sets the zone provider factory.
      * 
      * @param provider  provider to use, or null for default
      * @return the provider
@@ -534,37 +524,29 @@ public abstract class DateTimeZone implements Serializable {
      */
     private static Provider getDefaultProvider() {
         // approach 1
-        try {
-            String providerClass = System.getProperty("org.joda.time.DateTimeZone.Provider");
-            if (providerClass != null) {
-                try {
-                    // do not initialize the class until the type has been checked
-                    Class<?> cls = Class.forName(providerClass, false, DateTimeZone.class.getClassLoader());
-                    if (!Provider.class.isAssignableFrom(cls)) {
-                        throw new IllegalArgumentException("System property referred to class that does not implement " + Provider.class);
-                    }
-                    Provider provider = cls.asSubclass(Provider.class).getConstructor().newInstance();
-                    return validateProvider(provider);
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
+        String providerClass = System.getProperty("org.joda.time.DateTimeZone.Provider");
+        if (providerClass != null) {
+            try {
+                // do not initialize the class until the type has been checked
+                Class<?> cls = Class.forName(providerClass, false, DateTimeZone.class.getClassLoader());
+                if (!Provider.class.isAssignableFrom(cls)) {
+                    throw new IllegalArgumentException("System property referred to class that does not implement " + Provider.class);
                 }
+                Provider provider = cls.asSubclass(Provider.class).getConstructor().newInstance();
+                return validateProvider(provider);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
             }
-        } catch (SecurityException ex) {
-            // ignored
         }
         // approach 2
-        try {
-            String dataFolder = System.getProperty("org.joda.time.DateTimeZone.Folder");
-            if (dataFolder != null) {
-                try {
-                    Provider provider = new ZoneInfoProvider(new File(dataFolder));
-                    return validateProvider(provider);
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
-                }
+        String dataFolder = System.getProperty("org.joda.time.DateTimeZone.Folder");
+        if (dataFolder != null) {
+            try {
+                Provider provider = new ZoneInfoProvider(new File(dataFolder));
+                return validateProvider(provider);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
             }
-        } catch (SecurityException ex) {
-            // ignored
         }
         // approach 3
         try {
@@ -604,14 +586,9 @@ public abstract class DateTimeZone implements Serializable {
      * names of each DateTimeZone.
      * 
      * @param nameProvider  provider to use, or null for default
-     * @throws SecurityException if you do not have the permission DateTimeZone.setNameProvider
      * @throws IllegalArgumentException if the provider is invalid
      */
-    public static void setNameProvider(NameProvider nameProvider) throws SecurityException {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkPermission(new JodaTimePermission("DateTimeZone.setNameProvider"));
-        }
+    public static void setNameProvider(NameProvider nameProvider) {
         if (nameProvider == null) {
             nameProvider = getDefaultNameProvider();
         }
@@ -628,22 +605,18 @@ public abstract class DateTimeZone implements Serializable {
      */
     private static NameProvider getDefaultNameProvider() {
         NameProvider nameProvider = null;
-        try {
-            String providerClass = System.getProperty("org.joda.time.DateTimeZone.NameProvider");
-            if (providerClass != null) {
-                try {
-                    // do not initialize the class until the type has been checked
-                    Class<?> cls = Class.forName(providerClass, false, DateTimeZone.class.getClassLoader());
-                    if (!NameProvider.class.isAssignableFrom(cls)) {
-                        throw new IllegalArgumentException("System property referred to class that does not implement " + NameProvider.class);
-                    }
-                    nameProvider = cls.asSubclass(NameProvider.class).getConstructor().newInstance();
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
+        String providerClass = System.getProperty("org.joda.time.DateTimeZone.NameProvider");
+        if (providerClass != null) {
+            try {
+                // do not initialize the class until the type has been checked
+                Class<?> cls = Class.forName(providerClass, false, DateTimeZone.class.getClassLoader());
+                if (!NameProvider.class.isAssignableFrom(cls)) {
+                    throw new IllegalArgumentException("System property referred to class that does not implement " + NameProvider.class);
                 }
+                nameProvider = cls.asSubclass(NameProvider.class).getConstructor().newInstance();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
             }
-        } catch (SecurityException ex) {
-            // ignore
         }
 
         if (nameProvider == null) {

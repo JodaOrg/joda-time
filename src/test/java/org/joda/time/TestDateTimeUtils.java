@@ -16,13 +16,6 @@
 package org.joda.time;
 
 import java.lang.reflect.Modifier;
-import java.security.AllPermission;
-import java.security.CodeSource;
-import java.security.Permission;
-import java.security.PermissionCollection;
-import java.security.Permissions;
-import java.security.Policy;
-import java.security.ProtectionDomain;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -43,19 +36,6 @@ import org.joda.time.chrono.JulianChronology;
 public class TestDateTimeUtils extends TestCase {
 
     private static final GJChronology GJ = GJChronology.getInstance();
-    private static final boolean OLD_JDK;
-    static {
-        String str = System.getProperty("java.version");
-        boolean old = true;
-        if (str.length() > 3 &&
-            str.charAt(0) == '1' &&
-            str.charAt(1) == '.' &&
-            (str.charAt(2) == '4' || str.charAt(2) == '5' || str.charAt(2) == '6')) {
-            old = false;
-        }
-        OLD_JDK = old;
-    }
-
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
@@ -86,42 +66,6 @@ public class TestDateTimeUtils extends TestCase {
             + 14L * DateTimeConstants.MILLIS_PER_HOUR
             + 28L * DateTimeConstants.MILLIS_PER_MINUTE;
         
-    private static final Policy RESTRICT;
-    private static final Policy ALLOW;
-    static {
-        // don't call Policy.getPolicy()
-        RESTRICT = new Policy() {
-            @Override
-            public PermissionCollection getPermissions(CodeSource codesource) {
-                Permissions p = new Permissions();
-                p.add(new AllPermission());  // enable everything
-                return p;
-            }
-            @Override
-            public void refresh() {
-            }
-            @Override
-            public boolean implies(ProtectionDomain domain, Permission permission) {
-                if (permission instanceof JodaTimePermission) {
-                    return false;
-                }
-                return true;
-//                return super.implies(domain, permission);
-            }
-        };
-        ALLOW = new Policy() {
-            @Override
-            public PermissionCollection getPermissions(CodeSource codesource) {
-                Permissions p = new Permissions();
-                p.add(new AllPermission());  // enable everything
-                return p;
-            }
-            @Override
-            public void refresh() {
-            }
-        };
-    }
-    
     public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
     }
@@ -170,27 +114,6 @@ public class TestDateTimeUtils extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testSystemMillisSecurity() {
-        if (OLD_JDK) {
-            return;
-        }
-        try {
-            try {
-                Policy.setPolicy(RESTRICT);
-                System.setSecurityManager(new SecurityManager());
-                DateTimeUtils.setCurrentMillisSystem();
-                fail();
-            } catch (SecurityException ex) {
-                // ok
-            } finally {
-                System.setSecurityManager(null);
-                Policy.setPolicy(ALLOW);
-            }
-        } finally {
-            DateTimeUtils.setCurrentMillisSystem();
-        }
-    }
-
     //-----------------------------------------------------------------------
     public void testFixedMillis() {
         try {
@@ -208,27 +131,6 @@ public class TestDateTimeUtils extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testFixedMillisSecurity() {
-        if (OLD_JDK) {
-            return;
-        }
-        try {
-            try {
-                Policy.setPolicy(RESTRICT);
-                System.setSecurityManager(new SecurityManager());
-                DateTimeUtils.setCurrentMillisFixed(0L);
-                fail();
-            } catch (SecurityException ex) {
-                // ok
-            } finally {
-                System.setSecurityManager(null);
-                Policy.setPolicy(ALLOW);
-            }
-        } finally {
-            DateTimeUtils.setCurrentMillisSystem();
-        }
-    }
-
     //-----------------------------------------------------------------------
     public void testOffsetMillis() {
         try {
@@ -264,27 +166,6 @@ public class TestDateTimeUtils extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testOffsetMillisSecurity() {
-        if (OLD_JDK) {
-            return;
-        }
-        try {
-            try {
-                Policy.setPolicy(RESTRICT);
-                System.setSecurityManager(new SecurityManager());
-                DateTimeUtils.setCurrentMillisOffset(-24 * 60 *  60 * 1000);
-                fail();
-            } catch (SecurityException ex) {
-                // ok
-            } finally {
-                System.setSecurityManager(null);
-                Policy.setPolicy(ALLOW);
-            }
-        } finally {
-            DateTimeUtils.setCurrentMillisSystem();
-        }
-    }
-
     //-----------------------------------------------------------------------
     public void testMillisProvider() {
         try {
@@ -308,31 +189,6 @@ public class TestDateTimeUtils extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testMillisProviderSecurity() {
-        if (OLD_JDK) {
-            return;
-        }
-        try {
-            try {
-                Policy.setPolicy(RESTRICT);
-                System.setSecurityManager(new SecurityManager());
-                DateTimeUtils.setCurrentMillisProvider(new MillisProvider() {
-                    public long getMillis() {
-                        return 0L;
-                    }
-                });
-                fail();
-            } catch (SecurityException ex) {
-                // ok
-            } finally {
-                System.setSecurityManager(null);
-                Policy.setPolicy(ALLOW);
-            }
-        } finally {
-            DateTimeUtils.setCurrentMillisSystem();
-        }
-    }
-
     //-----------------------------------------------------------------------
     public void testGetInstantMillis_RI() {
         Instant i = new Instant(123L);

@@ -8,6 +8,14 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
+    <release version="3.0.0" date="SNAPSHOT" description="v3.0.0">
+      <action dev="jodastephen" type="remove">
+        Remove all traces of the `SecurityManager`.
+        This includes removing `JodaTimePermission`, which was previously part of the public API.
+        As with the JDK, no replacement is provided for this functionality.
+        Fixes #756.
+      </action>
+    </release>
     <release version="2.15.0" date="SNAPSHOT" description="v2.15.0">
       <action dev="jodastephen" type="fix">
         Fix the equals method on DelegatedDurationField to correctly compare the field type.

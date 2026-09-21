@@ -19,13 +19,6 @@ import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.security.AllPermission;
-import java.security.CodeSource;
-import java.security.Permission;
-import java.security.PermissionCollection;
-import java.security.Permissions;
-import java.security.Policy;
-import java.security.ProtectionDomain;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -42,7 +35,6 @@ import org.joda.time.ReadablePeriod;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 import org.joda.time.Interval;
-import org.joda.time.JodaTimePermission;
 import org.joda.time.ReadWritablePeriod;
 import org.joda.time.ReadWritableInterval;
 import org.joda.time.ReadableDateTime;
@@ -58,55 +50,6 @@ import org.joda.time.format.DateTimeFormatter;
  * @author Stephen Colebourne
  */
 public class TestConverterManager extends TestCase {
-    private static final boolean OLD_JDK;
-    static {
-        String str = System.getProperty("java.version");
-        boolean old = true;
-        if (str.length() > 3 &&
-            str.charAt(0) == '1' &&
-            str.charAt(1) == '.' &&
-            (str.charAt(2) == '4' || str.charAt(2) == '5' || str.charAt(2) == '6')) {
-            old = false;
-        }
-        OLD_JDK = old;
-    }
-
-    private static final Policy RESTRICT;
-    private static final Policy ALLOW;
-    static {
-        // don't call Policy.getPolicy()
-        RESTRICT = new Policy() {
-            @Override
-            public PermissionCollection getPermissions(CodeSource codesource) {
-                Permissions p = new Permissions();
-                p.add(new AllPermission());  // enable everything
-                return p;
-            }
-            @Override
-            public void refresh() {
-            }
-            @Override
-            public boolean implies(ProtectionDomain domain, Permission permission) {
-                if (permission instanceof JodaTimePermission) {
-                    return false;
-                }
-                return true;
-//                return super.implies(domain, permission);
-            }
-        };
-        ALLOW = new Policy() {
-            @Override
-            public PermissionCollection getPermissions(CodeSource codesource) {
-                Permissions p = new Permissions();
-                p.add(new AllPermission());  // enable everything
-                return p;
-            }
-            @Override
-            public void refresh() {
-            }
-        };
-    }
-
     public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
     }
@@ -268,24 +211,6 @@ public class TestConverterManager extends TestCase {
         assertEquals(6, ConverterManager.getInstance().getInstantConverters().length);
     }
 
-    public void testAddInstantConverterSecurity() {
-        if (OLD_JDK) {
-            return;
-        }
-        try {
-            Policy.setPolicy(RESTRICT);
-            System.setSecurityManager(new SecurityManager());
-            ConverterManager.getInstance().addInstantConverter(StringConverter.INSTANCE);
-            fail();
-        } catch (SecurityException ex) {
-            // ok
-        } finally {
-            System.setSecurityManager(null);
-            Policy.setPolicy(ALLOW);
-        }
-        assertEquals(6, ConverterManager.getInstance().getInstantConverters().length);
-    }
-
     //-----------------------------------------------------------------------
     public void testRemoveInstantConverter1() {
         try {
@@ -313,24 +238,6 @@ public class TestConverterManager extends TestCase {
     public void testRemoveInstantConverter3() {
         InstantConverter removed = ConverterManager.getInstance().removeInstantConverter(null);
         assertEquals(null, removed);
-        assertEquals(6, ConverterManager.getInstance().getInstantConverters().length);
-    }
-
-    public void testRemoveInstantConverterSecurity() {
-        if (OLD_JDK) {
-            return;
-        }
-        try {
-            Policy.setPolicy(RESTRICT);
-            System.setSecurityManager(new SecurityManager());
-            ConverterManager.getInstance().removeInstantConverter(StringConverter.INSTANCE);
-            fail();
-        } catch (SecurityException ex) {
-            // ok
-        } finally {
-            System.setSecurityManager(null);
-            Policy.setPolicy(ALLOW);
-        }
         assertEquals(6, ConverterManager.getInstance().getInstantConverters().length);
     }
 
@@ -477,24 +384,6 @@ public class TestConverterManager extends TestCase {
         assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
-    public void testAddPartialConverterSecurity() {
-        if (OLD_JDK) {
-            return;
-        }
-        try {
-            Policy.setPolicy(RESTRICT);
-            System.setSecurityManager(new SecurityManager());
-            ConverterManager.getInstance().addPartialConverter(StringConverter.INSTANCE);
-            fail();
-        } catch (SecurityException ex) {
-            // ok
-        } finally {
-            System.setSecurityManager(null);
-            Policy.setPolicy(ALLOW);
-        }
-        assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
-    }
-
     //-----------------------------------------------------------------------
     public void testRemovePartialConverter1() {
         try {
@@ -523,24 +412,6 @@ public class TestConverterManager extends TestCase {
     public void testRemovePartialConverter3() {
         PartialConverter removed = ConverterManager.getInstance().removePartialConverter(null);
         assertEquals(null, removed);
-        assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
-    }
-
-    public void testRemovePartialConverterSecurity() {
-        if (OLD_JDK) {
-            return;
-        }
-        try {
-            Policy.setPolicy(RESTRICT);
-            System.setSecurityManager(new SecurityManager());
-            ConverterManager.getInstance().removeInstantConverter(StringConverter.INSTANCE);
-            fail();
-        } catch (SecurityException ex) {
-            // ok
-        } finally {
-            System.setSecurityManager(null);
-            Policy.setPolicy(ALLOW);
-        }
         assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
@@ -628,24 +499,6 @@ public class TestConverterManager extends TestCase {
         assertEquals(DURATION_SIZE, ConverterManager.getInstance().getDurationConverters().length);
     }
 
-    public void testAddDurationConverterSecurity() {
-        if (OLD_JDK) {
-            return;
-        }
-        try {
-            Policy.setPolicy(RESTRICT);
-            System.setSecurityManager(new SecurityManager());
-            ConverterManager.getInstance().addDurationConverter(StringConverter.INSTANCE);
-            fail();
-        } catch (SecurityException ex) {
-            // ok
-        } finally {
-            System.setSecurityManager(null);
-            Policy.setPolicy(ALLOW);
-        }
-        assertEquals(DURATION_SIZE, ConverterManager.getInstance().getDurationConverters().length);
-    }
-
     //-----------------------------------------------------------------------
     public void testRemoveDurationConverter1() {
         try {
@@ -671,24 +524,6 @@ public class TestConverterManager extends TestCase {
     public void testRemoveDurationConverter3() {
         DurationConverter removed = ConverterManager.getInstance().removeDurationConverter(null);
         assertEquals(null, removed);
-        assertEquals(DURATION_SIZE, ConverterManager.getInstance().getDurationConverters().length);
-    }
-
-    public void testRemoveDurationConverterSecurity() {
-        if (OLD_JDK) {
-            return;
-        }
-        try {
-            Policy.setPolicy(RESTRICT);
-            System.setSecurityManager(new SecurityManager());
-            ConverterManager.getInstance().removeDurationConverter(StringConverter.INSTANCE);
-            fail();
-        } catch (SecurityException ex) {
-            // ok
-        } finally {
-            System.setSecurityManager(null);
-            Policy.setPolicy(ALLOW);
-        }
         assertEquals(DURATION_SIZE, ConverterManager.getInstance().getDurationConverters().length);
     }
 
@@ -778,24 +613,6 @@ public class TestConverterManager extends TestCase {
         assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
     }
 
-    public void testAddPeriodConverterSecurity() {
-        if (OLD_JDK) {
-            return;
-        }
-        try {
-            Policy.setPolicy(RESTRICT);
-            System.setSecurityManager(new SecurityManager());
-            ConverterManager.getInstance().addPeriodConverter(StringConverter.INSTANCE);
-            fail();
-        } catch (SecurityException ex) {
-            // ok
-        } finally {
-            System.setSecurityManager(null);
-            Policy.setPolicy(ALLOW);
-        }
-        assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
-    }
-
     //-----------------------------------------------------------------------
     public void testRemovePeriodConverter1() {
         try {
@@ -822,24 +639,6 @@ public class TestConverterManager extends TestCase {
     public void testRemovePeriodConverter3() {
         PeriodConverter removed = ConverterManager.getInstance().removePeriodConverter(null);
         assertEquals(null, removed);
-        assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
-    }
-
-    public void testRemovePeriodConverterSecurity() {
-        if (OLD_JDK) {
-            return;
-        }
-        try {
-            Policy.setPolicy(RESTRICT);
-            System.setSecurityManager(new SecurityManager());
-            ConverterManager.getInstance().removePeriodConverter(StringConverter.INSTANCE);
-            fail();
-        } catch (SecurityException ex) {
-            // ok
-        } finally {
-            System.setSecurityManager(null);
-            Policy.setPolicy(ALLOW);
-        }
         assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
     }
 
@@ -927,24 +726,6 @@ public class TestConverterManager extends TestCase {
         assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
     }
 
-    public void testAddIntervalConverterSecurity() {
-        if (OLD_JDK) {
-            return;
-        }
-        try {
-            Policy.setPolicy(RESTRICT);
-            System.setSecurityManager(new SecurityManager());
-            ConverterManager.getInstance().addIntervalConverter(StringConverter.INSTANCE);
-            fail();
-        } catch (SecurityException ex) {
-            // ok
-        } finally {
-            System.setSecurityManager(null);
-            Policy.setPolicy(ALLOW);
-        }
-        assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
-    }
-
     //-----------------------------------------------------------------------
     public void testRemoveIntervalConverter1() {
         try {
@@ -971,24 +752,6 @@ public class TestConverterManager extends TestCase {
     public void testRemoveIntervalConverter3() {
         IntervalConverter removed = ConverterManager.getInstance().removeIntervalConverter(null);
         assertEquals(null, removed);
-        assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
-    }
-
-    public void testRemoveIntervalConverterSecurity() {
-        if (OLD_JDK) {
-            return;
-        }
-        try {
-            Policy.setPolicy(RESTRICT);
-            System.setSecurityManager(new SecurityManager());
-            ConverterManager.getInstance().removeIntervalConverter(StringConverter.INSTANCE);
-            fail();
-        } catch (SecurityException ex) {
-            // ok
-        } finally {
-            System.setSecurityManager(null);
-            Policy.setPolicy(ALLOW);
-        }
         assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
     }
 

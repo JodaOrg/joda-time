@@ -90,7 +90,6 @@ more advanced topics.
 <ul>
     <li><a href="#Change_the_Current_Time">Change the Current Time</a></li>
     <li><a href="#Converters">Converters</a></li>
-    <li><a href="#Security">Security</a></li>
 </ul>
 </li>
 </ul>
@@ -968,14 +967,6 @@ If required, you can add your own converters to those supplied in Joda-Time.
 </p>
 </subsection>
 
-<subsection name="Security">
-<p>
-Joda-Time includes hooks into the standard JDK security scheme for sensitive changes.
-These include changing the time zone handler, changing the current time and changing
-the converters.
-See <code>JodaTimePermission</code> for details.
-</p>
-</subsection>
 </section>
 
 <!-- ========================================================================= -->

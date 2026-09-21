@@ -17,17 +17,9 @@ package org.joda.time;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FilePermission;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Modifier;
-import java.security.AllPermission;
-import java.security.CodeSource;
-import java.security.Permission;
-import java.security.PermissionCollection;
-import java.security.Permissions;
-import java.security.Policy;
-import java.security.ProtectionDomain;
 import java.text.DateFormatSymbols;
 import java.util.Date;
 import java.util.HashSet;
@@ -53,19 +45,6 @@ import junit.framework.TestSuite;
  * @author Stephen Colebourne
  */
 public class TestDateTimeZone extends TestCase {
-    private static final boolean OLD_JDK;
-    static {
-        String str = System.getProperty("java.version");
-        boolean old = true;
-        if (str.length() > 3 &&
-            str.charAt(0) == '1' &&
-            str.charAt(1) == '.' &&
-            (str.charAt(2) == '4' || str.charAt(2) == '5' || str.charAt(2) == '6')) {
-            old = false;
-        }
-        OLD_JDK = old;
-    }
-    
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
@@ -100,42 +79,6 @@ public class TestDateTimeZone extends TestCase {
 //            (y2003days + 31L + 28L + 31L + 30L + 6L -1L) * DateTimeConstants.MILLIS_PER_DAY
 //            + 14L * DateTimeConstants.MILLIS_PER_HOUR
 //            + 28L * DateTimeConstants.MILLIS_PER_MINUTE;
-    
-    private static final Policy RESTRICT;
-    private static final Policy ALLOW;
-    static {
-        // don't call Policy.getPolicy()
-        RESTRICT = new Policy() {
-            @Override
-            public PermissionCollection getPermissions(CodeSource codesource) {
-                Permissions p = new Permissions();
-                p.add(new AllPermission());  // enable everything
-                return p;
-            }
-            @Override
-            public void refresh() {
-            }
-            @Override
-            public boolean implies(ProtectionDomain domain, Permission permission) {
-                if (permission instanceof JodaTimePermission) {
-                    return false;
-                }
-                return true;
-//                return super.implies(domain, permission);
-            }
-        };
-        ALLOW = new Policy() {
-            @Override
-            public PermissionCollection getPermissions(CodeSource codesource) {
-                Permissions p = new Permissions();
-                p.add(new AllPermission());  // enable everything
-                return p;
-            }
-            @Override
-            public void refresh() {
-            }
-        };
-    }
     
     private DateTimeZone zone;
     private Locale locale;
@@ -178,23 +121,6 @@ public class TestDateTimeZone extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
             
-    public void testDefaultSecurity() {
-        if (OLD_JDK) {
-            return;
-        }
-        try {
-            Policy.setPolicy(RESTRICT);
-            System.setSecurityManager(new SecurityManager());
-            DateTimeZone.setDefault(PARIS);
-            fail();
-        } catch (SecurityException ex) {
-            // ok
-        } finally {
-            System.setSecurityManager(null);
-            Policy.setPolicy(ALLOW);
-        }
-    }
-
     //-----------------------------------------------------------------------
     public void testForID_String() {
         assertEquals(DateTimeZone.getDefault(), DateTimeZone.forID((String) null));
@@ -566,23 +492,6 @@ public class TestDateTimeZone extends TestCase {
         }
     }
     
-    public void testProviderSecurity() {
-        if (OLD_JDK) {
-            return;
-        }
-        try {
-            Policy.setPolicy(RESTRICT);
-            System.setSecurityManager(new SecurityManager());
-            DateTimeZone.setProvider(new MockOKProvider());
-            fail();
-        } catch (SecurityException ex) {
-            // ok
-        } finally {
-            System.setSecurityManager(null);
-            Policy.setPolicy(ALLOW);
-        }
-    }
-
     static class MockNullIDSProvider implements Provider {
         public Set getAvailableIDs() {
             return null;
@@ -673,23 +582,6 @@ public class TestDateTimeZone extends TestCase {
         } finally {
             System.getProperties().remove("org.joda.time.DateTimeZone.NameProvider");
             DateTimeZone.setProvider(null);
-        }
-    }
-
-    public void testNameProviderSecurity() {
-        if (OLD_JDK) {
-            return;
-        }
-        try {
-            Policy.setPolicy(RESTRICT);
-            System.setSecurityManager(new SecurityManager());
-            DateTimeZone.setNameProvider(new MockOKButNullNameProvider());
-            fail();
-        } catch (SecurityException ex) {
-            // ok
-        } finally {
-            System.setSecurityManager(null);
-            Policy.setPolicy(ALLOW);
         }
     }
 

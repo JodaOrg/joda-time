@@ -8,7 +8,7 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
-    <release version="2.13.0" date="2026-09-19" description="v2.14.4">
+    <release version="2.14.4" date="2026-09-19" description="v2.14.4">
       <action dev="jodastephen" type="update">
         DateTimeZone data updated to version 2026dgtz.
         This release reinstates some American short zone IDs - EST5EDT, CST6CDT, MST7MDT and PST8PDT.

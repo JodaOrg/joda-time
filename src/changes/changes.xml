@@ -8,7 +8,10 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
-    <release version="2.15.0" date="SNAPSHOT" description="v2.15.0">
+    <release version="2.15.0" date="2026-10-01" description="v2.15.0">
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2026egtz.
+      </action>
       <action dev="jodastephen" type="fix">
         Fix the equals method on DelegatedDurationField to correctly compare the field type.
         Fixes #828.

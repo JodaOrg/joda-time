@@ -62,14 +62,17 @@ public final class StrictChronology extends AssembledChronology {
 
     @Override
     public Chronology withUTC() {
-        if (iWithUTC == null) {
+        // read the lazily initialized field only once: a second racy read may see null
+        Chronology utc = iWithUTC;
+        if (utc == null) {
             if (getZone() == DateTimeZone.UTC) {
-                iWithUTC = this;
+                utc = this;
             } else {
-                iWithUTC = StrictChronology.getInstance(getBase().withUTC());
+                utc = StrictChronology.getInstance(getBase().withUTC());
             }
+            iWithUTC = utc;
         }
-        return iWithUTC;
+        return utc;
     }
 
     @Override

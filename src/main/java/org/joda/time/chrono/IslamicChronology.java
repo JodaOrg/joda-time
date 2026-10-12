@@ -262,7 +262,7 @@ public final class IslamicChronology extends BasicChronology {
      */
     @Override
     public Chronology withUTC() {
-        return INSTANCE_UTC;
+        return getInstance(DateTimeZone.UTC, iLeapYears);
     }
 
     /**
@@ -279,7 +279,7 @@ public final class IslamicChronology extends BasicChronology {
         if (zone == getZone()) {
             return this;
         }
-        return getInstance(zone);
+        return getInstance(zone, iLeapYears);
     }
 
     //-----------------------------------------------------------------------

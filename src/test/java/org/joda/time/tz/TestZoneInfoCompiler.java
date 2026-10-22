@@ -25,6 +25,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.MockZone;
 
 import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
  * Unit tests for class {@link ZoneInfoCompiler}.
@@ -33,6 +34,10 @@ import junit.framework.TestCase;
  * @see ZoneInfoCompiler
  **/
 public class TestZoneInfoCompiler extends TestCase {
+
+  public static TestSuite suite() {
+    return new TestSuite(TestZoneInfoCompiler.class);
+  }
 
   public void testParseDataFileWithTrue() throws IOException {
     ZoneInfoCompiler zoneInfoCompiler = new ZoneInfoCompiler();

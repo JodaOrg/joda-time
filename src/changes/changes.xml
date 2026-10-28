@@ -8,6 +8,11 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
+    <release version="2.15.1" date="2026-10-28" description="v2.15.1">
+      <action dev="jodastephen" type="update">
+        DateTimeZone data updated to version 2026fgtz.
+      </action>
+    </release>
     <release version="2.15.0" date="2026-10-01" description="v2.15.0">
       <action dev="jodastephen" type="update">
         DateTimeZone data updated to version 2026egtz.

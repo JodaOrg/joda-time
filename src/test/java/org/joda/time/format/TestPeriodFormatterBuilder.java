@@ -15,6 +15,7 @@
  */
 package org.joda.time.format;
 
+import java.io.StringWriter;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -284,6 +285,38 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals("0", f.print(p));
         assertEquals(1, f.getPrinter().calculatePrintedLength(p, null));
         assertEquals(1, f.getPrinter().countFieldsToPrint(p, Integer.MAX_VALUE, null));
+    }
+
+    public void testPrintToWriterNegativeFractionalSeconds() throws Exception {
+        PeriodFormatter f = builder.appendSecondsWithMillis().toFormatter();
+        assertWriterMatchesPrint(f, Period.millis(-1), "-0.001");
+        assertWriterMatchesPrint(f, Period.millis(-999), "-0.999");
+        assertWriterMatchesPrint(f, Period.millis(-1000), "-1.000");
+        assertWriterMatchesPrint(f, Period.millis(0), "0.000");
+        assertWriterMatchesPrint(f, Period.millis(1), "0.001");
+        assertWriterMatchesPrint(f, new Period(0, 0, 0, 0, 0, 0, -7, -1), "-7.001");
+        assertWriterMatchesPrint(f, new Period(0, 0, 0, 0, 0, 0, 1, -1), "0.999");
+
+        f = new PeriodFormatterBuilder().appendPrefix("T").appendSecondsWithMillis().appendSuffix("S").toFormatter();
+        assertWriterMatchesPrint(f, Period.millis(-1), "T-0.001S");
+
+        f = new PeriodFormatterBuilder().minimumPrintedDigits(2).appendSecondsWithMillis().toFormatter();
+        assertWriterMatchesPrint(f, Period.millis(-1), "-00.001");
+    }
+
+    public void testPrintToWriterNegativeFractionalSecondsOptionalMillis() throws Exception {
+        PeriodFormatter f = builder.appendSecondsWithOptionalMillis().toFormatter();
+        assertWriterMatchesPrint(f, Period.millis(-1), "-0.001");
+        assertWriterMatchesPrint(f, Period.millis(-999), "-0.999");
+        assertWriterMatchesPrint(f, Period.millis(-1000), "-1");
+        assertWriterMatchesPrint(f, Period.millis(0), "0");
+    }
+
+    private static void assertWriterMatchesPrint(PeriodFormatter f, Period p, String expected) throws Exception {
+        assertEquals(expected, f.print(p));
+        StringWriter out = new StringWriter();
+        f.printTo(out, p);
+        assertEquals(expected, out.toString());
     }
 
     public void testFormatMillis() {

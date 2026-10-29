@@ -1499,6 +1499,11 @@ public class PeriodFormatterBuilder {
             if (iPrefix != null) {
                 iPrefix.printTo(out, value);
             }
+            if (iFieldType >= SECONDS_MILLIS && valueLong < 0 && valueLong > -DateTimeConstants.MILLIS_PER_SECOND
+                    && (iFieldType == SECONDS_MILLIS || valueLong % DateTimeConstants.MILLIS_PER_SECOND != 0)) {
+                // seconds part is zero, so the sign must be written explicitly
+                out.write('-');
+            }
             int minDigits = iMinPrintedDigits;
             if (minDigits <= 1) {
                 FormatUtils.writeUnpaddedInteger(out, value);

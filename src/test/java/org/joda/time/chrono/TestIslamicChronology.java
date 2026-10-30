@@ -28,6 +28,7 @@ import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationFieldType;
+import org.joda.time.LocalDate;
 import org.joda.time.DateTime.Property;
 
 /**
@@ -134,6 +135,113 @@ public class TestIslamicChronology extends TestCase {
         assertSame(IslamicChronology.getInstance(LONDON), IslamicChronology.getInstance(TOKYO).withZone(null));
         assertSame(IslamicChronology.getInstance(PARIS), IslamicChronology.getInstance().withZone(PARIS));
         assertSame(IslamicChronology.getInstance(PARIS), IslamicChronology.getInstanceUTC().withZone(PARIS));
+    }
+
+    public void testWithUTC15Based() {
+        assertWithUTC(IslamicChronology.LEAP_YEAR_15_BASED);
+    }
+
+    public void testWithZone15Based() {
+        assertWithZone(IslamicChronology.LEAP_YEAR_15_BASED);
+    }
+
+    public void testDateConversions15Based() {
+        assertDateConversions(IslamicChronology.LEAP_YEAR_15_BASED, new int[] {2, 5, 7, 10, 13, 15, 18, 21, 24, 26, 29});
+    }
+
+    public void testWithUTC16Based() {
+        assertWithUTC(IslamicChronology.LEAP_YEAR_16_BASED);
+    }
+
+    public void testWithZone16Based() {
+        assertWithZone(IslamicChronology.LEAP_YEAR_16_BASED);
+    }
+
+    public void testDateConversions16Based() {
+        assertDateConversions(IslamicChronology.LEAP_YEAR_16_BASED, new int[] {2, 5, 7, 10, 13, 16, 18, 21, 24, 26, 29});
+    }
+
+    public void testWithUTCIndian() {
+        assertWithUTC(IslamicChronology.LEAP_YEAR_INDIAN);
+    }
+
+    public void testWithZoneIndian() {
+        assertWithZone(IslamicChronology.LEAP_YEAR_INDIAN);
+    }
+
+    public void testDateConversionsIndian() {
+        assertDateConversions(IslamicChronology.LEAP_YEAR_INDIAN, new int[] {2, 5, 8, 10, 13, 16, 19, 21, 24, 27, 29});
+    }
+
+    public void testWithUTCHabashAlHasib() {
+        assertWithUTC(IslamicChronology.LEAP_YEAR_HABASH_AL_HASIB);
+    }
+
+    public void testWithZoneHabashAlHasib() {
+        assertWithZone(IslamicChronology.LEAP_YEAR_HABASH_AL_HASIB);
+    }
+
+    public void testDateConversionsHabashAlHasib() {
+        assertDateConversions(IslamicChronology.LEAP_YEAR_HABASH_AL_HASIB, new int[] {2, 5, 8, 11, 13, 16, 19, 21, 24, 27, 30});
+    }
+
+    private void assertWithUTC(IslamicChronology.LeapYearPatternType pattern) {
+        DateTimeZone[] zones = {DateTimeZone.UTC, LONDON, TOKYO, DateTimeZone.forOffsetHours(2)};
+        for (DateTimeZone zone : zones) {
+            IslamicChronology source = IslamicChronology.getInstance(zone, pattern);
+            Chronology actual = source.withUTC();
+            assertSame(IslamicChronology.getInstance(DateTimeZone.UTC, pattern), actual);
+            assertSame(pattern, ((IslamicChronology) actual).getLeapYearPatternType());
+        }
+    }
+
+    private void assertWithZone(IslamicChronology.LeapYearPatternType pattern) {
+        DateTimeZone[] zones = {DateTimeZone.UTC, LONDON, TOKYO, DateTimeZone.forOffsetHours(2)};
+        DateTimeZone[] targets = {DateTimeZone.UTC, LONDON, TOKYO, DateTimeZone.forOffsetHours(2), null};
+        for (DateTimeZone zone : zones) {
+            IslamicChronology source = IslamicChronology.getInstance(zone, pattern);
+            for (DateTimeZone target : targets) {
+                Chronology actual = source.withZone(target);
+                assertSame(IslamicChronology.getInstance(target, pattern), actual);
+                assertSame(pattern, ((IslamicChronology) actual).getLeapYearPatternType());
+                assertSame(source, actual.withZone(zone));
+            }
+            assertSame(source, source.withZone(zone));
+        }
+    }
+
+    private void assertDateConversions(IslamicChronology.LeapYearPatternType pattern, int[] leapYears) {
+        DateTimeZone[] zones = {DateTimeZone.UTC, LONDON, TOKYO, DateTimeZone.forOffsetHours(2)};
+        for (DateTimeZone zone : zones) {
+            IslamicChronology chrono = IslamicChronology.getInstance(zone, pattern);
+            for (int year = 1; year <= 60; year++) {
+                int cycleYear = (year - 1) % 30 + 1;
+                boolean leap = false;
+                for (int leapYear : leapYears) {
+                    if (cycleYear == leapYear) {
+                        leap = true;
+                    }
+                }
+                int lastDay = leap ? 30 : 29;
+                DateTime dateTime = new DateTime(year, 12, lastDay, 12, 0, chrono);
+                assertEquals(leap, dateTime.year().isLeap());
+                LocalDate expected = new LocalDate(year, 12, lastDay, chrono);
+                assertSame(pattern, ((IslamicChronology) expected.getChronology()).getLeapYearPatternType());
+                assertEquals(leap, expected.year().isLeap());
+                assertEquals(expected, dateTime.toLocalDate());
+                assertEquals(expected.toString(), dateTime.toString("yyyy-MM-dd"));
+                assertEquals(new LocalDate(year + 1, 1, 1, chrono), expected.plusDays(1));
+                assertEquals(dateTime.getMillis(), expected.toDateTimeAtStartOfDay(zone).plusHours(12).getMillis());
+                if (!leap) {
+                    try {
+                        new LocalDate(year, 12, 30, chrono);
+                        fail("Expected non-leap last month to reject day 30: " + year);
+                    } catch (org.joda.time.IllegalFieldValueException ex) {
+                        // expected
+                    }
+                }
+            }
+        }
     }
 
     public void testToString() {

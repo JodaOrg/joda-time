@@ -590,12 +590,18 @@ public class TestDateTimeZone extends TestCase {
         public DateTimeZone getZone(String id) {
             return null;
         }
+        public DateTimeZone getExactZone(String id) {
+            return null;
+        }
     }
     static class MockEmptyIDSProvider implements Provider {
         public Set getAvailableIDs() {
             return new HashSet();
         }
         public DateTimeZone getZone(String id) {
+            return null;
+        }
+        public DateTimeZone getExactZone(String id) {
             return null;
         }
     }
@@ -606,6 +612,9 @@ public class TestDateTimeZone extends TestCase {
             return set;
         }
         public DateTimeZone getZone(String id) {
+            return null;
+        }
+        public DateTimeZone getExactZone(String id) {
             return null;
         }
     }
@@ -619,6 +628,9 @@ public class TestDateTimeZone extends TestCase {
         public DateTimeZone getZone(String id) {
             return null;
         }
+        public DateTimeZone getExactZone(String id) {
+            return null;
+        }
     }
     static class MockOKProvider implements Provider {
         public Set getAvailableIDs() {
@@ -628,6 +640,9 @@ public class TestDateTimeZone extends TestCase {
             return set;
         }
         public DateTimeZone getZone(String id) {
+            return DateTimeZone.UTC;
+        }
+        public DateTimeZone getExactZone(String id) {
             return DateTimeZone.UTC;
         }
     }

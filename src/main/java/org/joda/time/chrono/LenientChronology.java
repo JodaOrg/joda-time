@@ -62,14 +62,17 @@ public final class LenientChronology extends AssembledChronology {
 
     @Override
     public Chronology withUTC() {
-        if (iWithUTC == null) {
+        // read the lazily initialized field only once: a second racy read may see null
+        Chronology utc = iWithUTC;
+        if (utc == null) {
             if (getZone() == DateTimeZone.UTC) {
-                iWithUTC = this;
+                utc = this;
             } else {
-                iWithUTC = LenientChronology.getInstance(getBase().withUTC());
+                utc = LenientChronology.getInstance(getBase().withUTC());
             }
+            iWithUTC = utc;
         }
-        return iWithUTC;
+        return utc;
     }
 
     @Override

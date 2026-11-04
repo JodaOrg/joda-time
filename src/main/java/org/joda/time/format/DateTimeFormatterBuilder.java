@@ -2414,9 +2414,62 @@ public class DateTimeFormatterBuilder {
                 bucket.setZone(DateTimeZone.forID(prefix + best));
                 return pos + best.length();
             }
+            FixedOffsetId offsetId = parseFixedOffsetId(text, pos);
+            if (offsetId != null) {
+                bucket.setZone(offsetId.iZone);
+                return offsetId.iEndIndex;
+            }
             return ~position;
         }
 
+        /**
+         * Parses a fixed offset zone id, such as {@code +02:00}.
+         * <p>
+         * The id of a fixed offset zone is not in the available ids, but this
+         * field prints it, so it has to be able to read it back.
+         * Fixed offset ids are printed padded, so the longest text that is a
+         * valid id is taken, and a character which follows the id, such as a
+         * literal, is not a valid offset character and stops the match.
+         *
+         * @param text  the text to parse
+         * @param position  the position to start parsing from
+         * @return the zone and the position after the id, or null if there is no id
+         */
+        private static FixedOffsetId parseFixedOffsetId(CharSequence text, int position) {
+            int textLen = text.length();
+            if (position >= textLen) {
+                return null;
+            }
+            char first = text.charAt(position);
+            if (first != '+' && first != '-') {
+                return null;
+            }
+            for (int i = textLen; i > position + 1; i--) {
+                try {
+                    DateTimeZone zone = DateTimeZone.forID(text.subSequence(position, i).toString());
+                    if (zone.isFixed()) {
+                        return new FixedOffsetId(zone, i);
+                    }
+                } catch (IllegalArgumentException ex) {
+                    // not a zone id, so try a shorter prefix
+                }
+            }
+            return null;
+        }
+
+    }
+
+    /**
+     * A fixed offset zone id that has been parsed, and the position after it.
+     */
+    private static final class FixedOffsetId {
+        final DateTimeZone iZone;
+        final int iEndIndex;
+
+        FixedOffsetId(DateTimeZone zone, int endIndex) {
+            iZone = zone;
+            iEndIndex = endIndex;
+        }
     }
 
     //-----------------------------------------------------------------------

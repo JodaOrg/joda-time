@@ -577,6 +577,59 @@ public class TestDateTimeFormatterBuilder extends TestCase {
         assertEquals(dt, f.parseDateTime("2007-03-04 12:30 America/Bahia_Banderas"));
     }
 
+    public void test_printParseZoneFixedOffsetId() {
+        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
+            .appendPattern("yyyy-MM-dd HH:mm ").appendTimeZoneId();
+        DateTimeFormatter f = bld.toFormatter();
+
+        // the printed id of a fixed offset zone is itself a valid zone id
+        assertEquals("+02:00", OFFSET_0200.getID());
+        DateTime dt = new DateTime(2007, 3, 4, 12, 30, 0, OFFSET_0200);
+        assertEquals("2007-03-04 12:30 +02:00", f.print(dt));
+        assertEquals(dt, f.parseDateTime("2007-03-04 12:30 +02:00"));
+
+        DateTime dt023012 = new DateTime(2007, 3, 4, 12, 30, 0, OFFSET_023012);
+        assertEquals("2007-03-04 12:30 +02:30:12", f.print(dt023012));
+        assertEquals(dt023012, f.parseDateTime("2007-03-04 12:30 +02:30:12"));
+
+        // an unpadded offset id is accepted and normalised like DateTimeZone.forID does
+        DateTimeZone zone02 = DateTimeZone.forID("+02");
+        assertEquals("+02:00", zone02.getID());
+        DateTime dt02 = new DateTime(2007, 3, 4, 12, 30, 0, zone02);
+        assertEquals("2007-03-04 12:30 +02:00", f.print(dt02));
+        assertEquals(dt02, f.parseDateTime("2007-03-04 12:30 +02"));
+
+        // a negative offset prints with the sign, so it must parse with it too
+        DateTime dtMinus = new DateTime(2007, 3, 4, 12, 30, 0, DateTimeZone.forID("-05:00"));
+        assertEquals("2007-03-04 12:30 -05:00", f.print(dtMinus));
+        assertEquals(dtMinus, f.parseDateTime("2007-03-04 12:30 -05:00"));
+
+        // a literal after the id still terminates the id
+        DateTimeFormatter fLiteral = new DateTimeFormatterBuilder()
+            .appendPattern("yyyy-MM-dd HH:mm ").appendTimeZoneId().appendLiteral(']').toFormatter();
+        assertEquals("2007-03-04 12:30 +02:00]", fLiteral.print(dt));
+        assertEquals(dt, fLiteral.parseDateTime("2007-03-04 12:30 +02:00]"));
+    }
+
+    public void test_parseZoneFixedOffsetIdIsNotAcceptedWithoutSign() {
+        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
+            .appendPattern("yyyy-MM-dd HH:mm ").appendTimeZoneId();
+        DateTimeFormatter f = bld.toFormatter();
+
+        try {
+            f.parseDateTime("2007-03-04 12:30 02:00");
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected - an elapsed offset without a sign is not a zone id
+        }
+        try {
+            f.parseDateTime("2007-03-04 12:30 +");
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected - a sign alone is not a zone id
+        }
+    }
+
     public void test_printParseOffset() {
         DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
             .appendPattern("yyyy-MM-dd HH:mm ").appendTimeZoneOffset("Z", true, 2, 2);
